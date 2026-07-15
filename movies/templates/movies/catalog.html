@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% for movie in movies %}
+        {% include 'movies/_movie_card.html' with movie=movie %}
+    {% empty %}
+        <div style="text-align: center; padding: 20px;">
+            <p>Фильмов нет. Возможно, стоит обновить каталог позже.</p>
+        </div>
+    {% endfor %}
+{% endblock %}
