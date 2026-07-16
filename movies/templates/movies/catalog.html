@@ -1,11 +1,37 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {% for movie in movies %}
-        {% include 'movies/_movie_card.html' with movie=movie %}
-    {% empty %}
-        <div style="text-align: center; padding: 20px;">
-            <p>Фильмов нет. Возможно, стоит обновить каталог позже.</p>
+    <form class="movie-filter" method="get" novalidate>
+        {{ filter_form.non_field_errors }}
+
+        {% for field in filter_form %}
+            <div class="filter-field">
+                {{field.label_tag}}
+                <div>{{field}}</div>
+                <div class="error">{{field.errors}}</div>
+            </div>
+        {% endfor %}
+
+        <div class="filter-actions">
+            <p><input type="submit" value="Найти" ></p>
         </div>
-    {% endfor %}
+    </form>
+    <form action="/movies/" method="get" class="reset-form">
+        <input type="submit" value="Сбросить">
+    </form>
+    {% if "Year Error" not in movies%}
+        <p>Найдено фильмов: {{ movies|length }}</p>
+        <hr>
+        {% for movie in movies %}
+            {% include 'movies/_movie_card.html' with movie=movie %}
+        {% empty %}
+            <div style="text-align: center; padding: 20px;">
+                <p>Фильмов нет. Возможно, стоит обновить каталог позже.</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div style="text-align: center; padding: 20px;">
+            <p>Введите значение в "Год до" меньше чем в "Год после"</p>
+        </div>
+    {% endif %}
 {% endblock %}

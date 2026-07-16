@@ -7,4 +7,5 @@ app_name = "movies"
 
 urlpatterns = [
     path("", views.catalog, name="catalog"),
+    path("test/", views.index, name="test"),
 ]
