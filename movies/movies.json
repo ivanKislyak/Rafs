@@ -1,0 +1,46 @@
+[
+    {
+        "id": 1,
+        "name": "Clean, Shaven",
+        "year": 1993,
+        "rate": 7.4,
+        "description": "It follows Peter Winter, a schizophrenic man recently released from a mental institution, as he navigates terrifying sensory hallucinations and desperately tries to reclaim his daughter from her adoptive family",
+        "path": "clean_shaven.jpg"
+    },
+
+    {
+        "id": 2,
+        "name": "Fight Club",
+        "year": 1999,
+        "rate": 10.0,
+        "description": "It follows a disillusioned, insomniac office worker who—along with a charismatic soap salesman—founds an underground fight club that spirals into an anti-consumerist, anarchic terrorist organization",
+        "path": null
+    },
+
+    {
+        "id": 3,
+        "name": "Pi",
+        "year": 1998,
+        "rate": null,
+        "description": "It follows Max Cohen, a paranoid mathematician who believes everything in nature can be understood through numbers. His obsession with finding a universal pattern leads him to build a supercomputer that uncovers a 216-digit number",
+        "path": "pi.jpg"
+    },
+
+    {
+        "id": 4,
+        "name": "The Machinist",
+        "year": 2004,
+        "rate": null,
+        "description": "It follows Trevor Reznik, an emaciated industrial worker who hasn't slept for an entire year. As severe insomnia pushes him to the edge of sanity, a horrific workplace accident triggers intense paranoia and a terrifying descent into his own repressed guilt",
+        "path": "the_machinist.jpg"
+    },
+
+    {
+        "id": 5,
+        "name": "Poor Things",
+        "year": 2023,
+        "rate": 8.6,
+        "description": "It follows Bella Baxter (Emma Stone), a young woman resurrected by a mad scientist. Free from societal prejudices, she goes on a whirlwind, globe-trotting adventure of self-discovery, sexual liberation, and intellectual awakening",
+        "path": "poor_things.jpg"
+    }
+]
