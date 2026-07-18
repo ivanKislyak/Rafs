@@ -4,8 +4,6 @@ import json
 from django.conf import settings
 from django.shortcuts import render
 from .forms import MovieFilterForm
-from .models import Movie
-import asyncio
 
 def get_local_movies() -> list:
     file_path = os.path.join(settings.BASE_DIR, 'movies', 'movies.json')

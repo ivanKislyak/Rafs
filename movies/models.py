@@ -5,8 +5,8 @@ class Movie(models.Model):
     year = models.PositiveSmallIntegerField()
     rate = models.DecimalField(decimal_places=1, max_digits=3, null=True, blank=True)
     description = models.TextField()
-    path = models.CharField(max_length=200, auto_created=True, blank=True, default="")
-    created_at = models.DateTimeField(auto_created=True)
+    path = models.CharField(max_length=200, blank=True, default="")
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ['-rate', 'name']
