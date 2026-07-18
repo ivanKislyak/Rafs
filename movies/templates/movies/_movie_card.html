@@ -1,6 +1,6 @@
 {% load static %}
 <div>
-    {% if movie.path is not None %}
+    {% if movie.path %}
         <img src="{% static 'movies/images/' %}{{ movie.path }}" alt="{{ movie.name }}" width="200" align="left" hspace="15">
     {% else %}
         <img src="{% static 'movies/images/nocover.png' %}" alt="{{ movie.name }}" width="200" align="left" hspace="15">

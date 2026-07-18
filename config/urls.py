@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.urls import path, re_path, include
 from django.views.generic import TemplateView
+from django.contrib import admin
 
 """urlpatterns = [
     path("6index/<int:number>/", views.index),
@@ -33,4 +34,5 @@ urlpatterns = [
     path("", TemplateView.as_view(template_name="base.html")),
     path("movies/", include("movies.urls")),
     path("about_site/", TemplateView.as_view(template_name="about_site.html"), name="about"),
+    path("admin/", admin.site.urls),
 ]

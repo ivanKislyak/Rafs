@@ -1,18 +1,4 @@
 from django import forms
-from django.forms import JSONField
-
-
-class UserForm(forms.Form):
-    name = forms.CharField(widget=forms.Textarea)
-    age = forms.IntegerField(error_messages={
-            'required': 'Please enter your age.',
-            'invalid': 'That is not a valid number.',
-            'min_value': 'You must be at least 18 years old.',
-            'max_value': 'Age cannot exceed 120 years.'
-        }, initial=18, help_text="Введите свой возраст")
-    languages = forms.ChoiceField(choices=((1, "English"), (2, "German"), (3, "French")))
-    # jsontest = JSONField(required=False)
-    password = forms.CharField(widget=forms.PasswordInput)
 
 class MovieFilterForm(forms.Form):
     main_widget = forms.TextInput(attrs={"class": "filter-input", "placeholder": "Введите название...",})

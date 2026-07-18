@@ -1,49 +1,26 @@
-from django.http import HttpResponse
+import os
+import json
+
+from django.conf import settings
 from django.shortcuts import render
-from .forms import UserForm
 from .forms import MovieFilterForm
-import copy
+from .models import Movie
+import asyncio
 
-list_of_movies = [
-    {
-        'id': 1,
-        'name': 'Clean, Shaven',
-        'year': 1993,
-        'rate': 7.4,
-        'description': "It follows Peter Winter, a schizophrenic man recently released from a mental institution, as he navigates terrifying sensory hallucinations and desperately tries to reclaim his daughter from her adoptive family",
-        'path': 'clean_shaven.jpg'
-    },
+def get_local_movies() -> list:
+    file_path = os.path.join(settings.BASE_DIR, 'movies', 'movies.json')
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            return json.load(f)
 
-    {
-        'id': 2,
-        'name': 'Fight Club',
-        'year': 1999,
-        'rate': 10.0,
-        'description': "It follows a disillusioned, insomniac office worker who—along with a charismatic soap salesman—founds an underground fight club that spirals into an anti-consumerist, anarchic terrorist organization",
-        'path': None
-    },
-
-    {
-        'id': 3,
-        'name': 'Pi',
-        'year': 1998,
-        'rate': None,
-        'description': "It follows Max Cohen, a paranoid mathematician who believes everything in nature can be understood through numbers. His obsession with finding a universal pattern leads him to build a supercomputer that uncovers a 216-digit number",
-        'path': 'pi.jpg'
-    },
-
-    {
-        'id': 4,
-        'name': 'The Machinist',
-        'year': 2004,
-        'rate': None,
-        'description': "It follows Trevor Reznik, an emaciated industrial worker who hasn't slept for an entire year. As severe insomnia pushes him to the edge of sanity, a horrific workplace accident triggers intense paranoia and a terrifying descent into his own repressed guilt",
-        'path': 'the_machinist.jpg'
-    }
-]
+    except FileNotFoundError:
+        print("ничего нема")
+        return []
 
 def catalog(request):
     filter_form = MovieFilterForm(request.GET or None)
+    list_of_movies = get_local_movies()
+
     filtered_movies = [m.copy() for m in list_of_movies]
 
     if filter_form.is_valid():
@@ -64,23 +41,5 @@ def catalog(request):
         if year_to:
             filtered_movies = [m for m in filtered_movies if m.get("year", 0) <= year_to]
 
-        if year_from and year_to:
-            if year_to < year_from:
-                filtered_movies = "Year Error"
-
     return render(request,"movies/catalog.html", context={"movies": filtered_movies, "filter_form": filter_form})
-
-def index(request):
-    if request.method == "POST":
-        userform = UserForm(request.POST)
-        if userform.is_valid():
-            user_name = request.POST.get("name")
-            age = request.POST.get("age")
-            password = request.POST.get("password")
-            return HttpResponse(f"<h2>Добро пожаловать, {user_name}, сегодня Вам {age}</h2>")
-        else:
-            return HttpResponse(f"Данные некорректны! Ошибки: {userform.errors}")
-    else:
-        userform = UserForm()
-        return render(request, "tests/index.html", {"form": userform})
 
