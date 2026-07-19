@@ -13,7 +13,6 @@ class Command(BaseCommand):
         json_path = settings.BASE_DIR / "movies" / "movies.json"
 
         self.stdout.write(str(json_path))
-        self.stdout.write(str(json_path.exists()))
 
         if not json_path.exists():
             raise CommandError("Файл отсутствует")
