@@ -9,3 +9,5 @@ staticfiles/
 .coverage
 htmlcov/
 *.log
+contact.html
+index.html
