@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .forms import MovieFilterForm
 from .models import Movie
 
@@ -28,3 +28,6 @@ def catalog(request):
 
     return render(request,"movies/catalog.html", context={"movies": all_movies, "filter_form": filter_form})
 
+def movie_detail(request, movie_id):
+    movie = get_object_or_404(Movie, pk=movie_id)
+    return render(request, "movies/movie_detail.html", {"movie": movie})

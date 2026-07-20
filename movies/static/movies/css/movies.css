@@ -1,0 +1,23 @@
+.movie-card {
+    margin: 5px;
+    border: 1px solid gray;
+    margin-bottom: 15px;
+    border-radius: 10px;
+}
+
+.a-block {
+    display: flex;
+    text-decoration: none;
+    color: inherit;
+}
+
+.movie-card-cover {
+    width: 200px;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.movie_info {
+    margin-left: 10px;
+}
