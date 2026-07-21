@@ -1,20 +1,22 @@
+{% load static %}
 <!doctype html>
 <html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=yes, initial-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>RAFS</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'movies/css/movies.css' %}">
-</head>
-<body>
-    <div><a href="/">RAFS</a> | <a href="/movies">Фильмы</a> | <a href="/about_site">О сайте</a></div>
-
-    <div class="main-container">
-        {% block content %}
-        {% endblock %}
+    <link rel="stylesheet" href="{% static 'movies/css/movies.css' %}" />
+  </head>
+  <body>
+    <div>
+      <a href="/">RAFS</a> | <a href="/movies">Фильмы</a> |
+      <a href="/about_site">О сайте</a>
     </div>
-</body>
+
+    <div class="main-container">{% block content %} {% endblock %}</div>
+  </body>
 </html>

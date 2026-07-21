@@ -1,24 +1,33 @@
 {% load static %}
 <article class="movie-card">
-    <a href="{% url 'movies:detail' movie.pk %}" class="a-block">
-        {% if movie.path %}
-            <img src="{% static 'movies/images/' %}{{ movie.path }}" alt="{{ movie.name }}" class="movie-card-cover">
-        {% else %}
-            <img src="{% static 'movies/images/nocover.png' %}" alt="{{ movie.name }}" class="movie-card-cover">
-        {% endif %}
+  <a href="{% url 'movies:detail' movie.pk %}" class="a-block">
+    {% if movie.path %}
+    <img
+      src="{% static 'movies/images/' %}{{ movie.path }}"
+      alt="{{ movie.name }}"
+      class="movie-card-cover"
+    />
+    {% else %}
+    <img
+      src="{% static 'movies/images/nocover.png' %}"
+      alt="{{ movie.name }}"
+      class="movie-card-cover"
+    />
+    {% endif %}
 
-        <div class="movie_info">
-            <h2>{{ movie.name }}</h2>
-            <p>{{ movie.year }}</p>
-            {% if movie.rate %}
-                <p>Оценка:  {{ movie.rate }}</p>
-                {% if movie.rate >= 8 %}
-                    <p>РЕКОМЕНДУЕМ!</p>
-                {% endif %}
-            {% else %}
-                <p>Еще не оценен</p>
-            {% endif %}
-            <p>{{ movie.description|truncatewords:15|linebreaksbr }}</p>
-        </div>
-    </a>
+    <div class="movie-info">
+      <h2>{{ movie.name }}</h2>
+      <p>{{ movie.year }}</p>
+      {% if movie.rate %}
+      <p>Rate: {{ movie.rate }}</p>
+      {% if movie.rate >= 8 %}
+      <p>РЕКОМЕНДУЕМ!</p>
+      {% endif %} {% else %}
+      <p>Еще не оценен</p>
+      {% endif %}
+      <div class="movie-description">
+        <p>{{ movie.description|truncatewords:15|linebreaksbr }}</p>
+      </div>
+    </div>
+  </a>
 </article>

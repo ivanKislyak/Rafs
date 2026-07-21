@@ -1,31 +1,43 @@
-{% extends "base.html" %}
-{% load static %}
+{% extends "base.html" %} {% load static %} {% block content %}
 
-{% block content %}
+<a href="{% url 'movies:catalog' %}" class="btn">← Вернуться в каталог</a>
 
-<a href="{% url 'movies:catalog' %}"> ← Вернуться в каталог </a>
-<hr>
-{% if movie.path %}
-    <img src="{% static 'movies/images/' %}{{ movie.path }}" alt="{{ movie.name }}" width="300" align="left" hspace="15">
-{% else %}
-    <img src="{% static 'movies/images/nocover.png' %}" alt="{{ movie.name }}" width="300" align="left" hspace="15">
-{% endif %}
+<hr />
+<article class="movie-detail-main-container">
+  {% if movie.path %}
+  <img
+    src="{% static 'movies/images/' %}{{ movie.path }}"
+    alt="{{ movie.name }}"
+    class="movie-detail-cover"
+  />
 
-<h1>{{ movie.name }}</h1>
-<p>Year: {{ movie.year }}</p>
+  {% else %}
 
-{% if movie.rate %}
-    <p>Rate:  {{ movie.rate }}</p>
+  <img
+    src="{% static 'movies/images/nocover.png' %}"
+    alt="{{ movie.name }}"
+    class="movie-detail-cover"
+  />
+
+  {% endif %}
+  <div class="movie-detail-main-textinfo">
+    <h1>{{ movie.name }}</h1>
+    <p>Year: {{ movie.year }}</p>
+
+    {% if movie.rate %}
+    <p>Rate: {{ movie.rate }}</p>
     {% if movie.rate >= 8 %}
-        <p>РЕКОМЕНДУЕМ!</p>
-    {% endif %}
-{% else %}
+    <p>РЕКОМЕНДУЕМ!</p>
+    {% endif %} {% else %}
     <p>Еще не оценен</p>
-{% endif %}
-
-<br clear="left">
+    {% endif %}
+  </div>
+</article>
 <p>{{ movie.description }}</p>
+<hr />
 
-<hr>
+{% comment %} Content for star buttons {% endcomment %}
+
+<!--<article class="star-buttons"></article>-->
 
 {% endblock %}
