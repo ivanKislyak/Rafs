@@ -9,14 +9,12 @@
     />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>RAFS</title>
+
+    <link rel="stylesheet" href="{% static 'css/base.css' %}" />
     <link rel="stylesheet" href="{% static 'movies/css/movies.css' %}" />
   </head>
   <body>
-    <div>
-      <a href="/">RAFS</a> | <a href="/movies">Фильмы</a> |
-      <a href="/about_site">О сайте</a>
-    </div>
-
+    {% include "_header.html" %}
     <div class="main-container">{% block content %} {% endblock %}</div>
   </body>
 </html>

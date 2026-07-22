@@ -1,0 +1,100 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  /* Logo palette */
+  --rafs-red-deep: #a9241d;
+  --rafs-red-action: #c72921;
+  --rafs-red: #db392f;
+  --rafs-red-on-dark: #f0584a;
+  --rafs-red-soft: #fb8273;
+  --rafs-red-tint: #fbdcd8;
+
+  /* Dark theme (by default) */
+  --color-bg: #0b0c0f;
+  --color-surface: #13151a;
+  --color-surface-raised: #1b1e24;
+  --color-border: #2c3038;
+
+  --color-text: #f4f1ed;
+  --color-text-muted: #aeb1b8;
+
+  --color-accent: var(--rafs-red-on-dark);
+  --color-action: var(--rafs-red-action);
+  --color-action-hover: var(--rafs-red);
+  --color-action-text: #ffffff;
+
+  --color-accent-glow: rgb(219 57 47 / 18%);
+}
+
+[data-theme="light"] {
+  --color-bg: #f4f1ec;
+  --color-surface: #fcfaf7;
+  --color-surface-raised: #ffffff;
+  --color-border: #d3cec6;
+
+  --color-text: #17191d;
+  --color-text-muted: #646a73;
+
+  --color-accent: var(--rafs-red-action);
+  --color-accent-glow: rgb(219 57 47 / 8%);
+}
+
+.main-nav {
+  color: var(--color-text);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.main-header {
+  background-color: color-mix(in srgb, var(--color-bg) 92%, transparent);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  position: sticky;
+  top: 10px;
+  margin: 10px;
+  z-index: 100;
+}
+
+.logo {
+  position: relative;
+  display: inline-block;
+}
+
+.logo img {
+  width: 100px;
+  transition:
+    transform 200ms ease,
+    opacity 200ms ease;
+}
+
+.logo-img {
+  z-index: 2;
+  position: relative;
+  width: 100px;
+  margin: 10px;
+}
+
+.red-logo-img,
+.blue-logo-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  opacity: 0;
+  width: 100px;
+  margin: 10px;
+}
+
+.logo:hover .red-logo-img {
+  transform: translateX(-3px);
+  opacity: 1;
+}
+
+.logo:hover .blue-logo-img {
+  transform: translateX(3px);
+  opacity: 1;
+}

@@ -1,0 +1,26 @@
+{% load static %}
+<header class="main-header">
+  <nav class="main-nav">
+    <a href="/" class="logo">
+      <img
+        src="{% static 'images/red_gl_rafs_logo.png' %}"
+        class="red-logo-img"
+        alt=""
+        aria-hidden="true"
+      />
+      <img
+        src="{% static 'images/blue_gl_rafs_logo.png' %}"
+        class="blue-logo-img"
+        alt=""
+        aria-hidden="true"
+      />
+      <img
+        src="{% static 'images/def_rafs_logo.png' %}"
+        class="logo-img"
+        alt="RAFS"
+      />
+    </a>
+    <a href="{% url 'movies:catalog' %}" class="catalog-category">Каталог</a>
+    <a href="{% url 'about' %}">О сайте</a>
+  </nav>
+</header>
