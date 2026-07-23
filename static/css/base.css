@@ -1,4 +1,6 @@
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -29,6 +31,12 @@
   --color-focus-visible-outline: var(--rafs-red-soft);
 
   --color-accent-glow: rgb(219 57 47 / 18%);
+
+  /* Spacing system */
+  --space-xs: 3px;
+  --space-s: 5px;
+  --space-m: 10px;
+  --space-l: 20px;
 }
 
 [data-theme="light"] {
@@ -55,6 +63,7 @@
 body {
   font-family: "Inter";
   font-optical-sizing: auto;
+  background-color: var(--color-bg);
 }
 
 .main-nav {
@@ -66,7 +75,7 @@ body {
 }
 
 .main-header {
-  background-color: color-mix(in srgb, var(--color-bg) 92%, transparent);
+  background-color: color-mix(in srgb, var(--color-surface) 92%, transparent);
   backdrop-filter: blur(10px);
   border-radius: 10px;
   position: sticky;
@@ -83,7 +92,7 @@ body {
 
 .logo img {
   width: 100px;
-  margin: 15px;
+  margin: 10px 20px 10px 20px;
   transition:
     transform 200ms ease,
     opacity 200ms ease;
@@ -104,12 +113,12 @@ body {
 }
 
 .logo:hover .red-logo-img {
-  transform: translateX(-3px);
+  transform: translateX(calc(var(--space-xs) * -1));
   opacity: 1;
 }
 
 .logo:hover .blue-logo-img {
-  transform: translateX(3px);
+  transform: translateX(var(--space-xs));
   opacity: 1;
 }
 

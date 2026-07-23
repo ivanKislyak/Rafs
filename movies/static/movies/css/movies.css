@@ -2,21 +2,24 @@
   margin: 5px;
   margin-bottom: 15px;
   border: 1px solid var(--color-border);
-  background-color: var(--color-bg);
+  background-color: var(--color-surface);
   border-radius: 10px;
+  max-width: 1100px;
+  margin-inline: auto;
+  padding: var(--space-l);
   transition:
     box-shadow 200ms ease,
     background-color 200ms ease;
 }
 
 .movie-card:hover {
-  background-color: var(--color-surface);
-  box-shadow: 0 8px 16px color-mix(in srgb, var(--color-surface) 92%, transparent);
+  background-color: var(--color-surface-raised);
+  box-shadow: 0 8px 16px color-mix(in srgb, var(--color-surface-raised) 92%, transparent);
 }
 
 .movie-card:focus-visible {
-  outline: 3px solid var(--color-focus-visible-outline);
-  outline-offset: 3px;
+  outline: var(--space-xs) solid var(--color-focus-visible-outline);
+  outline-offset: var(--space-xs);
 }
 
 .a-block {
@@ -24,14 +27,15 @@
   text-decoration: none;
   color: var(--color-text);
   grid-template-columns: 210px minmax(0, 1fr);
-  padding: 10px;
+  gap: var(--space-l);
 }
 
 .movie-card-cover {
-  width: 200px;
+  width: 100%;
+  height: auto;
   aspect-ratio: 2 / 3;
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: var(--space-m);
 }
 
 @media (max-width: 500px) {
@@ -47,6 +51,7 @@
 
 .movie-info {
   color: inherit;
+  min-width: 0;
 }
 
 .movie-description {
@@ -93,4 +98,8 @@
   width: 100%;
   object-fit: cover;
   border-radius: 10px;
+}
+
+.catalog-label {
+  color: var(--color-action-text);
 }

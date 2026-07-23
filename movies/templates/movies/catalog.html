@@ -18,7 +18,7 @@
 
 <p>Найдено фильмов: {{ movies|length }}</p>
 <hr />
-<h1>Каталог фильмов</h1>
+<h1 class="catalog-label">Каталог фильмов</h1>
 {% for movie in movies %} {% include 'movies/_movie_card.html' with movie=movie %} {% empty %}
 <div style="text-align: center; padding: 20px">
   <p>Фильмов нет. Возможно, стоит обновить каталог позже.</p>
