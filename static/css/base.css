@@ -23,7 +23,10 @@
   --color-accent: var(--rafs-red-on-dark);
   --color-action: var(--rafs-red-action);
   --color-action-hover: var(--rafs-red);
+  --color-action-active: var(--rafs-red-deep);
   --color-action-text: #ffffff;
+
+  --color-focus-visible-outline: var(--rafs-red-soft);
 
   --color-accent-glow: rgb(219 57 47 / 18%);
 }
