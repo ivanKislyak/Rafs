@@ -1,26 +1,12 @@
 {% load static %}
 <header class="main-header">
   <nav class="main-nav">
-    <a href="/" class="logo">
-      <img
-        src="{% static 'images/red_gl_rafs_logo.png' %}"
-        class="red-logo-img"
-        alt=""
-        aria-hidden="true"
-      />
-      <img
-        src="{% static 'images/blue_gl_rafs_logo.png' %}"
-        class="blue-logo-img"
-        alt=""
-        aria-hidden="true"
-      />
-      <img
-        src="{% static 'images/def_rafs_logo.png' %}"
-        class="logo-img"
-        alt="RAFS"
-      />
+    <a class="logo" href="/">
+      <img class="red-logo-img" src="{% static 'images/red_gl_rafs_logo.png' %}" alt="" aria-hidden="true" />
+      <img class="blue-logo-img" src="{% static 'images/blue_gl_rafs_logo.png' %}" alt="" aria-hidden="true" />
+      <img class="logo-img" src="{% static 'images/def_rafs_logo.png' %}" alt="RAFS" />
     </a>
-    <a href="{% url 'movies:catalog' %}" class="catalog-category">Каталог</a>
-    <a href="{% url 'about' %}">О сайте</a>
+    <a class="catalog-category" href="{% url 'movies:catalog' %}">Каталог</a>
+    <a class="about-site" href="{% url 'about' %}">О сайте</a>
   </nav>
 </header>

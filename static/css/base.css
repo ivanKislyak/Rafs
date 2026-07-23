@@ -41,12 +41,25 @@
   --color-accent-glow: rgb(219 57 47 / 8%);
 }
 
+@font-face {
+  font-family: "Inter";
+  src: url("../fonts/Inter-Variable.ttf");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+body {
+  font-family: "Inter";
+  font-optical-sizing: auto;
+}
+
 .main-nav {
   color: var(--color-text);
-  text-decoration: none;
   display: flex;
   align-items: center;
   gap: 10px;
+  color: var(--color-text);
 }
 
 .main-header {
@@ -62,10 +75,12 @@
 .logo {
   position: relative;
   display: inline-block;
+  flex-shrink: 0;
 }
 
 .logo img {
   width: 100px;
+  margin: 15px;
   transition:
     transform 200ms ease,
     opacity 200ms ease;
@@ -74,8 +89,6 @@
 .logo-img {
   z-index: 2;
   position: relative;
-  width: 100px;
-  margin: 10px;
 }
 
 .red-logo-img,
@@ -85,8 +98,6 @@
   left: 0;
   z-index: 1;
   opacity: 0;
-  width: 100px;
-  margin: 10px;
 }
 
 .logo:hover .red-logo-img {
@@ -97,4 +108,17 @@
 .logo:hover .blue-logo-img {
   transform: translateX(3px);
   opacity: 1;
+}
+
+.about-site,
+.catalog-category {
+  font-size: 20px;
+  color: inherit;
+  text-decoration: none;
+  transition: transform 200ms ease;
+}
+
+.about-site:hover,
+.catalog-category:hover {
+  transform: scale(1.03);
 }

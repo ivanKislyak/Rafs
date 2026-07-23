@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "prettier-plugin-curly": "^0.4.1"
+  }
+}

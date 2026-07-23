@@ -1,17 +1,17 @@
 {% load static %}
 <article class="movie-card">
-  <a href="{% url 'movies:detail' movie.pk %}" class="a-block">
+  <a class="a-block" href="{% url 'movies:detail' movie.pk %}">
     {% if movie.path %}
     <img
+      class="movie-card-cover"
       src="{% static 'movies/images/' %}{{ movie.path }}"
       alt="{{ movie.name }}"
-      class="movie-card-cover"
     />
     {% else %}
     <img
+      class="movie-card-cover"
       src="{% static 'movies/images/nocover.png' %}"
       alt="{{ movie.name }}"
-      class="movie-card-cover"
     />
     {% endif %}
 

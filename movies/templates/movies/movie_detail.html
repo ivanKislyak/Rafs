@@ -1,22 +1,22 @@
 {% extends "base.html" %} {% load static %} {% block content %}
 
-<a href="{% url 'movies:catalog' %}" class="btn">← Вернуться в каталог</a>
+<a class="btn" href="{% url 'movies:catalog' %}">← Вернуться в каталог</a>
 
 <hr />
 <article class="movie-detail-main-container">
   {% if movie.path %}
   <img
+    class="movie-detail-cover"
     src="{% static 'movies/images/' %}{{ movie.path }}"
     alt="{{ movie.name }}"
-    class="movie-detail-cover"
   />
 
   {% else %}
 
   <img
+    class="movie-detail-cover"
     src="{% static 'movies/images/nocover.png' %}"
     alt="{{ movie.name }}"
-    class="movie-detail-cover"
   />
 
   {% endif %}

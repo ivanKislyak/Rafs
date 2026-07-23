@@ -11,3 +11,4 @@ htmlcov/
 *.log
 contact.html
 index.html
+node_modules/

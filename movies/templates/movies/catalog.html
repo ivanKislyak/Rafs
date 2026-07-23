@@ -1,34 +1,26 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% block content %}
+<form class="movie-filter" method="get" novalidate>
+  {{ filter_form.non_field_errors }} {% for field in filter_form %}
+  <div class="filter-field">
+    {{field.label_tag}}
+    <div>{{field}}</div>
+    <div class="error">{{field.errors}}</div>
+  </div>
+  {% endfor %}
 
-{% block content %}
-    <form class="movie-filter" method="get" novalidate>
-        {{ filter_form.non_field_errors }}
+  <div class="filter-actions">
+    <p><input type="submit" value="Найти" /></p>
+  </div>
+</form>
+<form class="reset-form" action="/movies/" method="get">
+  <input type="submit" value="Сбросить" />
+</form>
 
-        {% for field in filter_form %}
-            <div class="filter-field">
-                {{field.label_tag}}
-                <div>{{field}}</div>
-                <div class="error">{{field.errors}}</div>
-            </div>
-        {% endfor %}
-
-        <div class="filter-actions">
-            <p><input type="submit" value="Найти" ></p>
-        </div>
-    </form>
-    <form action="/movies/" method="get" class="reset-form">
-        <input type="submit" value="Сбросить">
-    </form>
-
-    <p>Найдено фильмов: {{ movies|length }}</p>
-    <hr>
-    <h1>Каталог фильмов</h1>
-    {% for movie in movies %}
-        {% include 'movies/_movie_card.html' with movie=movie %}
-    {% empty %}
-        <div style="text-align: center; padding: 20px;">
-            <p>Фильмов нет. Возможно, стоит обновить каталог позже.</p>
-        </div>
-    {% endfor %}
-
-{% endblock %}
+<p>Найдено фильмов: {{ movies|length }}</p>
+<hr />
+<h1>Каталог фильмов</h1>
+{% for movie in movies %} {% include 'movies/_movie_card.html' with movie=movie %} {% empty %}
+<div style="text-align: center; padding: 20px">
+  <p>Фильмов нет. Возможно, стоит обновить каталог позже.</p>
+</div>
+{% endfor %} {% endblock %}
