@@ -1,4 +1,7 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %} 
+{% block title %}Каталог{% endblock %}
+
+{% block content %}
 <form class="movie-filter" method="get" novalidate>
   {{ filter_form.non_field_errors }} {% for field in filter_form %}
   <div class="filter-field">
@@ -21,6 +24,7 @@
 <h1 class="catalog-label">Каталог фильмов</h1>
 {% for movie in movies %} {% include 'movies/_movie_card.html' with movie=movie %} {% empty %}
 <div style="text-align: center; padding: 20px">
-  <p>Фильмов нет. Возможно, стоит обновить каталог позже.</p>
+  <p>Фильмов нет. Возможно, стоит обновить каталог позже</p>
+  
 </div>
 {% endfor %} {% endblock %}
