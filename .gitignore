@@ -9,6 +9,7 @@ staticfiles/
 .coverage
 htmlcov/
 *.log
+.vscode
 contact.html
 index.html
 node_modules/
