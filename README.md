@@ -15,20 +15,25 @@ The project is currently in active development.
 
 ## Planned features
 
-- Movie detail pages
-- User registration and profiles
+- Database-driven home page
+- User registration and authentication
+- User profiles
 - Ratings and reviews
-- PostgreSQL database
-- Movie data from an external API
-- Personal recommendations
+- PostgreSQL
+- TMDB integration
+- Recommendations
+- Production deployment with HTTPS
 
 ## Technologies
 
 - Python
 - Django
-- HTML
-- Django Template Language
 - SQLite
+- Django ORM
+- Django Template Language
+- HTML
+- CSS
+- python-dotenv
 
 ## Running locally
 

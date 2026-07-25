@@ -24,7 +24,12 @@ load_dotenv(BASE_DIR / '.env')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-fallback-key-for-dev-only')
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
+DEBUG = os.getenv("DEBUG", "False").strip().lower() in {
+    "1",
+    "true",
+    "yes",
+    "on",
+}
 
 ALLOWED_HOSTS = [
     "104.222.177.93",
