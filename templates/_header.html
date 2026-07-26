@@ -2,11 +2,19 @@
 <header class="main-header">
   <nav class="main-nav">
     <a class="logo" href="{% url 'core:home' %}">
-      <img class="red-logo-img" src="{% static 'images/red_gl_rafs_logo.png' %}" alt="" aria-hidden="true" />
-      <img class="blue-logo-img" src="{% static 'images/blue_gl_rafs_logo.png' %}" alt="" aria-hidden="true" />
-      <img class="logo-img" src="{% static 'images/def_rafs_logo.png' %}" alt="RAFS" />
+      <img class="red-logo-img"
+           src="{% static 'images/red_gl_rafs_logo.png' %}"
+           alt=""
+           aria-hidden="true" />
+      <img class="blue-logo-img"
+           src="{% static 'images/blue_gl_rafs_logo.png' %}"
+           alt=""
+           aria-hidden="true" />
+      <img class="logo-img"
+           src="{% static 'images/def_rafs_logo.png' %}"
+           alt="RAFS" />
     </a>
     <a class="catalog-category" href="{% url 'movies:catalog' %}">Каталог</a>
-    <a class="about-site" href="{% url 'about' %}">О сайте</a>
+    <a class="about-site" href="{% url 'core:about' %}">О сайте</a>
   </nav>
 </header>

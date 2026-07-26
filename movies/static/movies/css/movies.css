@@ -58,6 +58,16 @@
   text-align: center;
 }
 
+.movie-detail-main-textinfo {
+  color: inherit;
+  min-width: 0;
+}
+
+.movie-filter,
+.movie-detail-main-description {
+  color: var(--color-text)
+}
+
 .btn {
   display: inline-block;
   padding: 10px 20px;
@@ -84,6 +94,7 @@
   margin: 10px;
   grid-template-columns: auto 1fr;
   gap: 20px;
+  color: var(--color-text)
 }
 
 @media (max-width: 500px) {
