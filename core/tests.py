@@ -12,11 +12,20 @@ class TestHomePageView(TestCase):
         Movie.objects.create(name="10 lives", rate=3, year=2024)
         Movie.objects.create(name="Titan", rate=4.3, year=2021)
 
+    def test_code_200(self):
+        response = self.client.get(reverse("core:home"))
+        self.assertTemplateUsed(response, "core/home.html")
+
     def test_top_movies(self):
         response = self.client.get(reverse("core:home"))
-
         top_movies = list(
             response.context["top_movies"].values_list("name", flat=True)
         )
 
         self.assertEqual(top_movies, ["Scary movie 6", "Great mile", "Forrest Gump", "Titan", "10 lives"])
+
+    def test_len_movies(self):
+        response = self.client.get(reverse("core:home"))
+        len_movies = len(response.context["top_movies"])
+
+        self.assertEqual(len_movies, 5)
