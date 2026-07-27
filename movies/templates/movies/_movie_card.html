@@ -19,7 +19,8 @@
       <h2>{{ movie.name }}</h2>
       <p>{{ movie.year }}</p>
       {% if movie.rate %}
-      <p>Rate: {{ movie.rate }}</p>
+      <p>RAFS Rate: {{ movie.avg_rating}}</p>
+      <p>IMDB Rate: {{ movie.rate }}</p>
       {% if movie.rate >= 8 %}
       <p>РЕКОМЕНДУЕМ!</p>
       {% endif %} {% else %}

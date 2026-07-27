@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .forms import MovieFilterForm
+from .forms import MovieFilterForm, ReviewForm
 from .models import Movie
 
 def catalog(request):
@@ -26,8 +26,22 @@ def catalog(request):
         if year_to is not None:
             all_movies = all_movies.filter(year__lte=year_to)
 
-    return render(request,"movies/catalog.html", context={"movies": all_movies, "filter_form": filter_form})
+    return render(request,"movies/catalog.html", context={"movie": all_movies, "filter_form": filter_form})
 
 def movie_detail(request, movie_id):
     movie = get_object_or_404(Movie, pk=movie_id)
-    return render(request, "movies/movie_detail.html", {"movie": movie})
+    review_form = ReviewForm()
+
+    if request.method == "POST":
+        review_form = ReviewForm(request.POST)
+        if review_form.is_valid():
+            if request.user.is_authenticated:
+                review = review_form.save(commit=False)
+                review.movie = movie
+                review.user = request.user
+                review.save()
+                review_form = ReviewForm()
+            else:
+                review_form.add_error(None, "Нужно войти в аккаунт, чтобы оставить отзыв.")
+
+    return render(request, "movies/movie_detail.html", {"movie": movie, "review_form": review_form})

@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
 from decimal import Decimal
+from django.db.models import Avg
 
 class Movie(models.Model):
     name = models.CharField(max_length=200) # Night of the Day of the Dawn of the Son of the Bride...
@@ -11,6 +12,11 @@ class Movie(models.Model):
     path = models.CharField(max_length=200, blank=True, default="")
     created_at = models.DateTimeField(auto_now_add=True)
 
+    @property
+    def avg_rating(self):
+        raw_avg_rating = self.reviews.aggregate(Avg("rating"))["rating__avg"]
+        return round(raw_avg_rating, 1) if raw_avg_rating is not None else 0.0
+    
     class Meta:
         ordering = ['-rate', 'name']
 
@@ -32,11 +38,10 @@ class Review(models.Model):
         on_delete=models.CASCADE, 
         related_name="reviews")
 
-    rating = models.DecimalField(max_digits=3, decimal_places=1)
-    avg_rating = models.DecimalField(max_digits=3, decimal_places=1)
-    text = models.TextField()
+    rating = models.DecimalField(max_digits=3, decimal_places=1, default=0.0)
+    text = models.TextField(blank=True)
     contains_spoiler = models.BooleanField(blank=True, default=False)
-    created_at = models.DateField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -54,11 +59,12 @@ class Review(models.Model):
 
     def __str__(self):
         if self.text:
-            return f"{self.user.username}: {self.text}"
-        return f"Review by {self.user.username}"
+            return f"{self.user.username} оставил отзыв к фильму - {self.movie.name}: {self.text}"
+        return f"{self.movie.name} was review by {self.user.username}"
 
 
 class ReviewVote(models.Model):
+    """Лайки/Дизлайки к отзывам"""
     class VoteChoice(models.IntegerChoices):
        LIKE = 1, "Like"
        DISLIKE = -1, "Dislike"

@@ -30,6 +30,12 @@
   gap: var(--space-l);
 }
 
+.a-block:hover,
+.a-block:focus-visible,
+.a-block:visited {
+  color: var(--color-text);
+}
+
 .movie-card-cover {
   width: 100%;
   height: auto;
@@ -65,7 +71,154 @@
 
 .movie-filter,
 .movie-detail-main-description {
-  color: var(--color-text)
+  color: var(--color-text);
+}
+
+.review-form {
+  display: grid;
+  gap: var(--space-l);
+  max-width: 720px;
+  margin: 20px 10px;
+  padding: var(--space-l);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  color: var(--color-text);
+}
+
+.review-form-field {
+  display: grid;
+  gap: var(--space-s);
+}
+
+.review-form-label,
+.review-form-help,
+.review-form-errors,
+.review-checkbox-row {
+  color: var(--color-text);
+}
+
+.form-range {
+  width: 100%;
+  height: 8px;
+  appearance: none;
+  -webkit-appearance: none;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    var(--color-action) 0%,
+    var(--color-action) var(--range-fill, 50%),
+    var(--color-border) var(--range-fill, 50%),
+    var(--color-border) 100%
+  );
+  cursor: pointer;
+  transition: box-shadow 200ms ease;
+}
+
+.form-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-action);
+  border: 2px solid var(--color-surface-raised);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent-glow) 70%, transparent);
+}
+
+.form-range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--color-surface-raised);
+  border-radius: 50%;
+  background: var(--color-action);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent-glow) 70%, transparent);
+}
+
+.form-range::-webkit-slider-runnable-track {
+  height: 8px;
+  border-radius: 999px;
+  background: transparent;
+}
+
+.form-range::-moz-range-track {
+  height: 8px;
+  border-radius: 999px;
+  background: transparent;
+}
+
+.form-range:hover {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-accent-glow) 70%, transparent);
+}
+
+.form-range:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent-glow) 70%, transparent);
+}
+
+.review-range-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-m);
+}
+
+.review-range-value {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 56px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background-color: color-mix(in srgb, var(--color-accent-glow) 90%, transparent);
+  color: var(--color-action);
+  font-weight: 700;
+}
+
+.review-form-label {
+  font-weight: 600;
+}
+
+.review-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: var(--color-surface-raised);
+  color: var(--color-text);
+}
+
+.review-input:focus {
+  outline: 2px solid var(--color-focus-visible-outline);
+  outline-offset: 2px;
+  border-color: var(--color-accent);
+}
+
+.review-textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.review-checkbox-row {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-s);
+  cursor: pointer;
+}
+
+.review-checkbox {
+  accent-color: var(--color-action);
+  width: 16px;
+  height: 16px;
+}
+
+.review-form-submit {
+  margin: 0;
+}
+
+.review-form-errors {
+  font-size: 0.95rem;
+  color: var(--rafs-red-soft);
 }
 
 .btn {
@@ -94,7 +247,7 @@
   margin: 10px;
   grid-template-columns: auto 1fr;
   gap: 20px;
-  color: var(--color-text)
+  color: var(--color-text);
 }
 
 @media (max-width: 500px) {
@@ -111,6 +264,7 @@
   border-radius: 10px;
 }
 
+.abot-found-movies,
 .catalog-label {
   color: var(--color-action-text);
 }

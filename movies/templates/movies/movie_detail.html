@@ -36,6 +36,66 @@
 <p class="movie-detail-main-description">{{ movie.description }}</p>
 <hr />
 
+<form class="review-form" method="post" novalidate>
+  {% csrf_token %}
+
+  {% if review_form.non_field_errors %}
+    <div class="review-form-errors">{{ review_form.non_field_errors }}</div>
+  {% endif %}
+
+  {% for field in review_form %}
+    <div class="review-form-field">
+      {% if field.name == "rating" %}
+        <div class="review-range-header">
+          <label class="review-form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+          <output class="review-range-value" id="review-rating-value" for="{{ field.id_for_label }}">5.0</output>
+        </div>
+        {{ field }}
+      {% elif field.name == "contains_spoiler" %}
+        <label class="review-checkbox-row" for="{{ field.id_for_label }}">
+          {{ field }}
+          <span>{{ field.label }}</span>
+        </label>
+      {% else %}
+        <label class="review-form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+      {% endif %}
+
+      {% if field.help_text %}
+        <p class="review-form-help">{{ field.help_text }}</p>
+      {% endif %}
+
+      {% if field.errors %}
+        <div class="review-form-errors">{{ field.errors }}</div>
+      {% endif %}
+    </div>
+  {% endfor %}
+
+  <button class="btn review-form-submit" type="submit">Оставить отзыв</button>
+</form>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const rangeInput = document.querySelector(".review-form input[type='range']");
+    const ratingOutput = document.getElementById("review-rating-value");
+
+    if (!rangeInput || !ratingOutput) {
+      return;
+    }
+
+    const syncRangeView = () => {
+      const value = Number(rangeInput.value || 0).toFixed(1);
+      ratingOutput.textContent = value;
+      const fillPercent = (Number(rangeInput.value || 0) / 10) * 100;
+      rangeInput.style.setProperty("--range-fill", `${fillPercent}%`);
+    };
+
+    syncRangeView();
+    rangeInput.addEventListener("input", syncRangeView);
+    rangeInput.addEventListener("change", syncRangeView);
+  });
+</script>
+
 {% comment %} Content for star buttons {% endcomment %}
 
 <!--<article class="star-buttons"></article>-->

@@ -6,7 +6,6 @@
     <div class="filter-field">
       {{ field.label_tag }}
       <div>{{ field }}</div>
-      <div class="error">{{ field.errors }}</div>
     </div>
 {% endfor %}
 <div class="filter-actions">
@@ -18,13 +17,15 @@
 <form class="reset-form" action="{% url 'movies:catalog' %}" method="get">
   <input type="submit" value="Сбросить" />
 </form>
-<p>Найдено фильмов: {{ movies|length }}</p>
+  <div class="abot-found-movies">
+<p>Найдено фильмов: {{ movie|length }}</p>
+  </div>
 <hr />
 <h1 class="catalog-label">Каталог фильмов</h1>
-{% for movie in movies %}
+{% for movie in movie %}
   {% include 'movies/_movie_card.html' with movie=movie %}
 {% empty %}
-  <div class="empty-msg">
+  <div class="abot-found-movies">
     <p>Фильмов нет. Возможно, стоит обновить каталог позже</p>
   </div>
 {% endfor %}

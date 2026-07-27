@@ -1,5 +1,8 @@
 from django import forms
 
+from .models import Review as ReviewModel
+
+
 class MovieFilterForm(forms.Form):
     main_widget = forms.TextInput(attrs={"class": "filter-input", "placeholder": "Введите название...",})
     year_from_widget = forms.NumberInput(attrs={"class": "filter-input", "placeholder": "1888", })
@@ -28,3 +31,40 @@ class MovieFilterForm(forms.Form):
             )
 
         return cleaned_data
+
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = ReviewModel
+        fields = ["rating", "text", "contains_spoiler"]
+        labels = {
+            "rating": "Оценка",
+            "text": "Текст отзыва",
+            "contains_spoiler": "Содержит спойлер",
+        }
+        help_texts = {
+            "rating": "Оценка от 0 до 10",
+            "text": "Поделитесь впечатлениями о фильме",
+        }
+        widgets = {
+            "rating": forms.NumberInput(
+                attrs={
+                    "type": "range",
+                    "class": "form-range",
+                    "min": "0.0",
+                    "max": "10.0",
+                    "step": "0.1",
+                    "placeholder": "0.0",
+                    "id": "common-range-for-rate",
+                    "value": "5.0",
+                }
+            ),
+            "text": forms.Textarea(
+                attrs={
+                    "class": "review-input review-textarea",
+                    "rows": 5,
+                    "placeholder": "Ваше мнение о фильме...",
+                }
+            ),
+            "contains_spoiler": forms.CheckboxInput(attrs={"class": "review-checkbox"}),
+        }
