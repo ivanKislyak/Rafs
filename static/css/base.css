@@ -133,3 +133,18 @@ body {
 .catalog-category:hover {
   color: var(--rafs-red);
 }
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--color-border);
+  margin: var(--space-l) 0;
+  opacity: 0.9;
+}
+
+.movie-info {
+  color: var(--color-text);
+}
+
+.the-best-movies-label {
+  color: var(--color-text);
+}

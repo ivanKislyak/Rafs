@@ -56,7 +56,7 @@
 }
 
 .movie-info {
-  color: inherit;
+  color: var(--color-text);
   min-width: 0;
 }
 
