@@ -96,8 +96,43 @@
   });
 </script>
 
-{% comment %} Content for star buttons {% endcomment %}
+<hr />
+<section class="review-comments">
+  <h2 class="review-comments-title">Отзывы</h2>
 
-<!--<article class="star-buttons"></article>-->
+  {% if reviews %}
+    {% for review in reviews %}
+      <article class="review-comment">
+        <div class="review-comment-header">
+          <div class="review-comment-author-block">
+            {% if review.user.avatar_image %}
+            <img class="user-avatar" src="{% static 'users/avatars/' %}" alt="{{ review.user.username }}">
+            {% else %}
+            <img class="user-avatar" src="{% static 'images/default_profile_img.png' %}" alt="{{ review.user.username }}">
+            {% endif %}
+            <span class="review-comment-author">{{ review.user.username }}</span>
+            <div class="review-comment-meta">
+              <span class="review-comment-rating">{{ review.rating }}</span>
+              {% if review.contains_spoiler %}
+                <span class="review-comment-spoiler">Содержит спойлер</span>
+              {% endif %}
+            </div>
+          </div>
+          <span class="review-comment-date">{{ review.created_at|date:"d.m.Y H:i" }}</span>
+        </div>
+
+        <p class="review-comment-text">
+          {% if review.text %}
+            {{ review.text }}
+          {% else %}
+            <em>Отзыв не содержит текста.</em>
+          {% endif %}
+        </p>
+      </article>
+    {% endfor %}
+  {% else %}
+    <p class="review-comments-empty">Пока нет отзывов. Станьте первым, кто оставит комментарий!</p>
+  {% endif %}
+</section>
 
 {% endblock %}

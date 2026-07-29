@@ -148,3 +148,10 @@ hr {
 .the-best-movies-label {
   color: var(--color-text);
 }
+
+.user-avatar {
+  width: 10%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  border-radius: 100%;
+}

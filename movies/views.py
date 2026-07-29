@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from .forms import MovieFilterForm, ReviewForm
-from .models import Movie
+from .models import Movie, Review
 
 def catalog(request):
     filter_form = MovieFilterForm(request.GET or None)
@@ -30,6 +30,7 @@ def catalog(request):
 
 def movie_detail(request, movie_id):
     movie = get_object_or_404(Movie, pk=movie_id)
+    reviews = Review.objects.filter(movie=movie)
     review_form = ReviewForm()
 
     if request.method == "POST":
@@ -44,4 +45,7 @@ def movie_detail(request, movie_id):
             else:
                 review_form.add_error(None, "Нужно войти в аккаунт, чтобы оставить отзыв.")
 
-    return render(request, "movies/movie_detail.html", {"movie": movie, "review_form": review_form})
+    return render(request, "movies/movie_detail.html",
+                  {"movie": movie, 
+                   "review_form": review_form, 
+                   "reviews": reviews})

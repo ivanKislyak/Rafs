@@ -55,6 +55,10 @@
   }
 }
 
+.main-catalog-page-with-movie-cards {
+  padding: 30px;
+}
+
 .movie-info {
   color: var(--color-text);
   min-width: 0;
@@ -221,6 +225,82 @@
   color: var(--rafs-red-soft);
 }
 
+.review-comments {
+  display: grid;
+  gap: var(--space-m);
+  margin: 20px 10px;
+}
+
+.review-comments-title {
+  font-size: 1.25rem;
+  margin: 0 0 var(--space-s);
+  color: var(--color-text);
+}
+
+.review-comment {
+  background-color: var(--color-bg);
+  padding: var(--space-m);
+  display: grid;
+  gap: var(--space-s);
+}
+
+.review-comment-header {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-s);
+  align-items: center;
+}
+
+.review-comment-author-block {
+  display: flex;
+  align-items: center;
+  gap: var(--space-s);
+  flex-wrap: nowrap;
+  color: var(--color-text);
+}
+
+.review-comment-author {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.review-comment-date {
+  font-size: 0.9rem;
+  color: var(--color-text-muted, #6b7280);
+  white-space: nowrap;
+}
+
+.review-comment-meta {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: var(--space-s);
+  align-items: center;
+}
+
+.review-comment-rating {
+  font-weight: 600;
+  color: var(--color-action);
+}
+
+.review-comment-spoiler {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background-color: color-mix(in srgb, var(--color-border) 20%, var(--color-surface-raised));
+  color: var(--color-text);
+  font-size: 0.9rem;
+}
+
+.review-comment-text {
+  margin: 0;
+  line-height: 1.6;
+  color: var(--color-text);
+}
+
+.review-comments-empty {
+  color: var(--color-text);
+  margin: 0;
+}
+
 .btn {
   display: inline-block;
   padding: 10px 20px;
@@ -264,7 +344,10 @@
   border-radius: 10px;
 }
 
+.reset-form,
+.movie-filter,
 .abot-found-movies,
 .catalog-label {
   color: var(--color-action-text);
+  margin: 15px;
 }

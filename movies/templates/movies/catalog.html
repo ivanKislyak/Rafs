@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Каталог{% endblock %}
 {% block content %}
+
   <form class="movie-filter" method="get" novalidate>
     {{ filter_form.non_field_errors }} {% for field in filter_form %}
     <div class="filter-field">
@@ -17,11 +18,13 @@
 <form class="reset-form" action="{% url 'movies:catalog' %}" method="get">
   <input type="submit" value="Сбросить" />
 </form>
+
   <div class="abot-found-movies">
 <p>Найдено фильмов: {{ movie|length }}</p>
   </div>
 <hr />
 <h1 class="catalog-label">Каталог фильмов</h1>
+<div class="main-catalog-page-with-movie-cards">
 {% for movie in movie %}
   {% include 'movies/_movie_card.html' with movie=movie %}
 {% empty %}
@@ -29,4 +32,6 @@
     <p>Фильмов нет. Возможно, стоит обновить каталог позже</p>
   </div>
 {% endfor %}
+</div>
+
 {% endblock %}
