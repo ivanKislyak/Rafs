@@ -2,7 +2,6 @@ from django import forms
 
 from .models import Review as ReviewModel
 
-
 class MovieFilterForm(forms.Form):
     main_widget = forms.TextInput(attrs={"class": "filter-input", "placeholder": "Введите название...",})
     year_from_widget = forms.NumberInput(attrs={"class": "filter-input", "placeholder": "1888", })

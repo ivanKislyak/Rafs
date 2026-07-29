@@ -31,7 +31,16 @@ def catalog(request):
 def movie_detail(request, movie_id):
     movie = get_object_or_404(Movie, pk=movie_id)
     reviews = Review.objects.filter(movie=movie)
+
+    return render(request, "movies/movie_detail.html",
+                  {"movie": movie, 
+                   "reviews": reviews})
+
+def make_review_form(request, movie_id):
+    movie = get_object_or_404(Movie, pk=movie_id)
+    reviews = Review.objects.filter(movie=movie)
     review_form = ReviewForm()
+
 
     if request.method == "POST":
         review_form = ReviewForm(request.POST)
@@ -44,8 +53,7 @@ def movie_detail(request, movie_id):
                 review_form = ReviewForm()
             else:
                 review_form.add_error(None, "Нужно войти в аккаунт, чтобы оставить отзыв.")
-
-    return render(request, "movies/movie_detail.html",
-                  {"movie": movie, 
-                   "review_form": review_form, 
-                   "reviews": reviews})
+    
+    return render(request, "movies/review_form.html", {"movie": movie, 
+                       "review_form": review_form, 
+                       "reviews": reviews})

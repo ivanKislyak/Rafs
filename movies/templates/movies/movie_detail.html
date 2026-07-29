@@ -21,7 +21,11 @@
 
   {% endif %}
   <div class="movie-detail-main-textinfo">
-    <h1>{{ movie.name }}</h1>
+    <div class="movie-name">
+      <h1>{{ movie.name }}</h1>
+      <a class="btn" href="{% url 'movies:review_form' movie.id %}">Оценить</a>
+    </div>
+
     <p>Year: {{ movie.year }}</p>
 
     {% if movie.rate %}
@@ -36,99 +40,41 @@
 <p class="movie-detail-main-description">{{ movie.description }}</p>
 <hr />
 
-<form class="review-form" method="post" novalidate>
-  {% csrf_token %}
-
-  {% if review_form.non_field_errors %}
-    <div class="review-form-errors">{{ review_form.non_field_errors }}</div>
-  {% endif %}
-
-  {% for field in review_form %}
-    <div class="review-form-field">
-      {% if field.name == "rating" %}
-        <div class="review-range-header">
-          <label class="review-form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-          <output class="review-range-value" id="review-rating-value" for="{{ field.id_for_label }}">5.0</output>
-        </div>
-        {{ field }}
-      {% elif field.name == "contains_spoiler" %}
-        <label class="review-checkbox-row" for="{{ field.id_for_label }}">
-          {{ field }}
-          <span>{{ field.label }}</span>
-        </label>
-      {% else %}
-        <label class="review-form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-        {{ field }}
-      {% endif %}
-
-      {% if field.help_text %}
-        <p class="review-form-help">{{ field.help_text }}</p>
-      {% endif %}
-
-      {% if field.errors %}
-        <div class="review-form-errors">{{ field.errors }}</div>
-      {% endif %}
-    </div>
-  {% endfor %}
-
-  <button class="btn review-form-submit" type="submit">Оставить отзыв</button>
-</form>
-
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const rangeInput = document.querySelector(".review-form input[type='range']");
-    const ratingOutput = document.getElementById("review-rating-value");
-
-    if (!rangeInput || !ratingOutput) {
-      return;
-    }
-
-    const syncRangeView = () => {
-      const value = Number(rangeInput.value || 0).toFixed(1);
-      ratingOutput.textContent = value;
-      const fillPercent = (Number(rangeInput.value || 0) / 10) * 100;
-      rangeInput.style.setProperty("--range-fill", `${fillPercent}%`);
-    };
-
-    syncRangeView();
-    rangeInput.addEventListener("input", syncRangeView);
-    rangeInput.addEventListener("change", syncRangeView);
-  });
-</script>
-
 <hr />
 <section class="review-comments">
   <h2 class="review-comments-title">Отзывы</h2>
 
   {% if reviews %}
     {% for review in reviews %}
-      <article class="review-comment">
-        <div class="review-comment-header">
-          <div class="review-comment-author-block">
-            {% if review.user.avatar_image %}
-            <img class="user-avatar" src="{% static 'users/avatars/' %}" alt="{{ review.user.username }}">
-            {% else %}
-            <img class="user-avatar" src="{% static 'images/default_profile_img.png' %}" alt="{{ review.user.username }}">
-            {% endif %}
-            <span class="review-comment-author">{{ review.user.username }}</span>
-            <div class="review-comment-meta">
-              <span class="review-comment-rating">{{ review.rating }}</span>
-              {% if review.contains_spoiler %}
-                <span class="review-comment-spoiler">Содержит спойлер</span>
+      {% if review.text %}
+        <article class="review-comment">
+          <div class="review-comment-header">
+            <div class="review-comment-author-block">
+              {% if review.user.avatar_image %}
+              <img class="user-avatar" src="{% static 'users/avatars/' %}" alt="{{ review.user.username }}">
+              {% else %}
+              <img class="user-avatar" src="{% static 'images/default_profile_img.png' %}" alt="{{ review.user.username }}">
               {% endif %}
+              <span class="review-comment-author">{{ review.user.username }}</span>
+              <div class="review-comment-meta">
+                <span class="review-comment-rating">{{ review.rating }}</span>
+                {% if review.contains_spoiler %}
+                  <span class="review-comment-spoiler">Содержит спойлер</span>
+                {% endif %}
+              </div>
             </div>
+            <span class="review-comment-date">{{ review.created_at|date:"d.m.Y H:i" }}</span>
           </div>
-          <span class="review-comment-date">{{ review.created_at|date:"d.m.Y H:i" }}</span>
-        </div>
 
-        <p class="review-comment-text">
-          {% if review.text %}
-            {{ review.text }}
-          {% else %}
-            <em>Отзыв не содержит текста.</em>
-          {% endif %}
-        </p>
-      </article>
+          <p class="review-comment-text">
+            {% if review.text %}
+              {{ review.text }}
+            {% else %}
+              <em>Отзыв не содержит текста.</em>
+            {% endif %}
+          </p>
+        </article>
+      {% endif %}
     {% endfor %}
   {% else %}
     <p class="review-comments-empty">Пока нет отзывов. Станьте первым, кто оставит комментарий!</p>
