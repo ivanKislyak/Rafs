@@ -38,7 +38,7 @@ class Review(models.Model):
         on_delete=models.CASCADE, 
         related_name="reviews")
 
-    rating = models.DecimalField(max_digits=3, decimal_places=1, default=0.0)
+    rating = models.DecimalField(max_digits=3, decimal_places=1, default=5.0, validators=[MinValueValidator(0), MaxValueValidator(10)])
     text = models.TextField(blank=True)
     contains_spoiler = models.BooleanField(blank=True, default=False)
     created_at = models.DateTimeField(auto_now_add=True)

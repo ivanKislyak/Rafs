@@ -1,4 +1,5 @@
-from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404, redirect
 from .forms import MovieFilterForm, ReviewForm
 from .models import Movie, Review
 
@@ -12,7 +13,6 @@ def catalog(request):
         min_rating = filter_form.cleaned_data.get("min_rating")
         year_from = filter_form.cleaned_data.get("year_from")
         year_to = filter_form.cleaned_data.get("year_to")
-
 
         if query:
             all_movies = all_movies.filter(name__icontains=query)
@@ -30,36 +30,36 @@ def catalog(request):
 
 def movie_detail(request, movie_id):
     movie = get_object_or_404(Movie, pk=movie_id)
-    reviews = Review.objects.filter(movie=movie)
+    reviews = Review.objects.filter(movie=movie, text__gt="")
 
     return render(request, "movies/movie_detail.html",
                   {"movie": movie, 
                    "reviews": reviews})
 
+@login_required
 def make_review_form(request, movie_id):
     movie = get_object_or_404(Movie, pk=movie_id)
     reviews = Review.objects.filter(movie=movie)
     review_form = ReviewForm()
 
+    existing_review = Review.objects.filter(
+        user = request.user,
+        movie_id=movie_id).first()
+
 
     if request.method == "POST":
-        existing_review = Review.objects.filter(
-            user = request.user,
-            movie_id=movie_id
-        ).first()
-
         review_form = ReviewForm(request.POST, instance=existing_review)
 
-
         if review_form.is_valid():
-            if request.user.is_authenticated:
                 review = review_form.save(commit=False)
                 review.movie = movie
                 review.user = request.user
                 review.save()
-                review_form = ReviewForm()
-            else:
-                review_form.add_error(None, "Нужно войти в аккаунт, чтобы оставить отзыв.")
+
+                return redirect("movies:detail", movie_id=movie_id)
+
+    if request.method == "GET":
+        review_form = ReviewForm(instance=existing_review)
     
     return render(request, "movies/review_form.html", {"movie": movie, 
                        "review_form": review_form, 

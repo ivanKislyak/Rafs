@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 {% block title %}RAFS{% endblock %}
 {% block content %}
-  <nav class="movie-info">
-    <h1 class="the-best-movies-label">Лучшие фильмы</h1>
-  </nav>
-  <hr />
-  {% for movie in top_movies %}
-    {% include 'movies/_movie_card.html' with movie=movie %}
-  {% empty %}
-    <div class="empty-msg">
-      <p>Фильмов нет. Возможно, стоит обновить каталог позже</p>
-    </div>
-  {% endfor %}
+    <nav class="movie-info">
+        <h1 class="the-best-movies-label">Лучшие фильмы</h1>
+    </nav>
+    <hr />
+    {% for movie in top_movies %}
+        {% include 'movies/_movie_card.html' with movie=movie %}
+    {% empty %}
+        <div class="empty-msg">
+            <p>Фильмов нет. Возможно, стоит обновить каталог позже</p>
+        </div>
+    {% endfor %}
 {% endblock %}
