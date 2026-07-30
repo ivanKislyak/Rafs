@@ -1,9 +1,24 @@
 {% extends "base.html" %}
-{% block title %}Каталог{% endblock %}
+{% load static %}
+{% block title %} Отзыв к фильму {{ movie.name }} {% endblock %}
 {% block content %}
 
 <form class="review-form" method="post" novalidate>
   {% csrf_token %}
+
+  <section class="review-page-header">
+    <div class="movie-cover-preview">
+      {% if movie.path %}
+        <img class="movie-cover-image" src="{% static 'movies/images/'|add:movie.path %}" alt="{{ movie.name }}">
+      {% else %}
+        <img class="movie-cover-image" src="{% static 'movies/images/nocover.png' %}" alt="{{ movie.name }}">
+      {% endif %}
+    </div>
+    <div class="movie-cover-info">
+      <h1>{{ movie.name }}</h1>
+      <p class="movie-cover-subtitle">Отзыв на фильм</p>
+    </div>
+  </section>
 
   {% if review_form.non_field_errors %}
     <div class="review-form-errors">{{ review_form.non_field_errors }}</div>
@@ -12,11 +27,38 @@
   {% for field in review_form %}
     <div class="review-form-field">
       {% if field.name == "rating" %}
-        <div class="review-range-header">
-          <label class="review-form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-          <output class="review-range-value" id="review-rating-value" for="{{ field.id_for_label }}">5.0</output>
-        </div>
         {{ field }}
+        <div class="review-rating-grid">
+          <div class="review-rating-item">
+            <div class="review-rating-name">Общее впечатление</div>
+            <div class="review-rating-controls">
+              <input class="category-range form-range" type="range" name="rating_overall" min="0" max="10" step="0.1" value="5.0">
+              <output class="review-rating-value">5.0</output>
+            </div>
+          </div>
+          <div class="review-rating-item">
+            <div class="review-rating-name">Сюжет / Идея</div>
+            <div class="review-rating-controls">
+              <input class="category-range form-range" type="range" name="rating_plot" min="0" max="10" step="0.1" value="5.0">
+              <output class="review-rating-value">5.0</output>
+            </div>
+          </div>
+          <div class="review-rating-item">
+            <div class="review-rating-name">Персонажи</div>
+            <div class="review-rating-controls">
+              <input class="category-range form-range" type="range" name="rating_characters" min="0" max="10" step="0.1" value="5.0">
+              <output class="review-rating-value">5.0</output>
+            </div>
+          </div>
+          <div class="review-rating-item">
+            <div class="review-rating-name">Подача</div>
+            <div class="review-rating-controls">
+              <input class="category-range form-range" type="range" name="rating_presentation" min="0" max="10" step="0.1" value="5.0">
+              <output class="review-rating-value">5.0</output>
+            </div>
+          </div>
+        </div>
+        <p class="review-form-help">Оцените каждую категорию по шкале от 0 до 10.</p>
       {% elif field.name == "contains_spoiler" %}
         <label class="review-checkbox-row" for="{{ field.id_for_label }}">
           {{ field }}
@@ -37,28 +79,33 @@
     </div>
   {% endfor %}
 
-  <button class="btn review-form-submit" type="submit">Оставить отзыв</button>
+  <button class="btn review-form-submit" type="submit">Опубликовать отзыв</button>
 </form>
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    const rangeInput = document.querySelector(".review-form input[type='range']");
-    const ratingOutput = document.getElementById("review-rating-value");
+    const rangeInputs = document.querySelectorAll(".review-form .category-range");
 
-    if (!rangeInput || !ratingOutput) {
+    if (!rangeInputs.length) {
       return;
     }
 
-    const syncRangeView = () => {
-      const value = Number(rangeInput.value || 0).toFixed(1);
-      ratingOutput.textContent = value;
-      const fillPercent = (Number(rangeInput.value || 0) / 10) * 100;
-      rangeInput.style.setProperty("--range-fill", `${fillPercent}%`);
-    };
+    rangeInputs.forEach((rangeInput) => {
+      const ratingOutput = rangeInput.parentElement.querySelector(".review-rating-value");
 
-    syncRangeView();
-    rangeInput.addEventListener("input", syncRangeView);
-    rangeInput.addEventListener("change", syncRangeView);
+      const syncRangeView = () => {
+        const value = Number(rangeInput.value || 0).toFixed(1);
+        if (ratingOutput) {
+          ratingOutput.textContent = value;
+        }
+        const fillPercent = (Number(rangeInput.value || 0) / 10) * 100;
+        rangeInput.style.setProperty("--range-fill", `${fillPercent}%`);
+      };
+
+      syncRangeView();
+      rangeInput.addEventListener("input", syncRangeView);
+      rangeInput.addEventListener("change", syncRangeView);
+    });
   });
 </script>
 

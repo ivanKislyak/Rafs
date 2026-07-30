@@ -90,6 +90,66 @@
   color: var(--color-text);
 }
 
+.review-page-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-l);
+  margin-bottom: var(--space-l);
+}
+
+.movie-cover-preview {
+  min-width: 140px;
+}
+
+.movie-cover-image {
+  width: 140px;
+  height: 210px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+}
+
+.movie-cover-info h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.movie-cover-subtitle {
+  margin: 4px 0 0;
+  color: var(--color-text-muted, #6b7280);
+}
+
+.review-rating-grid {
+  display: grid;
+  gap: var(--space-m);
+}
+
+.review-rating-item {
+  display: grid;
+  gap: var(--space-s);
+}
+
+.review-rating-name {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.review-rating-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-s);
+}
+
+.category-range {
+  flex: 1;
+}
+
+.review-rating-value {
+  min-width: 42px;
+  text-align: right;
+  font-weight: 700;
+}
+
 .review-form-field {
   display: grid;
   gap: var(--space-s);

@@ -46,7 +46,7 @@ class ReviewForm(forms.ModelForm):
             "text": "Поделитесь впечатлениями о фильме",
         }
         widgets = {
-            "rating": forms.NumberInput(
+            "rating": forms.HiddenInput(
                 attrs={
                     "type": "range",
                     "class": "form-range",

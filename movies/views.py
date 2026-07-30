@@ -43,7 +43,14 @@ def make_review_form(request, movie_id):
 
 
     if request.method == "POST":
-        review_form = ReviewForm(request.POST)
+        existing_review = Review.objects.filter(
+            user = request.user,
+            movie_id=movie_id
+        ).first()
+
+        review_form = ReviewForm(request.POST, instance=existing_review)
+
+
         if review_form.is_valid():
             if request.user.is_authenticated:
                 review = review_form.save(commit=False)

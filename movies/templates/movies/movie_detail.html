@@ -65,20 +65,18 @@
             </div>
             <span class="review-comment-date">{{ review.created_at|date:"d.m.Y H:i" }}</span>
           </div>
-
           <p class="review-comment-text">
             {% if review.text %}
               {{ review.text }}
-            {% else %}
-              <em>Отзыв не содержит текста.</em>
             {% endif %}
           </p>
         </article>
+          {% else %}
+    <p class="review-comments-empty">Пока нет отзывов. Станьте первым, кто оставит комментарий!</p>
+  
       {% endif %}
     {% endfor %}
-  {% else %}
-    <p class="review-comments-empty">Пока нет отзывов. Станьте первым, кто оставит комментарий!</p>
-  {% endif %}
+{% endif %}
 </section>
 
 {% endblock %}

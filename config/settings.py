@@ -125,6 +125,11 @@ TIME_ZONE = 'Asia/Almaty'
 
 USE_I18N = True
 
+LANGUAGES = [
+    ('ru', 'Russian'),
+    ('en', 'English'),
+]
+
 USE_TZ = True
 
 
