@@ -40,7 +40,7 @@ ALLOWED_HOSTS = [
 
 CSRF_TRUSTED_ORIGINS = [
     "https://*.trycloudflare.com",
-]
+]   
 
 
 # Application definition
@@ -68,7 +68,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'config.urls'
-LOGIN_URL = 'login'
+LOGIN_URL = 'accounts:register'
 
 LOGIN_REDIRECT_URL = '/'
 

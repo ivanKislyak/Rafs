@@ -1,88 +1,108 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %} Отзыв к фильму {{ movie.name }} {% endblock %}
+{% block title %}Отзыв к фильму {{ movie.name }}{% endblock %}
 {% block content %}
-
-<form class="review-form" method="post" novalidate>
-  {% csrf_token %}
-
-  <section class="review-page-header">
-    <div class="movie-cover-preview">
-      {% if movie.path %}
-        <img class="movie-cover-image" src="{% static 'movies/images/'|add:movie.path %}" alt="{{ movie.name }}">
-      {% else %}
-        <img class="movie-cover-image" src="{% static 'movies/images/nocover.png' %}" alt="{{ movie.name }}">
-      {% endif %}
-    </div>
-    <div class="movie-cover-info">
-      <h1>{{ movie.name }}</h1>
-      <p class="movie-cover-subtitle">Отзыв на фильм</p>
-    </div>
-  </section>
-
-  {% if review_form.non_field_errors %}
-    <div class="review-form-errors">{{ review_form.non_field_errors }}</div>
-  {% endif %}
-
-  {% for field in review_form %}
-    <div class="review-form-field">
-      {% if field.name == "rating" %}
-        {{ field }}
-        <div class="review-rating-grid">
-          <div class="review-rating-item">
-            <div class="review-rating-name">Общее впечатление</div>
-            <div class="review-rating-controls">
-              <input class="category-range form-range" type="range" name="rating_overall" min="0" max="10" step="0.1" value="5.0">
-              <output class="review-rating-value">5.0</output>
+    <form class="review-form" method="post" novalidate>
+        {% csrf_token %}
+        <section class="review-page-header">
+            <div class="movie-cover-preview">
+                {% if movie.path %}
+                    <img class="movie-cover-image"
+                         src="{% static 'movies/images/'|add:movie.path %}"
+                         alt="{{ movie.name }}">
+                {% else %}
+                    <img class="movie-cover-image"
+                         src="{% static 'movies/images/nocover.png' %}"
+                         alt="{{ movie.name }}">
+                {% endif %}
             </div>
-          </div>
-          <div class="review-rating-item">
-            <div class="review-rating-name">Сюжет / Идея</div>
-            <div class="review-rating-controls">
-              <input class="category-range form-range" type="range" name="rating_plot" min="0" max="10" step="0.1" value="5.0">
-              <output class="review-rating-value">5.0</output>
+            <div class="movie-cover-info">
+                <h1>{{ movie.name }}</h1>
+                <p class="movie-cover-subtitle">Отзыв на фильм</p>
             </div>
-          </div>
-          <div class="review-rating-item">
-            <div class="review-rating-name">Персонажи</div>
-            <div class="review-rating-controls">
-              <input class="category-range form-range" type="range" name="rating_characters" min="0" max="10" step="0.1" value="5.0">
-              <output class="review-rating-value">5.0</output>
+        </section>
+        {% if review_form.non_field_errors %}
+            <div class="review-form-errors">{{ review_form.non_field_errors }}</div>
+        {% endif %}
+        {% for field in review_form %}
+            <div class="review-form-field">
+                {% if field.name == "rating" %}
+                    {{ field }}
+                    <div class="review-rating-grid">
+                        <div class="review-rating-item">
+                            <div class="review-rating-name">Общее впечатление</div>
+                            <div class="review-rating-controls">
+                                <input class="category-range form-range"
+                                       type="range"
+                                       name="rating_overall"
+                                       min="0"
+                                       max="10"
+                                       step="0.1"
+                                       value="5.0">
+                                <output class="review-rating-value">5.0</output>
+                            </div>
+                        </div>
+                        <div class="review-rating-item">
+                            <div class="review-rating-name">Сюжет / Идея</div>
+                            <div class="review-rating-controls">
+                                <input class="category-range form-range"
+                                       type="range"
+                                       name="rating_plot"
+                                       min="0"
+                                       max="10"
+                                       step="0.1"
+                                       value="5.0">
+                                <output class="review-rating-value">5.0</output>
+                            </div>
+                        </div>
+                        <div class="review-rating-item">
+                            <div class="review-rating-name">Персонажи</div>
+                            <div class="review-rating-controls">
+                                <input class="category-range form-range"
+                                       type="range"
+                                       name="rating_characters"
+                                       min="0"
+                                       max="10"
+                                       step="0.1"
+                                       value="5.0">
+                                <output class="review-rating-value">5.0</output>
+                            </div>
+                        </div>
+                        <div class="review-rating-item">
+                            <div class="review-rating-name">Подача</div>
+                            <div class="review-rating-controls">
+                                <input class="category-range form-range"
+                                       type="range"
+                                       name="rating_presentation"
+                                       min="0"
+                                       max="10"
+                                       step="0.1"
+                                       value="5.0">
+                                <output class="review-rating-value">5.0</output>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="review-form-help">Оцените каждую категорию по шкале от 0 до 10.</p>
+                {% elif field.name == "contains_spoiler" %}
+                    <label class="review-checkbox-row" for="{{ field.id_for_label }}">
+                        {{ field }}
+                        <span>{{ field.label }}</span>
+                    </label>
+                {% else %}
+                    <label class="review-form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                {% endif %}
+                {% if field.help_text %}
+                    <p class="review-form-help">{{ field.help_text }}</p>
+                {% endif %}
+                {% if field.errors %}
+                    <div class="review-form-errors">{{ field.errors }}</div>
+                {% endif %}
             </div>
-          </div>
-          <div class="review-rating-item">
-            <div class="review-rating-name">Подача</div>
-            <div class="review-rating-controls">
-              <input class="category-range form-range" type="range" name="rating_presentation" min="0" max="10" step="0.1" value="5.0">
-              <output class="review-rating-value">5.0</output>
-            </div>
-          </div>
-        </div>
-        <p class="review-form-help">Оцените каждую категорию по шкале от 0 до 10.</p>
-      {% elif field.name == "contains_spoiler" %}
-        <label class="review-checkbox-row" for="{{ field.id_for_label }}">
-          {{ field }}
-          <span>{{ field.label }}</span>
-        </label>
-      {% else %}
-        <label class="review-form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-        {{ field }}
-      {% endif %}
-
-      {% if field.help_text %}
-        <p class="review-form-help">{{ field.help_text }}</p>
-      {% endif %}
-
-      {% if field.errors %}
-        <div class="review-form-errors">{{ field.errors }}</div>
-      {% endif %}
-    </div>
-  {% endfor %}
-
-  <button class="btn review-form-submit" type="submit">Опубликовать отзыв</button>
-</form>
-
-<script>
+        {% endfor %}
+        <button class="btn review-form-submit" type="submit">Опубликовать отзыв</button>
+    </form>
+    <script>
   document.addEventListener("DOMContentLoaded", () => {
     const rangeInputs = document.querySelectorAll(".review-form .category-range");
 
@@ -107,6 +127,5 @@
       rangeInput.addEventListener("change", syncRangeView);
     });
   });
-</script>
-
+    </script>
 {% endblock %}

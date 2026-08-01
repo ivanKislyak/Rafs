@@ -55,7 +55,6 @@ class ReviewForm(forms.ModelForm):
                     "step": "0.1",
                     "placeholder": "0.0",
                     "id": "common-range-for-rate",
-                    "value": "5.0",
                 }
             ),
             "text": forms.Textarea(
