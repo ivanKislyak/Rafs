@@ -50,7 +50,7 @@
                             {% endif %}
                             <span class="review-comment-author">{{ review.user.username }}</span>
                             <div class="review-comment-meta">
-                                <span class="review-comment-rating">{{ review.rating }}</span>
+                                <span class="review-comment-rating">{{ review.avg_rating }}</span>
                                 {% if review.contains_spoiler %}
                                     <span class="review-comment-spoiler">Содержит спойлер</span>
                                 {% endif %}

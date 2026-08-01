@@ -39,10 +39,28 @@ class Review(models.Model):
         related_name="reviews")
 
     rating = models.DecimalField(max_digits=3, decimal_places=1, default=5.0, validators=[MinValueValidator(0), MaxValueValidator(10)])
+    avg_rating = models.DecimalField(max_digits=3, decimal_places=1, default=5.0, validators=[MinValueValidator(0), MaxValueValidator(10)], blank=True, null=True)
+    idea_rating = models.DecimalField(max_digits=3, decimal_places=1, validators=[MinValueValidator(0), MaxValueValidator(10)], blank=True, null=True)
+    execution_rating = models.DecimalField(max_digits=3, decimal_places=1, validators=[MinValueValidator(0), MaxValueValidator(10)], blank=True, null=True)
+    characters_rating = models.DecimalField(max_digits=3, decimal_places=1, validators=[MinValueValidator(0), MaxValueValidator(10)], blank=True, null=True)
+    sound_rating = models.DecimalField(max_digits=3, decimal_places=1, validators=[MinValueValidator(0), MaxValueValidator(10)], blank=True, null=True)
     text = models.TextField(blank=True)
     contains_spoiler = models.BooleanField(blank=True, default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+    def save(self, *args, **kwargs):
+        rating_sides = [self.rating]
+    
+        if self.idea_rating is not None: rating_sides.append(self.idea_rating)
+        if self.execution_rating is not None: rating_sides.append(self.execution_rating)
+        if self.characters_rating is not None: rating_sides.append(self.characters_rating)
+        if self.sound_rating is not None: rating_sides.append(self.sound_rating)
+        
+        self.avg_rating = round(sum(rating_sides) / len(rating_sides), 1)
+        super().save(*args, **kwargs)
+
 
     class Meta:
         ordering = ['-created_at']

@@ -1,10 +1,114 @@
 {% extends "base.html" %}
-{% block title %}О сайте{% endblock %}
+{% load static %}
+{% block title %}О RAFS{% endblock %}
 {% block content %}
-    <nav class="main-nav">
-        <h1>Добро пожаловать на RAFS! 🎬</h1>
-        <p>Это платформа для тех, кто не просто смотрит кино, а любит делиться своими мыслями. Здесь вы можете ставить фильмам честные оценки и писать открытые отзывы, помогая другим определиться с выбором.</p>
-        <p>Наша главная цель — объединять людей со схожими киновкусами. В будущем на сайте появится умная система рекомендаций: она проанализирует ваши оценки и подберет уникальный список фильмов на основе интересов пользователей, похожих на вас.</p>
-        <p>Также мы готовим гибкую систему кастомных тегов. Вы сможете создавать свои уникальные метки для фильмов и находить по ним самые скрытые и необычные киношедевры. Присоединяйтесь, дальше будет только интереснее!</p>
-    </nav>
+    <link rel="stylesheet" href="{% static 'core/css/core.css' %}">
+
+    <main class="about-page">
+        <section class="about-hero">
+            <div class="about-hero-copy">
+                <p class="about-kicker">RAFS / О проекте</p>
+                <h1>
+                    Не просто выбрать фильм.
+                    <span>Понять, почему он ваш.</span>
+                </h1>
+                <p class="about-lead">
+                    RAFS — место для честных оценок, содержательных рецензий
+                    и поиска кино по настоящему совпадению вкусов.
+                </p>
+                <div class="about-actions">
+                    <a class="about-button about-button--primary"
+                       href="{% url 'movies:catalog' %}">
+                        Смотреть каталог
+                    </a>
+                    {% if not user.is_authenticated %}
+                        <a class="about-button about-button--secondary"
+                           href="{% url 'accounts:register' %}">
+                            Создать аккаунт
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="about-hero-visual">
+                <img src="{% static 'images/glitched_rafs_logo.png' %}"
+                     alt="Логотип RAFS">
+                <p>Смотрите. Оценивайте. Находите своё.</p>
+            </div>
+        </section>
+
+        <section class="about-section" aria-labelledby="about-principles-title">
+            <div class="about-section-heading">
+                <p class="about-kicker">Что здесь важно</p>
+                <h2 id="about-principles-title">Кино начинается после финальных титров</h2>
+            </div>
+
+            <div class="about-feature-grid">
+                <article class="about-feature-card">
+                    <span class="about-feature-number">01</span>
+                    <h3>Честная оценка</h3>
+                    <p>
+                        Поставьте фильму свой балл и разберите впечатление по критериям,
+                        которые действительно имеют для вас значение.
+                    </p>
+                </article>
+
+                <article class="about-feature-card">
+                    <span class="about-feature-number">02</span>
+                    <h3>Живые рецензии</h3>
+                    <p>
+                        Делитесь мыслями без формальных шаблонов и помогайте другим
+                        понять, стоит ли фильм их времени.
+                    </p>
+                </article>
+
+                <article class="about-feature-card">
+                    <span class="about-feature-number">03</span>
+                    <h3>Совпадение вкусов</h3>
+                    <p>
+                        В будущем RAFS будет находить людей с похожими оценками
+                        и предлагать кино на основе их реального выбора.
+                    </p>
+                </article>
+            </div>
+        </section>
+
+        <section class="about-roadmap" aria-labelledby="about-roadmap-title">
+            <div class="about-roadmap-heading">
+                <p class="about-kicker">Развитие проекта</p>
+                <h2 id="about-roadmap-title">RAFS растёт вместе с вашей историей просмотров</h2>
+            </div>
+
+            <div class="about-roadmap-grid">
+                <article class="about-roadmap-card about-roadmap-card--current">
+                    <span class="about-roadmap-status">Уже работает</span>
+                    <h3>Каталог, оценки и отзывы</h3>
+                    <p>
+                        Выбирайте фильмы, сохраняйте личное впечатление
+                        и смотрите оценки других пользователей.
+                    </p>
+                </article>
+
+                <article class="about-roadmap-card">
+                    <span class="about-roadmap-status">Следующий этап</span>
+                    <h3>Рекомендации и свои теги</h3>
+                    <p>
+                        Персональные подборки и гибкие метки помогут находить
+                        не только популярное, но и действительно близкое вам кино.
+                    </p>
+                </article>
+            </div>
+        </section>
+
+        <section class="about-cta">
+            <div>
+                <p class="about-kicker">Ваш следующий фильм</p>
+                <h2>Возможно, он уже ждёт вас в каталоге.</h2>
+            </div>
+            <a class="about-button about-button--primary"
+               href="{% url 'movies:catalog' %}">
+                Найти фильм
+            </a>
+        </section>
+    </main>
 {% endblock %}
