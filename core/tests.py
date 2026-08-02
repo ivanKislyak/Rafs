@@ -1,16 +1,27 @@
+from django.contrib.auth import get_user_model
 from django.test import TestCase
-from movies.models import Movie
+from movies.models import Movie, Review
 from django.urls import reverse
 
 class TestHomePageView(TestCase):
     @classmethod
     def setUpTestData(cls):
-        Movie.objects.create(name="Forrest Gump", rate=7.3, year=1994)
-        Movie.objects.create(name="Great mile", rate=9, year=1999)
-        Movie.objects.create(name="Scary movie 6", rate=10, year=2026)
-        Movie.objects.create(name="10 lives", rate=3, year=2024)
-        Movie.objects.create(name="Titan", rate=4.3, year=2021)
-        Movie.objects.create(name="One Piece", rate=7.8, year=1997)
+        user = get_user_model().objects.create_user(
+            username="home-reviewer",
+            password="test-password",
+        )
+        movie_ratings = (
+            ("Forrest Gump", 7.3, 1994),
+            ("Great mile", 9, 1999),
+            ("Scary movie 6", 10, 2026),
+            ("10 lives", 3, 2024),
+            ("Titan", 4.3, 2021),
+            ("One Piece", 7.8, 1997),
+        )
+
+        for name, rating, year in movie_ratings:
+            movie = Movie.objects.create(name=name, rate=10 - rating, year=year)
+            Review.objects.create(user=user, movie=movie, rating=rating)
 
     def setUp(self):
         self.url = reverse("core:home")
@@ -27,11 +38,11 @@ class TestHomePageView(TestCase):
         self.assertEqual(top_movies, ["Scary movie 6", "Great mile", "One Piece", "Forrest Gump", "Titan"])
         self.assertEqual(len_movies, 5)
 
-    def test_no_rate_movie(self):
-        Movie.objects.create(name="Once upon a time on None Movie", rate=None, year=1997)
+    def test_movie_without_reviews_is_not_in_top(self):
+        Movie.objects.create(name="Movie without reviews", rate=10, year=1997)
         response = self.client.get(self.url)
         top_movies = list(
             response.context["top_movies"].values_list("name", flat=True)
         )
 
-        self.assertNotIn("Once upon a time on None Movie", top_movies)
+        self.assertNotIn("Movie without reviews", top_movies)

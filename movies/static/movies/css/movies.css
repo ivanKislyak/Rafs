@@ -141,6 +141,7 @@
   font-weight: 850;
   letter-spacing: -0.09em;
   line-height: 0.78;
+  color: var(--rafs-red);
   text-shadow: 0 0 30px rgb(219 57 47 / 24%);
 }
 
