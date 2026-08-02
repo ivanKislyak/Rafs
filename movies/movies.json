@@ -1,46 +1,1082 @@
 [
-    {
-        "id": 1,
-        "name": "Clean, Shaven",
-        "year": 1993,
-        "rate": 7.4,
-        "description": "It follows Peter Winter, a schizophrenic man recently released from a mental institution, as he navigates terrifying sensory hallucinations and desperately tries to reclaim his daughter from her adoptive family",
-        "path": "clean_shaven.jpg"
-    },
-
-    {
-        "id": 2,
-        "name": "Fight Club",
-        "year": 1999,
-        "rate": 10.0,
-        "description": "It follows a disillusioned, insomniac office worker who—along with a charismatic soap salesman—founds an underground fight club that spirals into an anti-consumerist, anarchic terrorist organization",
-        "path": "fight_club.jpg"
-    },
-
-    {
-        "id": 3,
-        "name": "Pi",
-        "year": 1998,
-        "rate": null,
-        "description": "It follows Max Cohen, a paranoid mathematician who believes everything in nature can be understood through numbers. His obsession with finding a universal pattern leads him to build a supercomputer that uncovers a 216-digit number",
-        "path": "pi.jpg"
-    },
-
-    {
-        "id": 4,
-        "name": "The Machinist",
-        "year": 2004,
-        "rate": null,
-        "description": "It follows Trevor Reznik, an emaciated industrial worker who hasn't slept for an entire year. As severe insomnia pushes him to the edge of sanity, a horrific workplace accident triggers intense paranoia and a terrifying descent into his own repressed guilt",
-        "path": "the_machinist.jpg"
-    },
-
-    {
-        "id": 5,
-        "name": "Poor Things",
-        "year": 2023,
-        "rate": 8.6,
-        "description": "It follows Bella Baxter (Emma Stone), a young woman resurrected by a mad scientist. Free from societal prejudices, she goes on a whirlwind, globe-trotting adventure of self-discovery, sexual liberation, and intellectual awakening",
-        "path": "poor_things.jpg"
-    }
+  {
+    "id": 1,
+    "name": "Clean, Shaven",
+    "year": 1993,
+    "rate": 7.4,
+    "description": "Peter Winter, a man living with schizophrenia, searches for his daughter while struggling with frightening hallucinations, fractured memories, and a murder investigation closing in around him.",
+    "path": "clean_shaven.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Fight Club",
+    "year": 1999,
+    "rate": 10.0,
+    "description": "An exhausted office worker and a charismatic soap maker create an underground fight club that grows into a violent revolt against consumer culture and the identities built around it.",
+    "path": "fight_club.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Pi",
+    "year": 1998,
+    "rate": null,
+    "description": "A paranoid mathematician becomes convinced that a hidden numerical pattern can explain nature, predict the stock market, and reveal something dangerously close to the divine.",
+    "path": "pi.jpg"
+  },
+  {
+    "id": 4,
+    "name": "The Machinist",
+    "year": 2004,
+    "rate": null,
+    "description": "An industrial worker who has not slept for a year begins losing his grip on reality after a workplace accident, cryptic notes, and the appearance of a man nobody else seems to know.",
+    "path": "the_machinist.jpg"
+  },
+  {
+    "id": 5,
+    "name": "Poor Things",
+    "year": 2023,
+    "rate": 8.6,
+    "description": "Bella Baxter, a young woman returned to life by an eccentric scientist, escapes into the world and rapidly develops her own ideas about freedom, desire, knowledge, and social rules.",
+    "path": "poor_things.jpg"
+  },
+  {
+    "id": 6,
+    "name": "Oldboy",
+    "year": 2003,
+    "rate": null,
+    "description": "After being imprisoned in a private cell for fifteen years without explanation, Oh Dae-su is suddenly released and given five days to discover who destroyed his life and why.",
+    "path": "oldboy.jpg"
+  },
+  {
+    "id": 7,
+    "name": "Shutter Island",
+    "year": 2010,
+    "rate": null,
+    "description": "A U.S. marshal investigates a patient's disappearance from an isolated psychiatric hospital, but the island's staff, storm-battered grounds, and his own memories steadily undermine his version of reality.",
+    "path": "shutter_island.jpg"
+  },
+  {
+    "id": 8,
+    "name": "The Goldfinch",
+    "year": 2019,
+    "rate": null,
+    "description": "A boy survives a museum bombing that kills his mother and secretly carries away a priceless painting, a choice that follows him through grief, addiction, friendship, and the criminal art world.",
+    "path": "the_goldfinch.jpg"
+  },
+  {
+    "id": 9,
+    "name": "No Country for Old Men",
+    "year": 2007,
+    "rate": null,
+    "description": "A hunter takes a case of drug money from a desert crime scene and is pursued by an eerily methodical killer while an aging sheriff tries to understand the violence spreading across West Texas.",
+    "path": "no_country_for_old_men.jpg"
+  },
+  {
+    "id": 10,
+    "name": "American Psycho",
+    "year": 2000,
+    "rate": null,
+    "description": "A wealthy Wall Street banker hides violent impulses behind a flawless routine of status, fashion, restaurants, and empty conversation as his identity begins to dissolve into performance.",
+    "path": "american_psycho.jpg"
+  },
+  {
+    "id": 11,
+    "name": "Guy Ritchie's The Covenant",
+    "year": 2023,
+    "rate": null,
+    "description": "An American soldier returns to Afghanistan to rescue the interpreter who once carried him to safety and was then abandoned to the people hunting him.",
+    "path": "the_covenant.jpg"
+  },
+  {
+    "id": 12,
+    "name": "Ichi the Killer",
+    "year": 2001,
+    "rate": null,
+    "description": "A sadistic yakuza enforcer searches for his missing boss and collides with Ichi, a deeply manipulated killer whose violence erupts through fragmented memories, humiliation, and rage.",
+    "path": "ichi_the_killer.jpg"
+  },
+  {
+    "id": 13,
+    "name": "Joker",
+    "year": 2019,
+    "rate": null,
+    "description": "Arthur Fleck, an isolated party clown and aspiring comedian, is repeatedly humiliated by Gotham until personal collapse and public anger transform him into a symbol of violent rebellion.",
+    "path": "joker_2019.jpg"
+  },
+  {
+    "id": 14,
+    "name": "Juno",
+    "year": 2007,
+    "rate": null,
+    "description": "A sharp-tongued teenager faces an unexpected pregnancy and chooses an adoptive couple, discovering that adulthood and supposedly perfect relationships are messier than they first appear.",
+    "path": "juno.jpg"
+  },
+  {
+    "id": 15,
+    "name": "Killer Klowns from Outer Space",
+    "year": 1988,
+    "rate": null,
+    "description": "Alien creatures resembling circus clowns invade a small town and harvest its residents with deadly jokes, living balloons, shadow puppets, and cotton-candy cocoons.",
+    "path": "killer_klowns_from_outer_space.jpg"
+  },
+  {
+    "id": 16,
+    "name": "Ready or Not",
+    "year": 2019,
+    "rate": null,
+    "description": "On her wedding night, a bride is forced into a family tradition that turns a harmless game of hide-and-seek into a bloody hunt through an enormous mansion.",
+    "path": "ready_or_not.jpg"
+  },
+  {
+    "id": 17,
+    "name": "Orphan",
+    "year": 2009,
+    "rate": null,
+    "description": "A grieving couple adopts a remarkably composed nine-year-old girl, but her manipulative behavior and concealed history place the entire household in danger.",
+    "path": "orphan.jpg"
+  },
+  {
+    "id": 18,
+    "name": "Case 39",
+    "year": 2009,
+    "rate": null,
+    "description": "A social worker rescues a young girl from abusive parents and brings her home, only to realize that the child may be the source of the terror surrounding every case she touches.",
+    "path": "case_39.jpg"
+  },
+  {
+    "id": 19,
+    "name": "21 Jump Street",
+    "year": 2012,
+    "rate": null,
+    "description": "Two immature police officers go undercover as high-school students to expose a drug supplier and discover that modern teenage life has reversed everything they remember.",
+    "path": "21_jump_street.jpg"
+  },
+  {
+    "id": 20,
+    "name": "Together",
+    "year": 2025,
+    "rate": null,
+    "description": "A couple moves to the countryside hoping to repair a strained relationship, but contact with an unnatural force begins binding their bodies and identities in horrifying ways.",
+    "path": "together_2025.jpg"
+  },
+  {
+    "id": 21,
+    "name": "Raw",
+    "year": 2016,
+    "rate": null,
+    "description": "A vegetarian veterinary student undergoes a brutal initiation and develops an overwhelming hunger for flesh, forcing her to confront desire, family secrets, and her changing body.",
+    "path": "raw_2016.jpg"
+  },
+  {
+    "id": 22,
+    "name": "The Substance",
+    "year": 2024,
+    "rate": null,
+    "description": "A fading celebrity uses an underground treatment to create a younger, idealized version of herself, but the two bodies cannot peacefully share one life.",
+    "path": "the_substance.jpg"
+  },
+  {
+    "id": 23,
+    "name": "I Feel Pretty",
+    "year": 2018,
+    "rate": null,
+    "description": "After a head injury, an insecure woman becomes convinced that she is extraordinarily beautiful, and her new confidence transforms her career, relationships, and treatment of others.",
+    "path": "i_feel_pretty.jpg"
+  },
+  {
+    "id": 24,
+    "name": "Nerve",
+    "year": 2016,
+    "rate": null,
+    "description": "A cautious student joins an online game of increasingly dangerous dares, only to discover that its anonymous audience controls far more than the prize money.",
+    "path": "nerve.jpg"
+  },
+  {
+    "id": 25,
+    "name": "Murder Mystery",
+    "year": 2019,
+    "rate": null,
+    "description": "A New York couple on a long-delayed European vacation becomes trapped aboard a billionaire's yacht and blamed for a murder among a group of wealthy suspects.",
+    "path": "murder_mystery.jpg"
+  },
+  {
+    "id": 26,
+    "name": "Lucy",
+    "year": 2014,
+    "rate": 10.0,
+    "description": "A woman forced to transport an experimental drug gains rapidly expanding mental and physical abilities, pushing her beyond ordinary human perception while criminals and scientists pursue her.",
+    "path": "lucy.jpg"
+  },
+  {
+    "id": 27,
+    "name": "Limitless",
+    "year": 2011,
+    "rate": 8.0,
+    "description": "A struggling writer takes a mysterious drug that gives him extraordinary focus and memory, turning him into a financial prodigy while dependency and dangerous enemies close in.",
+    "path": "limitless.jpg"
+  },
+  {
+    "id": 28,
+    "name": "Inception",
+    "year": 2010,
+    "rate": null,
+    "description": "A specialist who steals secrets through shared dreams is offered a chance to return home if his team can plant an idea deep inside a target's layered subconscious.",
+    "path": "inception.jpg"
+  },
+  {
+    "id": 29,
+    "name": "Nanny McPhee",
+    "year": 2005,
+    "rate": null,
+    "description": "A mysterious nanny uses unsettling magic and strict lessons to transform seven uncontrollable children and help their overwhelmed widowed father save the family.",
+    "path": "nanny_mcphee.jpg"
+  },
+  {
+    "id": 30,
+    "name": "Best Player",
+    "year": 2011,
+    "rate": null,
+    "description": "A champion gamer discovers that the anonymous rival threatening his record is a teenage girl and enters her school life to sabotage her before a major tournament.",
+    "path": "best_player.jpg"
+  },
+  {
+    "id": 31,
+    "name": "Jinxed",
+    "year": 2013,
+    "rate": null,
+    "description": "A teenager from a family cursed with constant bad luck searches for a way to break the spell before it ruins another generation of Murphy disasters.",
+    "path": "jinxed.jpg"
+  },
+  {
+    "id": 32,
+    "name": "10 Lives",
+    "year": 2024,
+    "rate": null,
+    "description": "A selfish cat wastes the lives he has been given and must return in a series of unexpected animal bodies to repair his bond with the scientist who saved him.",
+    "path": "10_lives.jpg"
+  },
+  {
+    "id": 33,
+    "name": "Begotten",
+    "year": 1989,
+    "rate": null,
+    "description": "In a wordless, decayed monochrome nightmare, divine figures undergo birth, mutilation, death, and rebirth through ritualistic images that resemble a damaged ancient film.",
+    "path": "begotten.jpg"
+  },
+  {
+    "id": 34,
+    "name": "Peeping Tom",
+    "year": 1960,
+    "rate": null,
+    "description": "A withdrawn camera operator murders women while filming their final terror, turning cinema, voyeurism, childhood trauma, and the gaze of the audience into one disturbing mechanism.",
+    "path": "peeping_tom.jpg"
+  },
+  {
+    "id": 35,
+    "name": "Split",
+    "year": 2016,
+    "rate": null,
+    "description": "Three teenagers are kidnapped by a man whose dissociative identities compete for control while a powerful new personality prepares to emerge.",
+    "path": "split.jpg"
+  },
+  {
+    "id": 36,
+    "name": "Longlegs",
+    "year": 2024,
+    "rate": null,
+    "description": "An FBI agent with unusual intuition follows occult clues connecting a series of family deaths to an elusive killer and to secrets buried in her own childhood.",
+    "path": "longlegs.jpg"
+  },
+  {
+    "id": 37,
+    "name": "Scary Movie",
+    "year": 2026,
+    "rate": null,
+    "description": "Cindy, Brenda, Shorty, Ray, and old friends reunite when a familiar masked killer returns, pulling them into another barrage of horror parodies and absurd survival attempts.",
+    "path": "scary_movie_2026.jpg"
+  },
+  {
+    "id": 38,
+    "name": "The Silence of the Lambs",
+    "year": 1991,
+    "rate": null,
+    "description": "An FBI trainee seeks insight from imprisoned psychiatrist and murderer Hannibal Lecter while hunting a serial killer who abducts women and carefully removes their skin.",
+    "path": "the_silence_of_the_lambs.jpg"
+  },
+  {
+    "id": 39,
+    "name": "Manhunter",
+    "year": 1986,
+    "rate": null,
+    "description": "A gifted former profiler returns to pursue a killer who targets entire families, using Hannibal Lecktor's mind at the risk of losing himself inside the investigation.",
+    "path": "manhunter.jpg"
+  },
+  {
+    "id": 40,
+    "name": "Hannibal",
+    "year": 2001,
+    "rate": null,
+    "description": "Years after his escape, Hannibal Lecter lives under a new identity in Florence while Clarice Starling and a horribly disfigured survivor are drawn into his return.",
+    "path": "hannibal_2001.jpg"
+  },
+  {
+    "id": 41,
+    "name": "Red Dragon",
+    "year": 2002,
+    "rate": null,
+    "description": "Profiler Will Graham reluctantly consults the imprisoned Hannibal Lecter to stop a ritualistic family murderer known as the Tooth Fairy.",
+    "path": "red_dragon.jpg"
+  },
+  {
+    "id": 42,
+    "name": "Hannibal Rising",
+    "year": 2007,
+    "rate": null,
+    "description": "A young Hannibal Lecter survives wartime horror and develops his intelligence, refinement, and appetite while pursuing the men responsible for his sister's death.",
+    "path": "hannibal_rising.jpg"
+  },
+  {
+    "id": 43,
+    "name": "Saw",
+    "year": 2004,
+    "rate": null,
+    "description": "Two strangers wake chained inside a ruined bathroom and discover that an unseen captor has designed a brutal test of sacrifice, guilt, and the will to live.",
+    "path": "saw_2004.jpg"
+  },
+  {
+    "id": 44,
+    "name": "Saw II",
+    "year": 2005,
+    "rate": null,
+    "description": "Detective Eric Matthews confronts Jigsaw while eight people, including the detective's son, search a poisoned house for antidotes hidden inside lethal traps.",
+    "path": "saw_2.jpg"
+  },
+  {
+    "id": 45,
+    "name": "Saw III",
+    "year": 2006,
+    "rate": null,
+    "description": "A dying Jigsaw and Amanda force a grieving father through tests of forgiveness while a kidnapped surgeon must keep their mastermind alive.",
+    "path": "saw_3.jpg"
+  },
+  {
+    "id": 46,
+    "name": "Saw IV",
+    "year": 2007,
+    "rate": null,
+    "description": "As investigators uncover Jigsaw's history, an obsessed SWAT officer is pushed through a sequence of tests designed to punish his need to save everyone.",
+    "path": "saw_4.jpg"
+  },
+  {
+    "id": 47,
+    "name": "Saw V",
+    "year": 2008,
+    "rate": null,
+    "description": "Agent Strahm closes in on Jigsaw's successor while five strangers face interconnected traps that can only be survived through cooperation.",
+    "path": "saw_5.jpg"
+  },
+  {
+    "id": 48,
+    "name": "Saw VI",
+    "year": 2009,
+    "rate": null,
+    "description": "Jigsaw's legacy targets a health-insurance executive whose life-and-death formulas are turned into physical tests, while the investigation threatens to expose Hoffman.",
+    "path": "saw_6.jpg"
+  },
+  {
+    "id": 49,
+    "name": "Saw 3D",
+    "year": 2010,
+    "rate": null,
+    "description": "A man who built fame on a false story of surviving Jigsaw is forced to face real traps as Hoffman and Jill fight over the final pieces of John's legacy.",
+    "path": "saw_3d.jpg"
+  },
+  {
+    "id": 50,
+    "name": "Jigsaw",
+    "year": 2017,
+    "rate": null,
+    "description": "Bodies begin appearing with wounds linked to Jigsaw's methods, forcing police to determine whether John Kramer has returned or a new disciple is reconstructing his games.",
+    "path": "jigsaw.jpg"
+  },
+  {
+    "id": 51,
+    "name": "Spiral: From the Book of Saw",
+    "year": 2021,
+    "rate": null,
+    "description": "A detective investigates elaborate murders of corrupt police officers carried out by a killer using traps and symbols inspired by Jigsaw.",
+    "path": "spiral_from_the_book_of_saw.jpg"
+  },
+  {
+    "id": 52,
+    "name": "Saw X",
+    "year": 2023,
+    "rate": null,
+    "description": "John Kramer travels to Mexico for an experimental cancer treatment and turns his methods against the fraudsters who exploited his desperation.",
+    "path": "saw_x.jpg"
+  },
+  {
+    "id": 53,
+    "name": "The Conjuring",
+    "year": 2013,
+    "rate": null,
+    "description": "Paranormal investigators Ed and Lorraine Warren help a family whose isolated farmhouse is being consumed by an increasingly violent supernatural presence.",
+    "path": "the_conjuring.jpg"
+  },
+  {
+    "id": 54,
+    "name": "Annabelle",
+    "year": 2014,
+    "rate": null,
+    "description": "After a cult attacks a young couple, a vintage doll becomes a vessel for a demonic force that stalks the expectant mother and her newborn child.",
+    "path": "annabelle.jpg"
+  },
+  {
+    "id": 55,
+    "name": "The Conjuring 2",
+    "year": 2016,
+    "rate": null,
+    "description": "Ed and Lorraine Warren travel to London to help a single mother and her children as a malicious entity turns their public haunting into a deadly test of faith.",
+    "path": "the_conjuring_2.jpg"
+  },
+  {
+    "id": 56,
+    "name": "Annabelle: Creation",
+    "year": 2017,
+    "rate": null,
+    "description": "Years after losing their daughter, a dollmaker and his wife shelter an orphanage group, unknowingly offering a demonic presence new victims.",
+    "path": "annabelle_creation.jpg"
+  },
+  {
+    "id": 57,
+    "name": "The Nun",
+    "year": 2018,
+    "rate": null,
+    "description": "A priest and a novice investigate a nun's death at a Romanian abbey, where the demonic figure Valak has turned the convent into a gateway for evil.",
+    "path": "the_nun.jpg"
+  },
+  {
+    "id": 58,
+    "name": "The Curse of La Llorona",
+    "year": 2019,
+    "rate": null,
+    "description": "A social worker and her children become targets of the weeping spirit La Llorona, whose grief drives her to steal other families' children.",
+    "path": "the_curse_of_la_llorona.jpg"
+  },
+  {
+    "id": 59,
+    "name": "Annabelle Comes Home",
+    "year": 2019,
+    "rate": null,
+    "description": "Annabelle is awakened inside the Warrens' artifact room and unleashes the collection's other spirits against their daughter and her babysitters.",
+    "path": "annabelle_comes_home.jpg"
+  },
+  {
+    "id": 60,
+    "name": "The Conjuring: The Devil Made Me Do It",
+    "year": 2021,
+    "rate": null,
+    "description": "The Warrens investigate a murder suspect who claims demonic possession, uncovering an occult chain of curses that reaches beyond a single haunted home.",
+    "path": "the_conjuring_the_devil_made_me_do_it.jpg"
+  },
+  {
+    "id": 61,
+    "name": "The Nun II",
+    "year": 2023,
+    "rate": null,
+    "description": "Sister Irene encounters Valak again at a French boarding school, where a string of deaths reveals the demon's search for a sacred relic.",
+    "path": "the_nun_2.jpg"
+  },
+  {
+    "id": 62,
+    "name": "The Conjuring: Last Rites",
+    "year": 2025,
+    "rate": null,
+    "description": "Ed and Lorraine Warren confront a final major case when a Pennsylvania family is terrorized by escalating activity connected to the Smurl haunting.",
+    "path": "the_conjuring_last_rites.jpg"
+  },
+  {
+    "id": 63,
+    "name": "A Nightmare on Elm Street",
+    "year": 1984,
+    "rate": null,
+    "description": "Teenagers discover that the burned killer stalking their dreams can murder them in reality, forcing Nancy Thompson to fight him without falling asleep.",
+    "path": "a_nightmare_on_elm_street_1984.jpg"
+  },
+  {
+    "id": 64,
+    "name": "A Nightmare on Elm Street 2: Freddy's Revenge",
+    "year": 1985,
+    "rate": null,
+    "description": "A teenager moves into Nancy's former home and becomes the unwilling vessel Freddy Krueger needs to enter the waking world.",
+    "path": "a_nightmare_on_elm_street_2.jpg"
+  },
+  {
+    "id": 65,
+    "name": "A Nightmare on Elm Street 3: Dream Warriors",
+    "year": 1987,
+    "rate": null,
+    "description": "Nancy helps psychiatric patients recognize their powers inside dreams and unite against Freddy before he claims the last Elm Street children.",
+    "path": "a_nightmare_on_elm_street_3.jpg"
+  },
+  {
+    "id": 66,
+    "name": "A Nightmare on Elm Street 4: The Dream Master",
+    "year": 1988,
+    "rate": null,
+    "description": "Freddy returns through the dreams of the surviving warriors and encounters Alice, whose growing dream powers may finally rival his own.",
+    "path": "a_nightmare_on_elm_street_4.jpg"
+  },
+  {
+    "id": 67,
+    "name": "A Nightmare on Elm Street 5: The Dream Child",
+    "year": 1989,
+    "rate": null,
+    "description": "Freddy invades the dreams of Alice's unborn child and uses them to reach new victims while she uncovers the history of his birth.",
+    "path": "a_nightmare_on_elm_street_5.jpg"
+  },
+  {
+    "id": 68,
+    "name": "Freddy's Dead: The Final Nightmare",
+    "year": 1991,
+    "rate": null,
+    "description": "With Springwood's children gone, Freddy sends the last surviving teenager to bring him new victims and expose the family history behind the killer.",
+    "path": "freddys_dead_the_final_nightmare.jpg"
+  },
+  {
+    "id": 69,
+    "name": "Wes Craven's New Nightmare",
+    "year": 1994,
+    "rate": null,
+    "description": "The actors and creators of the original film are haunted in the real world by an ancient entity that has adopted Freddy Krueger's form.",
+    "path": "wes_cravens_new_nightmare.jpg"
+  },
+  {
+    "id": 70,
+    "name": "Freddy vs. Jason",
+    "year": 2003,
+    "rate": null,
+    "description": "Freddy manipulates Jason Voorhees into spreading fear on Elm Street, but the two killers turn on each other when Jason steals Freddy's victims.",
+    "path": "freddy_vs_jason.jpg"
+  },
+  {
+    "id": 71,
+    "name": "A Nightmare on Elm Street",
+    "year": 2010,
+    "rate": null,
+    "description": "A group of teenagers shares nightmares about a burned man with bladed gloves and uncovers the childhood connection that made them his targets.",
+    "path": "a_nightmare_on_elm_street_2010.jpg"
+  },
+  {
+    "id": 72,
+    "name": "The Ship",
+    "year": 2014,
+    "rate": null,
+    "description": "Students and crew aboard a training vessel survive a global catastrophe and search for land while secrets, conflict, and unexplained events spread through the isolated ship.",
+    "path": "the_ship_2014.jpg"
+  },
+  {
+    "id": 73,
+    "name": "Survival Game",
+    "year": 2020,
+    "rate": null,
+    "description": "Sixteen people enter a remote Siberian reality show with no communication or crew, only to discover that the staged competition has become a genuine fight for survival.",
+    "path": "survival_game.jpg"
+  },
+  {
+    "id": 74,
+    "name": "Squid Game",
+    "year": 2021,
+    "rate": null,
+    "description": "Hundreds of desperate contestants accept an invitation to play children's games for an enormous prize, learning that elimination means death and cooperation can collapse at any moment.",
+    "path": "squid_game.jpg"
+  },
+  {
+    "id": 75,
+    "name": "Riverdale",
+    "year": 2017,
+    "rate": null,
+    "description": "A group of teenagers investigates murder and corruption beneath the polished surface of Riverdale as the town's mysteries grow increasingly strange and dangerous.",
+    "path": "riverdale.jpg"
+  },
+  {
+    "id": 76,
+    "name": "Stranger Things",
+    "year": 2016,
+    "rate": null,
+    "description": "The disappearance of a boy in 1980s Indiana brings his friends into contact with a secret laboratory, a psychic girl, and a hostile dimension pressing against their town.",
+    "path": "stranger_things.jpg"
+  },
+  {
+    "id": 77,
+    "name": "Mr. Robot",
+    "year": 2015,
+    "rate": null,
+    "description": "A brilliant but unstable cybersecurity engineer is recruited by an underground hacker group to erase global debt and attack the corporation dominating modern life.",
+    "path": "mr_robot.jpg"
+  },
+  {
+    "id": 78,
+    "name": "Black Mirror",
+    "year": 2011,
+    "rate": null,
+    "description": "An anthology of unsettling stories explores how familiar technologies magnify obsession, cruelty, surveillance, loneliness, and the need for social approval.",
+    "path": "black_mirror.jpg"
+  },
+  {
+    "id": 79,
+    "name": "Hannibal",
+    "year": 2013,
+    "rate": null,
+    "description": "Profiler Will Graham relies on psychiatrist Hannibal Lecter while investigating serial killers, unaware that his elegant therapist is shaping both the crimes and Will's collapsing mind.",
+    "path": "hannibal_series.jpg"
+  },
+  {
+    "id": 80,
+    "name": "Junji Ito Collection",
+    "year": 2018,
+    "rate": null,
+    "description": "An anthology adapts Junji Ito's grotesque stories about obsession, impossible bodies, curses, doubles, fashion models, and ordinary lives invaded by inexplicable horror.",
+    "path": "junji_ito_collection.jpg"
+  },
+  {
+    "id": 81,
+    "name": "Attack on Titan",
+    "year": 2013,
+    "rate": null,
+    "description": "Humanity hides behind enormous walls until man-eating Titans destroy the illusion of safety and a group of young soldiers uncovers the political history behind their world.",
+    "path": "attack_on_titan.jpg"
+  },
+  {
+    "id": 82,
+    "name": "The Promised Neverland",
+    "year": 2019,
+    "rate": null,
+    "description": "Gifted children living in an idyllic orphanage learn the horrifying purpose of their home and secretly plan an escape from the adults controlling them.",
+    "path": "the_promised_neverland.jpg"
+  },
+  {
+    "id": 83,
+    "name": "Sword Art Online",
+    "year": 2012,
+    "rate": null,
+    "description": "Players trapped inside a virtual-reality fantasy game must clear one hundred floors to escape, knowing that death in the game will also kill their real bodies.",
+    "path": "sword_art_online.jpg"
+  },
+  {
+    "id": 84,
+    "name": "My Dress-Up Darling",
+    "year": 2022,
+    "rate": null,
+    "description": "A quiet student skilled at making traditional dolls begins creating cosplay outfits for an energetic classmate, drawing both of them into a close creative friendship.",
+    "path": "my_dress_up_darling.jpg"
+  },
+  {
+    "id": 85,
+    "name": "The Pet Girl of Sakurasou",
+    "year": 2012,
+    "rate": null,
+    "description": "A student living in a dorm for school misfits becomes responsible for a brilliant artist who can barely manage everyday life, while everyone around them chases difficult creative ambitions.",
+    "path": "the_pet_girl_of_sakurasou.jpg"
+  },
+  {
+    "id": 86,
+    "name": "Beastars",
+    "year": 2019,
+    "rate": null,
+    "description": "At a school shared by carnivores and herbivores, a gentle wolf struggles with instinct, shame, and love after a student's murder exposes the fragile rules holding society together.",
+    "path": "beastars.jpg"
+  },
+  {
+    "id": 87,
+    "name": "Tokyo Ghoul",
+    "year": 2014,
+    "rate": null,
+    "description": "A student becomes half-ghoul after a violent encounter and must survive between human society and the hidden community that feeds on it.",
+    "path": "tokyo_ghoul.jpg"
+  },
+  {
+    "id": 88,
+    "name": "Death Note",
+    "year": 2006,
+    "rate": null,
+    "description": "A brilliant student gains a notebook that kills anyone whose name is written inside and begins remaking the world while an equally gifted detective hunts him.",
+    "path": "death_note.jpg"
+  },
+  {
+    "id": 89,
+    "name": "Bakugan Battle Brawlers",
+    "year": 2007,
+    "rate": null,
+    "description": "Children discover that the creatures inside their strategy game are real beings from another dimension and become responsible for protecting both worlds.",
+    "path": "bakugan_battle_brawlers.jpg"
+  },
+  {
+    "id": 90,
+    "name": "Shaman King",
+    "year": 2001,
+    "rate": null,
+    "description": "A relaxed young shaman joins a global tournament in which mediums fight alongside spirits for the right to become Shaman King and reshape the world.",
+    "path": "shaman_king_2001.jpg"
+  },
+  {
+    "id": 91,
+    "name": "Avatar: The Last Airbender",
+    "year": 2005,
+    "rate": null,
+    "description": "A young Air Nomad awakens after a century and must master four elements with his friends to end the Fire Nation's war and restore balance.",
+    "path": "avatar_the_last_airbender.jpg"
+  },
+  {
+    "id": 92,
+    "name": "The Garden of Words",
+    "year": 2013,
+    "rate": null,
+    "description": "A student who dreams of designing shoes repeatedly meets an older woman in a rainy garden, where their quiet conversations become shelter from lives neither can face directly.",
+    "path": "the_garden_of_words.jpg"
+  },
+  {
+    "id": 93,
+    "name": "Danganronpa: The Animation",
+    "year": 2013,
+    "rate": null,
+    "description": "Elite students are imprisoned inside their academy by a sadistic bear and told that graduation requires murdering a classmate without being exposed at trial.",
+    "path": "danganronpa_the_animation.jpg"
+  },
+  {
+    "id": 94,
+    "name": "Hello World",
+    "year": 2019,
+    "rate": null,
+    "description": "A shy teenager is visited by his future self, who asks him to change recorded reality and save the girl they both love from an approaching disaster.",
+    "path": "hello_world.jpg"
+  },
+  {
+    "id": 95,
+    "name": "Magical Girl Site",
+    "year": 2018,
+    "rate": null,
+    "description": "A brutally bullied girl receives a weapon from a sinister website and enters a hidden network of magical girls watched by grotesque administrators preparing for an apocalypse.",
+    "path": "magical_girl_site.jpg"
+  },
+  {
+    "id": 96,
+    "name": "Maquia: When the Promised Flower Blooms",
+    "year": 2018,
+    "rate": null,
+    "description": "An immortal girl adopts an orphaned human baby and experiences the beauty and pain of motherhood as he grows old while she remains unchanged.",
+    "path": "maquia_when_the_promised_flower_blooms.jpg"
+  },
+  {
+    "id": 97,
+    "name": "Malice@Doll",
+    "year": 2001,
+    "rate": null,
+    "description": "In a city abandoned by humanity, an android built to serve people is transformed into living flesh and tries to share her new condition with other purposeless machines.",
+    "path": "malice_at_doll.jpg"
+  },
+  {
+    "id": 98,
+    "name": "Uzumaki",
+    "year": 2024,
+    "rate": null,
+    "description": "The residents of Kurouzu become obsessed with spirals as the pattern infects their minds, bodies, weather, buildings, and the structure of the town itself.",
+    "path": "uzumaki_2024.jpg"
+  },
+  {
+    "id": 99,
+    "name": "Parasyte: The Maxim",
+    "year": 2014,
+    "rate": null,
+    "description": "A failed alien parasite takes control of a teenager's right hand, forcing the mismatched pair to cooperate against creatures that successfully replaced human brains.",
+    "path": "parasyte_the_maxim.jpg"
+  },
+  {
+    "id": 100,
+    "name": "One Piece",
+    "year": 1999,
+    "rate": null,
+    "description": "Monkey D. Luffy gathers a wildly different pirate crew and crosses a vast ocean of islands, governments, mysteries, and rival powers in search of the legendary One Piece.",
+    "path": "one_piece.jpg"
+  },
+  {
+    "id": 101,
+    "name": "Hunter x Hunter",
+    "year": 2011,
+    "rate": null,
+    "description": "Gon leaves home to become a licensed Hunter and find his father, entering exams and adventures that grow from playful challenges into morally complex battles.",
+    "path": "hunter_x_hunter_2011.jpg"
+  },
+  {
+    "id": 102,
+    "name": "Demon Slayer: Kimetsu no Yaiba",
+    "year": 2019,
+    "rate": null,
+    "description": "After demons slaughter his family and transform his sister, Tanjiro joins the Demon Slayer Corps to find a cure and confront the origin of their suffering.",
+    "path": "demon_slayer.jpg"
+  },
+  {
+    "id": 103,
+    "name": "Jujutsu Kaisen",
+    "year": 2020,
+    "rate": null,
+    "description": "A physically gifted student swallows a cursed object and enters a school of sorcerers, sharing his body with an ancient monster while learning to fight human fear made real.",
+    "path": "jujutsu_kaisen.jpg"
+  },
+  {
+    "id": 104,
+    "name": "Chainsaw Man",
+    "year": 2022,
+    "rate": null,
+    "description": "An impoverished devil hunter merges with his chainsaw-shaped companion and is recruited into a government unit where simple dreams collide with manipulation and extreme violence.",
+    "path": "chainsaw_man.jpg"
+  },
+  {
+    "id": 105,
+    "name": "Fullmetal Alchemist: Brotherhood",
+    "year": 2009,
+    "rate": null,
+    "description": "Two brothers damaged by forbidden alchemy search for the Philosopher's Stone and uncover a nationwide conspiracy built on war, sacrifice, and manufactured immortality.",
+    "path": "fullmetal_alchemist_brotherhood.jpg"
+  },
+  {
+    "id": 106,
+    "name": "Steins;Gate",
+    "year": 2011,
+    "rate": null,
+    "description": "A group of eccentric friends accidentally learns to send messages into the past, attracting a powerful organization and creating timelines filled with increasingly personal consequences.",
+    "path": "steins_gate.jpg"
+  },
+  {
+    "id": 107,
+    "name": "Code Geass: Lelouch of the Rebellion",
+    "year": 2006,
+    "rate": null,
+    "description": "An exiled prince gains the power to issue an irresistible command and becomes a masked revolutionary determined to destroy the empire that abandoned his family.",
+    "path": "code_geass.jpg"
+  },
+  {
+    "id": 108,
+    "name": "Monster",
+    "year": 2004,
+    "rate": null,
+    "description": "A surgeon saves a child's life instead of obeying hospital politics and years later learns that the boy became a terrifying manipulator at the center of a trail of murders.",
+    "path": "monster.jpg"
+  },
+  {
+    "id": 109,
+    "name": "Berserk",
+    "year": 1997,
+    "rate": null,
+    "description": "A solitary mercenary joins the ambitious Griffith and his Band of the Hawk, forming bonds that are ultimately consumed by power, fate, and supernatural betrayal.",
+    "path": "berserk_1997.jpg"
+  },
+  {
+    "id": 110,
+    "name": "Made in Abyss",
+    "year": 2017,
+    "rate": null,
+    "description": "A young explorer and a robot boy descend into an enormous pit filled with beautiful ecosystems, ancient relics, monstrous life, and a curse that punishes anyone who climbs back up.",
+    "path": "made_in_abyss.jpg"
+  },
+  {
+    "id": 111,
+    "name": "Mob Psycho 100",
+    "year": 2016,
+    "rate": null,
+    "description": "An awkward boy with overwhelming psychic power tries to build an ordinary identity under the guidance of a fraudulent mentor while his suppressed emotions approach a breaking point.",
+    "path": "mob_psycho_100.jpg"
+  },
+  {
+    "id": 112,
+    "name": "Cyberpunk: Edgerunners",
+    "year": 2022,
+    "rate": null,
+    "description": "After losing everything in Night City, a teenager joins a crew of mercenaries and pushes his body through dangerous cybernetic upgrades in pursuit of freedom and belonging.",
+    "path": "cyberpunk_edgerunners.jpg"
+  },
+  {
+    "id": 113,
+    "name": "Death Parade",
+    "year": 2015,
+    "rate": null,
+    "description": "Newly dead strangers are forced to play cruel games in a mysterious bar, where an emotionless arbiter judges the hidden choices that defined their lives.",
+    "path": "death_parade.jpg"
+  },
+  {
+    "id": 114,
+    "name": "Another",
+    "year": 2012,
+    "rate": null,
+    "description": "A transfer student notices that his class behaves as if one girl does not exist and becomes entangled in a curse that produces a chain of elaborate accidental deaths.",
+    "path": "another.jpg"
+  },
+  {
+    "id": 115,
+    "name": "Erased",
+    "year": 2016,
+    "rate": null,
+    "description": "A struggling man is sent eighteen years into his own childhood and attempts to prevent a classmate's murder, believing it is connected to tragedy in the present.",
+    "path": "erased.jpg"
+  },
+  {
+    "id": 116,
+    "name": "Devilman Crybaby",
+    "year": 2018,
+    "rate": null,
+    "description": "A sensitive teenager gains a demon's body while retaining his human heart, then watches fear and paranoia tear civilization apart as demons reveal themselves.",
+    "path": "devilman_crybaby.jpg"
+  },
+  {
+    "id": 117,
+    "name": "Perfect Blue",
+    "year": 1997,
+    "rate": null,
+    "description": "A pop idol leaves music for acting and loses her sense of reality as a stalker, an online diary, violent productions, and an idealized double begin replacing her identity.",
+    "path": "perfect_blue.jpg"
+  },
+  {
+    "id": 118,
+    "name": "Paprika",
+    "year": 2006,
+    "rate": null,
+    "description": "A device that lets therapists enter dreams is stolen, causing private fantasies to merge into a spectacular parade that overwhelms the waking world.",
+    "path": "paprika.jpg"
+  },
+  {
+    "id": 119,
+    "name": "Serial Experiments Lain",
+    "year": 1998,
+    "rate": null,
+    "description": "A withdrawn girl receives messages from a dead classmate and becomes absorbed into the Wired, where identity, memory, consciousness, and reality no longer have clear boundaries.",
+    "path": "serial_experiments_lain.jpg"
+  },
+  {
+    "id": 120,
+    "name": "Paranoia Agent",
+    "year": 2004,
+    "rate": null,
+    "description": "A mysterious boy attacks stressed residents of Tokyo with a bent baseball bat, and the investigation reveals how rumor and collective fear can create their own reality.",
+    "path": "paranoia_agent.jpg"
+  },
+  {
+    "id": 121,
+    "name": "Neon Genesis Evangelion",
+    "year": 1995,
+    "rate": null,
+    "description": "A lonely teenager is ordered to pilot a giant biomechanical weapon against mysterious beings while the adults around him hide the true purpose of the battles.",
+    "path": "neon_genesis_evangelion.jpg"
+  },
+  {
+    "id": 122,
+    "name": "Naruto",
+    "year": 2002,
+    "rate": null,
+    "description": "An outcast ninja carrying a sealed monster dreams of earning his village's respect and grows through missions, rivalry, friendship, and the cost of inherited hatred.",
+    "path": "naruto.jpg"
+  },
+  {
+    "id": 123,
+    "name": "Naruto: Shippuden",
+    "year": 2007,
+    "rate": null,
+    "description": "Naruto returns from training to confront the Akatsuki, rescue his friend Sasuke, and challenge a cycle of war that reaches back through generations of ninja history.",
+    "path": "naruto_shippuden.jpg"
+  },
+  {
+    "id": 124,
+    "name": "Bleach",
+    "year": 2004,
+    "rate": null,
+    "description": "A teenager who can see ghosts inherits the powers of a Soul Reaper and becomes responsible for guiding spirits and fighting creatures that consume them.",
+    "path": "bleach.jpg"
+  },
+  {
+    "id": 125,
+    "name": "My Hero Academia",
+    "year": 2016,
+    "rate": null,
+    "description": "A powerless boy in a society of superhuman abilities inherits the strength of the world's greatest hero and enters an academy shaped by celebrity, duty, and rising villainy.",
+    "path": "my_hero_academia.jpg"
+  },
+  {
+    "id": 126,
+    "name": "JoJo's Bizarre Adventure",
+    "year": 2012,
+    "rate": null,
+    "description": "Generations of the Joestar family face supernatural enemies through flamboyant battles, evolving powers, strange journeys, and a feud that repeatedly reshapes their bloodline.",
+    "path": "jojos_bizarre_adventure.jpg"
+  },
+  {
+    "id": 127,
+    "name": "Vinland Saga",
+    "year": 2019,
+    "rate": null,
+    "description": "A boy raised among Viking mercenaries dedicates his life to revenge before war and slavery force him to reconsider strength, freedom, and the possibility of living without enemies.",
+    "path": "vinland_saga.jpg"
+  },
+  {
+    "id": 128,
+    "name": "Cowboy Bebop",
+    "year": 1998,
+    "rate": null,
+    "description": "A crew of bounty hunters drifts through the solar system taking disastrous jobs while each member remains trapped by unfinished business from the past.",
+    "path": "cowboy_bebop.jpg"
+  },
+  {
+    "id": 129,
+    "name": "Psycho-Pass",
+    "year": 2012,
+    "rate": null,
+    "description": "In a society that measures every citizen's likelihood of committing crime, a young inspector questions the system while pursuing a killer it cannot recognize as dangerous.",
+    "path": "psycho_pass.jpg"
+  },
+  {
+    "id": 130,
+    "name": "Elfen Lied",
+    "year": 2004,
+    "rate": null,
+    "description": "A mutated girl with invisible lethal arms escapes a research facility and develops an innocent alternate personality after a head injury, bringing violence into a quiet household.",
+    "path": "elfen_lied.jpg"
+  },
+  {
+    "id": 131,
+    "name": "Higurashi: When They Cry",
+    "year": 2006,
+    "rate": null,
+    "description": "A boy moves to a friendly rural village where the same summer festival repeatedly leads to paranoia, torture, murder, and altered versions of reality.",
+    "path": "higurashi_when_they_cry.jpg"
+  },
+  {
+    "id": 132,
+    "name": "The Future Diary",
+    "year": 2011,
+    "rate": null,
+    "description": "Twelve people receive diaries that predict the future and are forced into a death game, while a lonely boy depends on a girl whose devotion is both protective and terrifying.",
+    "path": "the_future_diary.jpg"
+  },
+  {
+    "id": 133,
+    "name": "Tokyo Revengers",
+    "year": 2021,
+    "rate": null,
+    "description": "A dissatisfied adult repeatedly returns to his school years and infiltrates a violent youth gang to prevent the future deaths of the people he failed to protect.",
+    "path": "tokyo_revengers.jpg"
+  },
+  {
+    "id": 134,
+    "name": "Solo Leveling",
+    "year": 2024,
+    "rate": null,
+    "description": "The weakest hunter in a world of monster-filled gates survives a hidden dungeon and gains the unique ability to level up without limit.",
+    "path": "solo_leveling.jpg"
+  },
+  {
+    "id": 135,
+    "name": "Frieren: Beyond Journey's End",
+    "year": 2023,
+    "rate": null,
+    "description": "An elf mage retraces the journey she once completed with a heroic party and slowly understands the brief human lives and relationships she failed to value at the time.",
+    "path": "frieren_beyond_journeys_end.jpg"
+  }
 ]

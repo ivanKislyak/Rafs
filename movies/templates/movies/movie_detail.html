@@ -17,7 +17,9 @@
             <div class="movie-name">
                 <h1>{{ movie.name }}</h1>
                 {% if user_already_rated_this %}
-                    <p class="review-live-score-value"></p>
+                    <p>Ваша оценка:</p>
+                    <p class="review-live-score-value">{{ user_already_rated_this.avg_rating }}</p>
+                    <a class="btn" href="{% url 'movies:review_form' movie.id %}">Изменить</a>
                 {% else %}
                     <a class="btn" href="{% url 'movies:review_form' movie.id %}">Оценить</a>
                 {% endif %}

@@ -77,8 +77,8 @@ class Review(models.Model):
 
     def __str__(self):
         if self.text:
-            return f"{self.user.username} оставил отзыв к фильму - {self.movie.name}: {self.text}"
-        return f"{self.movie.name} was review by {self.user.username}"
+            return f"{self.user.username} оставил отзыв к фильму {self.movie.name} ({self.avg_rating}): {self.text}"
+        return f"{self.movie.name} was review ({self.avg_rating}) by {self.user.username}"
 
 
 class ReviewVote(models.Model):

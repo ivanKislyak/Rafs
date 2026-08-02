@@ -30,13 +30,11 @@ def catalog(request):
 
 def movie_detail(request, movie_id):
     movie = get_object_or_404(Movie, pk=movie_id)
-    reviews = Review.objects.filter(movie=movie, text__gt="")
+    reviews = Review.objects.filter(movie=movie).exclude(text="")
     user_already_rated_this = False
 
     if request.user.is_authenticated:
-        user_already_rated_this = reviews.filter(user=request.user).exists()
-        # latest_user_rate = reviews.filter(user=request.user)[""]
-
+        user_already_rated_this = Review.objects.filter(movie=movie, user=request.user).first()
     return render(request, "movies/movie_detail.html",
                   {"movie": movie, 
                    "reviews": reviews,

@@ -4,6 +4,8 @@
         {% if movie.path %}
             <img class="movie-card-cover"
                  src="{% static 'movies/images/' %}{{ movie.path }}"
+                 data-fallback-src="{% static 'movies/images/nocover.png' %}"
+                 onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
                  alt="{{ movie.name }}" />
         {% else %}
             <img class="movie-card-cover"
@@ -13,10 +15,9 @@
         <div class="movie-info">
             <h2>{{ movie.name }}</h2>
             <p>{{ movie.year }}</p>
-            {% if movie.rate %}
+            {% if movie.avg_rating %}
                 <p>RAFS Rate: {{ movie.avg_rating }}</p>
-                <p>IMDB Rate: {{ movie.rate }}</p>
-                {% if movie.rate >= 8 %}
+                {% if movie.avg_rating >= 8 %}
                     <p>РЕКОМЕНДУЕМ!</p>
                 {% endif %}
             {% else %}
