@@ -73,3 +73,17 @@ http://127.0.0.1:8000/movies/
 ## Status
 
 This is an educational portfolio project. New features are added as I continue learning Django.
+
+## License
+
+The source code is available under the PolyForm Noncommercial
+License 1.0.0.
+
+Running a paid or advertising-supported derivative service requires
+prior written permission.
+
+The RAFS name, logo, and wasp mascot are not included in the software
+license. See `BRAND_ASSETS.md`.
+
+Movie posters, fonts, and other third-party materials remain the
+property of their respective owners.
