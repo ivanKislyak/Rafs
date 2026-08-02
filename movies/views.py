@@ -47,7 +47,6 @@ def movie_detail(request, movie_id):
 @login_required
 def make_review_form(request, movie_id):
     movie = get_object_or_404(Movie, pk=movie_id)
-    reviews = Review.objects.filter(movie=movie)
     review_form = ReviewForm()
 
     existing_review = Review.objects.filter(
@@ -70,5 +69,4 @@ def make_review_form(request, movie_id):
         review_form = ReviewForm(instance=existing_review)
     
     return render(request, "movies/review_form.html", {"movie": movie, 
-                       "review_form": review_form, 
-                       "reviews": reviews})
+                       "review_form": review_form})

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load humanize %}
 {% block content %}
     <a class="btn" href="{% url 'movies:catalog' %}">← Вернуться в каталог</a>
     <hr />
@@ -62,7 +63,7 @@
                                 {% endif %}
                             </div>
                         </div>
-                        <span class="review-comment-date">{{ review.created_at|date:"d.m.Y H:i" }}</span>
+                        <span class="review-comment-date">{{ review.created_at|naturaltime }}</span>
                     </div>
                     <p class="review-comment-text">{{ review.text }}</p>
                 </article>
