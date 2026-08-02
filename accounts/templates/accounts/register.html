@@ -1,72 +1,56 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %} Регистрация {% endblock %}
+{% block title %}Регистрация{% endblock %}
 {% block content %}
     <link rel="stylesheet" href="{% static 'css/accounts.css' %}">
-
     <section class="register-page">
-            <form class="register-form" method="post" novalidate>
-                {% csrf_token %}
-
-                <div class="register-form-header">
-                    <h1>Создать аккаунт</h1>
-                    <p>Оценивайте фильмы, пишите рецензии и собирайте свою историю просмотров.</p>
-                </div>
-
-                {% if register_form.non_field_errors %}
-                    <div class="register-form-errors">
-                        {{ register_form.non_field_errors }}
-                    </div>
-                {% endif %}
-
-                {% for field in register_form %}
-                    <div class="register-form-field">
-                        <label class="register-form-label" for="{{ field.id_for_label }}">
-                            {% if field.name == "username" %}
-                                Имя пользователя
-                            {% elif field.name == "email" %}
-                                Электронная почта
-                            {% elif field.name == "password1" %}
-                                Пароль
-                            {% elif field.name == "password2" %}
-                                Повторите пароль
-                            {% else %}
-                                {{ field.label }}
-                            {% endif %}
-                        </label>
-                        {{ field }}
-
+        <form class="register-form" method="post" novalidate>
+            {% csrf_token %}
+            <div class="register-form-header">
+                <h1>Создать аккаунт</h1>
+                <p>Оценивайте фильмы, пишите рецензии и собирайте свою историю просмотров.</p>
+            </div>
+            {% if register_form.non_field_errors %}
+                <div class="register-form-errors">{{ register_form.non_field_errors }}</div>
+            {% endif %}
+            {% for field in register_form %}
+                <div class="register-form-field">
+                    <label class="register-form-label" for="{{ field.id_for_label }}">
                         {% if field.name == "username" %}
-                            <div class="register-form-help" id="{{ field.id_for_label }}_helptext">
-                                До 150 символов. Можно использовать буквы, цифры и знаки @ . + - _
-                            </div>
+                            Имя пользователя
+                        {% elif field.name == "email" %}
+                            Электронная почта
                         {% elif field.name == "password1" %}
-                            <div class="register-form-help" id="{{ field.id_for_label }}_helptext">
-                                Не меньше 8 символов. Пароль не должен быть слишком простым или состоять только из цифр.
-                            </div>
+                            Пароль
                         {% elif field.name == "password2" %}
-                            <div class="register-form-help" id="{{ field.id_for_label }}_helptext">
-                                Введите тот же пароль ещё раз.
-                            </div>
-                        {% elif field.help_text %}
-                            <div class="register-form-help" id="{{ field.id_for_label }}_helptext">
-                                {{ field.help_text }}
-                            </div>
+                            Повторите пароль
+                        {% else %}
+                            {{ field.label }}
                         {% endif %}
-
-                        {% if field.errors %}
-                            <div class="register-form-errors">{{ field.errors }}</div>
-                        {% endif %}
-                    </div>
-                {% endfor %}
-
-                <button class="register-form-submit" type="submit">
-                    Зарегистрироваться
-                </button>
-
-                <p class="register-form-login">
-                    Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a>
-                </p>
-            </form>
+                    </label>
+                    {{ field }}
+                    {% if field.name == "username" %}
+                        <div class="register-form-help" id="{{ field.id_for_label }}_helptext">
+                            Можно использовать буквы, цифры и знаки @ . + - _
+                        </div>
+                    {% elif field.name == "password1" %}
+                        <div class="register-form-help" id="{{ field.id_for_label }}_helptext">
+                            Не меньше 8 символов. Пароль не должен быть слишком простым или состоять только из цифр.
+                        </div>
+                    {% elif field.name == "password2" %}
+                        <div class="register-form-help" id="{{ field.id_for_label }}_helptext">Введите тот же пароль ещё раз.</div>
+                    {% elif field.help_text %}
+                        <div class="register-form-help" id="{{ field.id_for_label }}_helptext">{{ field.help_text }}</div>
+                    {% endif %}
+                    {% if field.errors %}
+                        <div class="register-form-errors">{{ field.errors }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <button class="register-form-submit" type="submit">Зарегистрироваться</button>
+            <p class="register-form-login">
+                Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a>
+            </p>
+        </form>
     </section>
 {% endblock %}

@@ -29,23 +29,16 @@
                          src="{% static 'images/default_profile_img.png' %}"
                          alt="Аватар пользователя {{ user.username }}">
                 {% endif %}
-                <span class="header-username" title="{{ user.username }}">
-                    {{ user.username }}
-                </span>
+                <span class="header-username" title="{{ user.username }}">{{ user.username }}</span>
             </div>
-
             <form class="header-logout-form" action="{% url 'logout' %}" method="post">
                 {% csrf_token %}
                 <button class="header-logout-button" type="submit">Выйти</button>
             </form>
         {% else %}
-            <a class="header-auth-link header-login-link" href="{% url 'login' %}">
-                Войти
-            </a>
+            <a class="header-auth-link header-login-link" href="{% url 'login' %}">Войти</a>
             <a class="header-auth-link header-register-link"
-               href="{% url 'accounts:register' %}">
-                Регистрация
-            </a>
+               href="{% url 'accounts:register' %}">Регистрация</a>
         {% endif %}
     </nav>
 </header>

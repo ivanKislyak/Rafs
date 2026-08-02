@@ -3,22 +3,16 @@
 {% block title %}Вход в RAFS{% endblock %}
 {% block content %}
     <link rel="stylesheet" href="{% static 'css/accounts.css' %}">
-
     <section class="register-page login-page">
         <form class="register-form login-form" method="post" novalidate>
             {% csrf_token %}
-
             <div class="register-form-header">
                 <h1>Вход в аккаунт</h1>
                 <p>Продолжайте оценивать фильмы и делиться своими впечатлениями.</p>
             </div>
-
             {% if form.non_field_errors %}
-                <div class="register-form-errors">
-                    Не удалось войти. Проверьте имя пользователя и пароль.
-                </div>
+                <div class="register-form-errors">Не удалось войти. Проверьте имя пользователя и пароль.</div>
             {% endif %}
-
             {% for field in form %}
                 <div class="register-form-field">
                     <label class="register-form-label" for="{{ field.id_for_label }}">
@@ -31,19 +25,15 @@
                         {% endif %}
                     </label>
                     {{ field }}
-
                     {% if field.errors %}
                         <div class="register-form-errors">Заполните это поле.</div>
                     {% endif %}
                 </div>
             {% endfor %}
-
             {% if next %}
                 <input type="hidden" name="next" value="{{ next }}">
             {% endif %}
-
             <button class="register-form-submit" type="submit">Войти</button>
-
             <p class="register-form-login">
                 Ещё нет аккаунта? <a href="{% url 'accounts:register' %}">Зарегистрироваться</a>
             </p>

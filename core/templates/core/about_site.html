@@ -3,7 +3,6 @@
 {% block title %}О RAFS{% endblock %}
 {% block content %}
     <link rel="stylesheet" href="{% static 'core/css/core.css' %}">
-
     <main class="about-page">
         <section class="about-hero">
             <div class="about-hero-copy">
@@ -18,31 +17,23 @@
                 </p>
                 <div class="about-actions">
                     <a class="about-button about-button--primary"
-                       href="{% url 'movies:catalog' %}">
-                        Смотреть каталог
-                    </a>
+                       href="{% url 'movies:catalog' %}">Смотреть каталог</a>
                     {% if not user.is_authenticated %}
                         <a class="about-button about-button--secondary"
-                           href="{% url 'accounts:register' %}">
-                            Создать аккаунт
-                        </a>
+                           href="{% url 'accounts:register' %}">Создать аккаунт</a>
                     {% endif %}
                 </div>
             </div>
-
             <div class="about-hero-visual">
-                <img src="{% static 'images/glitched_rafs_logo.png' %}"
-                     alt="Логотип RAFS">
+                <img src="{% static 'images/glitched_rafs_logo.png' %}" alt="Логотип RAFS">
                 <p>Смотрите. Оценивайте. Находите своё.</p>
             </div>
         </section>
-
         <section class="about-section" aria-labelledby="about-principles-title">
             <div class="about-section-heading">
                 <p class="about-kicker">Что здесь важно</p>
                 <h2 id="about-principles-title">Кино начинается после финальных титров</h2>
             </div>
-
             <div class="about-feature-grid">
                 <article class="about-feature-card">
                     <span class="about-feature-number">01</span>
@@ -52,7 +43,6 @@
                         которые действительно имеют для вас значение.
                     </p>
                 </article>
-
                 <article class="about-feature-card">
                     <span class="about-feature-number">02</span>
                     <h3>Живые рецензии</h3>
@@ -61,7 +51,6 @@
                         понять, стоит ли фильм их времени.
                     </p>
                 </article>
-
                 <article class="about-feature-card">
                     <span class="about-feature-number">03</span>
                     <h3>Совпадение вкусов</h3>
@@ -72,13 +61,11 @@
                 </article>
             </div>
         </section>
-
         <section class="about-roadmap" aria-labelledby="about-roadmap-title">
             <div class="about-roadmap-heading">
                 <p class="about-kicker">Развитие проекта</p>
                 <h2 id="about-roadmap-title">RAFS растёт вместе с вашей историей просмотров</h2>
             </div>
-
             <div class="about-roadmap-grid">
                 <article class="about-roadmap-card about-roadmap-card--current">
                     <span class="about-roadmap-status">Уже работает</span>
@@ -88,7 +75,6 @@
                         и смотрите оценки других пользователей.
                     </p>
                 </article>
-
                 <article class="about-roadmap-card">
                     <span class="about-roadmap-status">Следующий этап</span>
                     <h3>Рекомендации и свои теги</h3>
@@ -99,16 +85,13 @@
                 </article>
             </div>
         </section>
-
         <section class="about-cta">
             <div>
                 <p class="about-kicker">Ваш следующий фильм</p>
                 <h2>Возможно, он уже ждёт вас в каталоге.</h2>
             </div>
             <a class="about-button about-button--primary"
-               href="{% url 'movies:catalog' %}">
-                Найти фильм
-            </a>
+               href="{% url 'movies:catalog' %}">Найти фильм</a>
         </section>
     </main>
 {% endblock %}

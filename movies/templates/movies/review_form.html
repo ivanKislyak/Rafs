@@ -4,7 +4,6 @@
 {% block content %}
     <form class="review-form" method="post" novalidate>
         {% csrf_token %}
-
         <section class="review-page-header">
             <div class="movie-cover-preview">
                 {% if movie.path %}
@@ -20,20 +19,20 @@
             <div class="movie-cover-info">
                 <h1>{{ movie.name }}</h1>
                 <p class="movie-cover-subtitle">Отзыв на фильм</p>
+                <div class="review-live-score" aria-label="Текущая итоговая оценка">
+                    <output class="review-live-score-value" data-average-rating>5.0</output>
+                    <span class="review-live-score-scale">/ 10</span>
+                </div>
             </div>
         </section>
-
         {% if review_form.non_field_errors %}
             <div class="review-form-errors">{{ review_form.non_field_errors }}</div>
         {% endif %}
-
         <div class="review-rating-grid">
             <div class="review-rating-item review-rating-item--primary">
                 <div class="review-rating-heading">
                     <label class="review-rating-name"
-                           for="{{ review_form.rating.id_for_label }}">
-                        {{ review_form.rating.label }}
-                    </label>
+                           for="{{ review_form.rating.id_for_label }}">{{ review_form.rating.label }}</label>
                     <span class="review-rating-primary-mark">Основная</span>
                 </div>
                 <div class="review-rating-controls">
@@ -45,13 +44,10 @@
                     <div class="review-form-errors">{{ review_form.rating.errors }}</div>
                 {% endif %}
             </div>
-
             {% for field, toggle in review_form.optional_ratings %}
                 <div class="review-rating-item review-rating-item--optional is-disabled">
                     <div class="review-rating-heading">
-                        <label class="review-rating-name" for="{{ field.id_for_label }}">
-                            {{ field.label }}
-                        </label>
+                        <label class="review-rating-name" for="{{ field.id_for_label }}">{{ field.label }}</label>
                         <label class="review-rating-toggle" for="{{ toggle.id_for_label }}">
                             {{ toggle }}
                             <span>{{ toggle.label }}</span>
@@ -59,8 +55,7 @@
                     </div>
                     <div class="review-rating-controls">
                         {{ field }}
-                        <output class="review-rating-value"
-                                for="{{ field.id_for_label }}">—</output>
+                        <output class="review-rating-value" for="{{ field.id_for_label }}">—</output>
                     </div>
                     {% if field.errors %}
                         <div class="review-form-errors">{{ field.errors }}</div>
@@ -68,15 +63,21 @@
                 </div>
             {% endfor %}
         </div>
-
         {% if review_form.rating.help_text %}
             <p class="review-form-help">{{ review_form.rating.help_text }}</p>
         {% endif %}
-
+        <section class="review-final-score" aria-label="Итоговая оценка отзыва">
+            <div>
+                <span class="review-final-score-label">Итоговая оценка</span>
+                <p>Среднее по всем включённым критериям</p>
+            </div>
+            <div class="review-final-score-result" aria-live="polite">
+                <output data-average-rating>5.0</output>
+                <span>/ 10</span>
+            </div>
+        </section>
         <div class="review-form-field">
-            <label class="review-form-label" for="{{ review_form.text.id_for_label }}">
-                {{ review_form.text.label }}
-            </label>
+            <label class="review-form-label" for="{{ review_form.text.id_for_label }}">{{ review_form.text.label }}</label>
             {{ review_form.text }}
             {% if review_form.text.help_text %}
                 <p class="review-form-help">{{ review_form.text.help_text }}</p>
@@ -85,7 +86,6 @@
                 <div class="review-form-errors">{{ review_form.text.errors }}</div>
             {% endif %}
         </div>
-
         <div class="review-form-field">
             <label class="review-checkbox-row"
                    for="{{ review_form.contains_spoiler.id_for_label }}">
@@ -96,10 +96,8 @@
                 <div class="review-form-errors">{{ review_form.contains_spoiler.errors }}</div>
             {% endif %}
         </div>
-
         <button class="btn review-form-submit" type="submit">Опубликовать отзыв</button>
     </form>
-
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         const reviewForm = document.querySelector(".review-form");
@@ -109,6 +107,38 @@
         }
 
         const ratingItems = reviewForm.querySelectorAll(".review-rating-item");
+        const averageOutputs = reviewForm.querySelectorAll("[data-average-rating]");
+
+        const updateAverageRating = () => {
+          const enabledRanges = reviewForm.querySelectorAll(
+            ".category-range:not(:disabled)"
+          );
+          const valuesInTenths = Array.from(enabledRanges, (rangeInput) =>
+            Math.round(Number(rangeInput.value || 0) * 10)
+          );
+
+          if (!valuesInTenths.length) {
+            return;
+          }
+
+          const totalInTenths = valuesInTenths.reduce(
+            (total, value) => total + value,
+            0
+          );
+          const wholeTenths = Math.floor(totalInTenths / valuesInTenths.length);
+          const remainder = totalInTenths % valuesInTenths.length;
+          const isExactlyHalf = remainder * 2 === valuesInTenths.length;
+          const shouldRoundUp =
+            remainder * 2 > valuesInTenths.length ||
+            (isExactlyHalf && wholeTenths % 2 !== 0);
+          const roundedTenths = wholeTenths + (shouldRoundUp ? 1 : 0);
+          const average = (roundedTenths / 10).toFixed(1);
+
+          averageOutputs.forEach((averageOutput) => {
+            averageOutput.value = average;
+            averageOutput.textContent = average;
+          });
+        };
 
         ratingItems.forEach((ratingItem) => {
           const rangeInput = ratingItem.querySelector(".category-range");
@@ -146,13 +176,19 @@
             setOptionalState(ratingToggle.checked);
             ratingToggle.addEventListener("change", () => {
               setOptionalState(ratingToggle.checked);
+              updateAverageRating();
             });
           } else {
             syncRangeView();
           }
 
-          rangeInput.addEventListener("input", syncRangeView);
+          rangeInput.addEventListener("input", () => {
+            syncRangeView();
+            updateAverageRating();
+          });
         });
+
+        updateAverageRating();
       });
     </script>
 {% endblock %}

@@ -81,8 +81,8 @@
 .review-form {
   display: grid;
   gap: var(--space-l);
-  max-width: 720px;
-  margin: 20px 10px;
+  max-width: 900px;
+  margin: auto;
   padding: var(--space-l);
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -114,9 +114,41 @@
   font-size: 1.5rem;
 }
 
+.movie-cover-info {
+  display: flex;
+  align-self: stretch;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
 .movie-cover-subtitle {
   margin: 4px 0 0;
   color: var(--color-text-muted, #6b7280);
+}
+
+.review-live-score {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  margin-top: auto;
+  color: var(--rafs-red);
+  font-variant-numeric: tabular-nums;
+}
+
+.review-live-score-value {
+  font-size: clamp(4.8rem, 13vw, 7.4rem);
+  font-weight: 850;
+  letter-spacing: -0.09em;
+  line-height: 0.78;
+  text-shadow: 0 0 30px rgb(219 57 47 / 24%);
+}
+
+.review-live-score-scale {
+  padding-bottom: 4px;
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  font-weight: 700;
 }
 
 .review-rating-grid {
@@ -299,6 +331,75 @@
 .review-rating-item.is-disabled .review-rating-value {
   background-color: var(--color-border);
   color: var(--color-text-muted);
+}
+
+.review-final-score {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-l);
+  padding: 16px 18px;
+  border: 1px solid color-mix(in srgb, var(--rafs-red) 58%, var(--color-border));
+  border-radius: 10px;
+  background: linear-gradient(100deg, rgb(219 57 47 / 13%), transparent 52%), var(--color-surface-raised);
+}
+
+.review-final-score-label {
+  color: var(--color-text);
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.review-final-score p {
+  margin: 4px 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+}
+
+.review-final-score-result {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-shrink: 0;
+  color: var(--rafs-red);
+  font-variant-numeric: tabular-nums;
+}
+
+.review-final-score-result output {
+  font-size: 2.35rem;
+  font-weight: 850;
+  letter-spacing: -0.05em;
+  line-height: 1;
+}
+
+.review-final-score-result span {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+@media (max-width: 560px) {
+  .review-page-header {
+    gap: 12px;
+  }
+
+  .movie-cover-preview {
+    min-width: 100px;
+  }
+
+  .movie-cover-image {
+    width: 100px;
+    height: 150px;
+  }
+
+  .review-live-score-value {
+    font-size: clamp(3.5rem, 18vw, 5rem);
+  }
+
+  .review-final-score {
+    align-items: flex-start;
+    flex-direction: column;
+  }
 }
 
 .review-range-header {

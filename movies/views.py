@@ -31,10 +31,16 @@ def catalog(request):
 def movie_detail(request, movie_id):
     movie = get_object_or_404(Movie, pk=movie_id)
     reviews = Review.objects.filter(movie=movie, text__gt="")
+    user_already_rated_this = False
+    if request.user.is_authenticated:
+        user_already_rated_this = reviews.filter(user=request.user).exists()
+        latest_user_rate = reviews.filter(user=request.user)[""]
 
     return render(request, "movies/movie_detail.html",
                   {"movie": movie, 
-                   "reviews": reviews})
+                   "reviews": reviews,
+                   "user_already_rated_this": user_already_rated_this,
+                   "": u})
 
 @login_required
 def make_review_form(request, movie_id):

@@ -14,7 +14,7 @@ class Movie(models.Model):
 
     @property
     def avg_rating(self):
-        raw_avg_rating = self.reviews.aggregate(Avg("rating"))["rating__avg"]
+        raw_avg_rating = self.reviews.aggregate(Avg("avg_rating"))["avg_rating__avg"]
         return round(raw_avg_rating, 1) if raw_avg_rating is not None else 0.0
     
     class Meta:
