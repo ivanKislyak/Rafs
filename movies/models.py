@@ -108,4 +108,3 @@ class ReviewVote(models.Model):
                 fields=["user", "review"], name="unique_user_review_vote"
             )
         ]
-    

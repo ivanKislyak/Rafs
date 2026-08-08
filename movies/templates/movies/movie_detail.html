@@ -47,11 +47,11 @@
                     <div class="review-comment-header">
                         <div class="review-comment-author-block">
                             {% if review.user.avatar_image %}
-                                <img class="user-avatar"
-                                     src="{% static 'users/avatars/' %}"
+                                <img class="review-comment-avatar"
+                                     src="{{ review.user.avatar_image.url }}"
                                      alt="{{ review.user.username }}">
                             {% else %}
-                                <img class="user-avatar"
+                                <img class="review-comment-avatar"
                                      src="{% static 'images/default_profile_img.png' %}"
                                      alt="{{ review.user.username }}">
                             {% endif %}

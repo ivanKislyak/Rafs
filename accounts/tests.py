@@ -1,3 +1,8 @@
 from django.test import TestCase
+from django.urls import reverse
+from accounts.models import User
 
-# Create your tests here.
+class RegistrationEmailTests(TestCase):
+
+    def test_registration_with_unique_email_succeds(self):
+        User.objects.create

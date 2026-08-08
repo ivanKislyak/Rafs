@@ -78,6 +78,18 @@
   color: var(--color-text);
 }
 
+.review-comment-avatar {
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  max-width: 30px;
+  flex: 0 0 30px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+  display: block;
+}
+
 .review-form {
   display: grid;
   gap: var(--space-l);

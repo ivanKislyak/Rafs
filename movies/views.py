@@ -1,15 +1,15 @@
 from django.contrib.auth.decorators import login_required
-from django.db.models import Avg, F
+from django.db.models import Avg, F, Count
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import MovieFilterForm, ReviewForm
 from .models import Movie, Review
 
 def catalog(request):
     filter_form = MovieFilterForm(request.GET or None)
-
+    
     all_movies = (
-        Movie.objects.annotate(review_avg_rating=Avg("reviews__avg_rating"))
-        .order_by(F("review_avg_rating").desc(nulls_last=True), "name")
+        Movie.objects.annotate(reviews_count=Count("reviews"), review_avg_rating=Avg("reviews__avg_rating"))
+        .order_by("-reviews_count", F("review_avg_rating").desc(nulls_last=True), "name")
     )
 
     if filter_form.is_valid():
