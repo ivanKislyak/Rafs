@@ -21,6 +21,13 @@ class User(AbstractUser):
         else:
             calculated_lvl = int(0.1 * math.sqrt(self.user_frames))
             self.user_lvl = max(1, calculated_lvl)
+
+        if "update_fields" in kwargs:
+            update_fields = kwargs["update_fields"]
+
+            if update_fields is not None and "user_lvl" not in update_fields:
+                kwargs["update_fields"] = list(update_fields) + ["user_lvl"]
+
         super().save(*args, **kwargs)
 
     def __str__(self):

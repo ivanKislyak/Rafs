@@ -2,6 +2,84 @@
 {% load static %}
 {% load humanize %}
 {% block content %}
+    <style>
+        .review-votes {
+            display: flex;
+            width: fit-content;
+            margin-top: 4px;
+            overflow: hidden;
+            border: 1px solid var(--color-border);
+            border-radius: 999px;
+            background: var(--color-surface-raised);
+        }
+
+        .review-vote-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            min-width: 48px;
+            height: 36px;
+            padding: 0 12px;
+            border: 0;
+            background: transparent;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            transition: background-color 160ms ease, color 160ms ease;
+        }
+
+        .review-vote-button + .review-vote-button {
+            border-left: 1px solid var(--color-border);
+        }
+
+        .review-vote-button:hover,
+        .review-vote-button.is-selected {
+            background: var(--color-accent-glow);
+            color: var(--color-text);
+        }
+
+        .review-vote-button:focus-visible {
+            outline: 2px solid var(--color-focus-visible-outline);
+            outline-offset: -3px;
+        }
+
+        .review-vote-icon {
+            width: 21px;
+            height: 21px;
+            object-fit: contain;
+            pointer-events: none;
+        }
+
+        .review-vote-count {
+            min-width: 1ch;
+            font-size: 0.9rem;
+            font-weight: 650;
+            line-height: 1;
+        }
+
+        .review-vote-count:empty {
+            display: none;
+        }
+
+        .review-vote-button.vote-pop .review-vote-icon {
+            animation: review-vote-pop 260ms ease-out;
+        }
+
+        @keyframes review-vote-pop {
+            0% { transform: scale(1); }
+            45% { transform: scale(1.28) rotate(-7deg); }
+            100% { transform: scale(1); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .review-vote-button,
+            .review-vote-button.vote-pop .review-vote-icon {
+                transition: none;
+                animation: none;
+            }
+        }
+    </style>
+
     <a class="btn" href="{% url 'movies:catalog' %}">← Вернуться в каталог</a>
     <hr />
     <article class="movie-detail-main-container">
@@ -66,10 +144,90 @@
                         <span class="review-comment-date">{{ review.created_at|naturaltime }}</span>
                     </div>
                     <p class="review-comment-text">{{ review.text }}</p>
+                    <div class="review-votes"
+                         data-review-id="{{ review.id }}"
+                         data-current-vote="{% if review.user_vote == 1 %}1{% elif review.user_vote == -1 %}-1{% endif %}">
+                        <button class="review-vote-button{% if review.user_vote == 1 %} is-selected{% endif %}"
+                                type="button"
+                                data-vote-value="1"
+                                data-disabled-src="{% static 'images/like_disabled.png' %}"
+                                data-enabled-src="{% static 'images/like_enabled.png' %}"
+                                aria-label="Поставить лайк отзыву"
+                                aria-pressed="{% if review.user_vote == 1 %}true{% else %}false{% endif %}">
+                            <img class="review-vote-icon"
+                                 src="{% if review.user_vote == 1 %}{% static 'images/like_enabled.png' %}{% else %}{% static 'images/like_disabled.png' %}{% endif %}"
+                                 alt="">
+                            <span class="review-vote-count"
+                                  data-count="{{ review.like_count|default:0 }}">{% if review.like_count %}{{ review.like_count }}{% endif %}</span>
+                        </button>
+                        <button class="review-vote-button{% if review.user_vote == -1 %} is-selected{% endif %}"
+                                type="button"
+                                data-vote-value="-1"
+                                data-disabled-src="{% static 'images/dislike_disabled.png' %}"
+                                data-enabled-src="{% static 'images/dislike_enabled.png' %}"
+                                aria-label="Поставить дизлайк отзыву"
+                                aria-pressed="{% if review.user_vote == -1 %}true{% else %}false{% endif %}">
+                            <img class="review-vote-icon"
+                                 src="{% if review.user_vote == -1 %}{% static 'images/dislike_enabled.png' %}{% else %}{% static 'images/dislike_disabled.png' %}{% endif %}"
+                                 alt="">
+                            <span class="review-vote-count"
+                                  data-count="{{ review.dislike_count|default:0 }}">{% if review.dislike_count %}{{ review.dislike_count }}{% endif %}</span>
+                        </button>
+                    </div>
                 </article>
             {% endfor %}
         {% else %}
             <p class="review-comments-empty">Пока нет отзывов. Станьте первым, кто оставит комментарий!</p>
         {% endif %}
     </section>
+
+    <script>
+        document.querySelectorAll(".review-votes").forEach((voteGroup) => {
+            const buttons = [...voteGroup.querySelectorAll(".review-vote-button")];
+
+            const changeCount = (button, difference) => {
+                const count = button.querySelector(".review-vote-count");
+                const nextValue = Math.max(0, Number(count.dataset.count || 0) + difference);
+
+                count.dataset.count = nextValue;
+                count.textContent = nextValue > 0 ? nextValue : "";
+            };
+
+            const showButtonState = (button, isSelected) => {
+                const icon = button.querySelector(".review-vote-icon");
+
+                button.classList.toggle("is-selected", isSelected);
+                button.setAttribute("aria-pressed", String(isSelected));
+                icon.src = isSelected ? button.dataset.enabledSrc : button.dataset.disabledSrc;
+            };
+
+            buttons.forEach((clickedButton) => {
+                clickedButton.addEventListener("click", () => {
+                    const clickedVote = clickedButton.dataset.voteValue;
+                    const currentVote = voteGroup.dataset.currentVote;
+                    const nextVote = currentVote === clickedVote ? "" : clickedVote;
+
+                    if (currentVote) {
+                        const previousButton = buttons.find(
+                            (button) => button.dataset.voteValue === currentVote
+                        );
+                        changeCount(previousButton, -1);
+                    }
+
+                    if (nextVote) {
+                        changeCount(clickedButton, 1);
+                    }
+
+                    voteGroup.dataset.currentVote = nextVote;
+                    buttons.forEach((button) => {
+                        showButtonState(button, button.dataset.voteValue === nextVote);
+                    });
+
+                    clickedButton.classList.remove("vote-pop");
+                    void clickedButton.offsetWidth;
+                    clickedButton.classList.add("vote-pop");
+                });
+            });
+        });
+    </script>
 {% endblock %}

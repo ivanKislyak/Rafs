@@ -70,3 +70,6 @@ def make_review_form(request, movie_id):
     
     return render(request, "movies/review_form.html", {"movie": movie, 
                        "review_form": review_form})
+
+def rate_the_review(request):
+    pass
