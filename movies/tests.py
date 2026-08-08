@@ -1,9 +1,11 @@
+import json
+
 from django.contrib.auth import get_user_model
-from django.test import SimpleTestCase, TestCase
+from django.test import Client, SimpleTestCase, TestCase
 from django.urls import reverse
 
 from .forms import ReviewForm
-from .models import Movie, Review
+from .models import Movie, Review, ReviewVote
 
 
 class ReviewFormTests(SimpleTestCase):
@@ -41,3 +43,72 @@ class CatalogRatingFilterTests(TestCase):
 
         self.assertIn("High review rating", movies)
         self.assertNotIn("Low review rating", movies)
+
+
+class ReviewVoteTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        author = get_user_model().objects.create_user(
+            username="review-author",
+            email="author@example.com",
+        )
+        cls.voter = get_user_model().objects.create_user(
+            username="review-voter",
+            email="voter@example.com",
+        )
+        movie = Movie.objects.create(name="Vote test movie", year=2020)
+        cls.review = Review.objects.create(
+            user=author,
+            movie=movie,
+            rating=8,
+            text="Test review",
+        )
+
+    def setUp(self):
+        self.client = Client(enforce_csrf_checks=True)
+        self.client.force_login(self.voter)
+        self.client.get(reverse("movies:detail", args=[self.review.movie_id]))
+        self.csrf_token = self.client.cookies["csrftoken"].value
+
+    def send_vote(self, value):
+        return self.client.post(
+            reverse("movies:vote_review"),
+            data=json.dumps({"review_id": self.review.id, "vote_value": value}),
+            content_type="application/json",
+            HTTP_X_CSRFTOKEN=self.csrf_token,
+        )
+
+    def test_like_toggle_and_dislike_switch_are_saved(self):
+        like_response = self.send_vote(1)
+        self.assertEqual(like_response.status_code, 200)
+        self.assertEqual(like_response.json()["likes"], 1)
+        self.assertTrue(
+            ReviewVote.objects.filter(
+                review=self.review,
+                user=self.voter,
+                value=ReviewVote.VoteChoice.LIKE,
+            ).exists()
+        )
+
+        remove_response = self.send_vote(1)
+        self.assertEqual(remove_response.json()["user_vote"], 0)
+        self.assertFalse(
+            ReviewVote.objects.filter(review=self.review, user=self.voter).exists()
+        )
+
+        dislike_response = self.send_vote(-1)
+        self.assertEqual(dislike_response.json()["dislikes"], 1)
+        self.assertTrue(
+            ReviewVote.objects.filter(
+                review=self.review,
+                user=self.voter,
+                value=ReviewVote.VoteChoice.DISLIKE,
+            ).exists()
+        )
+
+        detail_response = self.client.get(
+            reverse("movies:detail", args=[self.review.movie_id])
+        )
+        displayed_review = detail_response.context["reviews"][0]
+        self.assertEqual(displayed_review.dislike_count, 1)
+        self.assertEqual(displayed_review.user_vote, ReviewVote.VoteChoice.DISLIKE)

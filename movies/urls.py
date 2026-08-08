@@ -7,5 +7,6 @@ app_name = "movies"
 urlpatterns = [
     path("", views.catalog, name="catalog"),
     path("<int:movie_id>/", views.movie_detail, name="detail"),
-    path("review/<int:movie_id>/", views.make_review_form, name="review_form")
+    path("review/<int:movie_id>/", views.make_review_form, name="review_form"),
+    path('review/vote/', views.vote_review, name='vote_review'),
 ]

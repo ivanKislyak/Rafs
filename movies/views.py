@@ -1,8 +1,12 @@
+import json
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg, F, Count
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
+from django.views.decorators.http import require_POST
+
 from .forms import MovieFilterForm, ReviewForm
-from .models import Movie, Review
+from .models import Movie, Review, ReviewVote
 
 def catalog(request):
     filter_form = MovieFilterForm(request.GET or None)
@@ -34,8 +38,30 @@ def catalog(request):
 
 def movie_detail(request, movie_id):
     movie = get_object_or_404(Movie, pk=movie_id)
-    reviews = Review.objects.filter(movie=movie).exclude(text="")
+    reviews = list(
+        Review.objects.filter(movie=movie)
+        .exclude(text="")
+        .select_related("user")
+        .prefetch_related("votes")
+    )
     user_already_rated_this = False
+
+    for review in reviews:
+        review_votes = list(review.votes.all())
+        review.like_count = sum(
+            vote.value == ReviewVote.VoteChoice.LIKE for vote in review_votes
+        )
+        review.dislike_count = sum(
+            vote.value == ReviewVote.VoteChoice.DISLIKE for vote in review_votes
+        )
+        review.user_vote = next(
+            (
+                vote.value
+                for vote in review_votes
+                if request.user.is_authenticated and vote.user_id == request.user.id
+            ),
+            0,
+        )
 
     if request.user.is_authenticated:
         user_already_rated_this = Review.objects.filter(movie=movie, user=request.user).first()
@@ -53,7 +79,6 @@ def make_review_form(request, movie_id):
         user = request.user,
         movie_id=movie_id).first()
 
-
     if request.method == "POST":
         review_form = ReviewForm(request.POST, instance=existing_review)
 
@@ -61,8 +86,12 @@ def make_review_form(request, movie_id):
                 review = review_form.save(commit=False)
                 review.movie = movie
                 review.user = request.user
-                review.save()
 
+                if not existing_review:
+                    request.user.user_frames += 100
+                    request.user.save()
+                    
+                review.save()
                 return redirect("movies:detail", movie_id=movie_id)
 
     if request.method == "GET":
@@ -71,5 +100,43 @@ def make_review_form(request, movie_id):
     return render(request, "movies/review_form.html", {"movie": movie, 
                        "review_form": review_form})
 
-def rate_the_review(request):
-    pass
+@login_required
+@require_POST
+def vote_review(request):
+    try:
+        data = json.loads(request.body)
+        review_id = data.get("review_id")
+        vote_value = int(data.get("vote_value"))
+
+        if vote_value not in [ReviewVote.VoteChoice.LIKE, ReviewVote.VoteChoice.DISLIKE]:
+            return JsonResponse({"error": "Неверное значение голоса"}, status=400)
+
+        review = get_object_or_404(Review, id=review_id)
+        vote, created = ReviewVote.objects.get_or_create(
+            user=request.user,
+            review=review,
+            defaults={"value": vote_value},
+        )
+
+        if not created:
+            if vote.value == vote_value:
+                vote.delete()
+                current_user_vote = 0
+            else:
+                vote.value = vote_value
+                vote.save(update_fields=["value"])
+                current_user_vote = vote_value
+        else:
+            current_user_vote = vote_value
+
+        likes = review.votes.filter(value=ReviewVote.VoteChoice.LIKE).count()
+        dislikes = review.votes.filter(value=ReviewVote.VoteChoice.DISLIKE).count()
+
+        return JsonResponse({
+            "likes": likes,
+            "dislikes": dislikes,
+            "user_vote": current_user_vote,
+        })
+
+    except (json.JSONDecodeError, TypeError, ValueError):
+        return JsonResponse({"error": "Неверный формат данных"}, status=400)

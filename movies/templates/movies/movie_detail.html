@@ -38,14 +38,23 @@
             color: var(--color-text);
         }
 
+        .review-vote-button:disabled {
+            cursor: pointer;
+            opacity: 0.65;
+        }
+
         .review-vote-button:focus-visible {
             outline: 2px solid var(--color-focus-visible-outline);
             outline-offset: -3px;
         }
 
         .review-vote-icon {
+            display: block;
+            flex: 0 0 21px;
             width: 21px;
             height: 21px;
+            max-width: 21px;
+            background: transparent;
             object-fit: contain;
             pointer-events: none;
         }
@@ -57,8 +66,14 @@
             line-height: 1;
         }
 
-        .review-vote-count:empty {
+        .review-vote-count:empty,
+        .review-vote-status:empty {
             display: none;
+        }
+
+        .review-vote-status {
+            color: var(--rafs-red-soft);
+            font-size: 0.85rem;
         }
 
         .review-vote-button.vote-pop .review-vote-icon {
@@ -119,6 +134,7 @@
     <hr />
     <section class="review-comments">
         <h2 class="review-comments-title">Отзывы</h2>
+        <form id="review-vote-csrf" hidden>{% csrf_token %}</form>
         {% if reviews %}
             {% for review in reviews %}
                 <article class="review-comment">
@@ -144,9 +160,7 @@
                         <span class="review-comment-date">{{ review.created_at|naturaltime }}</span>
                     </div>
                     <p class="review-comment-text">{{ review.text }}</p>
-                    <div class="review-votes"
-                         data-review-id="{{ review.id }}"
-                         data-current-vote="{% if review.user_vote == 1 %}1{% elif review.user_vote == -1 %}-1{% endif %}">
+                    <div class="review-votes" data-review-id="{{ review.id }}">
                         <button class="review-vote-button{% if review.user_vote == 1 %} is-selected{% endif %}"
                                 type="button"
                                 data-vote-value="1"
@@ -156,9 +170,10 @@
                                 aria-pressed="{% if review.user_vote == 1 %}true{% else %}false{% endif %}">
                             <img class="review-vote-icon"
                                  src="{% if review.user_vote == 1 %}{% static 'images/like_enabled.png' %}{% else %}{% static 'images/like_disabled.png' %}{% endif %}"
+                                 width="21"
+                                 height="21"
                                  alt="">
-                            <span class="review-vote-count"
-                                  data-count="{{ review.like_count|default:0 }}">{% if review.like_count %}{{ review.like_count }}{% endif %}</span>
+                            <span class="review-vote-count">{% if review.like_count %}{{ review.like_count }}{% endif %}</span>
                         </button>
                         <button class="review-vote-button{% if review.user_vote == -1 %} is-selected{% endif %}"
                                 type="button"
@@ -169,11 +184,13 @@
                                 aria-pressed="{% if review.user_vote == -1 %}true{% else %}false{% endif %}">
                             <img class="review-vote-icon"
                                  src="{% if review.user_vote == -1 %}{% static 'images/dislike_enabled.png' %}{% else %}{% static 'images/dislike_disabled.png' %}{% endif %}"
+                                 width="21"
+                                 height="21"
                                  alt="">
-                            <span class="review-vote-count"
-                                  data-count="{{ review.dislike_count|default:0 }}">{% if review.dislike_count %}{{ review.dislike_count }}{% endif %}</span>
+                            <span class="review-vote-count">{% if review.dislike_count %}{{ review.dislike_count }}{% endif %}</span>
                         </button>
                     </div>
+                    <span class="review-vote-status" aria-live="polite"></span>
                 </article>
             {% endfor %}
         {% else %}
@@ -182,19 +199,26 @@
     </section>
 
     <script>
+        const reviewVoteUrl = "{% url 'movies:vote_review' %}";
+        const reviewVoteLoginUrl = "{% url 'login' %}?next={{ request.path|urlencode }}";
+        const reviewVoteCsrf = document.querySelector(
+            "#review-vote-csrf [name=csrfmiddlewaretoken]"
+        ).value;
+        const reviewVoteUserIsAuthenticated = {{ user.is_authenticated|yesno:"true,false" }};
+
         document.querySelectorAll(".review-votes").forEach((voteGroup) => {
             const buttons = [...voteGroup.querySelectorAll(".review-vote-button")];
+            const status = voteGroup.nextElementSibling;
 
-            const changeCount = (button, difference) => {
+            const showCount = (button, value) => {
                 const count = button.querySelector(".review-vote-count");
-                const nextValue = Math.max(0, Number(count.dataset.count || 0) + difference);
 
-                count.dataset.count = nextValue;
-                count.textContent = nextValue > 0 ? nextValue : "";
+                count.textContent = value > 0 ? value : "";
             };
 
-            const showButtonState = (button, isSelected) => {
+            const showButtonState = (button, userVote) => {
                 const icon = button.querySelector(".review-vote-icon");
+                const isSelected = Number(button.dataset.voteValue) === userVote;
 
                 button.classList.toggle("is-selected", isSelected);
                 button.setAttribute("aria-pressed", String(isSelected));
@@ -202,30 +226,46 @@
             };
 
             buttons.forEach((clickedButton) => {
-                clickedButton.addEventListener("click", () => {
-                    const clickedVote = clickedButton.dataset.voteValue;
-                    const currentVote = voteGroup.dataset.currentVote;
-                    const nextVote = currentVote === clickedVote ? "" : clickedVote;
-
-                    if (currentVote) {
-                        const previousButton = buttons.find(
-                            (button) => button.dataset.voteValue === currentVote
-                        );
-                        changeCount(previousButton, -1);
+                clickedButton.addEventListener("click", async () => {
+                    if (!reviewVoteUserIsAuthenticated) {
+                        window.location.href = reviewVoteLoginUrl;
+                        return;
                     }
 
-                    if (nextVote) {
-                        changeCount(clickedButton, 1);
+                    status.textContent = "";
+                    buttons.forEach((button) => button.disabled = true);
+
+                    try {
+                        const response = await fetch(reviewVoteUrl, {
+                            method: "POST",
+                            credentials: "same-origin",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRFToken": reviewVoteCsrf,
+                            },
+                            body: JSON.stringify({
+                                review_id: voteGroup.dataset.reviewId,
+                                vote_value: clickedButton.dataset.voteValue,
+                            }),
+                        });
+                        const data = await response.json().catch(() => ({}));
+
+                        if (!response.ok) {
+                            throw new Error(data.error || "Не удалось сохранить реакцию");
+                        }
+
+                        showCount(buttons[0], data.likes);
+                        showCount(buttons[1], data.dislikes);
+                        buttons.forEach((button) => showButtonState(button, data.user_vote));
+
+                        clickedButton.classList.remove("vote-pop");
+                        void clickedButton.offsetWidth;
+                        clickedButton.classList.add("vote-pop");
+                    } catch (error) {
+                        status.textContent = error.message;
+                    } finally {
+                        buttons.forEach((button) => button.disabled = false);
                     }
-
-                    voteGroup.dataset.currentVote = nextVote;
-                    buttons.forEach((button) => {
-                        showButtonState(button, button.dataset.voteValue === nextVote);
-                    });
-
-                    clickedButton.classList.remove("vote-pop");
-                    void clickedButton.offsetWidth;
-                    clickedButton.classList.add("vote-pop");
                 });
             });
         });
