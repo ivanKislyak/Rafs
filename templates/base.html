@@ -29,15 +29,53 @@
               type="image/x-icon"
               href="{% static 'images/favicon.ico' %}">
         <title>{% block title %} RAFS {% endblock %}</title>
-        <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/base.css' %}?v=20260808-2" />
         <link rel="stylesheet"
               href="{% static 'movies/css/movies.css' %}?v=20260808-1" />
         <link rel="stylesheet" href="{% static 'core/css/core.css' %}" />
     </head>
     <body>
         {% include "_header.html" %}
+        {% if messages %}
+            <div class="site-toast-region"
+                 id="site-toast-region"
+                 aria-live="polite"
+                 aria-atomic="true">
+                {% for message in messages %}
+                    <aside class="site-toast{% if 'frames-reward' in message.tags %} site-toast--frames{% endif %}"
+                           data-site-toast
+                           data-toast-tags="{{ message.tags }}"
+                           role="status"
+                           hidden>
+                        {% if "frames-reward" in message.tags %}
+                            <div class="site-toast-frame-icon" data-toast-particle-origin aria-hidden="true">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <div class="site-toast-copy">
+                                <span class="site-toast-kicker">Начислено</span>
+                                <strong class="site-toast-title">{{ message }}</strong>
+                                <span class="site-toast-caption">За новую рецензию</span>
+                            </div>
+                        {% else %}
+                            <div class="site-toast-copy">
+                                <strong class="site-toast-title">{{ message }}</strong>
+                            </div>
+                        {% endif %}
+                        <button class="site-toast-close"
+                                type="button"
+                                data-toast-close
+                                aria-label="Закрыть уведомление">×</button>
+                        <span class="site-toast-timer" aria-hidden="true"></span>
+                    </aside>
+                {% endfor %}
+            </div>
+        {% endif %}
         <div class="main-container">
             {% block content %}{% endblock %}
         </div>
+        <script src="{% static 'js/notifications.js' %}?v=20260808-1" defer></script>
     </body>
 </html>

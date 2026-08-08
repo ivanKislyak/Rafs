@@ -240,6 +240,7 @@
         {% if user.is_authenticated %}
             <details class="header-profile">
                 <summary class="header-profile-trigger header-tooltip"
+                         data-profile-reward-target
                          data-tooltip="Открыть меню профиля">
                     <span class="header-user">
                         {% if user.avatar_image %}
@@ -267,6 +268,7 @@
                             <strong class="header-profile-stat-value">{{ user.user_lvl }}</strong>
                         </div>
                         <div class="header-profile-stat header-tooltip"
+                             data-frames-balance
                              data-tooltip="Кадры — ваши очки опыта">
                             <span class="header-profile-stat-name">Кадры</span>
                             <strong class="header-profile-stat-value">{{ user.user_frames|intcomma }}</strong>

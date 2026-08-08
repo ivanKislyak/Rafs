@@ -1,4 +1,5 @@
 import json
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg, F, Count
 from django.http import JsonResponse
@@ -83,16 +84,23 @@ def make_review_form(request, movie_id):
         review_form = ReviewForm(request.POST, instance=existing_review)
 
         if review_form.is_valid():
-                review = review_form.save(commit=False)
-                review.movie = movie
-                review.user = request.user
+            is_new_review = existing_review is None
+            review = review_form.save(commit=False)
+            review.movie = movie
+            review.user = request.user
 
-                if not existing_review:
-                    request.user.user_frames += 100
-                    request.user.save()
-                    
-                review.save()
-                return redirect("movies:detail", movie_id=movie_id)
+            if is_new_review:
+                request.user.user_frames += 100
+                request.user.save()
+
+            review.save()
+            if is_new_review:
+                messages.success(
+                    request,
+                    "+100 Кадров",
+                    extra_tags="frames-reward",
+                )
+            return redirect("movies:detail", movie_id=movie_id)
 
     if request.method == "GET":
         review_form = ReviewForm(instance=existing_review)

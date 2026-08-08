@@ -45,6 +45,42 @@ class CatalogRatingFilterTests(TestCase):
         self.assertNotIn("Low review rating", movies)
 
 
+class ReviewFramesRewardTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = get_user_model().objects.create_user(
+            username="reward-reviewer",
+            password="test-password",
+        )
+        cls.movie = Movie.objects.create(name="Reward test movie", year=2024)
+
+    def setUp(self):
+        self.client.force_login(self.user)
+
+    def submit_review(self, text):
+        return self.client.post(
+            reverse("movies:review_form", args=[self.movie.id]),
+            data={"rating": "8.0", "text": text},
+            follow=True,
+        )
+
+    def test_new_review_rewards_frames_and_displays_notification(self):
+        response = self.submit_review("First review")
+
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.user_frames, 101)
+        self.assertContains(response, "+100 Кадров")
+        self.assertContains(response, "frames-reward")
+
+    def test_editing_review_does_not_reward_frames_again(self):
+        self.submit_review("First review")
+        response = self.submit_review("Updated review")
+
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.user_frames, 101)
+        self.assertNotContains(response, "+100 Кадров")
+
+
 class ReviewVoteTests(TestCase):
     @classmethod
     def setUpTestData(cls):
