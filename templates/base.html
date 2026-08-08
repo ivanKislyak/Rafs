@@ -17,7 +17,10 @@
             <meta property="og:description"
                   content="Оценивайте фильмы по разным критериям и делитесь отзывами">
             <meta property="og:image"
-                  content="https://{{ request.get_host }}{% static 'images/rafs-preview.png' %}">
+                  content="https://{{ request.get_host }}{% static 'images/rafs-preview-v3.png' %}">
+            <meta property="og:image:type" content="image/png">
+            <meta property="og:image:width" content="1200">
+            <meta property="og:image:height" content="630">
         {% endblock %}
         <meta name="viewport"
               content="width=device-width, user-scalable=yes, initial-scale=1.0" />
@@ -27,7 +30,8 @@
               href="{% static 'images/favicon.ico' %}">
         <title>{% block title %} RAFS {% endblock %}</title>
         <link rel="stylesheet" href="{% static 'css/base.css' %}" />
-        <link rel="stylesheet" href="{% static 'movies/css/movies.css' %}?v=20260808-1" />
+        <link rel="stylesheet"
+              href="{% static 'movies/css/movies.css' %}?v=20260808-1" />
         <link rel="stylesheet" href="{% static 'core/css/core.css' %}" />
     </head>
     <body>

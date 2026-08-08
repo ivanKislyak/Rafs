@@ -35,8 +35,8 @@ class TestHomePageView(TestCase):
         top_movies = list(self.response.context["top_movies"].values_list("name", flat=True))
         len_movies = len(top_movies)
         
-        self.assertEqual(top_movies, ["Scary movie 6", "Great mile", "One Piece", "Forrest Gump", "Titan"])
-        self.assertEqual(len_movies, 5)
+        self.assertEqual(top_movies, ["Scary movie 6", "Great mile", "One Piece", "Forrest Gump", "Titan", "10 lives"])
+        self.assertEqual(len_movies, 6)
 
     def test_movie_without_reviews_is_not_in_top(self):
         Movie.objects.create(name="Movie without reviews", rate=10, year=1997)
