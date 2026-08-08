@@ -13,3 +13,5 @@ htmlcov/
 contact.html
 index.html
 node_modules/
+*.ps1
+start_hidden.vbs
