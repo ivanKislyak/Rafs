@@ -94,6 +94,7 @@ def make_review_form(request, movie_id):
                 request.user.save()
 
             review.save()
+
             if is_new_review:
                 messages.success(
                     request,

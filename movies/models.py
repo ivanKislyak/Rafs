@@ -9,7 +9,7 @@ class Movie(models.Model):
     year = models.PositiveSmallIntegerField()
     rate = models.DecimalField(decimal_places=1, max_digits=3, null=True, blank=True)
     description = models.TextField(blank=True)
-    path = models.CharField(max_length=200, blank=True, default="")
+    cover = models.ImageField(upload_to="movie_covers/", blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     @property
@@ -18,7 +18,11 @@ class Movie(models.Model):
         if raw_avg_rating is None and not hasattr(self, "review_avg_rating"):
             raw_avg_rating = self.reviews.aggregate(Avg("avg_rating"))["avg_rating__avg"]
         return round(raw_avg_rating, 1) if raw_avg_rating is not None else 0.0
-    
+
+    @property
+    def image_exists(self):
+        return bool(self.cover and self.cover.storage.exists(self.cover.name))
+
     class Meta:
         ordering = ['-rate', 'name']
 

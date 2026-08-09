@@ -1,9 +1,9 @@
 {% load static %}
 <article class="movie-card">
     <a class="a-block" href="{% url 'movies:detail' movie.pk %}">
-        {% if movie.path %}
+        {% if movie.cover and movie.image_exists %}
             <img class="movie-card-cover"
-                 src="{% static 'movies/images/' %}{{ movie.path }}"
+                 src="{{ movie.cover.url }}"
                  data-fallback-src="{% static 'movies/images/nocover.png' %}"
                  onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
                  alt="{{ movie.name }}" />

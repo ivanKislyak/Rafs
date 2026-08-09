@@ -6,9 +6,9 @@
         {% csrf_token %}
         <section class="review-page-header">
             <div class="movie-cover-preview">
-                {% if movie.path %}
+                {% if movie.cover and movie.image_exists %}
                     <img class="movie-cover-image"
-                         src="{% static 'movies/images/'|add:movie.path %}"
+                         src="{{ movie.cover.url }}"
                          alt="{{ movie.name }}">
                 {% else %}
                     <img class="movie-cover-image"

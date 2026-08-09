@@ -98,9 +98,9 @@
     <a class="btn" href="{% url 'movies:catalog' %}">← Вернуться в каталог</a>
     <hr />
     <article class="movie-detail-main-container">
-        {% if movie.path %}
+        {% if movie.cover and movie.image_exists %}
             <img class="movie-detail-cover"
-                 src="{% static 'movies/images/' %}{{ movie.path }}"
+                 src="{{ movie.cover.url }}"
                  alt="{{ movie.name }}" />
         {% else %}
             <img class="movie-detail-cover"
