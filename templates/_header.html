@@ -217,7 +217,6 @@
         }
     }
 </style>
-
 <header class="main-header">
     <nav class="main-nav">
         <a class="logo" href="{% url 'core:home' %}">
@@ -256,11 +255,9 @@
                     </span>
                     <span class="header-profile-chevron" aria-hidden="true"></span>
                 </summary>
-
                 <div class="header-profile-menu">
                     <span class="header-profile-label">Профиль</span>
                     <span class="header-profile-name">{{ user.username }}</span>
-
                     <div class="header-profile-stats">
                         <div class="header-profile-stat header-tooltip"
                              data-tooltip="Ваш текущий уровень">
@@ -274,7 +271,6 @@
                             <strong class="header-profile-stat-value">{{ user.user_frames|intcomma }}</strong>
                         </div>
                     </div>
-
                     <form class="header-logout-form" action="{% url 'logout' %}" method="post">
                         {% csrf_token %}
                         <button class="header-logout-button" type="submit">Выйти из аккаунта</button>

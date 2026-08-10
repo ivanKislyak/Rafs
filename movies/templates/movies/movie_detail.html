@@ -94,7 +94,6 @@
             }
         }
     </style>
-
     <a class="btn" href="{% url 'movies:catalog' %}">← Вернуться в каталог</a>
     <hr />
     <article class="movie-detail-main-container">
@@ -134,7 +133,9 @@
     <hr />
     <section class="review-comments">
         <h2 class="review-comments-title">Отзывы</h2>
-        <form id="review-vote-csrf" hidden>{% csrf_token %}</form>
+        <form id="review-vote-csrf" hidden>
+            {% csrf_token %}
+        </form>
         {% if reviews %}
             {% for review in reviews %}
                 <article class="review-comment">
@@ -190,6 +191,17 @@
                             <span class="review-vote-count">{% if review.dislike_count %}{{ review.dislike_count }}{% endif %}</span>
                         </button>
                     </div>
+                    {% if review.user == request.user %}
+                        <form method="post" action="{% url 'movies:delete_review' review.id %}">
+                            {% csrf_token %}
+                            <button type="submit"
+                                    onclick="return confirm('Вы уверены, что хотите удалить этот отзыв?');"
+                                    style="color: white;
+                                           border: none;
+                                           background: none;
+                                           cursor: pointer">Удалить</button>
+                        </form>
+                    {% endif %}
                     <span class="review-vote-status" aria-live="polite"></span>
                 </article>
             {% endfor %}
@@ -197,7 +209,6 @@
             <p class="review-comments-empty">Пока нет отзывов. Станьте первым, кто оставит комментарий!</p>
         {% endif %}
     </section>
-
     <script>
         const reviewVoteUrl = "{% url 'movies:vote_review' %}";
         const reviewVoteLoginUrl = "{% url 'login' %}?next={{ request.path|urlencode }}";

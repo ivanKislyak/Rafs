@@ -5,6 +5,7 @@ from django.db.models import Avg, F, Count
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.http import require_POST
+from django.http import HttpResponse
 
 from .forms import MovieFilterForm, ReviewForm
 from .models import Movie, Review, ReviewVote
@@ -149,3 +150,14 @@ def vote_review(request):
 
     except (json.JSONDecodeError, TypeError, ValueError):
         return JsonResponse({"error": "Неверный формат данных"}, status=400)
+
+def delete_review(request):
+    if request.method == "POST":
+        user_choice = request.POST.get('action') # Получаем 'yes' или 'no'
+        
+        if user_choice == 'yes':
+            # Логика для "Да"
+            return render(request, 'success.html')
+        else:
+            # Логика для "Нет"
+            return redirect('home')
