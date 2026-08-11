@@ -3,12 +3,14 @@ from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
 from decimal import Decimal
 from django.db.models import Avg
+from taggit.managers import TaggableManager
 
 class Movie(models.Model):
     name = models.CharField(max_length=200) # Night of the Day of the Dawn of the Son of the Bride...
     year = models.PositiveSmallIntegerField()
     rate = models.DecimalField(decimal_places=1, max_digits=3, null=True, blank=True)
     description = models.TextField(blank=True)
+    tags = TaggableManager()
     cover = models.ImageField(upload_to="movie_covers/", blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -55,7 +57,6 @@ class Review(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-
     def save(self, *args, **kwargs):
         rating_sides = [self.rating]
     
@@ -86,29 +87,52 @@ class Review(models.Model):
             return f"{self.user.username} оставил отзыв к фильму {self.movie.name} ({self.avg_rating}): {self.text}"
         return f"{self.movie.name} was review ({self.avg_rating}) by {self.user.username}"
 
-
-class ReviewVote(models.Model):
-    """Лайки/Дизлайки к отзывам"""
-    class VoteChoice(models.IntegerChoices):
-       LIKE = 1, "Like"
-       DISLIKE = -1, "Dislike"
-
+class ReviewReply(models.Model):
+    review = models.ForeignKey(
+        Review,
+        on_delete=models.CASCADE,
+        related_name="replies" # For review.replies.count()
+    )
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,                       
-        related_name="review_votes"
+        on_delete=models.CASCADE,
+        related_name="review_replies"
     )
-    review = models.ForeignKey(
-       Review,
-       on_delete=models.CASCADE,                       
-       related_name="votes"
-    )
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['created_at']
+
+    def __str__(self):
+        return f"Ответ от {self.user.username} к отзыву #{self.review.id}"
+
+class BaseVote(models.Model):
+    """Абстрактный класс для лайков/дизлайков"""
+    class VoteChoice(models.IntegerChoices):
+        LIKE = 1, "Like"
+        DISLIKE = -1, "Dislike"
+
     value = models.SmallIntegerField(choices=VoteChoice.choices)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=["user", "review"], name="unique_user_review_vote"
-            )
-        ]
+        abstract = True
+
+
+class ReviewVote(BaseVote):
+    """Лайки/Дизлайки к отзывам"""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="review_votes")
+    review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name="votes")
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=["user", "review"], name="unique_user_review_vote")]
+
+
+class ReplyVote(BaseVote):
+    """Лайки/Дизлайки к ответам на отзывы"""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="reply_votes")
+    reply = models.ForeignKey(ReviewReply, on_delete=models.CASCADE, related_name="votes")
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=["user", "reply"], name="unique_user_reply_vote")]

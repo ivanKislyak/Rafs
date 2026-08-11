@@ -153,11 +153,13 @@ def vote_review(request):
 
 def delete_review(request):
     if request.method == "POST":
-        user_choice = request.POST.get('action') # Получаем 'yes' или 'no'
+        user_choice = request.POST.get('action')
         
         if user_choice == 'yes':
-            # Логика для "Да"
             return render(request, 'success.html')
         else:
-            # Логика для "Нет"
             return redirect('home')
+
+@login_required
+def reply_review(request, id):
+    return HttpResponse("")

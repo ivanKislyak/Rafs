@@ -74,6 +74,7 @@ INSTALLED_APPS = [
     'accounts',
     'movies',
     'core',
+    'taggit',
 ]
 
 MIDDLEWARE = [

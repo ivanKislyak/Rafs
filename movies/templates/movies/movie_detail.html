@@ -202,6 +202,11 @@
                                            cursor: pointer">Удалить</button>
                         </form>
                     {% endif %}
+                    <form action="{% url 'movies:reply_review' review.id %}" method="GET">
+                        {% csrf_token %}
+                        <button >Ответить</button>
+                    </form>
+                    
                     <span class="review-vote-status" aria-live="polite"></span>
                 </article>
             {% endfor %}
