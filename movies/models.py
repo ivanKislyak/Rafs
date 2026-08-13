@@ -45,7 +45,6 @@ class Review(models.Model):
         Movie,
         on_delete=models.CASCADE, 
         related_name="reviews")
-
     rating = models.DecimalField(max_digits=3, decimal_places=1, default=5.0, validators=[MinValueValidator(0), MaxValueValidator(10)])
     avg_rating = models.DecimalField(max_digits=3, decimal_places=1, default=5.0, validators=[MinValueValidator(0), MaxValueValidator(10)], blank=True, null=True)
     idea_rating = models.DecimalField(max_digits=3, decimal_places=1, validators=[MinValueValidator(0), MaxValueValidator(10)], blank=True, null=True)

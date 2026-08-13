@@ -3,12 +3,22 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 
+class Achievement(models.Model):
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=500)
+
+
 class User(AbstractUser):
     user_lvl = models.IntegerField(default=1)
     user_frames = models.IntegerField(default=1)
     email = models.EmailField(_("email address"), unique=True, max_length=256)
     avatar_image = models.ImageField(upload_to="users/avatars/", blank=True, null=True)
     is_deleted = models.BooleanField(default=False)
+    achievement = models.ManyToManyField(
+        Achievement,
+        blank=True,
+        related_name="users"
+    )
 
     class SexChoice(models.TextChoices):
         MALE = 'M', _("Male")
