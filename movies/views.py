@@ -151,7 +151,11 @@ def vote_review(request):
     except (json.JSONDecodeError, TypeError, ValueError):
         return JsonResponse({"error": "Неверный формат данных"}, status=400)
 
+@login_required
+@require_POST
 def delete_review(request, review_id):
+    review = Review.objects.filter(id=review_id, user_id=request.user)
+
     if request.method == "POST":
         user_choice = request.POST.get('action')
         
