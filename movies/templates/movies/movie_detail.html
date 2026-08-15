@@ -100,19 +100,21 @@
                                 <span class="review-vote-count">{% if review.dislike_count %}{{ review.dislike_count }}{% endif %}</span>
                             </button>
                         </div>
-                        <button class="review-action-button review-reply-button"
-                                type="button"
-                                data-reply-for="{{ review.id }}"
-                                data-reply-url="{% url 'movies:reply_review' review.id %}"
-                                aria-controls="review-action-{{ review.id }}"
-                                aria-expanded="false"
-                                onclick="showReplyForm({{ review.id }}, this)">
-                            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                                <path d="M9 8 4 12l5 4"></path>
-                                <path d="M5 12h8a6 6 0 0 1 6 6"></path>
-                            </svg>
-                            <span>Ответить</span>
-                        </button>
+                        {% if user.is_authenticated %}
+                            <button class="review-action-button review-reply-button"
+                                    type="button"
+                                    data-reply-for="{{ review.id }}"
+                                    data-reply-url="{% url 'movies:reply_review' review.id %}"
+                                    aria-controls="review-action-{{ review.id }}"
+                                    aria-expanded="false"
+                                    onclick="showReplyForm({{ review.id }}, this)">
+                                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                    <path d="M9 8 4 12l5 4"></path>
+                                    <path d="M5 12h8a6 6 0 0 1 6 6"></path>
+                                </svg>
+                                <span>Ответить</span>
+                            </button>
+                        {% endif %}
                         {% if review.user == request.user %}
                             <form class="review-delete-form"
                                   method="post"
