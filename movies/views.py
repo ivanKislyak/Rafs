@@ -7,7 +7,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.http import require_POST
 from django.http import HttpResponse
 
-from .forms import MovieFilterForm, ReviewForm
+from .forms import MovieFilterForm, ReviewForm, ReviewReplyForm
 from .models import Movie, Review, ReviewVote
 
 def catalog(request):
@@ -162,7 +162,19 @@ def delete_review(request, review_id):
     review.delete()
     return redirect("movies:detail", movie_id=movie_id)
 
-@require_POST
 @login_required
+@require_POST
 def reply_review(request, review_id):
-    return JsonResponse({"status": "ok", "review_id": review_id})
+    review = get_object_or_404(Review, pk=review_id)
+    form = ReviewReplyForm(request.POST)
+
+    if form.is_valid():
+        reply = form.save(commit=False)
+        reply.review = review
+        reply.user = request.user
+        reply.save()
+
+    else:
+        messages.error(request, "Ответ не может быть пустым")
+
+    return redirect("movies:detail", movie_id=review.movie_id)

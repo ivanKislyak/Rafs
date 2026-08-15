@@ -120,8 +120,8 @@
                                 {% csrf_token %}
                                 <input type="hidden" name="action" value="yes">
                                 <button class="review-action-button review-delete-button"
-                                        type="submit"
-                                        onclick="return confirm('Вы уверены, что хотите удалить этот отзыв?');">
+                                        type="button"
+                                        data-delete-review-trigger>
                                     <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                                         <path d="M4 7h16"></path>
                                         <path d="m9 7 1-2h4l1 2"></path>
@@ -143,6 +143,45 @@
             <p class="review-comments-empty">Пока нет отзывов. Станьте первым, кто оставит комментарий!</p>
         {% endif %}
     </section>
+    <dialog class="review-delete-dialog"
+            id="review-delete-dialog"
+            aria-labelledby="review-delete-dialog-title"
+            aria-describedby="review-delete-dialog-description">
+        <div class="review-delete-dialog-card">
+            <div class="review-delete-dialog-heading">
+                <span class="review-delete-dialog-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" focusable="false">
+                        <path d="M4 7h16"></path>
+                        <path d="m9 7 1-2h4l1 2"></path>
+                        <path d="m7 7 1 13h8l1-13"></path>
+                        <path d="M10 11v5M14 11v5"></path>
+                    </svg>
+                </span>
+                <div>
+                    <span class="review-delete-dialog-kicker">Удаление рецензии</span>
+                    <h3 id="review-delete-dialog-title">Точно удалить?</h3>
+                </div>
+            </div>
+            <p id="review-delete-dialog-description">
+                Рецензия исчезнет с сайта. Отменить это действие после подтверждения не получится.
+            </p>
+            <div class="review-delete-dialog-actions">
+                <button class="review-delete-dialog-cancel"
+                        type="button"
+                        data-delete-review-cancel>Отмена</button>
+                <button class="review-delete-dialog-confirm"
+                        type="button"
+                        data-delete-review-confirm>
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M4 7h16"></path>
+                        <path d="m9 7 1-2h4l1 2"></path>
+                        <path d="m7 7 1 13h8l1-13"></path>
+                    </svg>
+                    <span>Удалить</span>
+                </button>
+            </div>
+        </div>
+    </dialog>
     <script>
         const reviewVoteUrl = "{% url 'movies:vote_review' %}";
         const reviewVoteLoginUrl = "{% url 'login' %}?next={{ request.path|urlencode }}";
@@ -244,17 +283,10 @@
                 <form class="review-reply-form" action="${trigger.dataset.replyUrl}" method="POST">
                     <input type="hidden" name="csrfmiddlewaretoken" value="${reviewVoteCsrf}">
                     <label class="review-reply-label" for="review-reply-text-${reviewId}">Ваш ответ</label>
-                    <textarea class="review-reply-textarea"
-                              id="review-reply-text-${reviewId}"
-                              name="text"
-                              rows="3"
-                              placeholder="Напишите ответ на рецензию..."
-                              required></textarea>
+                    <textarea class="review-reply-textarea" id="review-reply-text-${reviewId}" name="text" rows="3" placeholder="Напишите ответ на рецензию..." required></textarea>
                     <div class="review-reply-form-actions">
                         <button class="review-reply-submit" type="submit">Отправить</button>
-                        <button class="review-reply-cancel"
-                                type="button"
-                                onclick="hideReplyForm(${reviewId})">Отмена</button>
+                        <button class="review-reply-cancel" type="button" onclick="hideReplyForm(${reviewId})">Отмена</button>
                     </div>
                 </form>
             `;
@@ -263,5 +295,62 @@
             trigger.setAttribute("aria-expanded", "true");
             container.querySelector("textarea").focus();
         }
+
+        const reviewDeleteDialog = document.getElementById("review-delete-dialog");
+        const reviewDeleteCancel = reviewDeleteDialog.querySelector(
+            "[data-delete-review-cancel]"
+        );
+        const reviewDeleteConfirm = reviewDeleteDialog.querySelector(
+            "[data-delete-review-confirm]"
+        );
+        let pendingReviewDeleteForm = null;
+        let pendingReviewDeleteTrigger = null;
+
+        function closeReviewDeleteDialog() {
+            if (typeof reviewDeleteDialog.close === "function") {
+                reviewDeleteDialog.close();
+            } else {
+                reviewDeleteDialog.removeAttribute("open");
+            }
+        }
+
+        document.querySelectorAll("[data-delete-review-trigger]").forEach((trigger) => {
+            trigger.addEventListener("click", () => {
+                pendingReviewDeleteForm = trigger.closest(".review-delete-form");
+                pendingReviewDeleteTrigger = trigger;
+
+                if (typeof reviewDeleteDialog.showModal === "function") {
+                    reviewDeleteDialog.showModal();
+                } else {
+                    reviewDeleteDialog.setAttribute("open", "");
+                }
+
+                reviewDeleteCancel.focus();
+            });
+        });
+
+        reviewDeleteCancel.addEventListener("click", closeReviewDeleteDialog);
+
+        reviewDeleteConfirm.addEventListener("click", () => {
+            if (!pendingReviewDeleteForm) {
+                return;
+            }
+
+            reviewDeleteConfirm.disabled = true;
+            pendingReviewDeleteForm.requestSubmit();
+        });
+
+        reviewDeleteDialog.addEventListener("click", (event) => {
+            if (event.target === reviewDeleteDialog) {
+                closeReviewDeleteDialog();
+            }
+        });
+
+        reviewDeleteDialog.addEventListener("close", () => {
+            pendingReviewDeleteForm = null;
+            reviewDeleteConfirm.disabled = false;
+            pendingReviewDeleteTrigger?.focus();
+            pendingReviewDeleteTrigger = null;
+        });
     </script>
 {% endblock %}

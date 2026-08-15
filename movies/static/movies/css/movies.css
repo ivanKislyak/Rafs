@@ -710,6 +710,175 @@
   color: var(--rafs-red-soft);
 }
 
+.review-delete-dialog {
+  width: min(430px, calc(100vw - 28px));
+  max-width: none;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  border-radius: 16px;
+  background-color: transparent;
+  color: var(--color-text);
+}
+
+.review-delete-dialog::backdrop {
+  background-color: rgb(4 5 7 / 74%);
+  backdrop-filter: blur(4px);
+  animation: review-delete-backdrop-in 180ms ease-out;
+}
+
+.review-delete-dialog-card {
+  position: relative;
+  overflow: hidden;
+  padding: 22px;
+  border: 1px solid color-mix(in srgb, var(--rafs-red) 38%, var(--color-border));
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at 8% 0%, rgb(219 57 47 / 16%), transparent 38%),
+    var(--color-surface);
+  box-shadow: 0 28px 80px rgb(0 0 0 / 58%);
+  animation: review-delete-dialog-in 210ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.review-delete-dialog-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--rafs-red-action), var(--rafs-red-soft), transparent 78%);
+}
+
+.review-delete-dialog-heading {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.review-delete-dialog-icon {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+  border: 1px solid rgb(219 57 47 / 34%);
+  border-radius: 12px;
+  background-color: rgb(219 57 47 / 12%);
+  color: var(--rafs-red-soft);
+  place-items: center;
+}
+
+.review-delete-dialog-icon svg {
+  width: 23px;
+  height: 23px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.review-delete-dialog-kicker {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--rafs-red-soft);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.review-delete-dialog h3 {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 1.25rem;
+  font-weight: 850;
+}
+
+.review-delete-dialog p {
+  margin: 17px 0 20px;
+  color: var(--color-text-muted);
+  font-size: 0.91rem;
+  line-height: 1.55;
+}
+
+.review-delete-dialog-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 9px;
+}
+
+.review-delete-dialog-cancel,
+.review-delete-dialog-confirm {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 38px;
+  padding: 8px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 750;
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease,
+    color 150ms ease,
+    transform 150ms ease;
+}
+
+.review-delete-dialog-cancel {
+  background-color: var(--color-surface-raised);
+  color: var(--color-text-muted);
+}
+
+.review-delete-dialog-cancel:hover {
+  border-color: color-mix(in srgb, var(--rafs-red) 45%, var(--color-border));
+  background-color: var(--color-accent-glow);
+  color: var(--color-text);
+}
+
+.review-delete-dialog-confirm {
+  border-color: var(--rafs-red-action);
+  background-color: var(--rafs-red-action);
+  color: var(--color-action-text);
+  box-shadow: 0 8px 22px rgb(199 41 33 / 20%);
+}
+
+.review-delete-dialog-confirm:hover {
+  border-color: var(--rafs-red);
+  background-color: var(--rafs-red);
+}
+
+.review-delete-dialog-confirm:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.review-delete-dialog-confirm svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.review-delete-dialog-cancel:active,
+.review-delete-dialog-confirm:active {
+  transform: scale(0.97);
+}
+
+.review-delete-dialog-cancel:focus-visible,
+.review-delete-dialog-confirm:focus-visible {
+  outline: 2px solid var(--color-focus-visible-outline);
+  outline-offset: 2px;
+}
+
 .review-reply-container {
   display: none;
 }
@@ -821,6 +990,26 @@
   }
 }
 
+@keyframes review-delete-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes review-delete-backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 @media (max-width: 520px) {
   .review-action-bar {
     gap: 6px;
@@ -841,13 +1030,24 @@
     width: 14px;
     height: 14px;
   }
+
+  .review-delete-dialog-card {
+    padding: 18px;
+  }
+
+  .review-delete-dialog-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .review-vote-button,
   .review-action-button,
   .review-vote-button.vote-pop .review-vote-icon,
-  .review-reply-container.is-open {
+  .review-reply-container.is-open,
+  .review-delete-dialog::backdrop,
+  .review-delete-dialog-card {
     animation: none;
     transition: none;
   }

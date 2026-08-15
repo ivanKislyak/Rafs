@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Review as ReviewModel
+from .models import Review as ReviewModel, ReviewReply
 
 
 class RatingRangeInput(forms.NumberInput):
@@ -163,3 +163,9 @@ class ReviewForm(forms.ModelForm):
                 cleaned_data[rating_name] = None
 
         return cleaned_data
+
+
+class ReviewReplyForm(forms.ModelForm):
+    class Meta:
+        model = ReviewReply
+        fields = ["text"]
