@@ -65,6 +65,8 @@ def movie_detail(request, movie_id):
             0,
         )
 
+    reviews.sort(key=lambda r: r.like_count - r.dislike_count, reverse=True)
+
     if request.user.is_authenticated:
         user_already_rated_this = Review.objects.filter(movie=movie, user=request.user).first()
     return render(request, "movies/movie_detail.html",
@@ -154,15 +156,11 @@ def vote_review(request):
 @login_required
 @require_POST
 def delete_review(request, review_id):
-    review = Review.objects.filter(id=review_id, user_id=request.user)
+    review = get_object_or_404(Review, id=review_id, user=request.user)
+    movie_id = review.movie_id
 
-    if request.method == "POST":
-        user_choice = request.POST.get('action')
-        
-        if user_choice == 'yes':
-            return render(request, 'success.html')
-        else:
-            return redirect('home')
+    review.delete()
+    return redirect("movies:detail", movie_id=movie_id)
 
 @require_POST
 @login_required
