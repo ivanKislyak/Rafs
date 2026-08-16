@@ -589,7 +589,9 @@
   background-color: transparent;
   color: var(--color-text-muted);
   cursor: pointer;
-  transition: background-color 160ms ease, color 160ms ease;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
 }
 
 .review-vote-button + .review-vote-button {
@@ -733,9 +735,7 @@
   padding: 22px;
   border: 1px solid color-mix(in srgb, var(--rafs-red) 38%, var(--color-border));
   border-radius: 16px;
-  background:
-    radial-gradient(circle at 8% 0%, rgb(219 57 47 / 16%), transparent 38%),
-    var(--color-surface);
+  background: radial-gradient(circle at 8% 0%, rgb(219 57 47 / 16%), transparent 38%), var(--color-surface);
   box-shadow: 0 28px 80px rgb(0 0 0 / 58%);
   animation: review-delete-dialog-in 210ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
@@ -895,9 +895,7 @@
   padding: 14px;
   border: 1px solid var(--color-border);
   border-radius: 10px;
-  background:
-    linear-gradient(110deg, rgb(219 57 47 / 8%), transparent 48%),
-    var(--color-surface-raised);
+  background: linear-gradient(110deg, rgb(219 57 47 / 8%), transparent 48%), var(--color-surface-raised);
 }
 
 .review-reply-label {
@@ -917,7 +915,9 @@
   font: inherit;
   line-height: 1.5;
   resize: vertical;
-  transition: border-color 160ms ease, box-shadow 160ms ease;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease;
 }
 
 .review-reply-textarea::placeholder {
@@ -965,6 +965,10 @@
 .review-reply-cancel:hover {
   background-color: var(--color-accent-glow);
   color: var(--color-text);
+}
+
+.summary {
+  cursor: pointer;
 }
 
 @keyframes review-vote-pop {

@@ -68,7 +68,16 @@
                         </div>
                         <span class="review-comment-date">{{ review.created_at|naturaltime }}</span>
                     </div>
-                    <p class="review-comment-text">{{ review.text }}</p>
+
+                    {% if review.contains_spoiler %}
+                    <details>
+                    <summary>ОТКРЫТЬ СПОЙЛЕР</summary>
+                        <p class="review-comment-text">{{ review.text }}</p>
+                    </details>
+                    {% else %}
+                        <p class="review-comment-text">{{ review.text }}</p>
+                    {% endif %}
+
                     <div class="review-action-bar">
                         <div class="review-votes" data-review-id="{{ review.id }}">
                             <button class="review-vote-button{% if review.user_vote == 1 %} is-selected{% endif %}"
