@@ -92,18 +92,17 @@ def make_review_form(request, movie_id):
             review.movie = movie
             review.user = request.user
 
-            if is_new_review:
+            if is_new_review and not request.user.movies.filter(id=movie_id).exists():
+                request.user.movies.add(movie)
                 request.user.user_frames += 100
                 request.user.save()
-
-            review.save()
-
-            if is_new_review:
                 messages.success(
                     request,
                     "+100 Кадров",
                     extra_tags="frames-reward",
                 )
+            review.save()
+
             return redirect("movies:detail", movie_id=movie_id)
 
     if request.method == "GET":

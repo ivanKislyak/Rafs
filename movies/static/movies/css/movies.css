@@ -497,7 +497,6 @@
   padding: var(--space-m);
   display: grid;
   gap: var(--space-s);
-  cursor: pointer;
 }
 
 .review-comment-details {

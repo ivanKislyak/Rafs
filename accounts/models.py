@@ -2,6 +2,7 @@ import math
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
+from movies.models import Movie
 
 class Achievement(models.Model):
     name = models.CharField(max_length=50)
@@ -16,6 +17,11 @@ class User(AbstractUser):
     is_deleted = models.BooleanField(default=False)
     achievement = models.ManyToManyField(
         Achievement,
+        blank=True,
+        related_name="users"
+    )
+    movies = models.ManyToManyField(
+        Movie,
         blank=True,
         related_name="users"
     )
