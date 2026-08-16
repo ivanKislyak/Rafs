@@ -70,10 +70,16 @@
                     </div>
 
                     {% if review.contains_spoiler %}
-                    <details>
-                    <summary>ОТКРЫТЬ СПОЙЛЕР</summary>
-                        <p class="review-comment-text">{{ review.text }}</p>
-                    </details>
+                        <details class="review-comment-details">
+                            <summary>
+                                <span class="review-comment-details-label">Спойлер скрыт</span>
+                                <span class="review-comment-details-action review-comment-details-action-open">Показать</span>
+                                <span class="review-comment-details-action review-comment-details-action-close">Скрыть</span>
+                            </summary>
+                            <div class="review-comment-spoiler-body">
+                                <p class="review-comment-text">{{ review.text }}</p>
+                            </div>
+                        </details>
                     {% else %}
                         <p class="review-comment-text">{{ review.text }}</p>
                     {% endif %}

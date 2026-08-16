@@ -497,6 +497,113 @@
   padding: var(--space-m);
   display: grid;
   gap: var(--space-s);
+  cursor: pointer;
+}
+
+.review-comment-details {
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--color-border) 78%, transparent);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--color-surface-raised) 52%, transparent);
+}
+
+.review-comment-details summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 8px 12px;
+  color: var(--color-text);
+  font-size: 0.88rem;
+  transition: background-color 160ms ease;
+}
+
+.review-comment-details summary:hover {
+  background-color: color-mix(in srgb, var(--color-accent) 7%, transparent);
+}
+
+.review-comment-details summary:focus-visible {
+  outline: 2px solid var(--color-focus-visible-outline);
+  outline-offset: -2px;
+}
+
+.review-comment-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.review-comment-details summary::marker {
+  display: none;
+}
+
+.review-comment-details-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.review-comment-details-label::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background-color: var(--color-accent);
+  box-shadow: 0 0 0 4px var(--color-accent-glow);
+}
+
+.review-comment-details-action {
+  margin-left: auto;
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+}
+
+.review-comment-details-action::after {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin: 0 2px 2px 8px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg);
+}
+
+.review-comment-details-action-close {
+  display: none;
+}
+
+.review-comment-details-action-close::after {
+  margin-bottom: -2px;
+  transform: rotate(225deg);
+}
+
+.review-comment-details[open] .review-comment-details-action-open {
+  display: none;
+}
+
+.review-comment-details[open] .review-comment-details-action-close {
+  display: inline;
+}
+
+.review-comment-spoiler-body {
+  padding: 12px;
+  border-top: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+  background-color: color-mix(in srgb, var(--color-bg) 34%, transparent);
+  animation: review-spoiler-reveal 180ms ease-out;
+}
+
+@keyframes review-spoiler-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .review-comment-header {
@@ -965,10 +1072,6 @@
 .review-reply-cancel:hover {
   background-color: var(--color-accent-glow);
   color: var(--color-text);
-}
-
-.summary {
-  cursor: pointer;
 }
 
 @keyframes review-vote-pop {
