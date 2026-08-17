@@ -181,6 +181,11 @@ body {
   margin: 0;
 }
 
+.header-open-profile-page {
+  margin: 0;
+}
+
+.header-open-profile-page,
 .header-auth-link,
 .header-logout-button {
   display: inline-flex;
@@ -421,7 +426,9 @@ hr {
   font-size: 1.3rem;
   line-height: 1;
   place-items: center;
-  transition: background-color 150ms ease, color 150ms ease;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
 }
 
 .site-toast-close:hover {

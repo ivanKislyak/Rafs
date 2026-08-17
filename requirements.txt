@@ -5,3 +5,4 @@ whitenoise==6.12.0
 django-taggit
 psycopg[binary]
 djangorestframework
+requests

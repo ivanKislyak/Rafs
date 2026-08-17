@@ -273,6 +273,7 @@
                     </div>
                     <form class="header-logout-form" action="{% url 'logout' %}" method="post">
                         {% csrf_token %}
+                        <button class="header-open-profile-page" type="submit">Аккаунт</button>
                         <button class="header-logout-button" type="submit">Выйти из аккаунта</button>
                     </form>
                 </div>
