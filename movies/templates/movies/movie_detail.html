@@ -27,8 +27,12 @@
     <article class="movie-detail-main-container">
         {% if movie.cover and movie.image_exists %}
             <img class="movie-detail-cover"
-                 src="{{ movie.cover.url }}"
-                 alt="{{ movie.name }}" />
+                src="{{ movie.cover.url }}"
+                alt="{{ movie.name }}" />
+        {% elif movie.cover_url %}
+            <img class="movie-detail-cover"
+                src="{{ movie.cover_url }}"
+                alt="{{ movie.name }}" />
         {% else %}
             <img class="movie-detail-cover"
                  src="{% static 'movies/images/nocover.png' %}"

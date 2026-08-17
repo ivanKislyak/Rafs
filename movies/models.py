@@ -6,6 +6,12 @@ from django.db.models import Avg
 from taggit.managers import TaggableManager
 
 class Movie(models.Model):
+    wikidata_id = models.CharField(max_length=20, unique=True, null=True, blank=True)
+    imdb_id = models.CharField(max_length=20, null=True, blank=True, db_index=True)
+    wikidata_description = models.TextField(blank=True)
+    cover_url = models.URLField(blank=True)
+    last_synced_at = models.DateTimeField(null=True, blank=True)
+
     name = models.CharField(max_length=200) # Night of the Day of the Dawn of the Son of the Bride...
     year = models.PositiveSmallIntegerField()
     rate = models.DecimalField(decimal_places=1, max_digits=3, null=True, blank=True)
