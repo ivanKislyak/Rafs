@@ -1,6 +1,26 @@
 {% extends "base.html" %}
 {% load static %}
 {% load humanize %}
+{% block title %}
+    {{ movie.name }} ({{ movie.year }})
+{% endblock %}
+{% block meta_description %}
+    {{ movie.description|striptags|truncatechars:155 }}
+{% endblock %}
+{% block og_type %}video.movie{% endblock %}
+{% block og_title %}
+    {{ movie.name }} ({{ movie.year }}) — RAFS
+{% endblock %}
+{% block og_description %}
+    {{ movie.description|striptags|truncatechars:200 }}
+{% endblock %}
+{% block og_image %}
+    {% if movie.cover and movie.image_exists %}
+        https://{{ request.get_host }}{{ movie.cover.url }}
+    {% else %}
+        https://rafs.app{% static 'images/rafs-preview-v3.png' %}
+    {% endif %}
+{% endblock %}
 {% block content %}
     <a class="btn" href="{% url 'movies:catalog' %}">← Вернуться в каталог</a>
     <hr />
