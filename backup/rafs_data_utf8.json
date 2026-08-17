@@ -1,0 +1,3194 @@
+[
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$cRctLMrnuPYE4K0B2w6CKF$ClGQyq8PHjUjy5WqmudYTzTDJAmqj56vXNfK6+oQ7dw=",
+    "last_login": "2026-08-08T11:39:05.667Z",
+    "is_superuser": true,
+    "username": "spring0wl",
+    "first_name": "",
+    "last_name": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-07-26T00:20:18.911Z",
+    "user_lvl": 4,
+    "user_frames": 1801,
+    "email": "user_1@rafs.local",
+    "avatar_image": "",
+    "is_deleted": false,
+    "sex": "",
+    "bd_date": null,
+    "groups": [],
+    "user_permissions": [],
+    "achievement": [],
+    "movies": [
+      116
+    ]
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$RmzVTnhe5A5PuoWnfuvy8M$6PjbMbZIQQvWFBdd8WEPjXH7gtGO1uma6BRTmjCgyjg=",
+    "last_login": null,
+    "is_superuser": true,
+    "username": "user00001",
+    "first_name": "",
+    "last_name": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-07-27T09:00:51.688Z",
+    "user_lvl": 1,
+    "user_frames": 101,
+    "email": "user_2@rafs.local",
+    "avatar_image": "",
+    "is_deleted": false,
+    "sex": "",
+    "bd_date": null,
+    "groups": [],
+    "user_permissions": [],
+    "achievement": [],
+    "movies": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$bpwYpeed1S1kxjGJ3qX4sL$xCDv+ILWIgp/VJHHQHLE4j4eypIZgoyGq0R9zcP9RpU=",
+    "last_login": null,
+    "is_superuser": true,
+    "username": "user999",
+    "first_name": "",
+    "last_name": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-07-29T03:36:57.928Z",
+    "user_lvl": 1,
+    "user_frames": 101,
+    "email": "user_3@rafs.local",
+    "avatar_image": "",
+    "is_deleted": false,
+    "sex": "",
+    "bd_date": null,
+    "groups": [],
+    "user_permissions": [],
+    "achievement": [],
+    "movies": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$LPMbwtMfgLcz7U8bq8qFvU$baeIXzHkvDuJzG6I7HKcTQVP98wmqqTmUaARNKrhmD0=",
+    "last_login": "2026-08-01T03:48:36.734Z",
+    "is_superuser": false,
+    "username": "kislyak",
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-08-01T03:48:36.073Z",
+    "user_lvl": 1,
+    "user_frames": 201,
+    "email": "user_4@rafs.local",
+    "avatar_image": "",
+    "is_deleted": false,
+    "sex": "",
+    "bd_date": null,
+    "groups": [],
+    "user_permissions": [],
+    "achievement": [],
+    "movies": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$0EW7fOiM7KmmVqHq2tnQF1$i7dgyvddGJtpEtrZkJzpIJqQ4vmDdulsCAOqZmC6pCY=",
+    "last_login": "2026-08-01T04:28:11.803Z",
+    "is_superuser": false,
+    "username": "kislyak54",
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-08-01T04:28:11.418Z",
+    "user_lvl": 1,
+    "user_frames": 301,
+    "email": "user_5@rafs.local",
+    "avatar_image": "",
+    "is_deleted": false,
+    "sex": "",
+    "bd_date": null,
+    "groups": [],
+    "user_permissions": [],
+    "achievement": [],
+    "movies": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$a4FPwcjWXoZq2uSAh2psaJ$mHiggOtZ/W9gr/K/ych7CxNEM/mvz/f2N3/oom1H8hs=",
+    "last_login": "2026-08-01T06:14:50.240Z",
+    "is_superuser": false,
+    "username": "koko54",
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-08-01T06:14:49.567Z",
+    "user_lvl": 1,
+    "user_frames": 1,
+    "email": "user_6@rafs.local",
+    "avatar_image": "",
+    "is_deleted": false,
+    "sex": "",
+    "bd_date": null,
+    "groups": [],
+    "user_permissions": [],
+    "achievement": [],
+    "movies": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$qCLJ02e3CQXXsX8N5DxcKv$0MT+ok41WblG/8wTcU5+9yY7gUakWmD4uaGCAJwC5mE=",
+    "last_login": "2026-08-02T05:05:55.146Z",
+    "is_superuser": false,
+    "username": "dzhanglotttt555",
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-08-02T05:05:54.554Z",
+    "user_lvl": 1,
+    "user_frames": 101,
+    "email": "user_7@rafs.local",
+    "avatar_image": "",
+    "is_deleted": false,
+    "sex": "",
+    "bd_date": null,
+    "groups": [],
+    "user_permissions": [],
+    "achievement": [],
+    "movies": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$R8ROdOKWRd5kwSCbqpxNhr$2t8H1vG0zCwVG3FnB9LBn5koB6fAVuMFXn8Jak5FtHQ=",
+    "last_login": "2026-08-02T05:30:44.212Z",
+    "is_superuser": false,
+    "username": "кислый",
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-08-02T05:30:43.479Z",
+    "user_lvl": 2,
+    "user_frames": 501,
+    "email": "user_8@rafs.local",
+    "avatar_image": "",
+    "is_deleted": false,
+    "sex": "",
+    "bd_date": null,
+    "groups": [],
+    "user_permissions": [],
+    "achievement": [],
+    "movies": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$8KwGZxcuHHwxH1Aj1fxYwq$1JcbeqcFxinan1n+MUIMkpWLfFdGEOyppfgUqt4tVdU=",
+    "last_login": "2026-08-02T05:57:57.519Z",
+    "is_superuser": false,
+    "username": "kislyakIvan",
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-08-02T05:57:56.702Z",
+    "user_lvl": 1,
+    "user_frames": 1,
+    "email": "user_9@rafs.local",
+    "avatar_image": "",
+    "is_deleted": false,
+    "sex": "",
+    "bd_date": null,
+    "groups": [],
+    "user_permissions": [],
+    "achievement": [],
+    "movies": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$DNal9xcJ5KOw86ufcCXCr1$CX9b/mlU7dxyKxw87kZhs9JGiyxniIm5LIPgUPFbwDE=",
+    "last_login": "2026-08-04T13:00:41.566Z",
+    "is_superuser": false,
+    "username": "chukaBuka",
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-08-02T07:32:40.229Z",
+    "user_lvl": 3,
+    "user_frames": 1101,
+    "email": "chukabuka.png",
+    "avatar_image": "users/avatars/chukabuka.png",
+    "is_deleted": false,
+    "sex": "",
+    "bd_date": null,
+    "groups": [],
+    "user_permissions": [],
+    "achievement": [],
+    "movies": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$U3ovblUaD0UW7SSJAfUS8B$Cqkvz1DCkX0mzUKUoj4Ou+JgRcheLtqepibKZg8lcds=",
+    "last_login": "2026-08-06T11:31:02.576Z",
+    "is_superuser": false,
+    "username": "fooolk",
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-08-02T08:05:24.836Z",
+    "user_lvl": 1,
+    "user_frames": 101,
+    "email": "user_11@rafs.local",
+    "avatar_image": "",
+    "is_deleted": false,
+    "sex": "",
+    "bd_date": null,
+    "groups": [],
+    "user_permissions": [],
+    "achievement": [],
+    "movies": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$Kys3eEghlD5KxCZ1cf8Jaz$LIO1vEJXN/jqnDNWEHe6aNsvr1KUThhBxpbnnxlqDpE=",
+    "last_login": "2026-08-06T10:53:38.901Z",
+    "is_superuser": false,
+    "username": "aleksandrov762mm",
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-08-02T08:06:55.031Z",
+    "user_lvl": 2,
+    "user_frames": 501,
+    "email": "user_12@rafs.local",
+    "avatar_image": "users/avatars/murksn.png",
+    "is_deleted": false,
+    "sex": "",
+    "bd_date": null,
+    "groups": [],
+    "user_permissions": [],
+    "achievement": [],
+    "movies": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$RWG2ZEIemrwgtRjQ1Xme1b$ylo4lS7xYliST27B7+EGUCwIdbYMRSqfPwhomozBR/o=",
+    "last_login": "2026-08-02T08:17:44.527Z",
+    "is_superuser": false,
+    "username": "mark54",
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-08-02T08:17:43.804Z",
+    "user_lvl": 1,
+    "user_frames": 101,
+    "email": "user_13@rafs.local",
+    "avatar_image": "",
+    "is_deleted": false,
+    "sex": "",
+    "bd_date": null,
+    "groups": [],
+    "user_permissions": [],
+    "achievement": [],
+    "movies": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$l2nkUG6NBEnEIb83N8p0hY$NUFDdc0+cNEbkZRsPD/i10SbjAW9DfbQYGudtGEEHEo=",
+    "last_login": "2026-08-06T10:54:23.665Z",
+    "is_superuser": false,
+    "username": "kislyakmargarita",
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-08-02T08:28:30.078Z",
+    "user_lvl": 1,
+    "user_frames": 201,
+    "email": "user_14@rafs.local",
+    "avatar_image": "",
+    "is_deleted": false,
+    "sex": "",
+    "bd_date": null,
+    "groups": [],
+    "user_permissions": [],
+    "achievement": [],
+    "movies": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$IFErOaQ7x4fD91hLOEO8qt$nWl1/nfhVt/0FDX71brWus4pOJnPmfalBCXtTlZ/CQ8=",
+    "last_login": "2026-08-02T08:35:15.531Z",
+    "is_superuser": false,
+    "username": "dzhanik54",
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-08-02T08:35:14.685Z",
+    "user_lvl": 1,
+    "user_frames": 101,
+    "email": "user_15@rafs.local",
+    "avatar_image": "",
+    "is_deleted": false,
+    "sex": "",
+    "bd_date": null,
+    "groups": [],
+    "user_permissions": [],
+    "achievement": [],
+    "movies": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$NiFma9e8S7NpoF4yYaxtKa$KgOxzsBk3hmvreJE58lLIcF0N9jn1RuhHocUhWSFhCg=",
+    "last_login": "2026-08-02T09:05:23.554Z",
+    "is_superuser": false,
+    "username": "ximlego54",
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-08-02T09:05:22.853Z",
+    "user_lvl": 1,
+    "user_frames": 101,
+    "email": "user_16@rafs.local",
+    "avatar_image": "",
+    "is_deleted": false,
+    "sex": "",
+    "bd_date": null,
+    "groups": [],
+    "user_permissions": [],
+    "achievement": [],
+    "movies": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$Rel0HL6ym6r701STO03YKS$4LN1AgGDEriqdVBuNwNrjcr/nXdE/B/dJXhnGqY7tkw=",
+    "last_login": "2026-08-08T13:45:54.406Z",
+    "is_superuser": false,
+    "username": "Rosto_Porkol16_04_2006",
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-08-08T13:45:53.737Z",
+    "user_lvl": 1,
+    "user_frames": 1,
+    "email": "msvzlvnt0p@gmail.com",
+    "avatar_image": "",
+    "is_deleted": false,
+    "sex": "",
+    "bd_date": null,
+    "groups": [],
+    "user_permissions": [],
+    "achievement": [],
+    "movies": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$WTOdrZf6pC6RMZiHjbItYY$5QMGvppaJZ84kxo7Vs0BPnA2MsQxW9TDVquMldQLjTA=",
+    "last_login": "2026-08-16T16:41:15.659Z",
+    "is_superuser": false,
+    "username": "ruulemtkis",
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-08-16T16:41:15.036Z",
+    "user_lvl": 1,
+    "user_frames": 1,
+    "email": "dpghwjdk@immenseignite.info",
+    "avatar_image": "",
+    "is_deleted": false,
+    "sex": "",
+    "bd_date": null,
+    "groups": [],
+    "user_permissions": [],
+    "achievement": [],
+    "movies": []
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 1,
+  "fields": {
+    "name": "Clean, Shaven",
+    "year": 1993,
+    "rate": "7.4",
+    "description": "Peter Winter, a man living with schizophrenia, searches for his daughter while struggling with frightening hallucinations, fractured memories, and a murder investigation closing in around him.",
+    "cover": "movie_covers/clean_shaven.jpg",
+    "created_at": "2026-07-24T04:43:02.256Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 2,
+  "fields": {
+    "name": "Fight Club",
+    "year": 1999,
+    "rate": "10.0",
+    "description": "An exhausted office worker and a charismatic soap maker create an underground fight club that grows into a violent revolt against consumer culture and the identities built around it.",
+    "cover": "movie_covers/fight_club.jpg",
+    "created_at": "2026-07-24T04:43:02.264Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 3,
+  "fields": {
+    "name": "Pi",
+    "year": 1998,
+    "rate": null,
+    "description": "A paranoid mathematician becomes convinced that a hidden numerical pattern can explain nature, predict the stock market, and reveal something dangerously close to the divine.",
+    "cover": "movie_covers/pi.jpg",
+    "created_at": "2026-07-24T04:43:02.268Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 4,
+  "fields": {
+    "name": "The Machinist",
+    "year": 2004,
+    "rate": null,
+    "description": "An industrial worker who has not slept for a year begins losing his grip on reality after a workplace accident, cryptic notes, and the appearance of a man nobody else seems to know.",
+    "cover": "movie_covers/the_machinist.jpg",
+    "created_at": "2026-07-24T04:43:02.275Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 5,
+  "fields": {
+    "name": "Poor Things",
+    "year": 2023,
+    "rate": "8.6",
+    "description": "Bella Baxter, a young woman returned to life by an eccentric scientist, escapes into the world and rapidly develops her own ideas about freedom, desire, knowledge, and social rules.",
+    "cover": "movie_covers/poor_things.jpg",
+    "created_at": "2026-07-24T04:43:02.281Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 6,
+  "fields": {
+    "name": "табакошка",
+    "year": 2026,
+    "rate": "1.0",
+    "description": "полное говно аниме",
+    "cover": "",
+    "created_at": "2026-07-26T00:35:05.662Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 7,
+  "fields": {
+    "name": "Possum",
+    "year": 2018,
+    "rate": "6.7",
+    "description": "Ағылшын тілінен аударылды.-«Поссум» - Мэттью Холнесстің дебюттік көркем фильмінде сценарий жазып, режиссерлік еткен 2018 жылғы британдық психологиялық қорқынышты фильм, басты рөлдерді Шон Харрис пен Алун Армстронг сомдайды",
+    "cover": "movie_covers/possum.jpg",
+    "created_at": "2026-07-26T00:36:57.799Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 8,
+  "fields": {
+    "name": "Oldboy",
+    "year": 2003,
+    "rate": null,
+    "description": "After being imprisoned in a private cell for fifteen years without explanation, Oh Dae-su is suddenly released and given five days to discover who destroyed his life and why.",
+    "cover": "movie_covers/oldboy.jpg",
+    "created_at": "2026-08-02T04:35:38.844Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 9,
+  "fields": {
+    "name": "Shutter Island",
+    "year": 2010,
+    "rate": null,
+    "description": "A U.S. marshal investigates a patient's disappearance from an isolated psychiatric hospital, but the island's staff, storm-battered grounds, and his own memories steadily undermine his version of reality.",
+    "cover": "movie_covers/shutter_island.jpg",
+    "created_at": "2026-08-02T04:35:38.848Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 10,
+  "fields": {
+    "name": "The Goldfinch",
+    "year": 2019,
+    "rate": null,
+    "description": "A boy survives a museum bombing that kills his mother and secretly carries away a priceless painting, a choice that follows him through grief, addiction, friendship, and the criminal art world.",
+    "cover": "movie_covers/the_goldfinch.jpg",
+    "created_at": "2026-08-02T04:35:38.855Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 11,
+  "fields": {
+    "name": "No Country for Old Men",
+    "year": 2007,
+    "rate": null,
+    "description": "A hunter takes a case of drug money from a desert crime scene and is pursued by an eerily methodical killer while an aging sheriff tries to understand the violence spreading across West Texas.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:38.860Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 12,
+  "fields": {
+    "name": "American Psycho",
+    "year": 2000,
+    "rate": null,
+    "description": "A wealthy Wall Street banker hides violent impulses behind a flawless routine of status, fashion, restaurants, and empty conversation as his identity begins to dissolve into performance.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:38.867Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 13,
+  "fields": {
+    "name": "Guy Ritchie's The Covenant",
+    "year": 2023,
+    "rate": null,
+    "description": "An American soldier returns to Afghanistan to rescue the interpreter who once carried him to safety and was then abandoned to the people hunting him.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:38.872Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 14,
+  "fields": {
+    "name": "Ichi the Killer",
+    "year": 2001,
+    "rate": null,
+    "description": "A sadistic yakuza enforcer searches for his missing boss and collides with Ichi, a deeply manipulated killer whose violence erupts through fragmented memories, humiliation, and rage.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:38.875Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 15,
+  "fields": {
+    "name": "Joker",
+    "year": 2019,
+    "rate": null,
+    "description": "Arthur Fleck, an isolated party clown and aspiring comedian, is repeatedly humiliated by Gotham until personal collapse and public anger transform him into a symbol of violent rebellion.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:38.880Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 16,
+  "fields": {
+    "name": "Juno",
+    "year": 2007,
+    "rate": null,
+    "description": "A sharp-tongued teenager faces an unexpected pregnancy and chooses an adoptive couple, discovering that adulthood and supposedly perfect relationships are messier than they first appear.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:38.885Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 17,
+  "fields": {
+    "name": "Killer Klowns from Outer Space",
+    "year": 1988,
+    "rate": null,
+    "description": "Alien creatures resembling circus clowns invade a small town and harvest its residents with deadly jokes, living balloons, shadow puppets, and cotton-candy cocoons.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:38.890Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 18,
+  "fields": {
+    "name": "Ready or Not",
+    "year": 2019,
+    "rate": null,
+    "description": "On her wedding night, a bride is forced into a family tradition that turns a harmless game of hide-and-seek into a bloody hunt through an enormous mansion.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:38.896Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 19,
+  "fields": {
+    "name": "Orphan",
+    "year": 2009,
+    "rate": null,
+    "description": "A grieving couple adopts a remarkably composed nine-year-old girl, but her manipulative behavior and concealed history place the entire household in danger.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:38.900Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 20,
+  "fields": {
+    "name": "Case 39",
+    "year": 2009,
+    "rate": null,
+    "description": "A social worker rescues a young girl from abusive parents and brings her home, only to realize that the child may be the source of the terror surrounding every case she touches.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:38.904Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 21,
+  "fields": {
+    "name": "21 Jump Street",
+    "year": 2012,
+    "rate": null,
+    "description": "Two immature police officers go undercover as high-school students to expose a drug supplier and discover that modern teenage life has reversed everything they remember.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:38.909Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 22,
+  "fields": {
+    "name": "Together",
+    "year": 2025,
+    "rate": null,
+    "description": "A couple moves to the countryside hoping to repair a strained relationship, but contact with an unnatural force begins binding their bodies and identities in horrifying ways.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:38.913Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 23,
+  "fields": {
+    "name": "Raw",
+    "year": 2016,
+    "rate": null,
+    "description": "A vegetarian veterinary student undergoes a brutal initiation and develops an overwhelming hunger for flesh, forcing her to confront desire, family secrets, and her changing body.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:38.918Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 24,
+  "fields": {
+    "name": "The Substance",
+    "year": 2024,
+    "rate": null,
+    "description": "A fading celebrity uses an underground treatment to create a younger, idealized version of herself, but the two bodies cannot peacefully share one life.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:38.923Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 25,
+  "fields": {
+    "name": "I Feel Pretty",
+    "year": 2018,
+    "rate": null,
+    "description": "After a head injury, an insecure woman becomes convinced that she is extraordinarily beautiful, and her new confidence transforms her career, relationships, and treatment of others.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:38.928Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 26,
+  "fields": {
+    "name": "Nerve",
+    "year": 2016,
+    "rate": null,
+    "description": "A cautious student joins an online game of increasingly dangerous dares, only to discover that its anonymous audience controls far more than the prize money.",
+    "cover": "movie_covers/nerve.jpg",
+    "created_at": "2026-08-02T04:35:38.932Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 27,
+  "fields": {
+    "name": "Murder Mystery",
+    "year": 2019,
+    "rate": null,
+    "description": "A New York couple on a long-delayed European vacation becomes trapped aboard a billionaire's yacht and blamed for a murder among a group of wealthy suspects.",
+    "cover": "movie_covers/murder_mystery.jpg",
+    "created_at": "2026-08-02T04:35:38.938Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 28,
+  "fields": {
+    "name": "Lucy",
+    "year": 2014,
+    "rate": "10.0",
+    "description": "A woman forced to transport an experimental drug gains rapidly expanding mental and physical abilities, pushing her beyond ordinary human perception while criminals and scientists pursue her.",
+    "cover": "movie_covers/lucy.jpg",
+    "created_at": "2026-08-02T04:35:38.942Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 29,
+  "fields": {
+    "name": "Limitless",
+    "year": 2011,
+    "rate": "8.0",
+    "description": "A struggling writer takes a mysterious drug that gives him extraordinary focus and memory, turning him into a financial prodigy while dependency and dangerous enemies close in.",
+    "cover": "movie_covers/limitless.jpg",
+    "created_at": "2026-08-02T04:35:38.948Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 30,
+  "fields": {
+    "name": "Inception",
+    "year": 2010,
+    "rate": null,
+    "description": "A specialist who steals secrets through shared dreams is offered a chance to return home if his team can plant an idea deep inside a target's layered subconscious.",
+    "cover": "movie_covers/inception.jpg",
+    "created_at": "2026-08-02T04:35:38.952Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 31,
+  "fields": {
+    "name": "Nanny McPhee",
+    "year": 2005,
+    "rate": null,
+    "description": "A mysterious nanny uses unsettling magic and strict lessons to transform seven uncontrollable children and help their overwhelmed widowed father save the family.",
+    "cover": "movie_covers/nanny_mcphee.jpg",
+    "created_at": "2026-08-02T04:35:38.958Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 32,
+  "fields": {
+    "name": "Best Player",
+    "year": 2011,
+    "rate": null,
+    "description": "A champion gamer discovers that the anonymous rival threatening his record is a teenage girl and enters her school life to sabotage her before a major tournament.",
+    "cover": "movie_covers/best_player.jpg",
+    "created_at": "2026-08-02T04:35:38.963Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 33,
+  "fields": {
+    "name": "Jinxed",
+    "year": 2013,
+    "rate": null,
+    "description": "A teenager from a family cursed with constant bad luck searches for a way to break the spell before it ruins another generation of Murphy disasters.",
+    "cover": "movie_covers/jinxed.jpg",
+    "created_at": "2026-08-02T04:35:38.969Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 34,
+  "fields": {
+    "name": "10 Lives",
+    "year": 2024,
+    "rate": null,
+    "description": "A selfish cat wastes the lives he has been given and must return in a series of unexpected animal bodies to repair his bond with the scientist who saved him.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:38.974Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 35,
+  "fields": {
+    "name": "Begotten",
+    "year": 1989,
+    "rate": null,
+    "description": "In a wordless, decayed monochrome nightmare, divine figures undergo birth, mutilation, death, and rebirth through ritualistic images that resemble a damaged ancient film.",
+    "cover": "movie_covers/begotten.jpg",
+    "created_at": "2026-08-02T04:35:38.979Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 36,
+  "fields": {
+    "name": "Peeping Tom",
+    "year": 1960,
+    "rate": null,
+    "description": "A withdrawn camera operator murders women while filming their final terror, turning cinema, voyeurism, childhood trauma, and the gaze of the audience into one disturbing mechanism.",
+    "cover": "movie_covers/peeping_tom.jpg",
+    "created_at": "2026-08-02T04:35:38.983Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 37,
+  "fields": {
+    "name": "Split",
+    "year": 2016,
+    "rate": null,
+    "description": "Three teenagers are kidnapped by a man whose dissociative identities compete for control while a powerful new personality prepares to emerge.",
+    "cover": "movie_covers/split.jpg",
+    "created_at": "2026-08-02T04:35:38.988Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 38,
+  "fields": {
+    "name": "Longlegs",
+    "year": 2024,
+    "rate": null,
+    "description": "An FBI agent with unusual intuition follows occult clues connecting a series of family deaths to an elusive killer and to secrets buried in her own childhood.",
+    "cover": "movie_covers/longlegs.jpg",
+    "created_at": "2026-08-02T04:35:38.992Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 39,
+  "fields": {
+    "name": "Scary Movie",
+    "year": 2026,
+    "rate": null,
+    "description": "Cindy, Brenda, Shorty, Ray, and old friends reunite when a familiar masked killer returns, pulling them into another barrage of horror parodies and absurd survival attempts.",
+    "cover": "movie_covers/scary_movie_2026.jpg",
+    "created_at": "2026-08-02T04:35:38.998Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 40,
+  "fields": {
+    "name": "The Silence of the Lambs",
+    "year": 1991,
+    "rate": null,
+    "description": "An FBI trainee seeks insight from imprisoned psychiatrist and murderer Hannibal Lecter while hunting a serial killer who abducts women and carefully removes their skin.",
+    "cover": "movie_covers/the_silence_of_the_lambs.jpg",
+    "created_at": "2026-08-02T04:35:39.002Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 41,
+  "fields": {
+    "name": "Manhunter",
+    "year": 1986,
+    "rate": null,
+    "description": "A gifted former profiler returns to pursue a killer who targets entire families, using Hannibal Lecktor's mind at the risk of losing himself inside the investigation.",
+    "cover": "movie_covers/manhunter.jpg",
+    "created_at": "2026-08-02T04:35:39.007Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 42,
+  "fields": {
+    "name": "Hannibal",
+    "year": 2001,
+    "rate": null,
+    "description": "Years after his escape, Hannibal Lecter lives under a new identity in Florence while Clarice Starling and a horribly disfigured survivor are drawn into his return.",
+    "cover": "movie_covers/hannibal_2001.jpg",
+    "created_at": "2026-08-02T04:35:39.012Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 43,
+  "fields": {
+    "name": "Red Dragon",
+    "year": 2002,
+    "rate": null,
+    "description": "Profiler Will Graham reluctantly consults the imprisoned Hannibal Lecter to stop a ritualistic family murderer known as the Tooth Fairy.",
+    "cover": "movie_covers/red_dragon.jpg",
+    "created_at": "2026-08-02T04:35:39.018Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 44,
+  "fields": {
+    "name": "Hannibal Rising",
+    "year": 2007,
+    "rate": null,
+    "description": "A young Hannibal Lecter survives wartime horror and develops his intelligence, refinement, and appetite while pursuing the men responsible for his sister's death.",
+    "cover": "movie_covers/hannibal_rising.jpg",
+    "created_at": "2026-08-02T04:35:39.022Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 45,
+  "fields": {
+    "name": "Saw",
+    "year": 2004,
+    "rate": null,
+    "description": "Two strangers wake chained inside a ruined bathroom and discover that an unseen captor has designed a brutal test of sacrifice, guilt, and the will to live.",
+    "cover": "movie_covers/saw.jpg",
+    "created_at": "2026-08-02T04:35:39.028Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 46,
+  "fields": {
+    "name": "Saw II",
+    "year": 2005,
+    "rate": null,
+    "description": "Detective Eric Matthews confronts Jigsaw while eight people, including the detective's son, search a poisoned house for antidotes hidden inside lethal traps.",
+    "cover": "movie_covers/saw2.jpg",
+    "created_at": "2026-08-02T04:35:39.032Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 47,
+  "fields": {
+    "name": "Saw III",
+    "year": 2006,
+    "rate": null,
+    "description": "A dying Jigsaw and Amanda force a grieving father through tests of forgiveness while a kidnapped surgeon must keep their mastermind alive.",
+    "cover": "movie_covers/saw_3.jpg",
+    "created_at": "2026-08-02T04:35:39.038Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 48,
+  "fields": {
+    "name": "Saw IV",
+    "year": 2007,
+    "rate": null,
+    "description": "As investigators uncover Jigsaw's history, an obsessed SWAT officer is pushed through a sequence of tests designed to punish his need to save everyone.",
+    "cover": "movie_covers/saw_4.jpg",
+    "created_at": "2026-08-02T04:35:39.043Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 49,
+  "fields": {
+    "name": "Saw V",
+    "year": 2008,
+    "rate": null,
+    "description": "Agent Strahm closes in on Jigsaw's successor while five strangers face interconnected traps that can only be survived through cooperation.",
+    "cover": "movie_covers/saw_5.jpg",
+    "created_at": "2026-08-02T04:35:39.047Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 50,
+  "fields": {
+    "name": "Saw VI",
+    "year": 2009,
+    "rate": null,
+    "description": "Jigsaw's legacy targets a health-insurance executive whose life-and-death formulas are turned into physical tests, while the investigation threatens to expose Hoffman.",
+    "cover": "movie_covers/saw_6.jpg",
+    "created_at": "2026-08-02T04:35:39.052Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 51,
+  "fields": {
+    "name": "Saw 3D",
+    "year": 2010,
+    "rate": null,
+    "description": "A man who built fame on a false story of surviving Jigsaw is forced to face real traps as Hoffman and Jill fight over the final pieces of John's legacy.",
+    "cover": "movie_covers/saw_3d.jpg",
+    "created_at": "2026-08-02T04:35:39.057Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 52,
+  "fields": {
+    "name": "Jigsaw",
+    "year": 2017,
+    "rate": null,
+    "description": "Bodies begin appearing with wounds linked to Jigsaw's methods, forcing police to determine whether John Kramer has returned or a new disciple is reconstructing his games.",
+    "cover": "movie_covers/jigsaw.jpg",
+    "created_at": "2026-08-02T04:35:39.062Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 53,
+  "fields": {
+    "name": "Spiral: From the Book of Saw",
+    "year": 2021,
+    "rate": null,
+    "description": "A detective investigates elaborate murders of corrupt police officers carried out by a killer using traps and symbols inspired by Jigsaw.",
+    "cover": "movie_covers/spiral_from_the_book_of_saw.jpg",
+    "created_at": "2026-08-02T04:35:39.067Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 54,
+  "fields": {
+    "name": "Saw X",
+    "year": 2023,
+    "rate": null,
+    "description": "John Kramer travels to Mexico for an experimental cancer treatment and turns his methods against the fraudsters who exploited his desperation.",
+    "cover": "movie_covers/saw_x.jpg",
+    "created_at": "2026-08-02T04:35:39.072Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 55,
+  "fields": {
+    "name": "The Conjuring",
+    "year": 2013,
+    "rate": null,
+    "description": "Paranormal investigators Ed and Lorraine Warren help a family whose isolated farmhouse is being consumed by an increasingly violent supernatural presence.",
+    "cover": "movie_covers/the_conjuring.jpg",
+    "created_at": "2026-08-02T04:35:39.077Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 56,
+  "fields": {
+    "name": "Annabelle",
+    "year": 2014,
+    "rate": null,
+    "description": "After a cult attacks a young couple, a vintage doll becomes a vessel for a demonic force that stalks the expectant mother and her newborn child.",
+    "cover": "movie_covers/annabelle.jpg",
+    "created_at": "2026-08-02T04:35:39.081Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 57,
+  "fields": {
+    "name": "The Conjuring 2",
+    "year": 2016,
+    "rate": null,
+    "description": "Ed and Lorraine Warren travel to London to help a single mother and her children as a malicious entity turns their public haunting into a deadly test of faith.",
+    "cover": "movie_covers/the_conjuring_2.jpg",
+    "created_at": "2026-08-02T04:35:39.086Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 58,
+  "fields": {
+    "name": "Annabelle: Creation",
+    "year": 2017,
+    "rate": null,
+    "description": "Years after losing their daughter, a dollmaker and his wife shelter an orphanage group, unknowingly offering a demonic presence new victims.",
+    "cover": "movie_covers/annabelle_creation.jpg",
+    "created_at": "2026-08-02T04:35:39.090Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 59,
+  "fields": {
+    "name": "The Nun",
+    "year": 2018,
+    "rate": null,
+    "description": "A priest and a novice investigate a nun's death at a Romanian abbey, where the demonic figure Valak has turned the convent into a gateway for evil.",
+    "cover": "movie_covers/the_nun.jpg",
+    "created_at": "2026-08-02T04:35:39.095Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 60,
+  "fields": {
+    "name": "The Curse of La Llorona",
+    "year": 2019,
+    "rate": null,
+    "description": "A social worker and her children become targets of the weeping spirit La Llorona, whose grief drives her to steal other families' children.",
+    "cover": "movie_covers/the_curse_of_la_llorona.jpg",
+    "created_at": "2026-08-02T04:35:39.101Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 61,
+  "fields": {
+    "name": "Annabelle Comes Home",
+    "year": 2019,
+    "rate": null,
+    "description": "Annabelle is awakened inside the Warrens' artifact room and unleashes the collection's other spirits against their daughter and her babysitters.",
+    "cover": "movie_covers/annabelle_comes_home.jpg",
+    "created_at": "2026-08-02T04:35:39.105Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 62,
+  "fields": {
+    "name": "The Conjuring: The Devil Made Me Do It",
+    "year": 2021,
+    "rate": null,
+    "description": "The Warrens investigate a murder suspect who claims demonic possession, uncovering an occult chain of curses that reaches beyond a single haunted home.",
+    "cover": "movie_covers/the_conjuring_the_devil_made_me_do_it.jpg",
+    "created_at": "2026-08-02T04:35:39.111Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 63,
+  "fields": {
+    "name": "The Nun II",
+    "year": 2023,
+    "rate": null,
+    "description": "Sister Irene encounters Valak again at a French boarding school, where a string of deaths reveals the demon's search for a sacred relic.",
+    "cover": "movie_covers/the_nun_2.jpg",
+    "created_at": "2026-08-02T04:35:39.116Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 64,
+  "fields": {
+    "name": "The Conjuring: Last Rites",
+    "year": 2025,
+    "rate": null,
+    "description": "Ed and Lorraine Warren confront a final major case when a Pennsylvania family is terrorized by escalating activity connected to the Smurl haunting.",
+    "cover": "movie_covers/the_conjuring_last_rites.jpg",
+    "created_at": "2026-08-02T04:35:39.124Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 65,
+  "fields": {
+    "name": "A Nightmare on Elm Street",
+    "year": 1984,
+    "rate": null,
+    "description": "Teenagers discover that the burned killer stalking their dreams can murder them in reality, forcing Nancy Thompson to fight him without falling asleep.",
+    "cover": "movie_covers/a_nightmare_on_elm_street_1984.jpg",
+    "created_at": "2026-08-02T04:35:39.129Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 66,
+  "fields": {
+    "name": "A Nightmare on Elm Street 2: Freddy's Revenge",
+    "year": 1985,
+    "rate": null,
+    "description": "A teenager moves into Nancy's former home and becomes the unwilling vessel Freddy Krueger needs to enter the waking world.",
+    "cover": "movie_covers/a_nightmare_on_elm_street_2.jpg",
+    "created_at": "2026-08-02T04:35:39.133Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 67,
+  "fields": {
+    "name": "A Nightmare on Elm Street 3: Dream Warriors",
+    "year": 1987,
+    "rate": null,
+    "description": "Nancy helps psychiatric patients recognize their powers inside dreams and unite against Freddy before he claims the last Elm Street children.",
+    "cover": "movie_covers/a_nightmare_on_elm_street_3.jpg",
+    "created_at": "2026-08-02T04:35:39.139Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 68,
+  "fields": {
+    "name": "A Nightmare on Elm Street 4: The Dream Master",
+    "year": 1988,
+    "rate": null,
+    "description": "Freddy returns through the dreams of the surviving warriors and encounters Alice, whose growing dream powers may finally rival his own.",
+    "cover": "movie_covers/a_nightmare_on_elm_street_4.jpg",
+    "created_at": "2026-08-02T04:35:39.144Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 69,
+  "fields": {
+    "name": "A Nightmare on Elm Street 5: The Dream Child",
+    "year": 1989,
+    "rate": null,
+    "description": "Freddy invades the dreams of Alice's unborn child and uses them to reach new victims while she uncovers the history of his birth.",
+    "cover": "movie_covers/a_nightmare_on_elm_street_5.jpg",
+    "created_at": "2026-08-02T04:35:39.149Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 70,
+  "fields": {
+    "name": "Freddy's Dead: The Final Nightmare",
+    "year": 1991,
+    "rate": null,
+    "description": "With Springwood's children gone, Freddy sends the last surviving teenager to bring him new victims and expose the family history behind the killer.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:39.154Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 71,
+  "fields": {
+    "name": "Wes Craven's New Nightmare",
+    "year": 1994,
+    "rate": null,
+    "description": "The actors and creators of the original film are haunted in the real world by an ancient entity that has adopted Freddy Krueger's form.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:39.159Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 72,
+  "fields": {
+    "name": "Freddy vs. Jason",
+    "year": 2003,
+    "rate": null,
+    "description": "Freddy manipulates Jason Voorhees into spreading fear on Elm Street, but the two killers turn on each other when Jason steals Freddy's victims.",
+    "cover": "movie_covers/freddy_vs_jason.jpg",
+    "created_at": "2026-08-02T04:35:39.163Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 73,
+  "fields": {
+    "name": "A Nightmare on Elm Street",
+    "year": 2010,
+    "rate": null,
+    "description": "A group of teenagers shares nightmares about a burned man with bladed gloves and uncovers the childhood connection that made them his targets.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:39.168Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 74,
+  "fields": {
+    "name": "The Ship",
+    "year": 2014,
+    "rate": null,
+    "description": "Students and crew aboard a training vessel survive a global catastrophe and search for land while secrets, conflict, and unexplained events spread through the isolated ship.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:39.172Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 75,
+  "fields": {
+    "name": "Survival Game",
+    "year": 2020,
+    "rate": null,
+    "description": "Sixteen people enter a remote Siberian reality show with no communication or crew, only to discover that the staged competition has become a genuine fight for survival.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:39.178Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 76,
+  "fields": {
+    "name": "Squid Game",
+    "year": 2021,
+    "rate": null,
+    "description": "Hundreds of desperate contestants accept an invitation to play children's games for an enormous prize, learning that elimination means death and cooperation can collapse at any moment.",
+    "cover": "movie_covers/squid_game.jpg",
+    "created_at": "2026-08-02T04:35:39.183Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 77,
+  "fields": {
+    "name": "Riverdale",
+    "year": 2017,
+    "rate": null,
+    "description": "A group of teenagers investigates murder and corruption beneath the polished surface of Riverdale as the town's mysteries grow increasingly strange and dangerous.",
+    "cover": "movie_covers/riverdale.jpg",
+    "created_at": "2026-08-02T04:35:39.188Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 78,
+  "fields": {
+    "name": "Stranger Things",
+    "year": 2016,
+    "rate": null,
+    "description": "The disappearance of a boy in 1980s Indiana brings his friends into contact with a secret laboratory, a psychic girl, and a hostile dimension pressing against their town.",
+    "cover": "movie_covers/stranger_things.jpg",
+    "created_at": "2026-08-02T04:35:39.193Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 79,
+  "fields": {
+    "name": "Mr. Robot",
+    "year": 2015,
+    "rate": null,
+    "description": "A brilliant but unstable cybersecurity engineer is recruited by an underground hacker group to erase global debt and attack the corporation dominating modern life.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:39.198Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 80,
+  "fields": {
+    "name": "Black Mirror",
+    "year": 2011,
+    "rate": null,
+    "description": "An anthology of unsettling stories explores how familiar technologies magnify obsession, cruelty, surveillance, loneliness, and the need for social approval.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:39.206Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 81,
+  "fields": {
+    "name": "Hannibal",
+    "year": 2013,
+    "rate": null,
+    "description": "Profiler Will Graham relies on psychiatrist Hannibal Lecter while investigating serial killers, unaware that his elegant therapist is shaping both the crimes and Will's collapsing mind.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:39.210Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 82,
+  "fields": {
+    "name": "Junji Ito Collection",
+    "year": 2018,
+    "rate": null,
+    "description": "An anthology adapts Junji Ito's grotesque stories about obsession, impossible bodies, curses, doubles, fashion models, and ordinary lives invaded by inexplicable horror.",
+    "cover": "movie_covers/junji_ito_collection.jpg",
+    "created_at": "2026-08-02T04:35:39.214Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 83,
+  "fields": {
+    "name": "Attack on Titan",
+    "year": 2013,
+    "rate": null,
+    "description": "Humanity hides behind enormous walls until man-eating Titans destroy the illusion of safety and a group of young soldiers uncovers the political history behind their world.",
+    "cover": "movie_covers/attack_on_titan.jpg",
+    "created_at": "2026-08-02T04:35:39.220Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 84,
+  "fields": {
+    "name": "The Promised Neverland",
+    "year": 2019,
+    "rate": null,
+    "description": "Gifted children living in an idyllic orphanage learn the horrifying purpose of their home and secretly plan an escape from the adults controlling them.",
+    "cover": "movie_covers/the_promised_neverland.jpg",
+    "created_at": "2026-08-02T04:35:39.224Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 85,
+  "fields": {
+    "name": "Sword Art Online",
+    "year": 2012,
+    "rate": null,
+    "description": "Players trapped inside a virtual-reality fantasy game must clear one hundred floors to escape, knowing that death in the game will also kill their real bodies.",
+    "cover": "movie_covers/sword_art_online.jpg",
+    "created_at": "2026-08-02T04:35:39.231Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 86,
+  "fields": {
+    "name": "My Dress-Up Darling",
+    "year": 2022,
+    "rate": null,
+    "description": "A quiet student skilled at making traditional dolls begins creating cosplay outfits for an energetic classmate, drawing both of them into a close creative friendship.",
+    "cover": "movie_covers/my_dress_up_darling.jpg",
+    "created_at": "2026-08-02T04:35:39.235Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 87,
+  "fields": {
+    "name": "The Pet Girl of Sakurasou",
+    "year": 2012,
+    "rate": null,
+    "description": "A student living in a dorm for school misfits becomes responsible for a brilliant artist who can barely manage everyday life, while everyone around them chases difficult creative ambitions.",
+    "cover": "movie_covers/the_pet_girl_of_sakurasou.jpg",
+    "created_at": "2026-08-02T04:35:39.241Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 88,
+  "fields": {
+    "name": "Beastars",
+    "year": 2019,
+    "rate": null,
+    "description": "At a school shared by carnivores and herbivores, a gentle wolf struggles with instinct, shame, and love after a student's murder exposes the fragile rules holding society together.",
+    "cover": "movie_covers/beastars.jpg",
+    "created_at": "2026-08-02T04:35:39.246Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 89,
+  "fields": {
+    "name": "Tokyo Ghoul",
+    "year": 2014,
+    "rate": null,
+    "description": "A student becomes half-ghoul after a violent encounter and must survive between human society and the hidden community that feeds on it.",
+    "cover": "movie_covers/tokyo_ghoul.jpg",
+    "created_at": "2026-08-02T04:35:39.250Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 90,
+  "fields": {
+    "name": "Death Note",
+    "year": 2006,
+    "rate": null,
+    "description": "A brilliant student gains a notebook that kills anyone whose name is written inside and begins remaking the world while an equally gifted detective hunts him.",
+    "cover": "movie_covers/death_note.jpg",
+    "created_at": "2026-08-02T04:35:39.256Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 91,
+  "fields": {
+    "name": "Bakugan Battle Brawlers",
+    "year": 2007,
+    "rate": null,
+    "description": "Children discover that the creatures inside their strategy game are real beings from another dimension and become responsible for protecting both worlds.",
+    "cover": "movie_covers/bakugan_battle_brawlers.jpg",
+    "created_at": "2026-08-02T04:35:39.260Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 92,
+  "fields": {
+    "name": "Shaman King",
+    "year": 2001,
+    "rate": null,
+    "description": "A relaxed young shaman joins a global tournament in which mediums fight alongside spirits for the right to become Shaman King and reshape the world.",
+    "cover": "movie_covers/shaman_king_2001.jpg",
+    "created_at": "2026-08-02T04:35:39.265Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 93,
+  "fields": {
+    "name": "Avatar: The Last Airbender",
+    "year": 2005,
+    "rate": null,
+    "description": "A young Air Nomad awakens after a century and must master four elements with his friends to end the Fire Nation's war and restore balance.",
+    "cover": "movie_covers/avatar_the_last_airbender.jpg",
+    "created_at": "2026-08-02T04:35:39.271Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 94,
+  "fields": {
+    "name": "The Garden of Words",
+    "year": 2013,
+    "rate": null,
+    "description": "A student who dreams of designing shoes repeatedly meets an older woman in a rainy garden, where their quiet conversations become shelter from lives neither can face directly.",
+    "cover": "movie_covers/the_garden_of_words.jpg",
+    "created_at": "2026-08-02T04:35:39.274Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 95,
+  "fields": {
+    "name": "Danganronpa: The Animation",
+    "year": 2013,
+    "rate": null,
+    "description": "Elite students are imprisoned inside their academy by a sadistic bear and told that graduation requires murdering a classmate without being exposed at trial.",
+    "cover": "movie_covers/danganronpa_the_animation.jpg",
+    "created_at": "2026-08-02T04:35:39.279Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 96,
+  "fields": {
+    "name": "Hello World",
+    "year": 2019,
+    "rate": null,
+    "description": "A shy teenager is visited by his future self, who asks him to change recorded reality and save the girl they both love from an approaching disaster.",
+    "cover": "movie_covers/hello_world.jpg",
+    "created_at": "2026-08-02T04:35:39.285Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 97,
+  "fields": {
+    "name": "Magical Girl Site",
+    "year": 2018,
+    "rate": null,
+    "description": "A brutally bullied girl receives a weapon from a sinister website and enters a hidden network of magical girls watched by grotesque administrators preparing for an apocalypse.",
+    "cover": "movie_covers/magical_girl_site.jpg",
+    "created_at": "2026-08-02T04:35:39.291Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 98,
+  "fields": {
+    "name": "Maquia: When the Promised Flower Blooms",
+    "year": 2018,
+    "rate": null,
+    "description": "An immortal girl adopts an orphaned human baby and experiences the beauty and pain of motherhood as he grows old while she remains unchanged.",
+    "cover": "movie_covers/maquia_when_the_promised_flower_blooms.jpg",
+    "created_at": "2026-08-02T04:35:39.295Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 99,
+  "fields": {
+    "name": "Malice@Doll",
+    "year": 2001,
+    "rate": null,
+    "description": "In a city abandoned by humanity, an android built to serve people is transformed into living flesh and tries to share her new condition with other purposeless machines.",
+    "cover": "movie_covers/malice_at_doll.jpg",
+    "created_at": "2026-08-02T04:35:39.300Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 100,
+  "fields": {
+    "name": "Uzumaki",
+    "year": 2024,
+    "rate": null,
+    "description": "The residents of Kurouzu become obsessed with spirals as the pattern infects their minds, bodies, weather, buildings, and the structure of the town itself.",
+    "cover": "movie_covers/uzumaki_2024.jpg",
+    "created_at": "2026-08-02T04:35:39.304Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 101,
+  "fields": {
+    "name": "Parasyte: The Maxim",
+    "year": 2014,
+    "rate": null,
+    "description": "A failed alien parasite takes control of a teenager's right hand, forcing the mismatched pair to cooperate against creatures that successfully replaced human brains.",
+    "cover": "movie_covers/parasyte_the_maxim.jpg",
+    "created_at": "2026-08-02T04:35:39.309Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 102,
+  "fields": {
+    "name": "One Piece",
+    "year": 1999,
+    "rate": null,
+    "description": "Monkey D. Luffy gathers a wildly different pirate crew and crosses a vast ocean of islands, governments, mysteries, and rival powers in search of the legendary One Piece.",
+    "cover": "movie_covers/one_piece.jpg",
+    "created_at": "2026-08-02T04:35:39.313Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 103,
+  "fields": {
+    "name": "Hunter x Hunter",
+    "year": 2011,
+    "rate": null,
+    "description": "Gon leaves home to become a licensed Hunter and find his father, entering exams and adventures that grow from playful challenges into morally complex battles.",
+    "cover": "movie_covers/hunter_x_hunter_2011.jpg",
+    "created_at": "2026-08-02T04:35:39.318Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 104,
+  "fields": {
+    "name": "Demon Slayer: Kimetsu no Yaiba",
+    "year": 2019,
+    "rate": null,
+    "description": "After demons slaughter his family and transform his sister, Tanjiro joins the Demon Slayer Corps to find a cure and confront the origin of their suffering.",
+    "cover": "movie_covers/demon_slayer.jpg",
+    "created_at": "2026-08-02T04:35:39.324Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 105,
+  "fields": {
+    "name": "Jujutsu Kaisen",
+    "year": 2020,
+    "rate": null,
+    "description": "A physically gifted student swallows a cursed object and enters a school of sorcerers, sharing his body with an ancient monster while learning to fight human fear made real.",
+    "cover": "movie_covers/jujutsu_kaisen.jpg",
+    "created_at": "2026-08-02T04:35:39.329Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 106,
+  "fields": {
+    "name": "Chainsaw Man",
+    "year": 2022,
+    "rate": null,
+    "description": "An impoverished devil hunter merges with his chainsaw-shaped companion and is recruited into a government unit where simple dreams collide with manipulation and extreme violence.",
+    "cover": "movie_covers/chainsaw_man.jpg",
+    "created_at": "2026-08-02T04:35:39.334Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 107,
+  "fields": {
+    "name": "Fullmetal Alchemist: Brotherhood",
+    "year": 2009,
+    "rate": null,
+    "description": "Two brothers damaged by forbidden alchemy search for the Philosopher's Stone and uncover a nationwide conspiracy built on war, sacrifice, and manufactured immortality.",
+    "cover": "movie_covers/fullmetal_alchemist_brotherhood.jpg",
+    "created_at": "2026-08-02T04:35:39.338Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 108,
+  "fields": {
+    "name": "Steins;Gate",
+    "year": 2011,
+    "rate": null,
+    "description": "A group of eccentric friends accidentally learns to send messages into the past, attracting a powerful organization and creating timelines filled with increasingly personal consequences.",
+    "cover": "movie_covers/steins_gate.jpg",
+    "created_at": "2026-08-02T04:35:39.343Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 109,
+  "fields": {
+    "name": "Code Geass: Lelouch of the Rebellion",
+    "year": 2006,
+    "rate": null,
+    "description": "An exiled prince gains the power to issue an irresistible command and becomes a masked revolutionary determined to destroy the empire that abandoned his family.",
+    "cover": "movie_covers/code_geass.jpg",
+    "created_at": "2026-08-02T04:35:39.348Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 110,
+  "fields": {
+    "name": "Monster",
+    "year": 2004,
+    "rate": null,
+    "description": "A surgeon saves a child's life instead of obeying hospital politics and years later learns that the boy became a terrifying manipulator at the center of a trail of murders.",
+    "cover": "movie_covers/monster.jpg",
+    "created_at": "2026-08-02T04:35:39.353Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 111,
+  "fields": {
+    "name": "Berserk",
+    "year": 1997,
+    "rate": null,
+    "description": "A solitary mercenary joins the ambitious Griffith and his Band of the Hawk, forming bonds that are ultimately consumed by power, fate, and supernatural betrayal.",
+    "cover": "movie_covers/berserk_1997.jpg",
+    "created_at": "2026-08-02T04:35:39.360Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 112,
+  "fields": {
+    "name": "Made in Abyss",
+    "year": 2017,
+    "rate": null,
+    "description": "A young explorer and a robot boy descend into an enormous pit filled with beautiful ecosystems, ancient relics, monstrous life, and a curse that punishes anyone who climbs back up.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:39.364Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 113,
+  "fields": {
+    "name": "Mob Psycho 100",
+    "year": 2016,
+    "rate": null,
+    "description": "An awkward boy with overwhelming psychic power tries to build an ordinary identity under the guidance of a fraudulent mentor while his suppressed emotions approach a breaking point.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:39.370Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 114,
+  "fields": {
+    "name": "Cyberpunk: Edgerunners",
+    "year": 2022,
+    "rate": null,
+    "description": "After losing everything in Night City, a teenager joins a crew of mercenaries and pushes his body through dangerous cybernetic upgrades in pursuit of freedom and belonging.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:39.375Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 115,
+  "fields": {
+    "name": "Death Parade",
+    "year": 2015,
+    "rate": null,
+    "description": "Newly dead strangers are forced to play cruel games in a mysterious bar, where an emotionless arbiter judges the hidden choices that defined their lives.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:39.380Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 116,
+  "fields": {
+    "name": "Another",
+    "year": 2012,
+    "rate": null,
+    "description": "A transfer student notices that his class behaves as if one girl does not exist and becomes entangled in a curse that produces a chain of elaborate accidental deaths.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:39.385Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 117,
+  "fields": {
+    "name": "Erased",
+    "year": 2016,
+    "rate": null,
+    "description": "A struggling man is sent eighteen years into his own childhood and attempts to prevent a classmate's murder, believing it is connected to tragedy in the present.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:39.390Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 118,
+  "fields": {
+    "name": "Devilman Crybaby",
+    "year": 2018,
+    "rate": null,
+    "description": "A sensitive teenager gains a demon's body while retaining his human heart, then watches fear and paranoia tear civilization apart as demons reveal themselves.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:39.395Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 119,
+  "fields": {
+    "name": "Perfect Blue",
+    "year": 1997,
+    "rate": null,
+    "description": "A pop idol leaves music for acting and loses her sense of reality as a stalker, an online diary, violent productions, and an idealized double begin replacing her identity.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:39.401Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 120,
+  "fields": {
+    "name": "Paprika",
+    "year": 2006,
+    "rate": null,
+    "description": "A device that lets therapists enter dreams is stolen, causing private fantasies to merge into a spectacular parade that overwhelms the waking world.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:39.406Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 121,
+  "fields": {
+    "name": "Serial Experiments Lain",
+    "year": 1998,
+    "rate": null,
+    "description": "A withdrawn girl receives messages from a dead classmate and becomes absorbed into the Wired, where identity, memory, consciousness, and reality no longer have clear boundaries.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:39.411Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 122,
+  "fields": {
+    "name": "Paranoia Agent",
+    "year": 2004,
+    "rate": null,
+    "description": "A mysterious boy attacks stressed residents of Tokyo with a bent baseball bat, and the investigation reveals how rumor and collective fear can create their own reality.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:39.415Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 123,
+  "fields": {
+    "name": "Neon Genesis Evangelion",
+    "year": 1995,
+    "rate": null,
+    "description": "A lonely teenager is ordered to pilot a giant biomechanical weapon against mysterious beings while the adults around him hide the true purpose of the battles.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:39.420Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 124,
+  "fields": {
+    "name": "Naruto",
+    "year": 2002,
+    "rate": null,
+    "description": "An outcast ninja carrying a sealed monster dreams of earning his village's respect and grows through missions, rivalry, friendship, and the cost of inherited hatred.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:39.424Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 125,
+  "fields": {
+    "name": "Naruto: Shippuden",
+    "year": 2007,
+    "rate": null,
+    "description": "Naruto returns from training to confront the Akatsuki, rescue his friend Sasuke, and challenge a cycle of war that reaches back through generations of ninja history.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:39.429Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 126,
+  "fields": {
+    "name": "Bleach",
+    "year": 2004,
+    "rate": null,
+    "description": "A teenager who can see ghosts inherits the powers of a Soul Reaper and becomes responsible for guiding spirits and fighting creatures that consume them.",
+    "cover": "movie_covers/bleach.jpg",
+    "created_at": "2026-08-02T04:35:39.433Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 127,
+  "fields": {
+    "name": "My Hero Academia",
+    "year": 2016,
+    "rate": null,
+    "description": "A powerless boy in a society of superhuman abilities inherits the strength of the world's greatest hero and enters an academy shaped by celebrity, duty, and rising villainy.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:39.440Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 128,
+  "fields": {
+    "name": "JoJo's Bizarre Adventure",
+    "year": 2012,
+    "rate": null,
+    "description": "Generations of the Joestar family face supernatural enemies through flamboyant battles, evolving powers, strange journeys, and a feud that repeatedly reshapes their bloodline.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:39.445Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 129,
+  "fields": {
+    "name": "Vinland Saga",
+    "year": 2019,
+    "rate": null,
+    "description": "A boy raised among Viking mercenaries dedicates his life to revenge before war and slavery force him to reconsider strength, freedom, and the possibility of living without enemies.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:39.450Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 130,
+  "fields": {
+    "name": "Cowboy Bebop",
+    "year": 1998,
+    "rate": null,
+    "description": "A crew of bounty hunters drifts through the solar system taking disastrous jobs while each member remains trapped by unfinished business from the past.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:39.455Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 131,
+  "fields": {
+    "name": "Psycho-Pass",
+    "year": 2012,
+    "rate": null,
+    "description": "In a society that measures every citizen's likelihood of committing crime, a young inspector questions the system while pursuing a killer it cannot recognize as dangerous.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:39.459Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 132,
+  "fields": {
+    "name": "Elfen Lied",
+    "year": 2004,
+    "rate": null,
+    "description": "A mutated girl with invisible lethal arms escapes a research facility and develops an innocent alternate personality after a head injury, bringing violence into a quiet household.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:39.464Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 133,
+  "fields": {
+    "name": "Higurashi: When They Cry",
+    "year": 2006,
+    "rate": null,
+    "description": "A boy moves to a friendly rural village where the same summer festival repeatedly leads to paranoia, torture, murder, and altered versions of reality.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:39.469Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 134,
+  "fields": {
+    "name": "The Future Diary",
+    "year": 2011,
+    "rate": null,
+    "description": "Twelve people receive diaries that predict the future and are forced into a death game, while a lonely boy depends on a girl whose devotion is both protective and terrifying.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:39.474Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 135,
+  "fields": {
+    "name": "Tokyo Revengers",
+    "year": 2021,
+    "rate": null,
+    "description": "A dissatisfied adult repeatedly returns to his school years and infiltrates a violent youth gang to prevent the future deaths of the people he failed to protect.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:39.478Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 136,
+  "fields": {
+    "name": "Solo Leveling",
+    "year": 2024,
+    "rate": null,
+    "description": "The weakest hunter in a world of monster-filled gates survives a hidden dungeon and gains the unique ability to level up without limit.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:39.483Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 137,
+  "fields": {
+    "name": "Frieren: Beyond Journey's End",
+    "year": 2023,
+    "rate": null,
+    "description": "An elf mage retraces the journey she once completed with a heroic party and slowly understands the brief human lives and relationships she failed to value at the time.",
+    "cover": "",
+    "created_at": "2026-08-02T04:35:39.487Z"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 138,
+  "fields": {
+    "name": "Obsession",
+    "year": 2026,
+    "rate": "7.6",
+    "description": "It follows a timid retail worker named Baron \"Bear\" Bailey (Michael Johnston) who uses a magical \"One Wish Willow\" charm to force his co-worker and crush, Nikki Freeman (Inde Navarrette), to fall in love with him",
+    "cover": "movie_covers/obsession.jpg",
+    "created_at": "2026-08-09T04:51:36.681Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 1,
+  "fields": {
+    "user": [
+      "spring0wl"
+    ],
+    "movie": 1,
+    "rating": "10.0",
+    "avg_rating": "5.0",
+    "idea_rating": "5.0",
+    "execution_rating": "5.0",
+    "characters_rating": "5.0",
+    "sound_rating": "5.0",
+    "text": "Очень крутой фильм с неожиданной концовкой!\r\nА\r\nХ\r\nИ\r\nР\r\nЕ\r\nН\r\nН\r\nЫ\r\nЙ",
+    "contains_spoiler": true,
+    "created_at": "2026-07-27T08:06:25.770Z",
+    "updated_at": "2026-07-30T11:11:58.809Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 2,
+  "fields": {
+    "user": [
+      "spring0wl"
+    ],
+    "movie": 3,
+    "rating": "6.8",
+    "avg_rating": "5.0",
+    "idea_rating": "5.0",
+    "execution_rating": "5.0",
+    "characters_rating": "5.0",
+    "sound_rating": "5.0",
+    "text": "",
+    "contains_spoiler": false,
+    "created_at": "2026-07-27T08:09:09.122Z",
+    "updated_at": "2026-07-30T11:24:50.281Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 3,
+  "fields": {
+    "user": [
+      "user00001"
+    ],
+    "movie": 1,
+    "rating": "3.3",
+    "avg_rating": "5.0",
+    "idea_rating": "5.0",
+    "execution_rating": "5.0",
+    "characters_rating": "5.0",
+    "sound_rating": "5.0",
+    "text": "",
+    "contains_spoiler": false,
+    "created_at": "2026-07-27T09:01:12.726Z",
+    "updated_at": "2026-07-29T04:08:01.118Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 5,
+  "fields": {
+    "user": [
+      "spring0wl"
+    ],
+    "movie": 5,
+    "rating": "5.0",
+    "avg_rating": "5.0",
+    "idea_rating": "5.0",
+    "execution_rating": "5.0",
+    "characters_rating": "5.0",
+    "sound_rating": "5.0",
+    "text": "",
+    "contains_spoiler": false,
+    "created_at": "2026-07-27T11:41:24.271Z",
+    "updated_at": "2026-07-30T11:01:12.724Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 7,
+  "fields": {
+    "user": [
+      "user999"
+    ],
+    "movie": 1,
+    "rating": "10.0",
+    "avg_rating": "5.0",
+    "idea_rating": "5.0",
+    "execution_rating": "5.0",
+    "characters_rating": "5.0",
+    "sound_rating": "5.0",
+    "text": "вопще супер\r\nвопще супер\r\nвопще супер\r\nвопшще супер",
+    "contains_spoiler": true,
+    "created_at": "2026-07-29T03:37:32.562Z",
+    "updated_at": "2026-07-29T04:07:44.569Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 9,
+  "fields": {
+    "user": [
+      "kislyak"
+    ],
+    "movie": 2,
+    "rating": "6.3",
+    "avg_rating": "5.0",
+    "idea_rating": "5.0",
+    "execution_rating": "5.0",
+    "characters_rating": "5.0",
+    "sound_rating": "5.0",
+    "text": "фильм пушка",
+    "contains_spoiler": false,
+    "created_at": "2026-08-01T03:48:48.319Z",
+    "updated_at": "2026-08-01T03:48:48.319Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 10,
+  "fields": {
+    "user": [
+      "kislyak"
+    ],
+    "movie": 6,
+    "rating": "0.0",
+    "avg_rating": "5.0",
+    "idea_rating": "5.0",
+    "execution_rating": "5.0",
+    "characters_rating": "5.0",
+    "sound_rating": "5.0",
+    "text": "666",
+    "contains_spoiler": true,
+    "created_at": "2026-08-01T04:54:13.905Z",
+    "updated_at": "2026-08-01T04:55:01.500Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 16,
+  "fields": {
+    "user": [
+      "kislyak54"
+    ],
+    "movie": 4,
+    "rating": "8.1",
+    "avg_rating": "8.1",
+    "idea_rating": null,
+    "execution_rating": null,
+    "characters_rating": null,
+    "sound_rating": null,
+    "text": "",
+    "contains_spoiler": false,
+    "created_at": "2026-08-02T03:55:04.498Z",
+    "updated_at": "2026-08-02T04:11:26.937Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 17,
+  "fields": {
+    "user": [
+      "kislyak54"
+    ],
+    "movie": 3,
+    "rating": "8.0",
+    "avg_rating": "8.0",
+    "idea_rating": null,
+    "execution_rating": null,
+    "characters_rating": null,
+    "sound_rating": null,
+    "text": "11",
+    "contains_spoiler": false,
+    "created_at": "2026-08-02T04:13:18.467Z",
+    "updated_at": "2026-08-02T04:13:18.467Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 18,
+  "fields": {
+    "user": [
+      "dzhanglotttt555"
+    ],
+    "movie": 5,
+    "rating": "5.9",
+    "avg_rating": "6.4",
+    "idea_rating": "6.5",
+    "execution_rating": null,
+    "characters_rating": "6.8",
+    "sound_rating": null,
+    "text": "не поняла в чем феминизм. очень глупый фильм!! развращают наш народ чтобы мы ходили как проститутки!!!!!!",
+    "contains_spoiler": false,
+    "created_at": "2026-08-02T05:29:06.822Z",
+    "updated_at": "2026-08-02T05:29:06.822Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 19,
+  "fields": {
+    "user": [
+      "кислый"
+    ],
+    "movie": 5,
+    "rating": "8.2",
+    "avg_rating": "8.7",
+    "idea_rating": "9.7",
+    "execution_rating": "8.3",
+    "characters_rating": "8.7",
+    "sound_rating": null,
+    "text": "да крутой фильм что вы разнылись. смотрите фильмы глубже",
+    "contains_spoiler": false,
+    "created_at": "2026-08-02T05:31:46.920Z",
+    "updated_at": "2026-08-02T05:31:46.920Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 20,
+  "fields": {
+    "user": [
+      "кислый"
+    ],
+    "movie": 34,
+    "rating": "4.0",
+    "avg_rating": "4.0",
+    "idea_rating": null,
+    "execution_rating": null,
+    "characters_rating": null,
+    "sound_rating": null,
+    "text": "какое же дерьмо. невозможно смотреть",
+    "contains_spoiler": false,
+    "created_at": "2026-08-02T05:40:02.267Z",
+    "updated_at": "2026-08-02T05:40:02.267Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 21,
+  "fields": {
+    "user": [
+      "кислый"
+    ],
+    "movie": 2,
+    "rating": "10.0",
+    "avg_rating": "10.0",
+    "idea_rating": null,
+    "execution_rating": null,
+    "characters_rating": null,
+    "sound_rating": null,
+    "text": "ПУШКА ФИЛЬМ РЕАЛЬНО ИМБЮА ВСЕМ СМОТРЕТЬ НУЖНО 10/10",
+    "contains_spoiler": false,
+    "created_at": "2026-08-02T05:43:21.371Z",
+    "updated_at": "2026-08-02T05:43:21.371Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 22,
+  "fields": {
+    "user": [
+      "кислый"
+    ],
+    "movie": 4,
+    "rating": "7.2",
+    "avg_rating": "7.4",
+    "idea_rating": "7.7",
+    "execution_rating": "7.2",
+    "characters_rating": null,
+    "sound_rating": null,
+    "text": "местами скучно и после бойцовского клуба не самое лучшее",
+    "contains_spoiler": false,
+    "created_at": "2026-08-02T05:50:37.401Z",
+    "updated_at": "2026-08-02T05:50:37.401Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 24,
+  "fields": {
+    "user": [
+      "chukaBuka"
+    ],
+    "movie": 2,
+    "rating": "9.4",
+    "avg_rating": "9.6",
+    "idea_rating": "10.0",
+    "execution_rating": "10.0",
+    "characters_rating": "9.3",
+    "sound_rating": "9.5",
+    "text": "Фильм очень классный, но сюжетный поворот, к моему сожалению, очень предсказуемый. Но даже так это не отменяет его крутости. Персонажи в произведении самые запоминающиеся из всех фильмов что я видел. Один только Тайлер покорил сердца миллионов своей философией и харизмой, не говоря уже о остальных колоритных героев. Больше всего мне понравилась история Роберта Полсона. Он максимально трогательный персонаж и его смерть послужила рычагом к началу плана \"разгром\". В общем советую посмотреть этот фильм каждому кто не видел(хотя мне кажется не осталось человека, что не видел это произведение).",
+    "contains_spoiler": true,
+    "created_at": "2026-08-02T07:41:55.315Z",
+    "updated_at": "2026-08-02T07:41:56.234Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 25,
+  "fields": {
+    "user": [
+      "chukaBuka"
+    ],
+    "movie": 12,
+    "rating": "7.0",
+    "avg_rating": "8.1",
+    "idea_rating": "8.9",
+    "execution_rating": null,
+    "characters_rating": "8.4",
+    "sound_rating": null,
+    "text": "Если честно мне не очень понравился этот фильм, хоть о нем и говорили много и положительно, мне не зашло. Наверное, это просто не мое, но не могу не отметить что задумка чудесная и актеры чудесно играли свои роли. (Еще это фильм где родился сигма великий)",
+    "contains_spoiler": false,
+    "created_at": "2026-08-02T07:45:48.103Z",
+    "updated_at": "2026-08-02T07:45:48.564Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 26,
+  "fields": {
+    "user": [
+      "chukaBuka"
+    ],
+    "movie": 83,
+    "rating": "10.0",
+    "avg_rating": "10.0",
+    "idea_rating": "10.0",
+    "execution_rating": "10.0",
+    "characters_rating": "10.0",
+    "sound_rating": null,
+    "text": "Топ 10/10 сериал сразу видно, что сюжет придумывался не на ходу как бывает с очень долгими тайтлами. И если пересматривать заново со всеми знаниями, можно подметить очень много деталей, которые невозможно было понять при первом просмотре. Задумка сюжета и сеттинг самое необычное что я видел. Очень проработанный лор мира и вообще его инфраструктура, ты как бы сразу понимаешь что тут делалось не что бы было а потому что есть реальные причины. Главный персонаж это 10/10 чувак со своими взглядами и мировоззрением, что могут меняться по ходу сюжета. Лично мне, понравился, психологический рост Эрена сразу понимаешь, что он не застрял в мышлении десятилетнего. А финал просто бомба. Некоторые говорят, что он такой какой нужен, но помоему история закончилась именно так как нужно. Лично я бы на месте автора заставил убить Эрена руками Микасы не объясняя зачем он это сделал напрямую, а как-нибудь косвенно, но чтобы было понятны мотивы Эрена",
+    "contains_spoiler": true,
+    "created_at": "2026-08-02T07:57:24.224Z",
+    "updated_at": "2026-08-02T07:57:24.224Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 27,
+  "fields": {
+    "user": [
+      "mark54"
+    ],
+    "movie": 102,
+    "rating": "10.0",
+    "avg_rating": "10.0",
+    "idea_rating": null,
+    "execution_rating": null,
+    "characters_rating": null,
+    "sound_rating": null,
+    "text": "Говно полное Наруто лучш",
+    "contains_spoiler": false,
+    "created_at": "2026-08-02T08:18:21.787Z",
+    "updated_at": "2026-08-02T08:18:21.787Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 28,
+  "fields": {
+    "user": [
+      "kislyakmargarita"
+    ],
+    "movie": 6,
+    "rating": "10.0",
+    "avg_rating": "10.0",
+    "idea_rating": "10.0",
+    "execution_rating": "10.0",
+    "characters_rating": "10.0",
+    "sound_rating": "10.0",
+    "text": "это лучшее аниме в мире! я мечтаю быть как главный герой!",
+    "contains_spoiler": false,
+    "created_at": "2026-08-02T08:30:03.180Z",
+    "updated_at": "2026-08-02T08:30:03.181Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 29,
+  "fields": {
+    "user": [
+      "aleksandrov762mm"
+    ],
+    "movie": 102,
+    "rating": "10.0",
+    "avg_rating": "9.5",
+    "idea_rating": "10.0",
+    "execution_rating": "9.2",
+    "characters_rating": "9.1",
+    "sound_rating": "9.3",
+    "text": "я просмотрел все аниме, от орендж тауна до эльбафа, и большинство полнометражных фильмов. и теперь, оглядываясь на этот гигантский хронометраж, я могу сказать совершенно определённо: ван-пис  не просто аниме в общепринятом смысле. это уникальный культурный и нарративный феномен, который влияет на реальный мир (революция в непале, например) является вершиной жанра сёнэн наравне с hxh\r\n\r\nглавная заслуга оды заключается не в проработке боевых сцен и даже не в масштабе географической карты, хотя это тоже пик ванписа, его гениальность проявляется в умении выстраивать эмоциональную архитектуру, где инвестиции зрителя в сюжет окупаются сторицей, но с огромной отсрочкой. он закладывает фундамент на пятьсот глав вперёд, и когда этот фундамент наконец даёт трещину, оттуда вырывается такой объём чувств, что перестаёшь воспринимать происходящее как развлекательное шоу, это становится личным переживанием.\r\n\r\nмир, созданный Одой, обладает поразительной внутренней логикой. даже самые нелепые на первый взгляд элементы - будь то климат островов или внешность второстепенных персонажей  позже обретают вес и значение. это сделано с расчётом на крайне внимательного зрителя, что подкупает. однако, будучи объективным, стоит признать, что автор часто перегружает повествование. количество введённых сюжетных линий и героев настолько велико, что часть из них неизбежно провисает, это создаёт ощущение, что вселенная расширяется вширь, вместо того чтобы углубляться в уже заявленные конфликты. это не критический недостаток, но скорее особенность, с которой приходится смиряться.\r\n\r\nлуффи как гг это мастерски исполненная роль воплощения самой свободы, он не глуп в привычном смысле слова. он настолько сконцентрирован на своей цели и на ощущении свободы, что отсекает всё лишнее, включая социальные условности. его эмоциональная эмпатия к членам команды и даже к бывшим врагам работает как главный двигатель сюжета. может показаться что с первой серии его характер не меняется - но после сабаоди и маринфорда где он теряет Эйса луффи получает все что нужно для осуществления его мечты - первоначальный путь к которой это становление Королем пиратов, и после столкновения с реальностью, где его противники сильнее него в тысячи раз, он получает стимул становиться сильнее, как для своей мечты, так и для защиты своих накама, которых он уже терял на сабаоди. то как при этом работает его левая и правая рука - санджи и зоро, тоже заслуживает отдельного внимания, они преданны капитану и направляют его, как например во время битвы луффи с усоппом, когда зоро напомнил ему что он капитан и не должен давать слабину если хочет продолжить плаванье с командой, арка с санджи ваще отдельный лвл настолько прописать даже не гг надо постараться тотленд это пик как и вано.\r\n\r\nподводя итог, можно сказать следующее. ванпис это произведение, которое требует от зрителя значительных временных затрат и терпимости к нарративной разрозненности, однако оно щедро вознаграждает за эти затраты той редкостной эмоциональной полнотой, которую невозможно найти в коротких форматах, за счет чего даже эту растянутость можно полюбить, это эпос, который одновременно и велик, и несовершенен. он не боится быть наивным, чтобы затем резко стать пронзительно-серьёзным и довести до слёз и напряжения в ключевых боях, луффи как символ свободы представлен и прописан абсолютно идеально как и второстепенные персонажи, у каждого есть прописанный доводящий до слёз флешбек, и в этом плане луффи как разрушитель мирового порядка выстроенным Иму выглядит идеальным воином-освободителем",
+    "contains_spoiler": false,
+    "created_at": "2026-08-02T08:32:23.845Z",
+    "updated_at": "2026-08-02T08:32:23.845Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 30,
+  "fields": {
+    "user": [
+      "dzhanik54"
+    ],
+    "movie": 2,
+    "rating": "10.0",
+    "avg_rating": "9.8",
+    "idea_rating": "9.6",
+    "execution_rating": "9.3",
+    "characters_rating": "10.0",
+    "sound_rating": "10.0",
+    "text": "лучший фильм который я смотрел, всем советую!!!",
+    "contains_spoiler": false,
+    "created_at": "2026-08-02T08:36:33.580Z",
+    "updated_at": "2026-08-02T08:36:33.580Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 31,
+  "fields": {
+    "user": [
+      "aleksandrov762mm"
+    ],
+    "movie": 12,
+    "rating": "8.0",
+    "avg_rating": "8.0",
+    "idea_rating": null,
+    "execution_rating": null,
+    "characters_rating": null,
+    "sound_rating": null,
+    "text": "прикольно повторю все действия гг в реалньсоти",
+    "contains_spoiler": false,
+    "created_at": "2026-08-02T08:39:53.730Z",
+    "updated_at": "2026-08-02T08:39:53.730Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 32,
+  "fields": {
+    "user": [
+      "fooolk"
+    ],
+    "movie": 24,
+    "rating": "6.7",
+    "avg_rating": "6.7",
+    "idea_rating": null,
+    "execution_rating": null,
+    "characters_rating": null,
+    "sound_rating": null,
+    "text": "фильм о  том как баба родила саму себя через позвоночник, хуйня полная не смотрите",
+    "contains_spoiler": false,
+    "created_at": "2026-08-02T08:41:12.021Z",
+    "updated_at": "2026-08-02T08:41:12.021Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 33,
+  "fields": {
+    "user": [
+      "aleksandrov762mm"
+    ],
+    "movie": 104,
+    "rating": "7.3",
+    "avg_rating": "8.1",
+    "idea_rating": "7.5",
+    "execution_rating": "9.7",
+    "characters_rating": "7.0",
+    "sound_rating": "9.0",
+    "text": "аниме вывозит только саунд звуковые эффекты и ебанутое качество анимации\r\nсюжет - наитипичнейший\r\nбаланс сил абсолютно отсутствует как и интеллект у главного злодея прописанности персов нет как и прописанности сюжета смотреть можно только ради боевой картинки никакого смысла тут не найдете еще другого",
+    "contains_spoiler": false,
+    "created_at": "2026-08-02T08:52:34.067Z",
+    "updated_at": "2026-08-02T08:52:34.068Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 34,
+  "fields": {
+    "user": [
+      "ximlego54"
+    ],
+    "movie": 102,
+    "rating": "5.4",
+    "avg_rating": "5.4",
+    "idea_rating": null,
+    "execution_rating": null,
+    "characters_rating": null,
+    "sound_rating": null,
+    "text": "где смотреть филмьы",
+    "contains_spoiler": true,
+    "created_at": "2026-08-02T09:10:53.587Z",
+    "updated_at": "2026-08-02T09:10:53.588Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 35,
+  "fields": {
+    "user": [
+      "aleksandrov762mm"
+    ],
+    "movie": 109,
+    "rating": "9.0",
+    "avg_rating": "9.0",
+    "idea_rating": "9.4",
+    "execution_rating": "8.5",
+    "characters_rating": "8.9",
+    "sound_rating": "9.0",
+    "text": "для меня код гиас разделен на две части - подводка к финалу и сам финал, где, бесспорно, шедевральная концовка этого аниме оправдывает довольно хорошие, но не прям идеальные два сезона которые к нему подводили, почему? во-первых, политическая составляющая. вот здесь главная претензия, ведь код позиционирует себя как аниме о противостоянии со всем миром - с Британией, о революции в ней, о переустройстве глобального порядка. но мир этот нарисован очень схематично. Священная Британская Империя - это карикатура на колониальную сверхдержаву. она могущественна, жестока, высокомерна. но у неё нет экономики, нет внятной системы управления, нет внутренних противоречий, кроме семейной драмы императора. она существует ровно для того, чтобы быть врагом. и это обедняет конфликт. когда ты смотришь на противостояние Лелуша и Британии, ты не видишь борьбы идей или ресурсов. ты видишь борьбу одного сверхумного парня против декоративной сверхдержавы, которую ему скармливают порционными отрядами. Непонятно, как такая держава вообще существует внутри, нам не рассказали об устройстве этого сверхгосударства кроме отряда самых сильных бойцов меха и императорской семьи, при этом где-то в мире Британия параллельно еще ведет войну с другой частью нераскрытого мира - объединенной Европой с Россией, однако мувы лелуша внутри Японии мне абсолютно непонятны, всего что он добился к второй половине второго сезона - это территория размером с посольство в Китае, и ВСЁ, Лелуш, который представлен гениальным манипулятором на деле проиграл абсолютно все важные сражения, и даже финальную, когда он стал главой Британии, он выиграл с очень тяжелыми потерями. Бесспорно, Лелуш всего лишь школьник с благородной целью - уничтожить мир и создать заново, но без себя, для своей сестры и друзей, ради этого он обратил против себя весь мир, однако проблема жанра и самого аниме как формата тяжело реализуема для такого безумно сложного и глубокого политического конфликта, код гиас мог лучше, но и так мир и политика прописаны довольно хорошо, но не идеально, как его часто завышают в тиктоке дотерки бля даже у секвы на аве лелуч. Более того, политика здесь работает по принципу силы слов. Лелуш что-то сказал - толпа поверила, лелуш сделал эффектное заявление - мир к хуям перевернулся. нет бюрократии, нет инерции систем, нет сложностей управления. армия переходит на его сторону, потому что он красиво выступил. нации объединяются под его знаменем, потому что он угрожает им ядерным оружием. и это настолько упрощённая модель политической реальности, что любому, кто знаком с реальной историей или серьёзной политической драмой, становится немного неловко. это работает в рамках аниме, потому что зрелищность и риторика перекрывают логику и в целом сделано хорошо ибо это не документалка но всё же. теперь о том, ради чего всё это затевалось\r\n\r\nфинал код гиаса это идеальный пример того, как завершить историю, где главный герой становится антигероем и антогонистом. Лелуш с самого начала знал, что он не выйдет из этой игры живым и он построил не просто план завоевания мира, а план собственного уничтожения, которое должно стать самым грандиозным актом в истории человечества. это не просто жертва - это инсценировка абсолютного зла, чтобы объединить всех против себя, во благо всех людей, своей сестры и друзей, как искупление вины за то что он сделал с Судзаку и Юфи. Момент, когда он объявляет себя императором, а затем организует своё убийство руками Судзаку это чистой воды театр, но театр, который работает. он превращает ненависть всего мира в единое чувство, а свою смерть - в символ окончания эпохи тирании. и когда занавес падает, а наналли плачет, понимая всю правду, это воздействует на уровне архетипов.  это история о том, как один человек взял на себя весь грех мира, чтобы остальные могли жить спокойно. и в этом финале есть что-то библейское, лелуш является спасителем для мира, и все то, что он добился нового мира делает его настоящим гением, который действительно уничтожил британию как когда то и поклялся, и, хочу заметить, что он собирался сделать это без силы Гиаса, она только ускорила этот процесс. именно поэтому я говорю, что финал это шедевр, он идеально срабатывает как кульминация. он возвращает все предыдущие сцены и придаёт им новый смысл. когда ты пересматриваешь гиас с знанием конца, ты видишь, как лелуш постепенно оставляет зацепки, как он жертвует всем, даже отношениями с сестрой, даже своей репутацией, даже своей любовью. он идёт к этому с первой серии. и эта последовательность, это неотступное движение к самоуничтожению ради другого, оно заслуживает высшего балла.",
+    "contains_spoiler": false,
+    "created_at": "2026-08-02T09:20:20.419Z",
+    "updated_at": "2026-08-02T09:20:20.419Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 36,
+  "fields": {
+    "user": [
+      "chukaBuka"
+    ],
+    "movie": 109,
+    "rating": "9.5",
+    "avg_rating": "9.5",
+    "idea_rating": null,
+    "execution_rating": null,
+    "characters_rating": null,
+    "sound_rating": null,
+    "text": "Случайно провалился в мир Си, прошу, соси\r\nЗа твой слюнявый не скажу merci, бог, упаси\r\nУ меня mode: закономерность, у тебя случайный сид\r\nЭта сука заебала тут дымить, разьебал ей пасит\r\n\r\nТы на самом деле думал\r\nЧто одними угрозами заставишь меня в тебя стрелять?\r\nА, нет, не в этом дело\r\nЕсли я на самом деле приказываю человеку сделать что-то\r\nТо он не может противиться\r\n\r\nТы даже не на одном уровне со мной, backwood repeat\r\nРаздевайся, hoe [?], заставляет делать shit\r\nВижу backwood — отнимаю, сука, ведь backwood теснит\r\nНа шахматной доске, я выстроил second bullet crazy speed\r\nЯ иду по головам и мой наркотик рифурен\r\nИскупайся полудурок, ведь ты наступил в торен\r\nВ моих руках страна, но почему то я не доволен\r\nХватит склоняться сука, мой приказ: «Нет, живо встать с колен!»\r\nВосстанавливаю справедливость в мире — реквием\r\nНахуй баскет, мяч Акаши, я на клике коллаген\r\nМеня наделили даром, — backwood ты так был умен\r\nЯ ненавижу тупых нытиков, приказ вскрытия вен\r\n\r\nНет, пожалуйста, я не...\r\nНет, я не хочу их убивать\r\nНет, точно, мне надо убивать японцев\r\n\r\nСлучайно провалился в мир Си, прошу, соси\r\nЗа твой слюнявый не скажу merci, бог, упаси\r\nУ меня mode: закономерность, у тебя случайный сид\r\nЭта сука заебала тут дымить, разьебал ей пасит\r\n\r\nЗакон Британии, повеливает суке разбить под\r\nИ цепь условия, тебя заставит не открывать рот\r\nФениширо делает приятно, спасибо, ash ford\r\nImmortal [?], ща под столом, ей хорошо\r\nУлыбка на твоём лице пропала, я поставил мат\r\nМоя стратегия, лучше тактики, просчитался, ты дурак\r\nЮфемия стреляет словно шутер, fuck\r\nУблюдок покланяйся зере, ведь ты ебанный слабак\r\n\r\nТе, кто называет себя японцами\r\nУ меня к вам просьба\r\nНе могли бы вы все, пожалуйста, умереть?\r\n\r\nНе контролирую себя, моя сестра теперь в крови\r\nНемного в тильте, я не знаю, может быть из-за любви\r\nЯ не хотел, но мои blood'и hand, теперь только твои\r\nМне похуй, ведь я снова в деле, руки на её груди\r\nА-алый лотос на пути, сметает всех аристократов\r\nТы ща типа дохуя крутой, так знай, что это кратко\r\nДа я ради своей цели, убью собственного брата\r\nЛожные воспоминания, какая сегодня дата?\r\nОбыграю тебя ублюдок, если смотришь сверху вниз\r\nЯ от скуки смешал две пробирки, получил убийств\r\nТвои попытки, сука тщетны, ты ебанный аутист\r\nЯ убью тебя придурок, если я услышу-слышу\r\n\r\nСлучайно провалился в мир Си, пр-прошу, соси\r\nЗа твой слюнявый не скажу merci, бо-бог, упаси\r\nУ меня mode: закономерность, у тебя случайный сид\r\nЭта сука заебала тут дымить, разьебал ей пасит\r\n\r\nОй, а я думала, что ты японец\r\nСлушай, я тут подумала\r\nМы можем управлять специальной административной зоной Японии вместе\r\nЯпония?\r\nДа, я бы этого хотел, будь такое возможным\r\nТы и я, вместе\r\nЮфи, почему Лелуш?",
+    "contains_spoiler": true,
+    "created_at": "2026-08-02T09:58:40.652Z",
+    "updated_at": "2026-08-02T09:58:40.652Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 37,
+  "fields": {
+    "user": [
+      "kislyak54"
+    ],
+    "movie": 33,
+    "rating": "7.3",
+    "avg_rating": "7.5",
+    "idea_rating": "7.7",
+    "execution_rating": null,
+    "characters_rating": null,
+    "sound_rating": null,
+    "text": "Нормальная хорошая комедия на раз",
+    "contains_spoiler": false,
+    "created_at": "2026-08-02T10:27:20.509Z",
+    "updated_at": "2026-08-02T10:27:20.509Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 38,
+  "fields": {
+    "user": [
+      "кислый"
+    ],
+    "movie": 86,
+    "rating": "6.8",
+    "avg_rating": "7.0",
+    "idea_rating": null,
+    "execution_rating": null,
+    "characters_rating": "7.2",
+    "sound_rating": null,
+    "text": "DARLIIIIIIING",
+    "contains_spoiler": false,
+    "created_at": "2026-08-02T11:27:41.491Z",
+    "updated_at": "2026-08-02T11:27:41.491Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 39,
+  "fields": {
+    "user": [
+      "aleksandrov762mm"
+    ],
+    "movie": 86,
+    "rating": "10.0",
+    "avg_rating": "10.0",
+    "idea_rating": null,
+    "execution_rating": null,
+    "characters_rating": null,
+    "sound_rating": null,
+    "text": "мой друг любит фапать на китагавочку 13 раз в день",
+    "contains_spoiler": false,
+    "created_at": "2026-08-02T12:22:18.869Z",
+    "updated_at": "2026-08-02T12:22:18.869Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 40,
+  "fields": {
+    "user": [
+      "chukaBuka"
+    ],
+    "movie": 102,
+    "rating": "9.6",
+    "avg_rating": "9.7",
+    "idea_rating": "10.0",
+    "execution_rating": "9.3",
+    "characters_rating": "10.0",
+    "sound_rating": null,
+    "text": "Сейчас я на 920 серии(арка вано) и могу с уверенностью сказать, что это одно из лучших аниме вообще. Луффи персонаж за которым интересно наблюдать, потому что он действует не как обычный человек, ломая все устои. Все его действия хоть и кажутся вне логики, но у него есть определенные принципы, которые он ни при каких обстоятельствах не должен нарушать. Что более интереснее так это проработанность мира. Чувствуется то, что мир живет за кадром у него есть карта, история, политика и т д. Ода хорошо прописал все законы и правила мира что все друг с другом гармонирует и дополняет друг друга. Тут нет такой же истории как с Наруто, где буквально мир писался находу с выпуском глав. Мне нравится, ванпис до тайм скипа и серии где показывают быт главных героев, сейчас такое почти не встречается. Что также привлекает так это прописанность персонажей. Каждый герой имеет историю, собственные цели и свои причины вступления в команду к луффи. Но есть в аниме, то что мне не нравится так это бои. Да, они бывают неплохими, но в основном это просто обмен ударами и техниками. Я не чувствую тактики или плана в сражения и зачастую это смотрится скучно. Есть еще минус это персонажи не умирают, возможно вам покажется этот пункт странным, но в ванписе люди выживают вообще во всех ситуациях. Приведу пример с чуваком из алабасты который имеет птичий зоан. Он буквально взял бомбу в клюв, которая должна была уничтожить город и улетел в верх и каким то образом выжил. И так абсолютно со всеми не только с какими то более менее важными персонажами. Видимо Оде не хватает смелости убрать кого то и все.\r\nА на этом все так в целом мне понравился тайтл я советую всем но не каждый решится посмотреть столь длинное аниме хорошо что скоро выходит ремейк который чуть менее нагружен ненужным хронометражем",
+    "contains_spoiler": true,
+    "created_at": "2026-08-04T13:21:58.766Z",
+    "updated_at": "2026-08-04T13:21:59.483Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 41,
+  "fields": {
+    "user": [
+      "chukaBuka"
+    ],
+    "movie": 93,
+    "rating": "9.8",
+    "avg_rating": "9.8",
+    "idea_rating": null,
+    "execution_rating": null,
+    "characters_rating": null,
+    "sound_rating": null,
+    "text": "Топ сериал советую всем",
+    "contains_spoiler": false,
+    "created_at": "2026-08-04T13:23:06.725Z",
+    "updated_at": "2026-08-04T13:23:06.725Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 42,
+  "fields": {
+    "user": [
+      "chukaBuka"
+    ],
+    "movie": 106,
+    "rating": "8.6",
+    "avg_rating": "8.6",
+    "idea_rating": null,
+    "execution_rating": null,
+    "characters_rating": null,
+    "sound_rating": null,
+    "text": "Денджи это тот персонаж который не пытается быть хорошим, но он на самом деле такой. Рисовка аниме одна из лучших, а опеннинг возможно самый лучший. История впринцепи интересная, но как будто автору стало похуй примерно к концу и он решил побыстрее закончить, но я не говорю что финал первой части манги хуйня, он мне наоборот понравился прост слишком резко. История резе одна из самых классных хорошо что ее решили анимировать в виде фильма и он не зря имеет такие большие оценки.",
+    "contains_spoiler": true,
+    "created_at": "2026-08-04T13:27:45.390Z",
+    "updated_at": "2026-08-04T13:27:46.112Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 43,
+  "fields": {
+    "user": [
+      "chukaBuka"
+    ],
+    "movie": 90,
+    "rating": "9.7",
+    "avg_rating": "9.7",
+    "idea_rating": null,
+    "execution_rating": null,
+    "characters_rating": null,
+    "sound_rating": null,
+    "text": "Топ истрия о поехавшем от власти школьнике. Мне нравится противостояние Л и Киры, но больше мне нравятся отношения Л и Лайта. Был момент где Лайт потерял память и не знал что именно он Кира и он решил помогать с расследованием по собственному желанию. Тоесть он до тетради был вполне хорошим парнем",
+    "contains_spoiler": true,
+    "created_at": "2026-08-04T13:31:14.889Z",
+    "updated_at": "2026-08-04T13:31:14.889Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 44,
+  "fields": {
+    "user": [
+      "chukaBuka"
+    ],
+    "movie": 128,
+    "rating": "7.8",
+    "avg_rating": "7.8",
+    "idea_rating": null,
+    "execution_rating": null,
+    "characters_rating": null,
+    "sound_rating": null,
+    "text": "Прикольно что каждый сезон это по сути новая история, но в одном мире. Первые три части топ, четвертую к сожалению не смотрел, а пятая не очень.",
+    "contains_spoiler": false,
+    "created_at": "2026-08-04T13:33:09.665Z",
+    "updated_at": "2026-08-04T13:33:09.665Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 45,
+  "fields": {
+    "user": [
+      "chukaBuka"
+    ],
+    "movie": 105,
+    "rating": "7.0",
+    "avg_rating": "7.0",
+    "idea_rating": null,
+    "execution_rating": null,
+    "characters_rating": null,
+    "sound_rating": null,
+    "text": "Бои топ, но история трещит. Мир не может существовать нельзя в него поверить слишком много противоречий. Хотя персонажи ниче такие у почти каждого абсолютно разная харизма. Еще всегда интересны их техники они очень необычные",
+    "contains_spoiler": false,
+    "created_at": "2026-08-04T13:36:25.949Z",
+    "updated_at": "2026-08-04T13:36:25.949Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 46,
+  "fields": {
+    "user": [
+      "chukaBuka"
+    ],
+    "movie": 113,
+    "rating": "8.8",
+    "avg_rating": "8.8",
+    "idea_rating": null,
+    "execution_rating": null,
+    "characters_rating": null,
+    "sound_rating": null,
+    "text": "Чел со сверхсилами не использует их в обычной жизни, хотя в его мире такие как это не фантастика. Хочет помяться внутренне и внешне чтоб понравится девушке и ради себя. Преодолевает собственные страхи быть отвергнутым, и стремиться стать лучше, что заставляет уважать его. Советую посмотреть каждому кто узнает в нем себя",
+    "contains_spoiler": false,
+    "created_at": "2026-08-04T13:40:31.792Z",
+    "updated_at": "2026-08-04T13:40:31.792Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 47,
+  "fields": {
+    "user": [
+      "kislyakmargarita"
+    ],
+    "movie": 113,
+    "rating": "0.1",
+    "avg_rating": "0.1",
+    "idea_rating": null,
+    "execution_rating": null,
+    "characters_rating": null,
+    "sound_rating": null,
+    "text": "не смотрела",
+    "contains_spoiler": false,
+    "created_at": "2026-08-06T10:55:26.006Z",
+    "updated_at": "2026-08-06T10:55:26.006Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 48,
+  "fields": {
+    "user": [
+      "spring0wl"
+    ],
+    "movie": 95,
+    "rating": "6.8",
+    "avg_rating": "6.4",
+    "idea_rating": "8.0",
+    "execution_rating": "3.6",
+    "characters_rating": "7.0",
+    "sound_rating": null,
+    "text": "я не смотрел до конца, но первый сезон был очень интересный, а во втором все слишком по другому началось мозг не смог это нормально воспринимать и я закрыл это аниме",
+    "contains_spoiler": false,
+    "created_at": "2026-08-08T12:03:12.006Z",
+    "updated_at": "2026-08-08T12:05:06.377Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 52,
+  "fields": {
+    "user": [
+      "spring0wl"
+    ],
+    "movie": 28,
+    "rating": "10.0",
+    "avg_rating": "10.0",
+    "idea_rating": "10.0",
+    "execution_rating": "10.0",
+    "characters_rating": "10.0",
+    "sound_rating": null,
+    "text": "«Люси» — один из тех редких фильмов, после которых мне требуется не обсуждение, а тишина. Он длится полтора часа, но по плотности ощущений и мыслей воспринимается как минимум втрое длиннее — не потому, что затянут, а потому, что почти не даёт голове времени выдохнуть. От него невозможно оторваться, а после финала ещё долго не получается вернуться в обычный масштаб реальности.\r\n\r\nМеня поразил не только сюжет, но и сама идея выхода человека за привычные пределы: мозг как интерфейс, мысль как информация, тело как невероятная химическая машина, а знание — как сила, способная полностью изменить восприятие мира. Я понимаю, что научного вымысла здесь гораздо больше, чем реальной науки, но фильм сработал для меня не как лекция, а как мощный мысленный взрыв. Он не просто показал невозможное — он заставил всерьёз захотеть узнать, где на самом деле проходит граница возможного.\r\n\r\nПоэтому «Люси» сразу вошла в мой личный топ-5. Это не просто просмотренный фильм, а полноценное переживание, после которого нужен настоящий отходняк",
+    "contains_spoiler": true,
+    "created_at": "2026-08-08T13:03:31.839Z",
+    "updated_at": "2026-08-08T13:03:31.839Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 54,
+  "fields": {
+    "user": [
+      "spring0wl"
+    ],
+    "movie": 52,
+    "rating": "9.2",
+    "avg_rating": "9.1",
+    "idea_rating": null,
+    "execution_rating": null,
+    "characters_rating": "9.0",
+    "sound_rating": null,
+    "text": "54",
+    "contains_spoiler": false,
+    "created_at": "2026-08-08T14:32:32.006Z",
+    "updated_at": "2026-08-08T14:32:32.006Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 57,
+  "fields": {
+    "user": [
+      "spring0wl"
+    ],
+    "movie": 138,
+    "rating": "7.7",
+    "avg_rating": "8.4",
+    "idea_rating": "8.2",
+    "execution_rating": "8.8",
+    "characters_rating": "8.9",
+    "sound_rating": "8.4",
+    "text": "«Обсессия» мне очень понравилась прежде всего своей атмосферой. Фильм очень хорошо передаёт тревогу и ощущение физической опасности, которая исходит от человека, рядом с которым ты ещё недавно чувствовал себя в безопасности. Особенно хорошо работает тишина: здесь много моментов, когда почти ничего не происходит, но напряжение всё равно продолжает расти. А когда появляется саунд-дизайн, он действительно попадает куда нужно. Таких вставок можно было сделать немного больше и поинтереснее, но даже те несколько моментов, которые есть, мне запомнились. Особенно то, как звук резко обрывается вместе со сменой настроения главной героини.\r\n\r\nГлавного героя я во многом понимаю. Конечно, местами я думал, что сам поступил бы совершенно иначе, но его растерянность и неспособность нормально действовать в такой ситуации выглядят вполне естественно. Он оказывается рядом с человеком, которого любит, но одновременно начинает его бояться и уже не понимает, чего от него ожидать.\r\n\r\nДо самого конца я ждал какого-нибудь твиста. В новых триллерах это уже стало почти классикой, поэтому мне казалось, что нам в итоге покажут всю историю с другой стороны. Например, окажется, что весь фильм мы видели мир глазами главного героя, который специально выставлял себя жертвой. Таблетки, показанные в начале, только сильнее наталкивали на мысль, что он их не принимает и из-за какого-нибудь расстройства воспринимает происходящее совсем не так, как оно выглядит в реальности. Но даже после сцены с таблетками никакого подобного поворота не произошло.\r\n\r\nСначала меня это немного удивило, хотя разочарован я не был. Наверное, придумать твист, который нормально объяснил бы все произошедшие события, было бы довольно сложно. Просто фильм настолько явно заставлял искать какой-то второй слой реальности, что я до последнего ожидал подвоха.\r\n\r\nВообще, я видел очень мало фильмов, которые способны давить именно атмосферой отношений между девушкой и парнем. Из похожего могу вспомнить только «Слияние», где пара попала в пещеру и буквально начала превращаться в единый организм. Там тоже были неприятные и напряжённые отношения, но лично мне фильм не казался по-настоящему тревожным. А вот «Обсессия» эту тревогу создать смогла.\r\n\r\nЯ уверен, что фильм не стоит воспринимать совсем плоско. Здесь явно есть подтекст о современных отношениях, зависимости и страхе потерять человека, просто лично я не смог до конца его сформулировать. На самом очевидном уровне для меня это история об абьюзивных отношениях, которые постепенно превращаются в настоящий кошмар.\r\n\r\nПосле просмотра я почитал комментарии и удивился тому, сколько людей называют главного героя законченным эгоистом и мразью. Но кто вообще мог знать, что если сломать какую-то палку за пять долларов, желание действительно исполнится? Да, он не хотел терять девушку и в тот момент поступил под влиянием собственных чувств. Это можно назвать неправильным решением, но он явно не ожидал, что сувенир с барахолки окажется настоящим колдовством. В итоге из-за этого пострадали и он, и она, и вообще все люди вокруг. Поэтому делать из него абсолютное зло мне кажется странным: чел просто вляпался в ситуацию, существование которой в реальной жизни невозможно было бы даже предположить.\r\n\r\nВ общем, «Обсессия» – очень хороший тревожный триллер, который лучше всего работает за счёт тишины, напряжения и ощущения опасности рядом с близким человеком. Пересматривать я его, скорее всего, не стану, но такие фильмы обычно и рассчитаны на один просмотр. Посмотреть точно рекомендую.",
+    "contains_spoiler": true,
+    "created_at": "2026-08-09T05:39:55.323Z",
+    "updated_at": "2026-08-09T05:39:55.323Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 60,
+  "fields": {
+    "user": [
+      "spring0wl"
+    ],
+    "movie": 2,
+    "rating": "10.0",
+    "avg_rating": "10.0",
+    "idea_rating": null,
+    "execution_rating": null,
+    "characters_rating": null,
+    "sound_rating": null,
+    "text": "тайлер могает",
+    "contains_spoiler": false,
+    "created_at": "2026-08-15T10:09:43.289Z",
+    "updated_at": "2026-08-15T10:09:43.289Z"
+  }
+},
+{
+  "model": "movies.review",
+  "pk": 64,
+  "fields": {
+    "user": [
+      "spring0wl"
+    ],
+    "movie": 116,
+    "rating": "7.2",
+    "avg_rating": "7.2",
+    "idea_rating": null,
+    "execution_rating": null,
+    "characters_rating": null,
+    "sound_rating": null,
+    "text": "66666666",
+    "contains_spoiler": false,
+    "created_at": "2026-08-16T19:58:44.398Z",
+    "updated_at": "2026-08-16T19:58:44.398Z"
+  }
+},
+{
+  "model": "movies.reviewreply",
+  "pk": 1,
+  "fields": {
+    "review": 60,
+    "user": [
+      "spring0wl"
+    ],
+    "text": "также эдвард норт: 🔥🔥",
+    "created_at": "2026-08-15T10:37:39.598Z"
+  }
+},
+{
+  "model": "movies.reviewreply",
+  "pk": 2,
+  "fields": {
+    "review": 24,
+    "user": [
+      "spring0wl"
+    ],
+    "text": "ывв",
+    "created_at": "2026-08-16T14:56:57.289Z"
+  }
+},
+{
+  "model": "movies.reviewvote",
+  "pk": 13,
+  "fields": {
+    "value": 1,
+    "created_at": "2026-08-08T11:46:47.338Z",
+    "user": [
+      "spring0wl"
+    ],
+    "review": 21
+  }
+},
+{
+  "model": "movies.reviewvote",
+  "pk": 14,
+  "fields": {
+    "value": 1,
+    "created_at": "2026-08-08T12:05:08.648Z",
+    "user": [
+      "spring0wl"
+    ],
+    "review": 48
+  }
+},
+{
+  "model": "movies.reviewvote",
+  "pk": 15,
+  "fields": {
+    "value": 1,
+    "created_at": "2026-08-08T12:13:41.038Z",
+    "user": [
+      "spring0wl"
+    ],
+    "review": 36
+  }
+},
+{
+  "model": "movies.reviewvote",
+  "pk": 16,
+  "fields": {
+    "value": 1,
+    "created_at": "2026-08-08T12:13:43.352Z",
+    "user": [
+      "spring0wl"
+    ],
+    "review": 35
+  }
+},
+{
+  "model": "movies.reviewvote",
+  "pk": 17,
+  "fields": {
+    "value": 1,
+    "created_at": "2026-08-08T12:18:41.364Z",
+    "user": [
+      "spring0wl"
+    ],
+    "review": 30
+  }
+},
+{
+  "model": "movies.reviewvote",
+  "pk": 18,
+  "fields": {
+    "value": 1,
+    "created_at": "2026-08-08T13:03:39.478Z",
+    "user": [
+      "spring0wl"
+    ],
+    "review": 52
+  }
+},
+{
+  "model": "movies.reviewvote",
+  "pk": 20,
+  "fields": {
+    "value": -1,
+    "created_at": "2026-08-08T13:39:24.858Z",
+    "user": [
+      "aleksandrov762mm"
+    ],
+    "review": 34
+  }
+},
+{
+  "model": "movies.reviewvote",
+  "pk": 21,
+  "fields": {
+    "value": 1,
+    "created_at": "2026-08-08T14:33:38.250Z",
+    "user": [
+      "spring0wl"
+    ],
+    "review": 31
+  }
+},
+{
+  "model": "movies.reviewvote",
+  "pk": 22,
+  "fields": {
+    "value": 1,
+    "created_at": "2026-08-08T14:33:39.645Z",
+    "user": [
+      "spring0wl"
+    ],
+    "review": 25
+  }
+},
+{
+  "model": "movies.reviewvote",
+  "pk": 23,
+  "fields": {
+    "value": -1,
+    "created_at": "2026-08-08T17:10:26.214Z",
+    "user": [
+      "spring0wl"
+    ],
+    "review": 34
+  }
+},
+{
+  "model": "movies.reviewvote",
+  "pk": 24,
+  "fields": {
+    "value": 1,
+    "created_at": "2026-08-09T03:55:34.013Z",
+    "user": [
+      "spring0wl"
+    ],
+    "review": 37
+  }
+},
+{
+  "model": "movies.reviewvote",
+  "pk": 25,
+  "fields": {
+    "value": 1,
+    "created_at": "2026-08-09T05:40:01.841Z",
+    "user": [
+      "spring0wl"
+    ],
+    "review": 57
+  }
+},
+{
+  "model": "movies.reviewvote",
+  "pk": 26,
+  "fields": {
+    "value": 1,
+    "created_at": "2026-08-09T07:17:02.818Z",
+    "user": [
+      "spring0wl"
+    ],
+    "review": 24
+  }
+},
+{
+  "model": "movies.reviewvote",
+  "pk": 27,
+  "fields": {
+    "value": 1,
+    "created_at": "2026-08-12T18:27:38.983Z",
+    "user": [
+      "spring0wl"
+    ],
+    "review": 29
+  }
+},
+{
+  "model": "movies.reviewvote",
+  "pk": 28,
+  "fields": {
+    "value": 1,
+    "created_at": "2026-08-12T18:27:40.739Z",
+    "user": [
+      "spring0wl"
+    ],
+    "review": 40
+  }
+}
+]
