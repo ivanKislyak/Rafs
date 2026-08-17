@@ -2,15 +2,17 @@
 <article class="movie-card">
     <a class="a-block" href="{% url 'movies:detail' movie.pk %}">
         {% if movie.cover and movie.image_exists %}
-            <img class="movie-detail-cover"
-                src="{{ movie.cover.url }}"
-                alt="{{ movie.name }}" />
+            <img class="movie-card-cover"
+                 src="{{ movie.cover.url }}"
+                 data-fallback-src="{% static 'movies/images/nocover.png' %}"
+                 onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
+                 alt="{{ movie.name }}" />
         {% elif movie.cover_url %}
-            <img class="movie-detail-cover"
+            <img class="movie-card-cover"
                 src="{{ movie.cover_url }}"
                 alt="{{ movie.name }}" />
         {% else %}
-            <img class="movie-detail-cover"
+            <img class="movie-card-cover"
                  src="{% static 'movies/images/nocover.png' %}"
                  alt="{{ movie.name }}" />
         {% endif %}
