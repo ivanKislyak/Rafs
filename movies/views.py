@@ -1,14 +1,18 @@
 import json
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Avg, F, Count
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.http import require_POST
 from django.http import HttpResponse
+from requests import RequestException
 
-from .forms import MovieFilterForm, ReviewForm, ReviewReplyForm
+from .forms import MovieFilterForm, ReviewForm, ReviewReplyForm, WikidataSearchForm
 from .models import Movie, Review, ReviewVote
+
+from .services.wikidata import search_wikidata_media
 
 def catalog(request):
     filter_form = MovieFilterForm(request.GET or None)
@@ -36,7 +40,7 @@ def catalog(request):
         if year_to is not None:
             all_movies = all_movies.filter(year__lte=year_to)
 
-    return render(request,"movies/catalog.html", context={"movie": all_movies, "filter_form": filter_form})
+    return render(request, "movies/catalog.html", context={"movie": all_movies, "filter_form": filter_form})
 
 def movie_detail(request, movie_id):
     movie = get_object_or_404(Movie, pk=movie_id)
@@ -177,3 +181,26 @@ def reply_review(request, review_id):
         messages.error(request, "Ответ не может быть пустым")
 
     return redirect("movies:detail", movie_id=review.movie_id)
+
+@staff_member_required
+def wikidata_search(request):
+    wd_search_form = WikidataSearchForm(request.GET or None)
+    search_result = []
+    search_error = False
+
+    if wd_search_form.is_valid():
+        query = wd_search_form.cleaned_data.get("query")
+        lang = wd_search_form.cleaned_data.get("lang")
+
+        try:
+            search_result = search_wikidata_media(query=query, lang=lang, limit=10)
+        except (RequestException, ValueError):
+            search_error = True
+
+    context = {
+        "wd_search_form": wd_search_form,
+        "search_result": search_result,
+        "search_error": search_error,
+    }
+
+    return render(request, "movies/wd_search_form.html", context=context)

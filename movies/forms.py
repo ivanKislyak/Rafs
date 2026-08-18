@@ -19,6 +19,13 @@ OPTIONAL_RATING_RANGE_ATTRS = {
     "disabled": True,
 }
 
+LANG_CHOICES = (
+        ('en', 'English'),
+        ('ru', 'Русский'),
+        ('uk', 'Українська'),
+        ('kk', 'Қазақша'),
+        ('es', 'Español'),
+    )
 
 class MovieFilterForm(forms.Form):
     main_widget = forms.TextInput(attrs={"class": "filter-input", "placeholder": "Введите название...",})
@@ -169,3 +176,7 @@ class ReviewReplyForm(forms.ModelForm):
     class Meta:
         model = ReviewReply
         fields = ["text"]
+
+class WikidataSearchForm(forms.Form):
+    query = forms.CharField(required=True, min_length=2, max_length=200)
+    lang = forms.ChoiceField(choices=LANG_CHOICES)

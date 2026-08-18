@@ -36,6 +36,7 @@
         <link rel="stylesheet"
               href="{% static 'movies/css/movies.css' %}?v=20260816-1" />
         <link rel="stylesheet" href="{% static 'core/css/core.css' %}" />
+        {% block extra_css %}{% endblock %}
     </head>
     <body>
         {% include "_header.html" %}
@@ -82,5 +83,7 @@
             {% block content %}{% endblock %}
         </div>
         <script src="{% static 'js/notifications.js' %}?v=20260808-1" defer></script>
+        <script src="{% static 'js/header.js' %}?v=20260818-1" defer></script>
+        {% block extra_js %}{% endblock %}
     </body>
 </html>

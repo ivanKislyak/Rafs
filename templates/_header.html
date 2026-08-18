@@ -139,10 +139,57 @@
         color: var(--rafs-red-soft);
     }
 
+    .header-profile-actions {
+        display: grid;
+        gap: 8px;
+    }
+
+    .header-profile-menu .header-open-profile-page,
     .header-profile-menu .header-logout-button {
         width: 100%;
         min-height: 36px;
         margin: 0;
+    }
+
+    .header-profile-menu .header-open-profile-page {
+        gap: 8px;
+        border-color: var(--color-action);
+        background-color: var(--color-action);
+        color: var(--color-action-text);
+    }
+
+    .header-profile-menu .header-open-profile-page:hover {
+        border-color: var(--color-action-hover);
+        background-color: var(--color-action-hover);
+        color: #ffffff;
+    }
+
+    .header-profile-menu .header-logout-button {
+        gap: 8px;
+        border-color: transparent;
+        color: var(--color-text-muted);
+    }
+
+    .header-profile-menu .header-logout-button:hover {
+        border-color: var(--color-border);
+        background-color: var(--color-surface-raised);
+        color: var(--color-text);
+    }
+
+    .header-profile-menu .header-open-profile-page:focus-visible,
+    .header-profile-menu .header-logout-button:focus-visible {
+        outline: 3px solid var(--color-focus-visible-outline);
+        outline-offset: 2px;
+    }
+
+    .header-profile-action-icon {
+        width: 17px;
+        height: 17px;
+        fill: none;
+        stroke: currentColor;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 1.8;
     }
 
     .header-tooltip {
@@ -271,11 +318,30 @@
                             <strong class="header-profile-stat-value">{{ user.user_frames|intcomma }}</strong>
                         </div>
                     </div>
-                    <form class="header-logout-form" action="{% url 'logout' %}" method="post">
-                        {% csrf_token %}
-                        <button class="header-open-profile-page" type="submit">Аккаунт</button>
-                        <button class="header-logout-button" type="submit">Выйти из аккаунта</button>
-                    </form>
+                    <div class="header-profile-actions">
+                        <a class="header-open-profile-page" href="/accounts/profile/">
+                            <svg class="header-profile-action-icon"
+                                 viewBox="0 0 24 24"
+                                 aria-hidden="true">
+                                <circle cx="12" cy="8" r="4"></circle>
+                                <path d="M5 20c.8-4 3.2-6 7-6s6.2 2 7 6"></path>
+                            </svg>
+                            <span>Открыть профиль</span>
+                        </a>
+                        <form class="header-logout-form" action="{% url 'logout' %}" method="post">
+                            {% csrf_token %}
+                            <button class="header-logout-button" type="submit">
+                                <svg class="header-profile-action-icon"
+                                     viewBox="0 0 24 24"
+                                     aria-hidden="true">
+                                    <path d="M10 5H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4"></path>
+                                    <path d="m15 8 4 4-4 4"></path>
+                                    <path d="M9 12h10"></path>
+                                </svg>
+                                <span>Выйти</span>
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </details>
         {% else %}

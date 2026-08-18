@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Поиск в Wikidata — RAFS{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet"
+          href="{% static 'movies/css/wd_search.css' %}?v=20260818-1">
+{% endblock %}
+
+{% block content %}
+    <main class="wd-search-page">
+        <header class="wd-search-heading">
+            <span class="wd-search-kicker">Инструменты редактора</span>
+            <h1>Поиск фильмов в Wikidata</h1>
+            <p>Найдите нужный фильм или сериал и скопируйте его QID для дальнейшей работы.</p>
+        </header>
+
+        <form class="wd-search-form"
+              method="get"
+              action="{% url 'movies:wikidata_search' %}"
+              data-wd-search-form>
+            {% if wd_search_form.non_field_errors %}
+                <div class="wd-search-form-error" role="alert">
+                    {{ wd_search_form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <div class="wd-search-field wd-search-query-field{% if wd_search_form.query.errors %} has-error{% endif %}">
+                <label for="{{ wd_search_form.query.id_for_label }}">Название</label>
+                <div class="wd-search-input-wrap">
+                    <svg class="wd-search-input-icon"
+                         viewBox="0 0 24 24"
+                         aria-hidden="true">
+                        <circle cx="11" cy="11" r="6.5"></circle>
+                        <path d="m16 16 4 4"></path>
+                    </svg>
+                    {{ wd_search_form.query }}
+                    <button class="wd-search-clear"
+                            type="button"
+                            data-wd-search-clear
+                            aria-label="Очистить название"
+                            hidden>×</button>
+                </div>
+                {% if wd_search_form.query.errors %}
+                    <div class="wd-search-field-errors" role="alert">
+                        {{ wd_search_form.query.errors }}
+                    </div>
+                {% else %}
+                    <span class="wd-search-field-hint">Минимум два символа</span>
+                {% endif %}
+            </div>
+
+            <div class="wd-search-field{% if wd_search_form.lang.errors %} has-error{% endif %}">
+                <label for="{{ wd_search_form.lang.id_for_label }}">Язык результатов</label>
+                {{ wd_search_form.lang }}
+                {% if wd_search_form.lang.errors %}
+                    <div class="wd-search-field-errors" role="alert">
+                        {{ wd_search_form.lang.errors }}
+                    </div>
+                {% else %}
+                    <span class="wd-search-field-hint">Название и описание</span>
+                {% endif %}
+            </div>
+
+            <button class="wd-search-submit" type="submit" data-wd-search-submit>
+                <span class="wd-search-submit-label">Найти</span>
+                <span class="wd-search-submit-spinner" aria-hidden="true"></span>
+            </button>
+        </form>
+
+        <section class="wd-search-results" aria-live="polite">
+            {% if wd_search_form.is_bound %}
+                {% if wd_search_form.errors %}
+                    <div class="wd-search-state wd-search-state-error">
+                        <span class="wd-search-state-mark" aria-hidden="true">!</span>
+                        <div>
+                            <h2>Проверьте запрос</h2>
+                            <p>Исправьте отмеченные поля и попробуйте ещё раз.</p>
+                        </div>
+                    </div>
+                {% elif search_error %}
+                    <div class="wd-search-state wd-search-state-error">
+                        <span class="wd-search-state-mark" aria-hidden="true">!</span>
+                        <div>
+                            <h2>Wikidata временно не отвечает</h2>
+                            <p>Подождите немного и повторите поиск — введённый запрос сохранён.</p>
+                        </div>
+                    </div>
+                {% elif search_result %}
+                    <div class="wd-search-results-heading">
+                        <div>
+                            <span class="wd-search-results-label">Результаты</span>
+                            <h2>Подходящие произведения</h2>
+                        </div>
+                        <span class="wd-search-results-count">Найдено: {{ search_result|length }}</span>
+                    </div>
+
+                    <ol class="wd-search-result-list">
+                        {% for result in search_result %}
+                            <li class="wd-search-result-card">
+                                <span class="wd-search-result-number" aria-hidden="true">{{ forloop.counter }}</span>
+                                <div class="wd-search-result-copy">
+                                    <div class="wd-search-result-title-row">
+                                        <h3>{{ result.title|default:result.id }}</h3>
+                                        <code>{{ result.id }}</code>
+                                    </div>
+                                    <p>{{ result.description|default:"У этого произведения пока нет описания на выбранном языке." }}</p>
+                                    <div class="wd-search-result-actions">
+                                        <button class="wd-search-copy-button"
+                                                type="button"
+                                                data-wd-copy="{{ result.id }}">
+                                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                                <rect x="8" y="8" width="11" height="11" rx="2"></rect>
+                                                <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path>
+                                            </svg>
+                                            <span data-wd-copy-label>Скопировать QID</span>
+                                        </button>
+                                        <a class="wd-search-external-link"
+                                           href="https://www.wikidata.org/wiki/{{ result.id }}"
+                                           target="_blank"
+                                           rel="noopener noreferrer">
+                                            Открыть в Wikidata
+                                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                                <path d="M14 5h5v5"></path>
+                                                <path d="m19 5-8 8"></path>
+                                                <path d="M18 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"></path>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ol>
+                {% else %}
+                    <div class="wd-search-state">
+                        <span class="wd-search-state-mark" aria-hidden="true">0</span>
+                        <div>
+                            <h2>Ничего не найдено</h2>
+                            <p>Попробуйте оригинальное название или выберите другой язык.</p>
+                        </div>
+                    </div>
+                {% endif %}
+            {% else %}
+                <div class="wd-search-state wd-search-state-idle">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="11" cy="11" r="6.5"></circle>
+                        <path d="m16 16 4 4"></path>
+                    </svg>
+                    <div>
+                        <h2>Начните с названия</h2>
+                        <p>Например: «Бойцовский клуб», «Дюна» или «The Matrix».</p>
+                    </div>
+                </div>
+            {% endif %}
+        </section>
+    </main>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/wd_search.js' %}?v=20260818-1" defer></script>
+{% endblock %}

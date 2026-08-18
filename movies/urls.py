@@ -11,4 +11,5 @@ urlpatterns = [
     path('review/vote/', views.vote_review, name='vote_review'),
     path('review/<int:review_id>/delete_review/', views.delete_review, name='delete_review'),
     path('review/<int:review_id>/reply/', views.reply_review, name='reply_review'),
+    path('wikidata/search/', views.wikidata_search, name='wikidata_search'),
 ]
