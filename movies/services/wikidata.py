@@ -108,8 +108,8 @@ def parse_movie_data(raw_data: dict) -> dict:
     wikidata_description = {}
 
     for lang in LANGUAGES:
-        wikidata_name[f'label_{lang}'] = binding.get(f'label_{lang}')
-        wikidata_description[f'desc_{lang}'] = binding.get(f'desc_{lang}')
+        if label := binding.get(f'label_{lang}'): wikidata_name[lang] = label['value']
+        if desc := binding.get(f'desc_{lang}'): wikidata_description[lang] = desc['value']
 
     return {
         "wikidata_id": wikidata_id,
