@@ -1,4 +1,6 @@
 import requests
+import json
+import re
 
 LANGUAGES = ["ru", "en", "uk", "kk", "es"]
 WIKIDATA_SPARQL_URL = "https://query.wikidata.org/sparql"
@@ -117,10 +119,19 @@ def parse_movie_data(raw_data: dict) -> dict:
     }
 
 def search_wikidata_media(query: str, lang="ru", limit=10) -> list[dict]:
-    if not query.strip():
+    query = re.sub(r'["\'«»]', '', query)
+    query = query.strip()
+    if not query:
         raise ValueError("Для поиска нужно ввести название произведения")
 
-    limit_str = str(int(limit))
+    if lang not in LANGUAGES:
+        raise ValueError("Неподдерживаемый язык")
+        
+    limit = int(limit)
+    if not 1 <= limit <= 20:
+        raise ValueError("limit должен быть от 1 до 20")
+
+    query_literal = json.dumps(query, ensure_ascii=False)
 
     sparql_query = f"""
     SELECT DISTINCT ?item ?itemLabel ?itemDescription ?ordinal WHERE {{
@@ -128,7 +139,7 @@ def search_wikidata_media(query: str, lang="ru", limit=10) -> list[dict]:
       SERVICE wikibase:mwapi {{
         bd:serviceParam wikibase:api "EntitySearch" .
         bd:serviceParam wikibase:endpoint "www.wikidata.org" .
-        bd:serviceParam mwapi:search "{query}" .
+        bd:serviceParam mwapi:search {query_literal} .
         bd:serviceParam mwapi:language "{lang}" .
         ?item wikibase:apiOutputItem mwapi:item .
         ?ordinal wikibase:apiOrdinal true .
@@ -148,7 +159,7 @@ def search_wikidata_media(query: str, lang="ru", limit=10) -> list[dict]:
       }}
     }}
     ORDER BY ASC(?ordinal)
-    LIMIT {limit_str}
+    LIMIT {limit}
     """
 
     params = {
@@ -169,7 +180,7 @@ def search_wikidata_media(query: str, lang="ru", limit=10) -> list[dict]:
         results.append({
             "id": wikidata_id,
             "title": row.get("itemLabel", {}).get("value", ""),
-            "description": row.get("itemDescription", {}).get("value", "Нет описания")
+            "description": row.get("itemDescription", {}).get("value")
         })
         
     return results
