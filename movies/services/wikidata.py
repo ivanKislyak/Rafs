@@ -116,39 +116,38 @@ def parse_movie_data(raw_data: dict) -> dict:
         "wikidata_description": wikidata_description,
     }
 
-def search_wikidata_entities_raw(query: str, lang="ru", limit=5) -> dict:
+def search_wikidata_media(query: str, lang="ru", limit=10) -> list[dict]:
     if not query.strip():
-        raise ValueError("Для поиска нужно ввести название фильма")
+        raise ValueError("Для поиска нужно ввести название произведения")
 
     limit_str = str(int(limit))
 
     sparql_query = f"""
-    SELECT DISTINCT ?item ?itemLabel ?itemDescription WHERE {{
-      # Поиск по текстовому совпадению названия
+    SELECT DISTINCT ?item ?itemLabel ?itemDescription ?ordinal WHERE {{
+      # Поиск по текстовому совпадению названия с внутренним лимитом в 50
       SERVICE wikibase:mwapi {{
         bd:serviceParam wikibase:api "EntitySearch" .
         bd:serviceParam wikibase:endpoint "www.wikidata.org" .
         bd:serviceParam mwapi:search "{query}" .
         bd:serviceParam mwapi:language "{lang}" .
         ?item wikibase:apiOutputItem mwapi:item .
+        ?ordinal wikibase:apiOrdinal true .
+        bd:serviceParam wikibase:limit 50 .
       }}
       
-      # Фильтрация: сущность должна быть экземпляром (P31) одного из медиа-классов
-      ?item wdt:P31 ?type .
-      VALUES ?type {{
-        wd:Q11424     # Фильм (film)
-        wd:Q5398426   # Телесериал (television series)
-        wd:Q267241    # Аниме-сериал (anime television series)
-        wd:Q1107      # Аниме (anime)
-        wd:Q202866    # Анимационный фильм / Мультфильм (animated film)
-        wd:Q581714    # Анимационный сериал / Мультсериал (animated television series)
+      # Фильтрация: сущность должна быть фильмом/сериалом ИЛИ их подклассом (аниме, мультфильм и т.д.)
+      VALUES ?root_type {{
+        wd:Q11424     # film
+        wd:Q5398426   # television series
       }}
+      ?item wdt:P31/wdt:P279* ?root_type .
       
       # Получение подписей и описаний на нужном языке
       SERVICE wikibase:label {{ 
         bd:serviceParam wikibase:language "{lang},en" . 
       }}
     }}
+    ORDER BY ASC(?ordinal)
     LIMIT {limit_str}
     """
 
