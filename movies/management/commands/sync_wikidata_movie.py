@@ -1,10 +1,9 @@
-from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 from movies.services.wikidata import fetch_movie_raw, parse_movie_data
 from movies.models import Movie
 
 class Command(BaseCommand):
-    help = ""
+    help = "Fetch and update movie data from Wikidata by its ID"
 
     def add_arguments(self, parser):
         parser.add_argument('wikidata_id', type=str)

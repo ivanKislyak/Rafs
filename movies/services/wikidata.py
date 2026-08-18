@@ -1,5 +1,4 @@
 import requests
-from movies.models import Movie
 
 LANGUAGES = ["ru", "en", "uk", "kk", "es"]
 WIKIDATA_SPARQL_URL = "https://query.wikidata.org/sparql"
@@ -116,3 +115,62 @@ def parse_movie_data(raw_data: dict) -> dict:
         "wikidata_name": wikidata_name,
         "wikidata_description": wikidata_description,
     }
+
+def search_wikidata_entities_raw(query: str, lang="ru", limit=5) -> dict:
+    if not query.strip():
+        raise ValueError("Для поиска нужно ввести название фильма")
+
+    limit_str = str(int(limit))
+
+    sparql_query = f"""
+    SELECT DISTINCT ?item ?itemLabel ?itemDescription WHERE {{
+      # Поиск по текстовому совпадению названия
+      SERVICE wikibase:mwapi {{
+        bd:serviceParam wikibase:api "EntitySearch" .
+        bd:serviceParam wikibase:endpoint "www.wikidata.org" .
+        bd:serviceParam mwapi:search "{query}" .
+        bd:serviceParam mwapi:language "{lang}" .
+        ?item wikibase:apiOutputItem mwapi:item .
+      }}
+      
+      # Фильтрация: сущность должна быть экземпляром (P31) одного из медиа-классов
+      ?item wdt:P31 ?type .
+      VALUES ?type {{
+        wd:Q11424     # Фильм (film)
+        wd:Q5398426   # Телесериал (television series)
+        wd:Q267241    # Аниме-сериал (anime television series)
+        wd:Q1107      # Аниме (anime)
+        wd:Q202866    # Анимационный фильм / Мультфильм (animated film)
+        wd:Q581714    # Анимационный сериал / Мультсериал (animated television series)
+      }}
+      
+      # Получение подписей и описаний на нужном языке
+      SERVICE wikibase:label {{ 
+        bd:serviceParam wikibase:language "{lang},en" . 
+      }}
+    }}
+    LIMIT {limit_str}
+    """
+
+    params = {
+        "query": sparql_query,
+        "format": "json"
+    }
+
+    response = requests.get(WIKIDATA_SPARQL_URL, params=params, headers=DEFAULT_HEADERS, timeout=15)
+    response.raise_for_status()
+    
+    data = response.json()
+    results = []
+    
+    for row in data.get("results", {}).get("bindings", []):
+        wikidata_url = row.get("item", {}).get("value", "")
+        wikidata_id = wikidata_url.split("/")[-1] if wikidata_url else None
+        
+        results.append({
+            "id": wikidata_id,
+            "title": row.get("itemLabel", {}).get("value", ""),
+            "description": row.get("itemDescription", {}).get("value", "Нет описания")
+        })
+        
+    return results
