@@ -1,7 +1,9 @@
 import requests
+from movies.models import Movie
 
+LANGUAGES = ["ru", "en", "uk", "kk", "es"]
 WIKIDATA_SPARQL_URL = "https://query.wikidata.org/sparql"
-WIKIDATA_SEARCH_ENDPOINT = "https://wikidata.org/w/api.php"
+WIKIDATA_ACTION_API_URL = "https://www.wikidata.org/w/api.php"
 USER_AGENT = "RafsWikidataBot/0.1 (contact: kislyakhelp@gmail.com | github: https://github.com/ivanKislyak/Rafs | website: https://rafs.app/)"
 DEFAULT_HEADERS = {
     "User-Agent": USER_AGENT
@@ -89,6 +91,28 @@ def fetch_movie_details_raw(qid: str) -> dict:
         "format": "json",
     }
 
-    r = requests.get(WIKIDATA_SEARCH_ENDPOINT, params=params, headers=DEFAULT_HEADERS, timeout=15)
+    r = requests.get(WIKIDATA_ACTION_API_URL, params=params, headers=DEFAULT_HEADERS, timeout=15)
     r.raise_for_status()
     return r.json()
+
+def parse_movie_data(raw_data: dict) -> dict:
+    bindings = raw_data["results"]["bindings"]
+    if not bindings:
+        raise ValueError("Фильм с таким QID не найден")
+
+    binding = bindings[0]
+    movie_uri = binding["movie"]["value"]
+    wikidata_id = movie_uri.rsplit("/", 1)[-1]
+
+    wikidata_name = {}
+    wikidata_description = {}
+
+    for lang in LANGUAGES:
+        wikidata_name[f'label_{lang}'] = binding.get(f'label_{lang}')
+        wikidata_description[f'desc_{lang}'] = binding.get(f'desc_{lang}')
+
+    return {
+        "wikidata_id": wikidata_id,
+        "wikidata_name": wikidata_name,
+        "wikidata_description": wikidata_description,
+    }
