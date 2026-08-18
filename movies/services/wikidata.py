@@ -1,6 +1,7 @@
 import requests
 
 WIKIDATA_SPARQL_URL = "https://query.wikidata.org/sparql"
+WIKIDATA_SEARCH_ENDPOINT = "https://wikidata.org/w/api.php"
 USER_AGENT = "RafsWikidataBot/0.1 (contact: kislyakhelp@gmail.com | github: https://github.com/ivanKislyak/Rafs | website: https://rafs.app/)"
 DEFAULT_HEADERS = {
     "User-Agent": USER_AGENT
@@ -75,3 +76,19 @@ def fetch_movie_raw(qid: str) -> dict:
     # movies = data["results"]["bindings"]
     # except requests.exceptions.HTTPError as httpError:
     #     return {"Error": "http_error", "details": str(httpError)}
+
+def fetch_movie_details_raw(qid: str) -> dict:
+    if not qid.startswith("Q") or not qid[1:].isdigit():
+        raise ValueError("qid is an invalid value")
+
+    params = {
+        "action": "wbgetentities",
+        "ids": qid,
+        "props": "labels|descriptions|claims",
+        "languages": "en|ru|uk|kk|es",
+        "format": "json",
+    }
+
+    r = requests.get(WIKIDATA_SEARCH_ENDPOINT, params=params, headers=DEFAULT_HEADERS, timeout=15)
+    r.raise_for_status()
+    return r.json()
