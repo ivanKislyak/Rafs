@@ -8,7 +8,8 @@ from taggit.managers import TaggableManager
 class Movie(models.Model):
     wikidata_id = models.CharField(max_length=20, unique=True, null=True, blank=True)
     imdb_id = models.CharField(max_length=20, null=True, blank=True, db_index=True)
-    wikidata_description = models.TextField(blank=True)
+    wikidata_name = models.JSONField(default=dict, blank=True)
+    wikidata_description = models.JSONField(default=dict, blank=True)
     cover_url = models.URLField(blank=True)
     last_synced_at = models.DateTimeField(null=True, blank=True)
 
