@@ -10,9 +10,9 @@ from django.http import HttpResponse
 from requests import RequestException
 
 from .forms import MovieFilterForm, ReviewForm, ReviewReplyForm, WikidataSearchForm
-from .models import Movie, Review, ReviewVote
+from .models import Movie, Review, ReviewVote, Genre, Person
 
-from .services.wikidata import search_wikidata_media
+from .services.wikidata import search_wikidata_media, fetch_movie_details_raw
 
 def catalog(request):
     filter_form = MovieFilterForm(request.GET or None)
@@ -206,6 +206,12 @@ def wikidata_search(request):
     return render(request, "movies/wd_search_form.html", context=context)
 
 @staff_member_required
-@require_POST
 def wikidata_save_item(request, wid):
+    movie = Movie()
+    person = Person()
+    genre = Genre()
+
+    result = fetch_movie_details_raw(wid)
+
+
     return HttpResponse('test')

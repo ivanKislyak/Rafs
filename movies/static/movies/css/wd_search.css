@@ -102,7 +102,9 @@
   background-color: var(--color-bg);
   color: var(--color-text);
   font: inherit;
-  transition: border-color 150ms ease, box-shadow 150ms ease;
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease;
 }
 
 .wd-search-field input {
@@ -180,7 +182,10 @@
   cursor: pointer;
   font: inherit;
   font-weight: 800;
-  transition: background-color 150ms ease, border-color 150ms ease, transform 150ms ease;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    transform 150ms ease;
 }
 
 .wd-search-submit:hover {
@@ -193,6 +198,7 @@
   transform: translateY(0);
 }
 
+.wd-add-button:focus-visible,
 .wd-search-submit:focus-visible,
 .wd-search-clear:focus-visible,
 .wd-search-copy-button:focus-visible,
@@ -265,7 +271,9 @@
   border: 1px solid var(--color-border);
   border-radius: 12px;
   background-color: var(--color-surface);
-  transition: border-color 150ms ease, background-color 150ms ease;
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease;
 }
 
 .wd-search-result-card:hover {
@@ -328,6 +336,7 @@
   gap: 8px;
 }
 
+.wd-add-button,
 .wd-search-copy-button,
 .wd-search-external-link {
   display: inline-flex;
@@ -347,6 +356,7 @@
   text-decoration: none;
 }
 
+.wd-add-button svg,
 .wd-search-copy-button svg,
 .wd-search-external-link svg {
   width: 15px;
@@ -358,6 +368,7 @@
   stroke-width: 1.8;
 }
 
+.wd-add-button:hover,
 .wd-search-copy-button:hover,
 .wd-search-external-link:hover {
   border-color: var(--color-accent);
@@ -475,6 +486,7 @@
     gap: 5px;
   }
 
+  .wd-add-button,
   .wd-search-copy-button,
   .wd-search-external-link {
     flex: 1 1 auto;

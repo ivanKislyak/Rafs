@@ -9,10 +9,10 @@
                  alt="{{ movie.name }}" />
         {% elif movie.cover_url %}
             <img class="movie-card-cover"
-                src="{{ movie.cover_url }}"
-                alt="{{ movie.name }}" 
-                data-fallback-src="{% static 'movies/images/nocover.png' %}"
-                onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"/>
+                 src="{{ movie.cover_url }}"
+                 alt="{{ movie.name }}"
+                 data-fallback-src="{% static 'movies/images/nocover.png' %}"
+                 onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;" />
         {% else %}
             <img class="movie-card-cover"
                  src="{% static 'movies/images/nocover.png' %}"

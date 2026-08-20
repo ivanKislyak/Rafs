@@ -1,13 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
-
 {% block title %}Поиск в Wikidata — RAFS{% endblock %}
-
 {% block extra_css %}
     <link rel="stylesheet"
           href="{% static 'movies/css/wd_search.css' %}?v=20260818-1">
 {% endblock %}
-
 {% block content %}
     <main class="wd-search-page">
         <header class="wd-search-heading">
@@ -15,23 +12,17 @@
             <h1>Поиск фильмов в Wikidata</h1>
             <p>Найдите нужный фильм или сериал и скопируйте его QID для дальнейшей работы.</p>
         </header>
-
         <form class="wd-search-form"
               method="get"
               action="{% url 'movies:wikidata_search' %}"
               data-wd-search-form>
             {% if wd_search_form.non_field_errors %}
-                <div class="wd-search-form-error" role="alert">
-                    {{ wd_search_form.non_field_errors }}
-                </div>
+                <div class="wd-search-form-error" role="alert">{{ wd_search_form.non_field_errors }}</div>
             {% endif %}
-
             <div class="wd-search-field wd-search-query-field{% if wd_search_form.query.errors %} has-error{% endif %}">
                 <label for="{{ wd_search_form.query.id_for_label }}">Название</label>
                 <div class="wd-search-input-wrap">
-                    <svg class="wd-search-input-icon"
-                         viewBox="0 0 24 24"
-                         aria-hidden="true">
+                    <svg class="wd-search-input-icon" viewBox="0 0 24 24" aria-hidden="true">
                         <circle cx="11" cy="11" r="6.5"></circle>
                         <path d="m16 16 4 4"></path>
                     </svg>
@@ -43,32 +34,25 @@
                             hidden>×</button>
                 </div>
                 {% if wd_search_form.query.errors %}
-                    <div class="wd-search-field-errors" role="alert">
-                        {{ wd_search_form.query.errors }}
-                    </div>
+                    <div class="wd-search-field-errors" role="alert">{{ wd_search_form.query.errors }}</div>
                 {% else %}
                     <span class="wd-search-field-hint">Минимум два символа</span>
                 {% endif %}
             </div>
-
             <div class="wd-search-field{% if wd_search_form.lang.errors %} has-error{% endif %}">
                 <label for="{{ wd_search_form.lang.id_for_label }}">Язык результатов</label>
                 {{ wd_search_form.lang }}
                 {% if wd_search_form.lang.errors %}
-                    <div class="wd-search-field-errors" role="alert">
-                        {{ wd_search_form.lang.errors }}
-                    </div>
+                    <div class="wd-search-field-errors" role="alert">{{ wd_search_form.lang.errors }}</div>
                 {% else %}
                     <span class="wd-search-field-hint">Название и описание</span>
                 {% endif %}
             </div>
-
             <button class="wd-search-submit" type="submit" data-wd-search-submit>
                 <span class="wd-search-submit-label">Найти</span>
                 <span class="wd-search-submit-spinner" aria-hidden="true"></span>
             </button>
         </form>
-
         <section class="wd-search-results" aria-live="polite">
             {% if wd_search_form.is_bound %}
                 {% if wd_search_form.errors %}
@@ -95,7 +79,6 @@
                         </div>
                         <span class="wd-search-results-count">Найдено: {{ search_result|length }}</span>
                     </div>
-
                     <ol class="wd-search-result-list">
                         {% for result in search_result %}
                             <li class="wd-search-result-card">
@@ -127,6 +110,10 @@
                                                 <path d="M18 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"></path>
                                             </svg>
                                         </a>
+                                        <a class="wd-add-button"
+                                           href="{% url 'movies:wikidata_save_item' result.id %}"
+                                           target="_blank"
+                                           rel="noopener noreferrer">Добавить</a>
                                     </div>
                                 </div>
                             </li>
@@ -156,7 +143,6 @@
         </section>
     </main>
 {% endblock %}
-
 {% block extra_js %}
     <script src="{% static 'js/wd_search.js' %}?v=20260818-1" defer></script>
 {% endblock %}

@@ -96,6 +96,61 @@ def fetch_movie_details_raw(qid: str) -> dict:
     r.raise_for_status()
     return r.json()
 
+def parse_movie_details(raw_details: dict, qid: str) -> dict:
+    details_info = raw_details.get("entities", {}).get(qid)
+    if not details_info:
+        raise ValueError("details have invalid id value")
+
+    labels = details_info.get("labels", {})
+    descriptions = details_info.get("descriptions", {})
+    claims = details_info.get("claims", {})
+
+    imdb_id = p345[0].get("mainsnak", {}).get("datavalue", {}).get("value") if (p345 := claims.get("P345")) and len(p345) > 0 else None
+    type_of_work = p31[0].get("mainsnak", {}).get("datavalue", {}).get("value", {}).get("id") if (p31 := claims.get("P31")) and len(p31) > 0 else None
+
+    countries = set()
+    if p495_claims := claims.get("P495"):
+        countries = {
+            q_id for claim in p495_claims
+            if (q_id := claim.get("mainsnak", {}).get("datavalue", {}).get("value", {}).get("id"))
+        }
+
+    wikidata_name = {lang: value["value"] 
+                     for lang, value 
+                     in labels.items()
+                     if labels}
+
+
+    wikidata_description = {lang: value["value"].capitalize()
+                     for lang, value 
+                     in descriptions.items()
+                     if descriptions}
+
+
+    # genres = {lang: value["value"] 
+    #                  for lang, value 
+    #                  in labels.items()
+    #                  if labels}
+
+
+    parsed_data = {
+        "wikidata_id": qid,
+        "imdb_id": imdb_id,
+        "wikidata_name": wikidata_name,
+        "wikidata_description": wikidata_description,
+        "type_of_work": type_of_work,
+        "country": countries,
+        # "genres": genres,
+        # "directors": directors,
+        # "actors": actors
+    }
+
+
+    return parsed_data
+            
+            
+    
+
 def parse_movie_data(raw_data: dict) -> dict:
     bindings = raw_data["results"]["bindings"]
     if not bindings:
@@ -180,7 +235,7 @@ def search_wikidata_media(query: str, lang="ru", limit=10) -> list[dict]:
         results.append({
             "id": wikidata_id,
             "title": row.get("itemLabel", {}).get("value", ""),
-            "description": row.get("itemDescription", {}).get("value")
+            "description": row.get("itemDescription", {}).get("value", "").capitalize()
         })
         
     return results
