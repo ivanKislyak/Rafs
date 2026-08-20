@@ -5,6 +5,21 @@ from decimal import Decimal
 from django.db.models import Avg
 from taggit.managers import TaggableManager
 
+class Genre(models.Model):
+    wikidata_id = models.CharField(max_length=20, unique=True)
+    name = models.CharField(max_length=100)
+
+    def str(self):
+        return self.name
+
+
+class Person(models.Model):
+    wikidata_id = models.CharField(max_length=20, unique=True)
+    name = models.CharField(max_length=200)
+
+    def str(self):
+        return self.name
+
 class Movie(models.Model):
     wikidata_id = models.CharField(max_length=20, unique=True, null=True, blank=True)
     imdb_id = models.CharField(max_length=20, null=True, blank=True, db_index=True)
@@ -12,6 +27,10 @@ class Movie(models.Model):
     wikidata_description = models.JSONField(default=dict, blank=True)
     cover_url = models.URLField(blank=True)
     last_synced_at = models.DateTimeField(null=True, blank=True)
+
+    genres = models.ManyToManyField(Genre, blank=True, related_name="movies")
+    directors = models.ManyToManyField(Person, blank=True, related_name="directed_movies")
+    actors = models.ManyToManyField(Person, blank=True, related_name="acted_movies")
 
     name = models.CharField(max_length=200) # Night of the Day of the Dawn of the Son of the Bride...
     year = models.PositiveSmallIntegerField(null=True, blank=True)

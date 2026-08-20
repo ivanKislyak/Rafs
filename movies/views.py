@@ -204,3 +204,8 @@ def wikidata_search(request):
     }
 
     return render(request, "movies/wd_search_form.html", context=context)
+
+@staff_member_required
+@require_POST
+def wikidata_save_item(request, wid):
+    return HttpResponse('test')
