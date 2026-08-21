@@ -4,54 +4,39 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from decimal import Decimal
 from django.db.models import Avg
 from taggit.managers import TaggableManager
-
-class Genre(models.Model):
-    wikidata_id = models.CharField(max_length=20, unique=True)
-    name = models.CharField(max_length=100)
-
-    def str(self):
-        return self.name
-
-
-class Person(models.Model):
-    wikidata_id = models.CharField(max_length=20, unique=True)
-    name = models.CharField(max_length=200)
-
-    def str(self):
-        return self.name
-
-class TypeOfWork(models.Model):
-    type_of_id = models.CharField(max_length=20, unique=True)
-    name = models.CharField(max_length=100)
-
-    def str(self):
-        return self.name
-
-class Country(models.Model):
-    country_id = models.CharField(max_length=20, unique=True)
-    name = models.CharField(max_length=100)
-
-    def str(self):
-        return self.name
+from .movie_models import TypeOfWork, Genre, Country, Studio, Person
 
 class Movie(models.Model):
+    # Main data
     wikidata_id = models.CharField(max_length=20, unique=True, null=True, blank=True)
     imdb_id = models.CharField(max_length=20, null=True, blank=True, db_index=True)
     wikidata_name = models.JSONField(default=dict, blank=True)
     wikidata_description = models.JSONField(default=dict, blank=True)
+    year = models.PositiveSmallIntegerField(null=True, blank=True)
 
-    type_of_work = models.ManyToManyField(TypeOfWork, blank=True, related_name="movies_type")
-    countries = models.ManyToManyField(Country, blank=True, related_name="country")
+    type_of_work = models.ForeignKey(
+        TypeOfWork, 
+        on_delete=models.SET_NULL, 
+        blank=True,
+        null=True, 
+        related_name="movies")
+
     genres = models.ManyToManyField(Genre, blank=True, related_name="movies")
-    directors = models.ManyToManyField(Person, blank=True, related_name="directed_movies")
-    actors = models.ManyToManyField(Person, blank=True, related_name="acted_movies")
+    countries = models.ManyToManyField(Country, blank=True, related_name="movies")
+    studio = models.ManyToManyField(Studio, blank=True, related_name="movies")
+
+    # Persons
+    director = models.ManyToManyField(Person, blank=True, related_name="directed_movies")
+    screenwriter = models.ManyToManyField(Person, blank=True, related_name="written_movies")
+    producer = models.ManyToManyField(Person, blank=True, related_name="produced_movies")
+    composer = models.ManyToManyField(Person, blank=True, related_name="composed_movies")
+    actors = models.ManyToManyField(Person, blank=True, related_name="acted_in_movies")
 
     cover_url = models.URLField(blank=True)
     last_synced_at = models.DateTimeField(null=True, blank=True)
 
-
     name = models.CharField(max_length=200) # Night of the Day of the Dawn of the Son of the Bride...
-    year = models.PositiveSmallIntegerField(null=True, blank=True)
+
     rate = models.DecimalField(decimal_places=1, max_digits=3, null=True, blank=True)
     description = models.TextField(blank=True)
     tags = TaggableManager()

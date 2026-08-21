@@ -74,12 +74,6 @@ def fetch_movie_raw(qid: str) -> dict:
     r.raise_for_status()
     return r.json()
 
-    # try:
-    # data = fetch_movie_raw("Q123")
-    # movies = data["results"]["bindings"]
-    # except requests.exceptions.HTTPError as httpError:
-    #     return {"Error": "http_error", "details": str(httpError)}
-
 def fetch_movie_details_raw(qid: str) -> dict:
     if not qid.startswith("Q") or not qid[1:].isdigit():
         raise ValueError("qid is an invalid value")
@@ -96,6 +90,7 @@ def fetch_movie_details_raw(qid: str) -> dict:
     r.raise_for_status()
     return r.json()
 
+
 def parse_movie_details(raw_details: dict, qid: str) -> dict:
     details_info = raw_details.get("entities", {}).get(qid)
     if not details_info:
@@ -105,50 +100,51 @@ def parse_movie_details(raw_details: dict, qid: str) -> dict:
     descriptions = details_info.get("descriptions", {})
     claims = details_info.get("claims", {})
 
-    imdb_id = p345[0].get("mainsnak", {}).get("datavalue", {}).get("value") if (p345 := claims.get("P345")) and len(p345) > 0 else None
-    type_of_work = p31[0].get("mainsnak", {}).get("datavalue", {}).get("value", {}).get("id") if (p31 := claims.get("P31")) and len(p31) > 0 else None
-
-    countries = set()
-    if p495_claims := claims.get("P495"):
-        countries = {
-            q_id for claim in p495_claims
-            if (q_id := claim.get("mainsnak", {}).get("datavalue", {}).get("value", {}).get("id"))
-        }
-
     wikidata_name = {lang: value["value"] 
                      for lang, value 
                      in labels.items()
                      if labels}
-
 
     wikidata_description = {lang: value["value"].capitalize()
                      for lang, value 
                      in descriptions.items()
                      if descriptions}
 
+    def extract_single_string(claim_id: str) -> str | None:
+        if prop_claims := claims.get(claim_id):
+            return prop_claims[0].get("mainsnak", {}).get("datavalue", {}).get("value")
+        return None
 
-    # genres = {lang: value["value"] 
-    #                  for lang, value 
-    #                  in labels.items()
-    #                  if labels}
-
+    def extract_single_qid(claim_id: str, type_of_value: str="id") -> str | None:
+        if prop_claims := claims.get(claim_id):
+            return prop_claims[0].get("mainsnak", {}).get("datavalue", {}).get("value", {}).get(type_of_value)
+        return None
+    
+    def extract_dicts(claim_id: str) -> set:
+        if prop_claims := claims.get(claim_id):
+            return {
+                q_id for claim in prop_claims
+                if (q_id := claim.get("mainsnak", {}).get("datavalue", {}).get("value", {}).get("id"))
+            }
+        return set()
 
     parsed_data = {
         "wikidata_id": qid,
-        "imdb_id": imdb_id,
+        "imdb_id": extract_single_string("P345"),
+        "year": int(val[1:5]) if (val := (extract_single_qid("P577", "time") or extract_single_qid("P580", "time"))) else None,
         "wikidata_name": wikidata_name,
         "wikidata_description": wikidata_description,
-        "type_of_work": type_of_work,
-        "country": countries,
-        # "genres": genres,
-        # "directors": directors,
-        # "actors": actors
+        "type_of_work": extract_single_qid("P31"),
+        "genres": extract_dicts("P136"),
+        "country": extract_dicts("P495"),
+        "studio": extract_dicts("P272"),
+        "actors": extract_dicts("P161") | extract_dicts("P725"),
+        "director": extract_dicts("P57"),
+        "producer": extract_dicts("P162"),
+        "screenwriter": extract_dicts("P58"),
+        "composer": extract_dicts("P86"),
     }
-
-
     return parsed_data
-            
-            
     
 
 def parse_movie_data(raw_data: dict) -> dict:
