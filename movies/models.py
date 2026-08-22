@@ -5,13 +5,18 @@ from decimal import Decimal
 from django.db.models import Avg
 from taggit.managers import TaggableManager
 from .movie_models import TypeOfWork, Genre, Country, Studio, Person
+from parler.models import TranslatableModel, TranslatedFields
 
-class Movie(models.Model):
+class Movie(TranslatableModel):
     # Main data
     wikidata_id = models.CharField(max_length=20, unique=True, null=True, blank=True)
     imdb_id = models.CharField(max_length=20, null=True, blank=True, db_index=True)
-    wikidata_name = models.JSONField(default=dict, blank=True)
-    wikidata_description = models.JSONField(default=dict, blank=True)
+
+    translations = TranslatedFields(
+        wikidata_name = models.CharField(max_length=200, blank=True),
+        wikidata_description = models.TextField(blank=True)
+    )
+
     year = models.PositiveSmallIntegerField(null=True, blank=True)
 
     type_of_work = models.ForeignKey(

@@ -76,6 +76,7 @@ INSTALLED_APPS = [
     'core',
     'taggit',
     'rest_framework',
+    'parler',
 ]
 
 MIDDLEWARE = [

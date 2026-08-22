@@ -145,7 +145,7 @@ def parse_movie_details(raw_details: dict, qid: str) -> dict:
         "composer": extract_dicts("P86"),
     }
     return parsed_data
-    
+
 
 def parse_movie_data(raw_data: dict) -> dict:
     bindings = raw_data["results"]["bindings"]
