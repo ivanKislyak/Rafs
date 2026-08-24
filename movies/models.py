@@ -40,7 +40,7 @@ class Movie(TranslatableModel):
     cover_url = models.URLField(blank=True)
     last_synced_at = models.DateTimeField(null=True, blank=True)
 
-    name = models.CharField(max_length=200) # Night of the Day of the Dawn of the Son of the Bride...
+    name = models.CharField(max_length=200, blank=True) # Night of the Day of the Dawn of the Son of the Bride...
 
     rate = models.DecimalField(decimal_places=1, max_digits=3, null=True, blank=True)
     description = models.TextField(blank=True)

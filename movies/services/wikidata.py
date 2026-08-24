@@ -136,7 +136,7 @@ def parse_movie_details(raw_details: dict, qid: str) -> dict:
         "wikidata_description": wikidata_description,
         "type_of_work": extract_single_qid("P31"),
         "genres": extract_dicts("P136"),
-        "country": extract_dicts("P495"),
+        "countries": extract_dicts("P495"),
         "studio": extract_dicts("P272"),
         "actors": extract_dicts("P161") | extract_dicts("P725"),
         "director": extract_dicts("P57"),
