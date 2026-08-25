@@ -13,6 +13,7 @@ from .forms import MovieFilterForm, ReviewForm, ReviewReplyForm, WikidataSearchF
 from .models import Movie, Review, ReviewVote, Genre, Person
 
 from .services.wikidata import search_wikidata_media, fetch_movie_details_raw
+from .services.import_wikidata import import_parsed_data_to_db 
 
 def catalog(request):
     filter_form = MovieFilterForm(request.GET or None)
@@ -206,12 +207,6 @@ def wikidata_search(request):
     return render(request, "movies/wd_search_form.html", context=context)
 
 @staff_member_required
-def wikidata_save_item(request, wid):
-    movie = Movie()
-    person = Person()
-    genre = Genre()
-
-    result = fetch_movie_details_raw(wid)
-
-
-    return HttpResponse('test')
+def wikidata_save_item(request, qid):
+    imported = import_parsed_data_to_db(qid, fetch_movie_details_raw(qid))
+    return redirect("movies:detail", movie_id=imported.id)
