@@ -12,7 +12,7 @@ from requests import RequestException
 from .forms import MovieFilterForm, ReviewForm, ReviewReplyForm, WikidataSearchForm
 from .models import Movie, Review, ReviewVote, Genre, Person
 
-from .services.wikidata import search_wikidata_media, fetch_movie_details_raw
+from .services.wikidata import search_wikidata_media, fetch_movie_details_raw, parse_movie_details
 from .services.import_wikidata import import_parsed_data_to_db 
 
 def catalog(request):
@@ -208,5 +208,7 @@ def wikidata_search(request):
 
 @staff_member_required
 def wikidata_save_item(request, qid):
-    imported = import_parsed_data_to_db(qid, fetch_movie_details_raw(qid))
+    raw = fetch_movie_details_raw(qid)
+    parsed = parse_movie_details(raw, qid)
+    imported = import_parsed_data_to_db(qid, parsed)
     return redirect("movies:detail", movie_id=imported.id)

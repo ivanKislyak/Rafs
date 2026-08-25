@@ -105,7 +105,7 @@ def parse_movie_details(raw_details: dict, qid: str) -> dict:
                      in labels.items()
                      if labels}
 
-    wikidata_description = {lang: value["value"].capitalize()
+    wikidata_description = {lang: value["value"]
                      for lang, value 
                      in descriptions.items()
                      if descriptions}
