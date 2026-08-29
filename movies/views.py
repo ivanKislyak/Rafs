@@ -10,7 +10,7 @@ from django.http import HttpResponse
 from requests import RequestException
 
 from .forms import MovieFilterForm, ReviewForm, ReviewReplyForm, WikidataSearchForm
-from .models import Movie, Review, ReviewVote, Genre, Person
+from .models import Movie, Review, ReviewVote, Genre, Person, WatchStatus
 
 from .services.wikidata import search_wikidata_media, fetch_movie_details_raw, parse_movie_details
 from .services.import_wikidata import import_parsed_data_to_db 
@@ -152,6 +152,46 @@ def vote_review(request):
             "likes": likes,
             "dislikes": dislikes,
             "user_vote": current_user_vote,
+        })
+
+    except (json.JSONDecodeError, TypeError, ValueError):
+        return JsonResponse({"error": "Неверный формат данных"}, status=400)
+
+@login_required
+@require_POST
+def set_movie_status(request):
+    try:
+        data = json.loads(request.body)
+        if not isinstance(data, dict):
+            return JsonResponse({"error": "Неверный формат данных"}, status=400)
+
+        movie_id = data.get("movie_id")
+        status = data.get("status")
+
+        if status not in WatchStatus.StatusChoice.values:
+            return JsonResponse({"error": "Неверный формат данных"}, status=400)
+
+        movie = get_object_or_404(Movie, id=movie_id)
+        user_status, created = WatchStatus.objects.get_or_create(
+            user=request.user,
+            movie=movie,
+            defaults={"status": status},
+        )
+
+        if not created:
+            if user_status.status == status:
+                user_status.delete()
+                current_user_status = None
+            else:
+                user_status.status = status
+                user_status.save(update_fields=["status"])
+                current_user_status = status
+        else:
+            current_user_status = status
+
+        return JsonResponse({
+            "movie_id": movie_id,
+            "status": current_user_status or None,
         })
 
     except (json.JSONDecodeError, TypeError, ValueError):
