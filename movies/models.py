@@ -6,6 +6,7 @@ from django.db.models import Avg
 from taggit.managers import TaggableManager
 from .movie_models import TypeOfWork, Genre, Country, Studio, Person
 from parler.models import TranslatableModel, TranslatedFields
+from django.utils.translation import gettext_lazy as _
 
 class Movie(TranslatableModel):
     # Main data
@@ -169,3 +170,21 @@ class ReplyVote(BaseVote):
 
     class Meta:
         constraints = [models.UniqueConstraint(fields=["user", "reply"], name="unique_user_reply_vote")]
+
+class WatchStatus(models.Model):
+    class StatusChoice(models.TextChoices):
+        WILL_WATCH = "WILL_WATCH", _("I'll watch it")
+        VIEWED = "VIEWED", _("Viewed")
+        NOT_INTERESTING = "NOT_INTERESTING", _("I'm not interested")
+        WATCHING = "WATCHING", _("I'm watching it right now")    
+        DROPPED = "DROPPED", _("I dropped watching it")
+        REWATCHING = "REWATCHING", _("Rewatching")
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="watch_statuses")
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="watch_statuses")
+    status = models.CharField(max_length=20, choices=StatusChoice.choices, default=StatusChoice.WILL_WATCH)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=["user", "movie"], name="unique_movie_status")]
+    
+    
