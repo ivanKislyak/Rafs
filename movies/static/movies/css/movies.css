@@ -1202,6 +1202,64 @@
   border-radius: 10px;
 }
 
+.movie-watch-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 10px;
+}
+
+.movie-watch-status-btn {
+  min-height: 38px;
+  padding: 8px 13px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: var(--color-surface);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease,
+    color 150ms ease,
+    transform 150ms ease;
+}
+
+.movie-watch-status-btn:hover {
+  border-color: color-mix(in srgb, var(--rafs-red) 60%, var(--color-border));
+  background-color: var(--color-accent-glow);
+  color: var(--color-text);
+}
+
+.movie-watch-status-btn:active {
+  background-color: color-mix(in srgb, var(--color-action-active) 35%, var(--color-surface));
+  transform: translateY(1px);
+}
+
+.movie-watch-status-btn:focus-visible {
+  outline: 3px solid var(--color-focus-visible-outline);
+  outline-offset: 2px;
+}
+
+@media (max-width: 520px) {
+  .movie-watch-status {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .movie-watch-status-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 340px) {
+  .movie-watch-status {
+    grid-template-columns: 1fr;
+  }
+}
+
 .abot-found-movies,
 .catalog-label {
   color: var(--color-action-text);

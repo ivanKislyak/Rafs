@@ -66,6 +66,14 @@
     </article>
     <p class="movie-detail-main-description">{{ movie.description }}</p>
     <hr />
+    <div class="movie-watch-status" data-movie-id="{{ movie.id }}">
+        <button class="movie-watch-status-btn" data-value="WILL_WATCH">Хочу посмотреть</button>
+        <button class="movie-watch-status-btn" data-value="VIEWED">Просмотрено</button>
+        <button class="movie-watch-status-btn" data-value="NOT_INTERESTING">Не интересно</button>
+        <button class="movie-watch-status-btn" data-value="WATCHING">Смотрю сейчас</button>
+        <button class="movie-watch-status-btn" data-value="DROPPED">Бросил(а)</button>
+        <button class="movie-watch-status-btn" data-value="REWATCHING">Пересматриваю</button>
+    </div>
     <hr />
     <section class="review-comments">
         <h2 class="review-comments-title">Отзывы</h2>
