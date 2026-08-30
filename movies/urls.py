@@ -13,4 +13,5 @@ urlpatterns = [
     path('review/<int:review_id>/reply/', views.reply_review, name='reply_review'),
     path('wikidata/search/', views.wikidata_search, name='wikidata_search'),
     path('wikidata/items/<str:qid>/save/', views.wikidata_save_item, name='wikidata_save_item'),
+    path('save/status/', views.set_movie_status, name='set_movie_status'),
 ]
