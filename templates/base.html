@@ -31,9 +31,9 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge" />
         <link rel="icon"
               type="image/x-icon"
-              href="{% static 'images/favicon.ico' %}?v=2">
+              href="{% static 'images/favicon.ico' %}">
         <link rel="stylesheet" href="{% static 'css/base.css' %}" />
-        <link rel="stylesheet" href="{% static 'movies/css/movies.css' %}?v=20260831-1" />
+        <link rel="stylesheet" href="{% static 'movies/css/movies.css' %}" />
         <link rel="stylesheet" href="{% static 'core/css/core.css' %}" />
         {% block extra_css %}{% endblock %}
     </head>
@@ -81,8 +81,8 @@
         <div class="main-container">
             {% block content %}{% endblock %}
         </div>
-        <script src="{% static 'js/notifications.js' %}?v=20260808-1" defer></script>
-        <script src="{% static 'js/header.js' %}?v=20260818-1" defer></script>
+        <script src="{% static 'js/notifications.js' %}" defer></script>
+        <script src="{% static 'js/header.js' %}" defer></script>
         {% block extra_js %}{% endblock %}
     </body>
 </html>
