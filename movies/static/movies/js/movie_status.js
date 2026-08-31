@@ -26,12 +26,12 @@ document.querySelectorAll(".movie-watch-status").forEach((element) => {
           throw new Error(data.error || "Не удалось передать данные о статусе фильма");
         }
       } catch (error) {
-        throw new Error(data.error || "Не удалось передать данные о статусе фильма");
+        throw new Error(error.message || "Не удалось передать данные о статусе фильма");
       }
 
-      btn.classList.remove("is_active");
-      void clickedButton.offsetWidth;
-      btn.classList.add("is_active");
+      btn.classList.remove("is-active");
+      void btn.offsetWidth;
+      btn.classList.add("is-active");
     });
   });
 });
