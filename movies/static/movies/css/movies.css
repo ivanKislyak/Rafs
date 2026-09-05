@@ -1238,6 +1238,12 @@
   transform: translateY(1px);
 }
 
+.movie-watch-status-btn.is-active {
+  border-color: var(--rafs-red);
+  background-color: var(--color-action-active);
+  color: var(--color-text);
+}
+
 .movie-watch-status-btn:focus-visible {
   outline: 3px solid var(--color-focus-visible-outline);
   outline-offset: 2px;

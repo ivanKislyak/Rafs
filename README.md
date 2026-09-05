@@ -66,7 +66,7 @@ At minimum, the local `.env` file should contain:
 
 ```dotenv
 SECRET_KEY=your-local-secret-key
-DEBUG=True
+DJANGO_DEBUG=True
 ```
 
 Apply the migrations and start the development server:
@@ -99,7 +99,7 @@ Movie covers are not currently distributed with the repository either. They must
 
 Django stores uploaded covers in `media/movie_covers/` and saves the associated path in the database. Copying an image into that directory alone is not enough: the file must also be assigned to the appropriate movie through the `cover` field. The site displays a default placeholder when a cover is not assigned or its file is missing.
 
-With `DEBUG=True`, Django serves media files during local development. Media storage and delivery must be configured separately for a production deployment. WhiteNoise serves static assets, not user-uploaded media files.
+With `DJANGO_DEBUG=True`, Django serves media files during local development. Media storage and delivery must be configured separately for a production deployment. WhiteNoise serves static assets, not user-uploaded media files.
 
 ## Project checks
 

@@ -66,7 +66,7 @@
     </article>
     <p class="movie-detail-main-description">{{ movie.description }}</p>
     <hr />
-    <div class="movie-watch-status" data-movie-id="{{ movie.id }}">
+    <div class="movie-watch-status" data-movie-id="{{ movie.id }}" data-url="{% url 'movies:set_movie_status' %}" data-csrf="{{ csrf_token }}">
         <button class="movie-watch-status-btn" data-value="WILL_WATCH">Хочу посмотреть</button>
         <button class="movie-watch-status-btn" data-value="VIEWED">Просмотрено</button>
         <button class="movie-watch-status-btn" data-value="NOT_INTERESTING">Не интересно</button>
@@ -407,5 +407,5 @@
     </script>
 {% endblock %}
 {% block extra_js %}
-    <script src="{% static 'movies/js/movie_status.js' %}" defer></script>
+    <script src="{% static 'movies/js/movie_watch_status.js' %}" defer></script>
 {% endblock %}

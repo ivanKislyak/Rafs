@@ -25,7 +25,7 @@ load_dotenv(BASE_DIR / '.env')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-fallback-key-for-dev-only')
-DEBUG = os.getenv("DEBUG", "False").strip().lower() in {
+DEBUG = os.getenv("DJANGO_DEBUG", "False").strip().lower() in {
     "1",
     "true",
     "yes",
@@ -63,9 +63,13 @@ if DEBUG or "test" in sys.argv:
         "django.contrib.staticfiles.storage.StaticFilesStorage"
     )
 
+WHITENOISE_AUTOREFRESH = DEBUG
+WHITENOISE_USE_FINDERS = DEBUG
+
 # Application definition
 
 INSTALLED_APPS = [
+    'whitenoise.runserver_nostatic',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
