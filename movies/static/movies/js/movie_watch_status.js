@@ -7,9 +7,14 @@ watchStatusButtons.forEach((btn) => {
     const movieStatusCsrf = container ? container.dataset.csrf : null;
     const movieId = container ? container.dataset.movieId : null;
 
-    container.querySelectorAll(".movie-watch-status-btn").forEach((button) => {
-      button.classList.remove("is-active");
-    });
+    if (!btn.classList.contains("is-active")) {
+      container.querySelectorAll(".movie-watch-status-btn").forEach((button) => {
+        button.classList.remove("is-active");
+      });
+      btn.classList.add("is-active");
+    } else {
+      btn.classList.remove("is-active");
+    }
 
     try {
       const response = await fetch(movieStatusURL, {
@@ -27,13 +32,12 @@ watchStatusButtons.forEach((btn) => {
       const data = await response.json().catch(() => ({}));
 
       if (!response.ok) {
+        button.classList.remove("is-active");
         throw new Error(data.error || "Не удалось передать данные о статусе фильма");
       }
     } catch (error) {
+      button.classList.remove("is-active");
       throw new Error(error.message || "Не удалось передать данные о статусе фильма");
     }
-
-    void btn.offsetWidth;
-    btn.classList.add("is-active");
   });
 });
