@@ -32,11 +32,11 @@ watchStatusButtons.forEach((btn) => {
       const data = await response.json().catch(() => ({}));
 
       if (!response.ok) {
-        button.classList.remove("is-active");
+        btn.classList.remove("is-active");
         throw new Error(data.error || "Не удалось передать данные о статусе фильма");
       }
     } catch (error) {
-      button.classList.remove("is-active");
+      btn.classList.remove("is-active");
       throw new Error(error.message || "Не удалось передать данные о статусе фильма");
     }
   });
