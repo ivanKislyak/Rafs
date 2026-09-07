@@ -184,7 +184,8 @@ class WatchStatus(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="watch_statuses")
     status = models.CharField(max_length=20, choices=StatusChoice.choices, default=StatusChoice.WILL_WATCH)
 
+    def __str__(self):
+        return self.status
+
     class Meta:
         constraints = [models.UniqueConstraint(fields=["user", "movie"], name="unique_movie_status")]
-    
-    

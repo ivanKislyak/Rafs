@@ -52,6 +52,7 @@ def movie_detail(request, movie_id):
         .prefetch_related("votes")
     )
     user_already_rated_this = False
+    watch_status = False
 
     for review in reviews:
         review_votes = list(review.votes.all())
@@ -72,12 +73,40 @@ def movie_detail(request, movie_id):
 
     reviews.sort(key=lambda r: r.like_count - r.dislike_count, reverse=True)
 
+    button_values = [
+        {"data_value": "WILL_WATCH",
+         "text_inside": "Хочу посмотреть"}, 
+
+         {"data_value": "VIEWED",
+         "text_inside": "Просмотрено"}, 
+
+         {"data_value": "NOT_INTERESTING",
+         "text_inside": "Не интересно"  
+         }, 
+
+         {"data_value": "WATCHING",
+         "text_inside": "Смотрю сейчас"   
+         }, 
+
+         {"data_value": "DROPPED",
+         "text_inside": "Бросил(а)"  
+         }, 
+
+        {"data_value": "REWATCHING",
+         "text_inside": "Пересматриваю"    
+        }
+        ]
+
     if request.user.is_authenticated:
         user_already_rated_this = Review.objects.filter(movie=movie, user=request.user).first()
+        watch_status = WatchStatus.objects.filter(movie=movie, user=request.user).first()
+
     return render(request, "movies/movie_detail.html",
                   {"movie": movie, 
                    "reviews": reviews,
-                   "user_already_rated_this": user_already_rated_this})
+                   "user_already_rated_this": user_already_rated_this,
+                   "button_values": button_values,
+                   "watch_status": watch_status})
 
 @login_required
 def make_review_form(request, movie_id):

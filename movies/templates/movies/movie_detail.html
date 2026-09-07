@@ -66,13 +66,13 @@
     </article>
     <p class="movie-detail-main-description">{{ movie.description }}</p>
     <hr />
-    <div class="movie-watch-status" data-movie-id="{{ movie.id }}" data-url="{% url 'movies:set_movie_status' %}" data-csrf="{{ csrf_token }}">
-        <button class="movie-watch-status-btn" data-value="WILL_WATCH">Хочу посмотреть</button>
-        <button class="movie-watch-status-btn" data-value="VIEWED">Просмотрено</button>
-        <button class="movie-watch-status-btn" data-value="NOT_INTERESTING">Не интересно</button>
-        <button class="movie-watch-status-btn" data-value="WATCHING">Смотрю сейчас</button>
-        <button class="movie-watch-status-btn" data-value="DROPPED">Бросил(а)</button>
-        <button class="movie-watch-status-btn" data-value="REWATCHING">Пересматриваю</button>
+    <div class="movie-watch-status"
+         data-movie-id="{{ movie.id }}"
+         data-url="{% url 'movies:set_movie_status' %}"
+         data-csrf="{{ csrf_token }}">
+        {% for b_value in button_values %}
+            <button class="movie-watch-status-btn {% if watch_status.status == b_value.data_value %}is-active{% endif %}" data-value={{ b_value.data_value }}>{{ b_value.text_inside }}</button>
+        {% endfor %}
     </div>
     <hr />
     <section class="review-comments">

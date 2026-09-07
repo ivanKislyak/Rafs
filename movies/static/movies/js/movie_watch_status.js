@@ -6,6 +6,7 @@ watchStatusButtons.forEach((btn) => {
     const movieStatusURL = container ? container.dataset.url : null;
     const movieStatusCsrf = container ? container.dataset.csrf : null;
     const movieId = container ? container.dataset.movieId : null;
+    const isActiveBtn = container.querySelector(".is-active");
 
     if (!btn.classList.contains("is-active")) {
       container.querySelectorAll(".movie-watch-status-btn").forEach((button) => {
