@@ -18,3 +18,5 @@ def register(request):
 
     return render(request, "accounts/register.html", {"register_form": register_form})
 
+def profile(request):
+     return render(request, "accounts/profile.html")
