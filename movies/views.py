@@ -257,3 +257,6 @@ def wikidata_save_item(request, qid):
     parsed = parse_movie_details(raw, qid)
     imported = import_parsed_data_to_db(qid, parsed)
     return redirect("movies:detail", movie_id=imported.id)
+
+def show_reviews(request):
+    return render(request, "movies/reviews.html")

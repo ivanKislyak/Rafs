@@ -71,7 +71,8 @@
          data-url="{% url 'movies:set_movie_status' %}"
          data-csrf="{{ csrf_token }}">
         {% for choice in watch_status_model.StatusChoice.choices %}
-            <button class="movie-watch-status-btn {% if watch_status.status == choice.0 %}is-active{% endif %}" data-value="{{ choice.0 }}">{{ choice.1 }}</button>
+            <button class="movie-watch-status-btn {% if watch_status.status == choice.0 %}is-active{% endif %}"
+                    data-value="{{ choice.0 }}">{{ choice.1 }}</button>
         {% endfor %}
     </div>
     <hr />

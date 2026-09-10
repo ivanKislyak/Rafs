@@ -42,4 +42,11 @@
             </div>
         {% endfor %}
     </div>
+    <script defer>
+        const reviewsTab = document.querySelector(".catalog-container");
+
+    if (!reviewsTab.classList.contains("activated-category")) {
+        reviewsTab.classList.add("activated-category");
+    }
+    </script>
 {% endblock %}
