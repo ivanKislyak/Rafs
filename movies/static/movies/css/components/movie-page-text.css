@@ -1,0 +1,12 @@
+/* Text colors shared by catalog and movie detail pages. */
+
+.movie-detail-main-textinfo {
+  color: inherit;
+  min-width: 0;
+}
+
+.movie-filter,
+.movie-detail-main-description {
+  color: var(--color-text);
+}
+

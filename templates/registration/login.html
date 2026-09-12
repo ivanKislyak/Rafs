@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}Вход в RAFS{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'accounts/css/auth.css' %}">
+{% endblock %}
 {% block content %}
-    <link rel="stylesheet" href="{% static 'css/accounts.css' %}">
     <section class="register-page login-page">
         <form class="register-form login-form" method="post" novalidate>
             {% csrf_token %}

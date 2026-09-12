@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}Отзыв к фильму {{ movie.name }}{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'movies/css/review-form.css' %}">
+    <link rel="stylesheet" href="{% static 'movies/css/components/buttons.css' %}">
+{% endblock %}
 {% block content %}
     <form class="review-form" method="post" novalidate>
         {% csrf_token %}

@@ -1,0 +1,72 @@
+/* Reusable movie card and catalog card list. */
+
+.movie-card {
+  margin: 5px;
+  margin-bottom: 15px;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  border-radius: 10px;
+  max-width: 1100px;
+  margin-inline: auto;
+  padding: var(--space-l);
+  transition:
+    box-shadow 200ms ease,
+    background-color 200ms ease;
+}
+
+.movie-card:hover {
+  background-color: var(--color-surface-raised);
+  box-shadow: 0 8px 16px color-mix(in srgb, var(--color-surface-raised) 92%, transparent);
+}
+
+.movie-card:focus-visible {
+  outline: var(--space-xs) solid var(--color-focus-visible-outline);
+  outline-offset: var(--space-xs);
+}
+
+.a-block {
+  display: grid;
+  text-decoration: none;
+  color: var(--color-text);
+  grid-template-columns: 210px minmax(0, 1fr);
+  gap: var(--space-l);
+}
+
+.a-block:hover,
+.a-block:focus-visible,
+.a-block:visited {
+  color: var(--color-text);
+}
+
+.movie-card-cover {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: var(--space-m);
+}
+
+@media (max-width: 500px) {
+  .a-block {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .movie-card-cover {
+    width: 100%;
+  }
+}
+
+.main-catalog-page-with-movie-cards {
+  padding: 30px;
+}
+
+.movie-info {
+  color: var(--color-text);
+  min-width: 0;
+}
+
+.movie-description {
+  text-align: center;
+}
+

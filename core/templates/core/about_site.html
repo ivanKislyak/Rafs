@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}О RAFS{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'core/css/about.css' %}">
+{% endblock %}
 {% block content %}
-    <link rel="stylesheet" href="{% static 'core/css/core.css' %}">
     <main class="about-page">
         <section class="about-hero">
             <div class="about-hero-copy">

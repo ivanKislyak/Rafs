@@ -1,0 +1,694 @@
+/* Review list, votes, replies and delete dialog. */
+
+.review-comment-avatar {
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  max-width: 30px;
+  flex: 0 0 30px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+  display: block;
+}
+
+
+.review-comments {
+  display: grid;
+  gap: var(--space-m);
+  margin: 20px 10px;
+}
+
+.review-comments-title {
+  font-size: 1.25rem;
+  margin: 0 0 var(--space-s);
+  color: var(--color-text);
+}
+
+.review-comment {
+  background-color: var(--color-bg);
+  padding: var(--space-m);
+  display: grid;
+  gap: var(--space-s);
+}
+
+.review-comment-details {
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--color-border) 78%, transparent);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--color-surface-raised) 52%, transparent);
+}
+
+.review-comment-details summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 8px 12px;
+  color: var(--color-text);
+  font-size: 0.88rem;
+  transition: background-color 160ms ease;
+}
+
+.review-comment-details summary:hover {
+  background-color: color-mix(in srgb, var(--color-accent) 7%, transparent);
+}
+
+.review-comment-details summary:focus-visible {
+  outline: 2px solid var(--color-focus-visible-outline);
+  outline-offset: -2px;
+}
+
+.review-comment-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.review-comment-details summary::marker {
+  display: none;
+}
+
+.review-comment-details-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.review-comment-details-label::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background-color: var(--color-accent);
+  box-shadow: 0 0 0 4px var(--color-accent-glow);
+}
+
+.review-comment-details-action {
+  margin-left: auto;
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+}
+
+.review-comment-details-action::after {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin: 0 2px 2px 8px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg);
+}
+
+.review-comment-details-action-close {
+  display: none;
+}
+
+.review-comment-details-action-close::after {
+  margin-bottom: -2px;
+  transform: rotate(225deg);
+}
+
+.review-comment-details[open] .review-comment-details-action-open {
+  display: none;
+}
+
+.review-comment-details[open] .review-comment-details-action-close {
+  display: inline;
+}
+
+.review-comment-spoiler-body {
+  padding: 12px;
+  border-top: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+  background-color: color-mix(in srgb, var(--color-bg) 34%, transparent);
+  animation: review-spoiler-reveal 180ms ease-out;
+}
+
+@keyframes review-spoiler-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.review-comment-header {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-s);
+  align-items: center;
+}
+
+.review-comment-author-block {
+  display: flex;
+  align-items: center;
+  gap: var(--space-s);
+  flex-wrap: nowrap;
+  color: var(--color-text);
+}
+
+.review-comment-author {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.review-comment-date {
+  font-size: 0.9rem;
+  color: var(--color-text-muted, #6b7280);
+  white-space: nowrap;
+}
+
+.review-comment-meta {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: var(--space-s);
+  align-items: center;
+}
+
+.review-comment-rating {
+  font-weight: 600;
+  color: var(--color-action);
+}
+
+.review-comment-spoiler {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background-color: color-mix(in srgb, var(--color-border) 20%, var(--color-surface-raised));
+  color: var(--color-text);
+  font-size: 0.9rem;
+}
+
+.review-comment-text {
+  margin: 0;
+  line-height: 1.6;
+  color: var(--color-text);
+}
+
+.review-comments-empty {
+  color: var(--color-text);
+  margin: 0;
+}
+
+.review-action-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  min-height: 36px;
+  margin-top: 2px;
+  white-space: nowrap;
+}
+
+.review-votes {
+  display: flex;
+  flex: 0 0 auto;
+  width: fit-content;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background-color: var(--color-surface-raised);
+}
+
+.review-vote-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 48px;
+  height: 36px;
+  padding: 0 12px;
+  border: 0;
+  background-color: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
+}
+
+.review-vote-button + .review-vote-button {
+  border-left: 1px solid var(--color-border);
+}
+
+.review-vote-button:hover,
+.review-vote-button.is-selected {
+  background-color: var(--color-accent-glow);
+  color: var(--color-text);
+}
+
+.review-vote-button:disabled {
+  cursor: pointer;
+  opacity: 0.65;
+}
+
+.review-vote-button:focus-visible {
+  outline: 2px solid var(--color-focus-visible-outline);
+  outline-offset: -3px;
+}
+
+.review-vote-icon {
+  display: block;
+  width: 21px;
+  height: 21px;
+  max-width: 21px;
+  flex: 0 0 21px;
+  background-color: transparent;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.review-vote-count {
+  min-width: 1ch;
+  font-size: 0.9rem;
+  font-weight: 650;
+  line-height: 1;
+}
+
+.review-vote-count:empty,
+.review-vote-status:empty {
+  display: none;
+}
+
+.review-vote-status {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--rafs-red-soft);
+  font-size: 0.82rem;
+  text-overflow: ellipsis;
+}
+
+.review-vote-button.vote-pop .review-vote-icon {
+  animation: review-vote-pop 260ms ease-out;
+}
+
+.review-action-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background-color: var(--color-surface-raised);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 700;
+  line-height: 1;
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.review-action-button svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.review-action-button:hover,
+.review-action-button.is-active {
+  border-color: color-mix(in srgb, var(--rafs-red) 55%, var(--color-border));
+  background-color: var(--color-accent-glow);
+  color: var(--color-text);
+}
+
+.review-action-button:active {
+  transform: scale(0.97);
+}
+
+.review-action-button:focus-visible,
+.review-reply-textarea:focus-visible,
+.review-reply-submit:focus-visible,
+.review-reply-cancel:focus-visible {
+  outline: 2px solid var(--color-focus-visible-outline);
+  outline-offset: 2px;
+}
+
+.review-delete-form {
+  display: inline-flex;
+  margin: 0;
+}
+
+.review-delete-button:hover {
+  border-color: var(--rafs-red-action);
+  background-color: color-mix(in srgb, var(--rafs-red) 14%, transparent);
+  color: var(--rafs-red-soft);
+}
+
+.review-delete-dialog {
+  width: min(430px, calc(100vw - 28px));
+  max-width: none;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  border-radius: 16px;
+  background-color: transparent;
+  color: var(--color-text);
+}
+
+.review-delete-dialog::backdrop {
+  background-color: rgb(4 5 7 / 74%);
+  backdrop-filter: blur(4px);
+  animation: review-delete-backdrop-in 180ms ease-out;
+}
+
+.review-delete-dialog-card {
+  position: relative;
+  overflow: hidden;
+  padding: 22px;
+  border: 1px solid color-mix(in srgb, var(--rafs-red) 38%, var(--color-border));
+  border-radius: 16px;
+  background: radial-gradient(circle at 8% 0%, rgb(219 57 47 / 16%), transparent 38%), var(--color-surface);
+  box-shadow: 0 28px 80px rgb(0 0 0 / 58%);
+  animation: review-delete-dialog-in 210ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.review-delete-dialog-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--rafs-red-action), var(--rafs-red-soft), transparent 78%);
+}
+
+.review-delete-dialog-heading {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.review-delete-dialog-icon {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+  border: 1px solid rgb(219 57 47 / 34%);
+  border-radius: 12px;
+  background-color: rgb(219 57 47 / 12%);
+  color: var(--rafs-red-soft);
+  place-items: center;
+}
+
+.review-delete-dialog-icon svg {
+  width: 23px;
+  height: 23px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.review-delete-dialog-kicker {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--rafs-red-soft);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.review-delete-dialog h3 {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 1.25rem;
+  font-weight: 850;
+}
+
+.review-delete-dialog p {
+  margin: 17px 0 20px;
+  color: var(--color-text-muted);
+  font-size: 0.91rem;
+  line-height: 1.55;
+}
+
+.review-delete-dialog-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 9px;
+}
+
+.review-delete-dialog-cancel,
+.review-delete-dialog-confirm {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 38px;
+  padding: 8px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 750;
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease,
+    color 150ms ease,
+    transform 150ms ease;
+}
+
+.review-delete-dialog-cancel {
+  background-color: var(--color-surface-raised);
+  color: var(--color-text-muted);
+}
+
+.review-delete-dialog-cancel:hover {
+  border-color: color-mix(in srgb, var(--rafs-red) 45%, var(--color-border));
+  background-color: var(--color-accent-glow);
+  color: var(--color-text);
+}
+
+.review-delete-dialog-confirm {
+  border-color: var(--rafs-red-action);
+  background-color: var(--rafs-red-action);
+  color: var(--color-action-text);
+  box-shadow: 0 8px 22px rgb(199 41 33 / 20%);
+}
+
+.review-delete-dialog-confirm:hover {
+  border-color: var(--rafs-red);
+  background-color: var(--rafs-red);
+}
+
+.review-delete-dialog-confirm:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.review-delete-dialog-confirm svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.review-delete-dialog-cancel:active,
+.review-delete-dialog-confirm:active {
+  transform: scale(0.97);
+}
+
+.review-delete-dialog-cancel:focus-visible,
+.review-delete-dialog-confirm:focus-visible {
+  outline: 2px solid var(--color-focus-visible-outline);
+  outline-offset: 2px;
+}
+
+.review-reply-container {
+  display: none;
+}
+
+.review-reply-container.is-open {
+  display: block;
+  animation: review-reply-open 180ms ease-out;
+}
+
+.review-reply-form {
+  display: grid;
+  gap: 10px;
+  margin-top: 6px;
+  padding: 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: linear-gradient(110deg, rgb(219 57 47 / 8%), transparent 48%), var(--color-surface-raised);
+}
+
+.review-reply-label {
+  color: var(--color-text);
+  font-size: 0.84rem;
+  font-weight: 750;
+}
+
+.review-reply-textarea {
+  width: 100%;
+  min-height: 84px;
+  padding: 10px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font: inherit;
+  line-height: 1.5;
+  resize: vertical;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.review-reply-textarea::placeholder {
+  color: var(--color-text-muted);
+}
+
+.review-reply-textarea:focus {
+  border-color: var(--rafs-red-action);
+  box-shadow: 0 0 0 3px var(--color-accent-glow);
+}
+
+.review-reply-form-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.review-reply-submit,
+.review-reply-cancel {
+  min-height: 34px;
+  padding: 7px 13px;
+  border: 1px solid var(--color-border);
+  border-radius: 7px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 750;
+}
+
+.review-reply-submit {
+  border-color: var(--rafs-red-action);
+  background-color: var(--rafs-red-action);
+  color: var(--color-action-text);
+}
+
+.review-reply-submit:hover {
+  background-color: var(--rafs-red);
+}
+
+.review-reply-cancel {
+  background-color: transparent;
+  color: var(--color-text-muted);
+}
+
+.review-reply-cancel:hover {
+  background-color: var(--color-accent-glow);
+  color: var(--color-text);
+}
+
+@keyframes review-vote-pop {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.28) rotate(-7deg);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes review-reply-open {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes review-delete-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes review-delete-backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 520px) {
+  .review-action-bar {
+    gap: 6px;
+  }
+
+  .review-vote-button {
+    min-width: 42px;
+    padding: 0 8px;
+  }
+
+  .review-action-button {
+    gap: 4px;
+    padding: 0 9px;
+    font-size: 0.8rem;
+  }
+
+  .review-action-button svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .review-delete-dialog-card {
+    padding: 18px;
+  }
+
+  .review-delete-dialog-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .review-vote-button,
+  .review-action-button,
+  .review-vote-button.vote-pop .review-vote-icon,
+  .review-reply-container.is-open,
+  .review-delete-dialog::backdrop,
+  .review-delete-dialog-card {
+    animation: none;
+    transition: none;
+  }
+}
+
