@@ -70,7 +70,7 @@ body {
 }
 
 hr {
-  border: 0;
+  border: none;
   border-top: 1px solid var(--color-border);
   margin: var(--space-l) 0;
   opacity: 0.9;
@@ -83,6 +83,77 @@ hr {
   align-items: center;
   gap: 14px;
   color: var(--color-text);
+}
+
+.main-footer {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  padding: 20px;
+  font-size: 14px;
+}
+
+.main-left-info {
+  display: flex;
+  flex-direction: row;
+}
+
+.top-info {
+  display: flex;
+  align-items: stretch;
+}
+
+.child-right-info {
+  padding: 0;
+}
+
+.feedback-info {
+  color: var(--rafs-red-action);
+}
+
+.red-hr {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+
+  margin-left: -50vw;
+  margin-right: -50vw;
+  margin-top: -20px;
+  margin-bottom: var(--space-l);
+
+  border: none;
+  border-top: 3px solid var(--rafs-red-deep);
+}
+
+.navigation-label {
+  font-weight: 700;
+}
+
+.vertical-hr {
+  width: 1px;
+  min-height: 150px;
+  border: none;
+  margin: 0 20px;
+  border-left: 1px solid var(--color-border);
+  align-self: stretch;
+  height: auto;
+}
+
+.bottom-footer-info {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+}
+
+.added-option {
+  padding: 0px 0px 0px 20px;
+  color: var(--color-text-muted);
+}
+
+.glitched-logo {
+  min-width: 200px;
+  object-fit: cover;
+  width: 100%;
 }
 
 .catalog-container,
@@ -165,6 +236,17 @@ hr {
   text-decoration: none;
   text-align: center;
   transition: color 0.3s ease;
+}
+
+.catalog-category-footer {
+  color: inherit;
+  text-decoration: none;
+  text-align: center;
+  transition: color 0.3s ease;
+}
+
+.catalog-category-footer:hover {
+  color: var(--color-action-text);
 }
 
 .activated-category {

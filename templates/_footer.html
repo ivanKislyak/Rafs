@@ -1,0 +1,40 @@
+{% load static %}
+{% load humanize %}
+<footer class="main-footer">
+    <hr class="red-hr">
+    <div class="top-info">
+        <div class="main-left-info">
+            <div class="child-left-info">
+                <a class="logo" href="{% url 'core:home' %}">
+                    <img class="glitched-logo"
+                         src="{% static 'images/glitched_rafs_logo.png' %}"
+                         alt=""
+                         aria-hidden="true" />
+                </a>
+                <p class="added-option">Подбери то, что тебе по вкусу!</p>
+            </div>
+            <div class="child-right-info">
+                <p class="navigation-label">Навигация</p>
+                <a class="catalog-category-footer" href="{% url 'movies:catalog' %}">Каталог</a>
+                <p>О сайте</p>
+                <p>Правила сообщества</p>
+                <p class="feedback-info">Обратная связь</p>
+            </div>
+            
+        </div>
+        
+        <hr class="vertical-hr">
+        <div class="main-right-info">
+
+        </div>
+    </div>
+    <hr>
+    <div class="bottom-footer-info">
+        <div class="left-bottom-info">
+            <p>&copy; 2026 RAFS · Некоммерческий проект</p>
+        </div>
+        <div class="right-bottom-info">
+            <p>Данные: Wikidata · Изображения: TMDB</p>
+        </div>
+    </div>
+</footer>
