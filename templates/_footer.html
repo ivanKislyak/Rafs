@@ -16,17 +16,13 @@
             <div class="child-right-info">
                 <p class="navigation-label">Навигация</p>
                 <a class="catalog-category-footer" href="{% url 'movies:catalog' %}">Каталог</a>
-                <p>О сайте</p>
+                <a class="about-site-footer" href="{% url 'core:about' %}">О сайте</a>
                 <p>Правила сообщества</p>
                 <p class="feedback-info">Обратная связь</p>
             </div>
-            
         </div>
-        
         <hr class="vertical-hr">
-        <div class="main-right-info">
-
-        </div>
+        <div class="main-right-info"></div>
     </div>
     <hr>
     <div class="bottom-footer-info">
@@ -34,7 +30,13 @@
             <p>&copy; 2026 RAFS · Некоммерческий проект</p>
         </div>
         <div class="right-bottom-info">
-            <p>Данные: Wikidata · Изображения: TMDB</p>
+            <p>Данные: <a class="bottom-related-info"
+    href="https://www.wikidata.org/wiki/Wikidata:Main_Page"
+    target="_blank"
+    rel="noopener noreferrer">Wikidata</a> · Изображения: <a class="bottom-related-info"
+    href="https://www.themoviedb.org/"
+    target="_blank"
+    rel="noopener noreferrer">TMDB</a></p>
         </div>
     </div>
 </footer>

@@ -25,74 +25,75 @@
                 <hr class="active-tab-indicator">
             </div>
         </div>
-        <nav class="header-account" aria-label="Аккаунт">
-            {% if user.is_authenticated %}
-                <details class="header-profile">
-                    <summary class="header-profile-trigger header-tooltip"
-                             data-profile-reward-target
-                             data-tooltip="Открыть меню профиля">
-                        <span class="header-user">
-                            <span class="header-username">{{ user.username }}</span>
-                            {% if user.avatar_image %}
-                                <img class="header-user-avatar"
-                                     src="{{ user.avatar_image.url }}"
-                                     alt="Аватар пользователя {{ user.username }}">
-                            {% else %}
-                                <img class="header-user-avatar"
-                                     src="{% static 'images/default_profile_img.png' %}"
-                                     alt="Аватар пользователя {{ user.username }}">
-                            {% endif %}
-                        </span>
-                        <span class="header-profile-chevron" aria-hidden="true"></span>
-                    </summary>
-                    <div class="header-profile-menu">
-                        <span class="header-profile-label">Профиль</span>
-                        <span class="header-profile-name">{{ user.username }}</span>
-                        <div class="header-profile-stats">
-                            <div class="header-profile-stat header-tooltip"
-                                 data-tooltip="Ваш текущий уровень">
-                                <span class="header-profile-stat-name">Уровень</span>
-                                <strong class="header-profile-stat-value">{{ user.user_lvl }}</strong>
-                            </div>
-                            <div class="header-profile-stat header-tooltip"
-                                 data-frames-balance
-                                 data-tooltip="Кадры — ваши очки опыта">
-                                <span class="header-profile-stat-name">Кадры</span>
-                                <strong class="header-profile-stat-value">{{ user.user_frames|intcomma }}</strong>
-                            </div>
+    </nav>
+    <nav class="header-account" aria-label="Аккаунт">
+        {% if user.is_authenticated %}
+            <details class="header-profile">
+                <summary class="header-profile-trigger header-tooltip"
+                         data-profile-reward-target
+                         data-tooltip="Открыть меню профиля">
+                    <span class="header-user">
+                        <span class="header-username">{{ user.username }}</span>
+                        {% if user.avatar_image %}
+                            <img class="header-user-avatar"
+                                 src="{{ user.avatar_image.url }}"
+                                 alt="Аватар пользователя {{ user.username }}">
+                        {% else %}
+                            <img class="header-user-avatar"
+                                 src="{% static 'images/default_profile_img.png' %}"
+                                 alt="Аватар пользователя {{ user.username }}">
+                        {% endif %}
+                    </span>
+                    <span class="header-profile-chevron" aria-hidden="true"></span>
+                </summary>
+                <div class="header-profile-menu">
+                    <span class="header-profile-label">Профиль</span>
+                    <span class="header-profile-name">{{ user.username }}</span>
+                    <div class="header-profile-stats">
+                        <div class="header-profile-stat header-tooltip"
+                             data-tooltip="Ваш текущий уровень">
+                            <span class="header-profile-stat-name">Уровень</span>
+                            <strong class="header-profile-stat-value">{{ user.user_lvl }}</strong>
                         </div>
-                        <div class="header-profile-actions">
-                            <a class="header-open-profile-page" href="/accounts/profile/">
+                        <div class="header-profile-stat header-tooltip"
+                             data-frames-balance
+                             data-tooltip="Кадры — ваши очки опыта">
+                            <span class="header-profile-stat-name">Кадры</span>
+                            <strong class="header-profile-stat-value">{{ user.user_frames|intcomma }}</strong>
+                        </div>
+                    </div>
+                    <div class="header-profile-actions">
+                        <a class="header-open-profile-page" href="/accounts/profile/">
+                            <svg class="header-profile-action-icon"
+                                 viewBox="0 0 24 24"
+                                 aria-hidden="true">
+                                <circle cx="12" cy="8" r="4"></circle>
+                                <path d="M5 20c.8-4 3.2-6 7-6s6.2 2 7 6"></path>
+                            </svg>
+                            <span>Открыть профиль</span>
+                        </a>
+                        <hr class="short-hr">
+                        <a class="about-site-button" href="{% url 'core:about' %}">О сайте</a>
+                        <form class="header-logout-form" action="{% url 'logout' %}" method="post">
+                            {% csrf_token %}
+                            <button class="header-logout-button" type="submit">
                                 <svg class="header-profile-action-icon"
                                      viewBox="0 0 24 24"
                                      aria-hidden="true">
-                                    <circle cx="12" cy="8" r="4"></circle>
-                                    <path d="M5 20c.8-4 3.2-6 7-6s6.2 2 7 6"></path>
+                                    <path d="M10 5H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4"></path>
+                                    <path d="m15 8 4 4-4 4"></path>
+                                    <path d="M9 12h10"></path>
                                 </svg>
-                                <span>Открыть профиль</span>
-                            </a>
-                            <hr class="short-hr">
-                            <a class="about-site-button" href="{% url 'core:about' %}">О сайте</a>
-                            <form class="header-logout-form" action="{% url 'logout' %}" method="post">
-                                {% csrf_token %}
-                                <button class="header-logout-button" type="submit">
-                                    <svg class="header-profile-action-icon"
-                                         viewBox="0 0 24 24"
-                                         aria-hidden="true">
-                                        <path d="M10 5H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4"></path>
-                                        <path d="m15 8 4 4-4 4"></path>
-                                        <path d="M9 12h10"></path>
-                                    </svg>
-                                    <span>Выйти</span>
-                                </button>
-                            </form>
-                        </div>
+                                <span>Выйти</span>
+                            </button>
+                        </form>
                     </div>
-                </details>
-            {% else %}
-                <a class="header-auth-link header-login-link" href="{% url 'login' %}">Войти</a>
-                <a class="header-auth-link header-register-link"
-                   href="{% url 'accounts:register' %}">Регистрация</a>
-            {% endif %}
-        </nav>
-    </header>
+                </div>
+            </details>
+        {% else %}
+            <a class="header-auth-link header-login-link" href="{% url 'login' %}">Войти</a>
+            <a class="header-auth-link header-register-link"
+               href="{% url 'accounts:register' %}">Регистрация</a>
+        {% endif %}
+    </nav>
+</header>

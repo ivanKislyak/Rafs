@@ -19,6 +19,13 @@
 
 .child-right-info {
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.child-right-info > * {
+  margin: 0;
 }
 
 .feedback-info {
@@ -71,3 +78,16 @@
   width: 100%;
 }
 
+.catalog-category-footer,
+.about-site-footer,
+.bottom-related-info {
+  color: var(--color-text);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.catalog-category-footer:hover,
+.about-site-footer:hover,
+.bottom-related-info:hover {
+  color: var(--rafs-red-action);
+}
