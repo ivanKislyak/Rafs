@@ -6,3 +6,4 @@ django-taggit
 psycopg[binary]
 djangorestframework
 requests
+django-parler
