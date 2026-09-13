@@ -11,14 +11,14 @@
         {% block social_meta %}
             <title>{% block title %}RAFS{% endblock %}</title>
             <meta name="description"
-                  content="{% block meta_description %}RAFS – сервис для оценки фильмов по нескольким критериям. Смотрите рейтинги зрителей, пишите рецензии и находите кино по своему вкусу.{% endblock %}">
+                  content="{% block meta_description %}{% translate "RAFS is a service for rating movies based on several criteria. Check out viewer ratings, write reviews, and find movies that suit your taste" %}{% endblock %}">
             <link rel="canonical" href="https://rafs.app{{ request.path }}">
             <meta property="og:site_name" content="RAFS">
             <meta property="og:type" content="{% block og_type %}website{% endblock %}">
             <meta property="og:title"
-                  content="{% block og_title %}RAFS – оценки и рецензии на фильмы{% endblock %}">
+                  content="{% block og_title %}{% translate "RAFS – Movie Ratings and Reviews" %}{% endblock %}">
             <meta property="og:description"
-                  content="{% block og_description %}Оценивайте фильмы, публикуйте рецензии и находите кино по своему вкусу.{% endblock %}">
+                  content="{% block og_description %}{% translate "Rate movies, post reviews, and find movies that suit your taste" %}{% endblock %}">
             <meta property="og:url" content="https://rafs.app{{ request.path }}">
             <meta property="og:image"
                   content="{% block og_image %}https://rafs.app{% static 'images/rafs-preview-v3.png' %}{% endblock %}">
@@ -64,9 +64,9 @@
                                 <span></span>
                             </div>
                             <div class="site-toast-copy">
-                                <span class="site-toast-kicker">Начислено</span>
+                                <span class="site-toast-kicker">{% translate "Awarded" %}</span>
                                 <strong class="site-toast-title">{{ message }}</strong>
-                                <span class="site-toast-caption">За новую рецензию</span>
+                                <span class="site-toast-caption">{% translate "For a New Review" %}</span>
                             </div>
                         {% else %}
                             <div class="site-toast-copy">
@@ -76,7 +76,7 @@
                         <button class="site-toast-close"
                                 type="button"
                                 data-toast-close
-                                aria-label="Закрыть уведомление">×</button>
+                                aria-label="{% translate 'Close notification' %}">×</button>
                         <span class="site-toast-timer" aria-hidden="true"></span>
                     </aside>
                 {% endfor %}

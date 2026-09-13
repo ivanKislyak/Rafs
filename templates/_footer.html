@@ -1,5 +1,6 @@
 {% load static %}
 {% load humanize %}
+{% load i18n %}
 <footer class="main-footer">
     <hr class="red-hr">
     <div class="top-info">
@@ -11,14 +12,14 @@
                          alt=""
                          aria-hidden="true" />
                 </a>
-                <p class="added-option">Подбери то, что тебе по вкусу!</p>
+                <p class="added-option">{% translate "Find something that suits your taste!" %}</p>
             </div>
             <div class="child-right-info">
-                <p class="navigation-label">Навигация</p>
-                <a class="catalog-category-footer" href="{% url 'movies:catalog' %}">Каталог</a>
-                <a class="about-site-footer" href="{% url 'core:about' %}">О сайте</a>
-                <p>Правила сообщества</p>
-                <p class="feedback-info">Обратная связь</p>
+                <p class="navigation-label">{% translate "Navigation" %}</p>
+                <a class="catalog-category-footer" href="{% url 'movies:catalog' %}">{% translate "Catalog" %}</a>
+                <a class="about-site-footer" href="{% url 'core:about' %}">{% translate "About" %}</a>
+                <p>{% translate "Community guidelines" %}</p>
+                <p class="feedback-info">{% translate "Feedback" %}</p>
             </div>
         </div>
         <hr class="vertical-hr">
@@ -27,19 +28,17 @@
     <hr>
     <div class="bottom-footer-info">
         <div class="left-bottom-info">
-            <p>&copy; <span id="footer-year"></span> RAFS · Некоммерческий проект</p>
+            <p>&copy; <span id="footer-year"></span> RAFS · {% translate "Non-commercial project" %}</p>
         </div>
         <div class="right-bottom-info">
-            <p>Данные: <a class="bottom-related-info"
+            <p>{% translate "Data:" %} <a class="bottom-related-info"
     href="https://www.wikidata.org/wiki/Wikidata:Main_Page"
     target="_blank"
-    rel="noopener noreferrer">Wikidata</a> · Изображения: <a class="bottom-related-info"
+    rel="noopener noreferrer">Wikidata</a> · {% translate "Images:" %} <a class="bottom-related-info"
     href="https://www.themoviedb.org/"
     target="_blank"
     rel="noopener noreferrer">TMDB</a></p>
         </div>
     </div>
 </footer>
-<script>
-  document.getElementById("footer-year").textContent = new Date().getFullYear();
-</script>
+<script>document.getElementById("footer-year").textContent = new Date().getFullYear();</script>

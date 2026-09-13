@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Рецензии{% endblock %}
+{% load i18n %}
+{% block title %}
+    {% translate "Reviews" %}
+{% endblock %}
 {% block content %}
     <script src="{% static 'movies/js/reviews.js' %}" defer></script>
 {% endblock %}

@@ -1,24 +1,27 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}RAFS – оценки и рецензии на фильмы{% endblock %}
+{% load i18n %}
+{% block title %}
+    {% translate "RAFS – Movie ratings and reviews" %}
+{% endblock %}
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'core/css/home.css' %}">
     <link rel="stylesheet"
           href="{% static 'movies/css/components/movie-card.css' %}">
 {% endblock %}
 {% block meta_description %}
-    RAFS – сервис для оценки фильмов по нескольким критериям. Смотрите рейтинги зрителей, пишите рецензии и находите кино по своему вкусу.
+    {% translate "RAFS is a service for rating movies based on several criteria. View audience ratings, write reviews, and find movies that suit your taste." %}
 {% endblock %}
 {% block content %}
     <nav class="movie-info">
-        <h1 class="the-best-movies-label">Лучшие фильмы</h1>
+        <h1 class="the-best-movies-label">{% translate "Top movies" %}</h1>
     </nav>
     <hr />
     {% for movie in top_movies %}
         {% include 'movies/_movie_card.html' with movie=movie %}
     {% empty %}
         <div class="empty-msg">
-            <p>Фильмов нет. Возможно, стоит обновить каталог позже</p>
+            <p>{% translate "There are no movies. You might want to refresh the catalog later." %}</p>
         </div>
     {% endfor %}
 {% endblock %}

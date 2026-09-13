@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Вход в RAFS{% endblock %}
+{% load i18n %}
+{% block title %}
+    {% translate "Log in to RAFS" %}
+{% endblock %}
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'accounts/css/auth.css' %}">
 {% endblock %}
@@ -9,35 +12,35 @@
         <form class="register-form login-form" method="post" novalidate>
             {% csrf_token %}
             <div class="register-form-header">
-                <h1>Вход в аккаунт</h1>
-                <p>Продолжайте оценивать фильмы и делиться своими впечатлениями.</p>
+                <h1>{% translate "Log in to your account" %}</h1>
+                <p>{% translate "Continue rating movies and sharing your impressions." %}</p>
             </div>
             {% if form.non_field_errors %}
-                <div class="register-form-errors">Не удалось войти. Проверьте имя пользователя и пароль.</div>
+                <div class="register-form-errors">{% translate "Unable to log in. Check your username and password." %}</div>
             {% endif %}
             {% for field in form %}
                 <div class="register-form-field">
                     <label class="register-form-label" for="{{ field.id_for_label }}">
                         {% if field.name == "username" %}
-                            Имя пользователя
+                            {% translate "Username" %}
                         {% elif field.name == "password" %}
-                            Пароль
+                            {% translate "Password" %}
                         {% else %}
                             {{ field.label }}
                         {% endif %}
                     </label>
                     {{ field }}
                     {% if field.errors %}
-                        <div class="register-form-errors">Заполните это поле.</div>
+                        <div class="register-form-errors">{% translate "Fill in this field." %}</div>
                     {% endif %}
                 </div>
             {% endfor %}
             {% if next %}
                 <input type="hidden" name="next" value="{{ next }}">
             {% endif %}
-            <button class="register-form-submit" type="submit">Войти</button>
+            <button class="register-form-submit" type="submit">{% translate "Log in" %}</button>
             <p class="register-form-login">
-                Ещё нет аккаунта? <a href="{% url 'accounts:register' %}">Зарегистрироваться</a>
+                {% translate "Don't have an account yet?" %} <a href="{% url 'accounts:register' %}">{% translate "Sign up" %}</a>
             </p>
         </form>
     </section>

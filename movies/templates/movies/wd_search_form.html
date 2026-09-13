@@ -1,15 +1,18 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Поиск в Wikidata — RAFS{% endblock %}
+{% load i18n %}
+{% block title %}
+    {% translate "Search Wikidata — RAFS" %}
+{% endblock %}
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'movies/css/wikidata-search.css' %}">
 {% endblock %}
 {% block content %}
     <main class="wd-search-page">
         <header class="wd-search-heading">
-            <span class="wd-search-kicker">Инструменты редактора</span>
-            <h1>Поиск фильмов в Wikidata</h1>
-            <p>Найдите нужный фильм или сериал и скопируйте его QID для дальнейшей работы.</p>
+            <span class="wd-search-kicker">{% translate "Editor tools" %}</span>
+            <h1>{% translate "Search for movies on Wikidata" %}</h1>
+            <p>{% translate "Find a movie or series and copy its QID for further use." %}</p>
         </header>
         <form class="wd-search-form"
               method="get"
@@ -19,7 +22,7 @@
                 <div class="wd-search-form-error" role="alert">{{ wd_search_form.non_field_errors }}</div>
             {% endif %}
             <div class="wd-search-field wd-search-query-field{% if wd_search_form.query.errors %} has-error{% endif %}">
-                <label for="{{ wd_search_form.query.id_for_label }}">Название</label>
+                <label for="{{ wd_search_form.query.id_for_label }}">{% translate "Title" %}</label>
                 <div class="wd-search-input-wrap">
                     <svg class="wd-search-input-icon" viewBox="0 0 24 24" aria-hidden="true">
                         <circle cx="11" cy="11" r="6.5"></circle>
@@ -29,26 +32,26 @@
                     <button class="wd-search-clear"
                             type="button"
                             data-wd-search-clear
-                            aria-label="Очистить название"
+                            aria-label="{% translate 'Clear title' %}"
                             hidden>×</button>
                 </div>
                 {% if wd_search_form.query.errors %}
                     <div class="wd-search-field-errors" role="alert">{{ wd_search_form.query.errors }}</div>
                 {% else %}
-                    <span class="wd-search-field-hint">Минимум два символа</span>
+                    <span class="wd-search-field-hint">{% translate "At least two characters" %}</span>
                 {% endif %}
             </div>
             <div class="wd-search-field{% if wd_search_form.lang.errors %} has-error{% endif %}">
-                <label for="{{ wd_search_form.lang.id_for_label }}">Язык результатов</label>
+                <label for="{{ wd_search_form.lang.id_for_label }}">{% translate "Result language" %}</label>
                 {{ wd_search_form.lang }}
                 {% if wd_search_form.lang.errors %}
                     <div class="wd-search-field-errors" role="alert">{{ wd_search_form.lang.errors }}</div>
                 {% else %}
-                    <span class="wd-search-field-hint">Название и описание</span>
+                    <span class="wd-search-field-hint">{% translate "Title and description" %}</span>
                 {% endif %}
             </div>
             <button class="wd-search-submit" type="submit" data-wd-search-submit>
-                <span class="wd-search-submit-label">Найти</span>
+                <span class="wd-search-submit-label">{% translate "Search" %}</span>
                 <span class="wd-search-submit-spinner" aria-hidden="true"></span>
             </button>
         </form>
@@ -58,25 +61,25 @@
                     <div class="wd-search-state wd-search-state-error">
                         <span class="wd-search-state-mark" aria-hidden="true">!</span>
                         <div>
-                            <h2>Проверьте запрос</h2>
-                            <p>Исправьте отмеченные поля и попробуйте ещё раз.</p>
+                            <h2>{% translate "Check your search" %}</h2>
+                            <p>{% translate "Correct the highlighted fields and try again." %}</p>
                         </div>
                     </div>
                 {% elif search_error %}
                     <div class="wd-search-state wd-search-state-error">
                         <span class="wd-search-state-mark" aria-hidden="true">!</span>
                         <div>
-                            <h2>Wikidata временно не отвечает</h2>
-                            <p>Подождите немного и повторите поиск — введённый запрос сохранён.</p>
+                            <h2>{% translate "Wikidata is temporarily unavailable" %}</h2>
+                            <p>{% translate "Wait a moment and try again — your search has been preserved." %}</p>
                         </div>
                     </div>
                 {% elif search_result %}
                     <div class="wd-search-results-heading">
                         <div>
-                            <span class="wd-search-results-label">Результаты</span>
-                            <h2>Подходящие произведения</h2>
+                            <span class="wd-search-results-label">{% translate "Results" %}</span>
+                            <h2>{% translate "Matching titles" %}</h2>
                         </div>
-                        <span class="wd-search-results-count">Найдено: {{ search_result|length }}</span>
+                        <span class="wd-search-results-count">{% translate "Found:" %} {{ search_result|length }}</span>
                     </div>
                     <ol class="wd-search-result-list">
                         {% for result in search_result %}
@@ -87,7 +90,13 @@
                                         <h3>{{ result.title|default:result.id }}</h3>
                                         <code>{{ result.id }}</code>
                                     </div>
-                                    <p>{{ result.description|default:"У этого произведения пока нет описания на выбранном языке." }}</p>
+                                    <p>
+                                        {% if result.description %}
+                                            {{ result.description }}
+                                        {% else %}
+                                            {% translate "This title does not have a description in the selected language yet." %}
+                                        {% endif %}
+                                    </p>
                                     <div class="wd-search-result-actions">
                                         <button class="wd-search-copy-button"
                                                 type="button"
@@ -96,13 +105,13 @@
                                                 <rect x="8" y="8" width="11" height="11" rx="2"></rect>
                                                 <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path>
                                             </svg>
-                                            <span data-wd-copy-label>Скопировать QID</span>
+                                            <span data-wd-copy-label>{% translate "Copy QID" %}</span>
                                         </button>
                                         <a class="wd-search-external-link"
                                            href="https://www.wikidata.org/wiki/{{ result.id }}"
                                            target="_blank"
                                            rel="noopener noreferrer">
-                                            Открыть в Wikidata
+                                            {% translate "Open in Wikidata" %}
                                             <svg viewBox="0 0 24 24" aria-hidden="true">
                                                 <path d="M14 5h5v5"></path>
                                                 <path d="m19 5-8 8"></path>
@@ -112,7 +121,7 @@
                                         <a class="wd-add-button"
                                            href="{% url 'movies:wikidata_save_item' result.id %}"
                                            target="_blank"
-                                           rel="noopener noreferrer">Добавить</a>
+                                           rel="noopener noreferrer">{% translate "Add" %}</a>
                                     </div>
                                 </div>
                             </li>
@@ -122,8 +131,8 @@
                     <div class="wd-search-state">
                         <span class="wd-search-state-mark" aria-hidden="true">0</span>
                         <div>
-                            <h2>Ничего не найдено</h2>
-                            <p>Попробуйте оригинальное название или выберите другой язык.</p>
+                            <h2>{% translate "Nothing found" %}</h2>
+                            <p>{% translate "Try the original title or select another language." %}</p>
                         </div>
                     </div>
                 {% endif %}
@@ -134,8 +143,8 @@
                         <path d="m16 16 4 4"></path>
                     </svg>
                     <div>
-                        <h2>Начните с названия</h2>
-                        <p>Например: «Бойцовский клуб», «Дюна» или «The Matrix».</p>
+                        <h2>{% translate "Start with a title" %}</h2>
+                        <p>{% translate "For example: Fight Club, Dune, or The Matrix." %}</p>
                     </div>
                 </div>
             {% endif %}

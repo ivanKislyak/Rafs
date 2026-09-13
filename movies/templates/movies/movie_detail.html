@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% load humanize %}
+{% load i18n %}
 {% block extra_css %}
     <link rel="stylesheet"
           href="{% static 'movies/css/components/movie-page-text.css' %}">
@@ -31,7 +32,7 @@
     {% endif %}
 {% endblock %}
 {% block content %}
-    <a class="btn" href="{% url 'movies:catalog' %}">← Вернуться в каталог</a>
+    <a class="btn" href="{% url 'movies:catalog' %}">← {% translate "Back to catalog" %}</a>
     <hr />
     <article class="movie-detail-main-container">
         {% if movie.cover and movie.image_exists %}
@@ -55,21 +56,21 @@
             <div class="movie-name">
                 <h1>{{ movie.name }}</h1>
                 {% if user_already_rated_this %}
-                    <p>Ваша оценка:</p>
+                    <p>{% translate "Your rating:" %}</p>
                     <p class="review-live-score-value">{{ user_already_rated_this.avg_rating }}</p>
-                    <a class="btn" href="{% url 'movies:review_form' movie.id %}">Изменить</a>
+                    <a class="btn" href="{% url 'movies:review_form' movie.id %}">{% translate "Edit" %}</a>
                 {% else %}
-                    <a class="btn" href="{% url 'movies:review_form' movie.id %}">Оценить</a>
+                    <a class="btn" href="{% url 'movies:review_form' movie.id %}">{% translate "Rate" %}</a>
                 {% endif %}
             </div>
-            <p>Year: {{ movie.year }}</p>
+            <p>{% translate "Year:" %} {{ movie.year }}</p>
             {% if movie.rate %}
-                <p>Rate: {{ movie.rate }}</p>
+                <p>{% translate "Rating:" %} {{ movie.rate }}</p>
                 {% if movie.rate >= 8 %}
-                    <p>РЕКОМЕНДУЕМ!</p>
+                    <p>{% translate "RECOMMENDED!" %}</p>
                 {% endif %}
             {% else %}
-                <p>Еще не оценен</p>
+                <p>{% translate "Not rated yet" %}</p>
             {% endif %}
         </div>
     </article>
@@ -86,7 +87,7 @@
     </div>
     <hr />
     <section class="review-comments">
-        <h2 class="review-comments-title">Отзывы</h2>
+        <h2 class="review-comments-title">{% translate "Reviews" %}</h2>
         <form id="review-vote-csrf" hidden>
             {% csrf_token %}
         </form>
@@ -108,7 +109,7 @@
                             <div class="review-comment-meta">
                                 <span class="review-comment-rating">{{ review.avg_rating }}</span>
                                 {% if review.contains_spoiler %}
-                                    <span class="review-comment-spoiler">Содержит спойлер</span>
+                                    <span class="review-comment-spoiler">{% translate "Contains spoilers" %}</span>
                                 {% endif %}
                             </div>
                         </div>
@@ -117,10 +118,10 @@
                     {% if review.contains_spoiler %}
                         <details class="review-comment-details">
                             <summary>
-                                <span class="review-comment-details-label review-comment-details-action-open">Спойлер скрыт</span>
-                                <span class="review-comment-details-label review-comment-details-action-close">Рецензия</span>
-                                <span class="review-comment-details-action review-comment-details-action-open">Показать</span>
-                                <span class="review-comment-details-action review-comment-details-action-close">Скрыть</span>
+                                <span class="review-comment-details-label review-comment-details-action-open">{% translate "Spoiler hidden" %}</span>
+                                <span class="review-comment-details-label review-comment-details-action-close">{% translate "Review" %}</span>
+                                <span class="review-comment-details-action review-comment-details-action-open">{% translate "Show" %}</span>
+                                <span class="review-comment-details-action review-comment-details-action-close">{% translate "Hide" %}</span>
                             </summary>
                             <div class="review-comment-spoiler-body">
                                 <p class="review-comment-text">{{ review.text }}</p>
@@ -136,7 +137,7 @@
                                     data-vote-value="1"
                                     data-disabled-src="{% static 'images/like_disabled.png' %}"
                                     data-enabled-src="{% static 'images/like_enabled.png' %}"
-                                    aria-label="Поставить лайк отзыву"
+                                    aria-label="{% translate 'Like this review' %}"
                                     aria-pressed="{% if review.user_vote == 1 %}true{% else %}false{% endif %}">
                                 <img class="review-vote-icon"
                                      src="{% if review.user_vote == 1 %}{% static 'images/like_enabled.png' %}{% else %}{% static 'images/like_disabled.png' %}{% endif %}"
@@ -150,7 +151,7 @@
                                     data-vote-value="-1"
                                     data-disabled-src="{% static 'images/dislike_disabled.png' %}"
                                     data-enabled-src="{% static 'images/dislike_enabled.png' %}"
-                                    aria-label="Поставить дизлайк отзыву"
+                                    aria-label="{% translate 'Dislike this review' %}"
                                     aria-pressed="{% if review.user_vote == -1 %}true{% else %}false{% endif %}">
                                 <img class="review-vote-icon"
                                      src="{% if review.user_vote == -1 %}{% static 'images/dislike_enabled.png' %}{% else %}{% static 'images/dislike_disabled.png' %}{% endif %}"
@@ -172,7 +173,7 @@
                                     <path d="M9 8 4 12l5 4"></path>
                                     <path d="M5 12h8a6 6 0 0 1 6 6"></path>
                                 </svg>
-                                <span>Ответить</span>
+                                <span>{% translate "Reply" %}</span>
                             </button>
                         {% endif %}
                         {% if review.user == request.user %}
@@ -190,7 +191,7 @@
                                         <path d="m7 7 1 13h8l1-13"></path>
                                         <path d="M10 11v5M14 11v5"></path>
                                     </svg>
-                                    <span>Удалить</span>
+                                    <span>{% translate "Delete" %}</span>
                                 </button>
                             </form>
                         {% endif %}
@@ -202,7 +203,7 @@
                 </article>
             {% endfor %}
         {% else %}
-            <p class="review-comments-empty">Пока нет отзывов. Станьте первым, кто оставит комментарий!</p>
+            <p class="review-comments-empty">{% translate "There are no reviews yet. Be the first to leave one!" %}</p>
         {% endif %}
     </section>
     <dialog class="review-delete-dialog"
@@ -220,17 +221,17 @@
                     </svg>
                 </span>
                 <div>
-                    <span class="review-delete-dialog-kicker">Удаление рецензии</span>
-                    <h3 id="review-delete-dialog-title">Точно удалить?</h3>
+                    <span class="review-delete-dialog-kicker">{% translate "Delete review" %}</span>
+                    <h3 id="review-delete-dialog-title">{% translate "Are you sure you want to delete it?" %}</h3>
                 </div>
             </div>
             <p id="review-delete-dialog-description">
-                Рецензия исчезнет с сайта. Отменить это действие после подтверждения не получится.
+                {% translate "The review will be removed from the site. This action cannot be undone after confirmation." %}
             </p>
             <div class="review-delete-dialog-actions">
                 <button class="review-delete-dialog-cancel"
                         type="button"
-                        data-delete-review-cancel>Отмена</button>
+                        data-delete-review-cancel>{% translate "Cancel" %}</button>
                 <button class="review-delete-dialog-confirm"
                         type="button"
                         data-delete-review-confirm>
@@ -239,7 +240,7 @@
                         <path d="m9 7 1-2h4l1 2"></path>
                         <path d="m7 7 1 13h8l1-13"></path>
                     </svg>
-                    <span>Удалить</span>
+                    <span>{% translate "Delete" %}</span>
                 </button>
             </div>
         </div>
@@ -299,7 +300,7 @@
                         const data = await response.json().catch(() => ({}));
 
                         if (!response.ok) {
-                            throw new Error(data.error || "Не удалось сохранить реакцию");
+                            throw new Error(data.error || "{% translate 'Unable to save your reaction' %}");
                         }
 
                         showCount(buttons[0], data.likes);
@@ -344,11 +345,11 @@
             container.innerHTML = `
                 <form class="review-reply-form" action="${trigger.dataset.replyUrl}" method="POST">
                     <input type="hidden" name="csrfmiddlewaretoken" value="${reviewVoteCsrf}">
-                    <label class="review-reply-label" for="review-reply-text-${reviewId}">Ваш ответ</label>
-                    <textarea class="review-reply-textarea" id="review-reply-text-${reviewId}" name="text" rows="3" placeholder="Напишите ответ на рецензию..." required></textarea>
+                    <label class="review-reply-label" for="review-reply-text-${reviewId}">{% translate "Your reply" %}</label>
+                    <textarea class="review-reply-textarea" id="review-reply-text-${reviewId}" name="text" rows="3" placeholder="{% translate 'Write a reply to the review...' %}" required></textarea>
                     <div class="review-reply-form-actions">
-                        <button class="review-reply-submit" type="submit">Отправить</button>
-                        <button class="review-reply-cancel" type="button" onclick="hideReplyForm(${reviewId})">Отмена</button>
+                        <button class="review-reply-submit" type="submit">{% translate "Send" %}</button>
+                        <button class="review-reply-cancel" type="button" onclick="hideReplyForm(${reviewId})">{% translate "Cancel" %}</button>
                     </div>
                 </form>
             `;

@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Регистрация{% endblock %}
+{% load i18n %}
+{% block title %}
+    {% translate "Sign up" %}
+{% endblock %}
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'accounts/css/auth.css' %}">
 {% endblock %}
@@ -9,8 +12,8 @@
         <form class="register-form" method="post" novalidate>
             {% csrf_token %}
             <div class="register-form-header">
-                <h1>Создать аккаунт</h1>
-                <p>Оценивайте фильмы, пишите рецензии и собирайте свою историю просмотров.</p>
+                <h1>{% translate "Create an account" %}</h1>
+                <p>{% translate "Rate movies, write reviews, and build your watch history." %}</p>
             </div>
             {% if register_form.non_field_errors %}
                 <div class="register-form-errors">{{ register_form.non_field_errors }}</div>
@@ -19,13 +22,13 @@
                 <div class="register-form-field">
                     <label class="register-form-label" for="{{ field.id_for_label }}">
                         {% if field.name == "username" %}
-                            Имя пользователя
+                            {% translate "Username" %}
                         {% elif field.name == "email" %}
-                            Электронная почта
+                            {% translate "Email" %}
                         {% elif field.name == "password1" %}
-                            Пароль
+                            {% translate "Password" %}
                         {% elif field.name == "password2" %}
-                            Повторите пароль
+                            {% translate "Confirm password" %}
                         {% else %}
                             {{ field.label }}
                         {% endif %}
@@ -33,14 +36,14 @@
                     {{ field }}
                     {% if field.name == "username" %}
                         <div class="register-form-help" id="{{ field.id_for_label }}_helptext">
-                            Можно использовать буквы, цифры и знаки @ . + - _
+                            {% translate "You can use letters, numbers, and the characters @ . + - _" %}
                         </div>
                     {% elif field.name == "password1" %}
                         <div class="register-form-help" id="{{ field.id_for_label }}_helptext">
-                            Не меньше 8 символов. Пароль не должен быть слишком простым или состоять только из цифр.
+                            {% translate "Use at least 8 characters. The password should not be too common or entirely numeric." %}
                         </div>
                     {% elif field.name == "password2" %}
-                        <div class="register-form-help" id="{{ field.id_for_label }}_helptext">Введите тот же пароль ещё раз.</div>
+                        <div class="register-form-help" id="{{ field.id_for_label }}_helptext">{% translate "Enter the same password again." %}</div>
                     {% elif field.help_text %}
                         <div class="register-form-help" id="{{ field.id_for_label }}_helptext">{{ field.help_text }}</div>
                     {% endif %}
@@ -49,9 +52,9 @@
                     {% endif %}
                 </div>
             {% endfor %}
-            <button class="register-form-submit" type="submit">Зарегистрироваться</button>
+            <button class="register-form-submit" type="submit">{% translate "Sign up" %}</button>
             <p class="register-form-login">
-                Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a>
+                {% translate "Already have an account?" %} <a href="{% url 'login' %}">{% translate "Log in" %}</a>
             </p>
         </form>
     </section>

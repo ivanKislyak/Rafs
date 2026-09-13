@@ -1,4 +1,5 @@
 {% load static %}
+{% load i18n %}
 <article class="movie-card">
     <a class="a-block" href="{% url 'movies:detail' movie.pk %}">
         {% if movie.cover and movie.image_exists %}
@@ -22,12 +23,12 @@
             <h2>{{ movie.name }}</h2>
             <p>{{ movie.year }}</p>
             {% if movie.avg_rating %}
-                <p>RAFS Rate: {{ movie.avg_rating }}</p>
+                <p>{% translate "RAFS rating:" %} {{ movie.avg_rating }}</p>
                 {% if movie.avg_rating >= 8 %}
-                    <p>РЕКОМЕНДУЕМ!</p>
+                    <p>{% translate "RECOMMENDED!" %}</p>
                 {% endif %}
             {% else %}
-                <p>Еще не оценен</p>
+                <p>{% translate "Not rated yet" %}</p>
             {% endif %}
             <div class="movie-description">
                 <p>{{ movie.description|truncatewords:15|linebreaksbr }}</p>

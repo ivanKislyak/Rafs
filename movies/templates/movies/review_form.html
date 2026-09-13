@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Отзыв к фильму {{ movie.name }}{% endblock %}
+{% load i18n %}
+{% block title %}{% translate "Review of" %} {{ movie.name }}{% endblock %}
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'movies/css/review-form.css' %}">
     <link rel="stylesheet"
@@ -23,8 +24,9 @@
             </div>
             <div class="movie-cover-info">
                 <h1>{{ movie.name }}</h1>
-                <p class="movie-cover-subtitle">Отзыв на фильм</p>
-                <div class="review-live-score" aria-label="Текущая итоговая оценка">
+                <p class="movie-cover-subtitle">{% translate "Movie review" %}</p>
+                <div class="review-live-score"
+                     aria-label="{% translate 'Current overall rating' %}">
                     <output class="review-live-score-value" data-average-rating>5.0</output>
                     <span class="review-live-score-scale">/ 10</span>
                 </div>
@@ -38,7 +40,7 @@
                 <div class="review-rating-heading">
                     <label class="review-rating-name"
                            for="{{ review_form.rating.id_for_label }}">{{ review_form.rating.label }}</label>
-                    <span class="review-rating-primary-mark">Основная</span>
+                    <span class="review-rating-primary-mark">{% translate "Primary" %}</span>
                 </div>
                 <div class="review-rating-controls">
                     {{ review_form.rating }}
@@ -71,10 +73,11 @@
         {% if review_form.rating.help_text %}
             <p class="review-form-help">{{ review_form.rating.help_text }}</p>
         {% endif %}
-        <section class="review-final-score" aria-label="Итоговая оценка отзыва">
+        <section class="review-final-score"
+                 aria-label="{% translate 'Overall review rating' %}">
             <div>
-                <span class="review-final-score-label">Итоговая оценка</span>
-                <p>Среднее по всем включённым критериям</p>
+                <span class="review-final-score-label">{% translate "Overall rating" %}</span>
+                <p>{% translate "Average across all enabled criteria" %}</p>
             </div>
             <div class="review-final-score-result" aria-live="polite">
                 <output data-average-rating>5.0</output>
@@ -101,7 +104,7 @@
                 <div class="review-form-errors">{{ review_form.contains_spoiler.errors }}</div>
             {% endif %}
         </div>
-        <button class="btn review-form-submit" type="submit">Опубликовать отзыв</button>
+        <button class="btn review-form-submit" type="submit">{% translate "Publish review" %}</button>
     </form>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
@@ -162,7 +165,7 @@
             ratingOutput.value = value;
             ratingOutput.textContent = value;
             rangeInput.style.setProperty("--range-fill", `${fillPercent}%`);
-            rangeInput.setAttribute("aria-valuetext", `${value} из 10`);
+            rangeInput.setAttribute("aria-valuetext", `${value} {% translate "out of 10" %}`);
           };
 
           const setOptionalState = (isEnabled) => {

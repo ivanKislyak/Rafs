@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Каталог{% endblock %}
+{% load i18n %}
+{% block title %}
+    {% translate "Catalog" %}
+{% endblock %}
 {% block extra_css %}
     <link rel="stylesheet"
           href="{% static 'movies/css/components/movie-card.css' %}">
@@ -12,11 +15,11 @@
     <section class="catalog-filter-panel">
         <div class="catalog-filter-header">
             <div>
-                <p class="catalog-filter-kicker">Поиск по каталогу</p>
-                <h1>Найдите фильм</h1>
+                <p class="catalog-filter-kicker">{% translate "Search the catalog" %}</p>
+                <h1>{% translate "Find a movie" %}</h1>
             </div>
             <p class="catalog-results-count">
-                Найдено: <strong>{{ movie|length }}</strong>
+                {% translate "Found:" %} <strong>{{ movie|length }}</strong>
             </p>
         </div>
         <form class="movie-filter" method="get" novalidate>
@@ -35,8 +38,8 @@
                 {% endfor %}
             </div>
             <div class="filter-actions">
-                <button class="filter-submit" type="submit">Найти</button>
-                <a class="filter-reset" href="{% url 'movies:catalog' %}">Сбросить</a>
+                <button class="filter-submit" type="submit">{% translate "Find" %}</button>
+                <a class="filter-reset" href="{% url 'movies:catalog' %}">{% translate "Reset" %}</a>
             </div>
         </form>
     </section>
@@ -46,7 +49,7 @@
             {% include 'movies/_movie_card.html' with movie=movie %}
         {% empty %}
             <div class="abot-found-movies">
-                <p>Фильмов нет. Возможно, стоит обновить каталог позже.</p>
+                <p>{% translate "There are no movies. You might want to refresh the catalog later" %}</p>
             </div>
         {% endfor %}
     </div>
