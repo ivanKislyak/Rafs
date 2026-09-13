@@ -5,6 +5,7 @@
 }
 
 .the-best-movies-label {
+  padding: 10px;
   color: var(--color-text);
 }
 
@@ -14,4 +15,3 @@
   aspect-ratio: 1 / 1;
   border-radius: 100%;
 }
-
