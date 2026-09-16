@@ -10,8 +10,13 @@ watchStatusButtons.forEach((btn) => {
 
     if (!btn.classList.contains("is-active")) {
       container.querySelectorAll(".movie-watch-status-btn").forEach((button) => {
+        if (!reviewVoteUserIsAuthenticated) {
+          window.location.href = reviewVoteLoginUrl;
+          return;
+        }
         button.classList.remove("is-active");
       });
+
       btn.classList.add("is-active");
     } else {
       btn.classList.remove("is-active");
