@@ -31,14 +31,16 @@ interfaces or temporary development data.
 - Average movie ratings calculated from user reviews
 - Staff-only movie search and metadata import from Wikidata
 - Local movie-cover uploads, remote cover URLs, and placeholder fallbacks
+- User-interface localization with English, Russian, Ukrainian, Kazakh, Spanish, and German language switching
 - Shared header and footer templates with component-based CSS
 
 ## Technologies
 
 - Python 3.11+
 - Django 5.2.16
-- SQLite for local development
-- PostgreSQL support through psycopg
+- SQLite for lightweight local development
+- PostgreSQL 17 for Docker-based development
+- Docker and Docker Compose
 - Django ORM and Django Template Language
 - HTML and component-based CSS
 - Vanilla JavaScript and the Fetch API
@@ -51,7 +53,54 @@ interfaces or temporary development data.
 
 The complete list of Python dependencies is available in `requirements.txt`.
 
-## Running locally
+## Running with Docker
+
+The included Docker configuration is intended for development. It runs the
+Django development server together with PostgreSQL 17 and mounts the project
+directory into the web container, so source-code changes are available without
+rebuilding the image.
+
+Clone the repository and create the environment file:
+
+```powershell
+git clone https://github.com/ivanKislyak/Rafs.git
+cd Rafs
+Copy-Item .env.example .env
+```
+
+Before starting the containers, replace the placeholder values in `.env`,
+especially `SECRET_KEY` and `DB_PASSWORD`. Docker Compose overrides
+`DB_ENGINE`, `DB_HOST`, and `DB_PORT` for the web container, so it connects to
+the included PostgreSQL service automatically.
+
+Build the image, apply the migrations, and start the project:
+
+```powershell
+docker compose build
+docker compose run --rm web python manage.py migrate
+docker compose up
+```
+
+RAFS will be available at <http://127.0.0.1:8000/>. PostgreSQL is also exposed
+to the host at `127.0.0.1:5433` for optional use with a database client.
+
+Create an administrator while the containers are running:
+
+```powershell
+docker compose exec web python manage.py createsuperuser
+```
+
+Stop the containers with `Ctrl+C` followed by:
+
+```powershell
+docker compose down
+```
+
+The `postgres_data` volume preserves the Docker database between restarts.
+Running `docker compose down -v` also removes that volume and permanently
+deletes its database contents.
+
+## Running locally without Docker
 
 Clone the repository:
 
@@ -86,6 +135,11 @@ SECRET_KEY=your-local-secret-key
 DJANGO_DEBUG=True
 ```
 
+The default `DB_ENGINE=sqlite` setting uses the local `db.sqlite3` file and
+ignores the PostgreSQL connection variables. To connect directly to the Docker
+PostgreSQL service from the host instead, use `DB_ENGINE=postgres`,
+`DB_HOST=127.0.0.1`, and `DB_PORT=5433` while the database container is running.
+
 Apply the migrations and start the development server:
 
 ```powershell
@@ -103,7 +157,13 @@ The following pages will then be available:
 
 ## Local data and movie covers
 
-The local `db.sqlite3` database and the entire `media/` directory are excluded by `.gitignore`. A fresh clone therefore does not include the movies, users, ratings, or reviews from the development database.
+The local `db.sqlite3` database and the entire `media/` directory are excluded
+by `.gitignore`. A fresh clone therefore does not include the movies, users,
+ratings, or reviews from the development database.
+
+When Docker is used, PostgreSQL data is stored in the named `postgres_data`
+volume. The project directory is mounted at `/app`, so uploaded media files are
+still written to the host-side `media/` directory and remain excluded from Git.
 
 Movie covers are not currently distributed with the repository either. They must be uploaded manually:
 
@@ -145,6 +205,14 @@ Run the automated tests:
 python manage.py test
 ```
 
+For a running Docker environment, the same checks can be executed inside the
+web container:
+
+```powershell
+docker compose exec web python manage.py check
+docker compose exec web python manage.py test
+```
+
 Collect static files for deployment:
 
 ```powershell
@@ -158,9 +226,10 @@ python manage.py collectstatic --noinput
 - Voting and management tools for review replies
 - Expanded Wikidata synchronization
 - Automatic movie-poster imports
+- Backend-powered search suggestions and user search history
 - Personalized movie recommendations
-- Full user-interface localization
 - PostgreSQL as the primary production database
+- Production-ready container startup and deployment configuration
 - Dedicated production media-file storage
 - Additional tests for watch statuses, imports, profiles, and replies
 
@@ -173,8 +242,10 @@ python manage.py collectstatic --noinput
 - `templates/` — shared Django templates, including the header and footer
 - `static/css/components/` — shared interface-component styles
 - `static/` — JavaScript, fonts, logos, and other interface assets
+- `locale/` — gettext translations for the supported interface languages
 - `media/` — user-uploaded files excluded from the repository
 - `config/` — settings and root URL configuration
+- `Dockerfile` and `compose.yaml` — development containers for Django and PostgreSQL
 
 ## License
 

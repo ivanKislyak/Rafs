@@ -15,5 +15,6 @@ urlpatterns = [
     path('wikidata/items/<str:qid>/save/', views.wikidata_save_item, name='wikidata_save_item'),
     path('save/status/', views.set_movie_status, name='set_movie_status'),
     path('reviews/', views.show_reviews, name='show_reviews'),
-    path('results/', views.show_search_results, name='show_search_results')
+    path('results/', views.show_search_results, name='show_search_results'),
+    path('search/suggestions/', views.show_suggested_results, name='show_suggested_results')
 ]

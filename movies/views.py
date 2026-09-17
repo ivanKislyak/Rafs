@@ -168,6 +168,10 @@ def vote_review(request):
 def show_search_results(requset):
     pass
 
+@require_POST
+def show_suggested_results(request):
+    pass
+
 @login_required
 @require_POST
 def set_movie_status(request):
