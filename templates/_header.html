@@ -27,6 +27,15 @@
             </div>
         </div>
     </nav>
+
+    <div class="search-bar-wrapper">
+        <div class="search-bar-container">
+            <form action="{% url 'movies:show_search_results' %}">
+                <input type="text" class="">
+            </form>
+        </div>
+    </div>
+
     <form class="header-language-form"
           action="{% url 'set_language' %}"
           method="post">

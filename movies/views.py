@@ -164,6 +164,10 @@ def vote_review(request):
     except (json.JSONDecodeError, TypeError, ValueError):
         return JsonResponse({"error": "Неверный формат данных"}, status=400)
 
+@require_POST
+def show_search_results(requset):
+    pass
+
 @login_required
 @require_POST
 def set_movie_status(request):
