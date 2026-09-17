@@ -8,7 +8,6 @@
   color: var(--color-text);
 }
 
-
 .catalog-container,
 .reviews-container {
   display: flex;
@@ -120,6 +119,80 @@
   opacity: 1;
 }
 
+.header-language-form {
+  flex-shrink: 0;
+  margin: 0 8px;
+}
+
+.header-language-control {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.header-language-icon {
+  position: absolute;
+  left: 11px;
+  width: 18px;
+  height: 18px;
+  z-index: 1;
+  fill: none;
+  stroke: var(--color-text-muted);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  pointer-events: none;
+  transition: stroke 160ms ease;
+}
+
+.header-language-select {
+  min-height: 40px;
+  max-width: 180px;
+  padding: 8px 34px 8px 38px;
+  border-radius: 8px;
+  appearance: none;
+  background-color: var(--color-surface-raised);
+  color: var(--color-text);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 650;
+  line-height: 1.2;
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease;
+}
+
+.header-language-select:hover {
+  border-color: var(--rafs-red);
+  background-color: color-mix(in srgb, var(--color-surface-raised) 88%, var(--rafs-red) 12%);
+}
+
+.header-language-select:focus-visible {
+  border-color: var(--rafs-red);
+  outline: 0px;
+  outline-offset: 0px;
+}
+
+.header-language-select option {
+  background-color: var(--color-surface-raised);
+  color: var(--color-text);
+}
+
+.header-language-chevron {
+  position: absolute;
+  right: 13px;
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid var(--color-text-muted);
+  border-bottom: 2px solid var(--color-text-muted);
+  transform: translateY(-2px) rotate(45deg);
+  pointer-events: none;
+}
+
+.header-language-code {
+  display: none;
+}
+
 .header-account {
   display: flex;
   align-items: center;
@@ -208,8 +281,8 @@
 .about-site-button:focus-visible,
 .header-auth-link:focus-visible,
 .header-logout-button:focus-visible {
-  outline: 3px solid var(--color-focus-visible-outline);
-  outline-offset: 2px;
+  outline: 0px;
+  outline-offset: 0px;
 }
 
 @media (max-width: 640px) {
@@ -230,6 +303,40 @@
   .header-account {
     gap: 6px;
     padding-right: 8px;
+  }
+
+  .header-language-form {
+    margin: 0 4px;
+  }
+
+  .header-language-select {
+    width: 62px;
+    padding: 7px 24px 7px 8px;
+    color: transparent;
+  }
+
+  .header-language-select option {
+    color: var(--color-text);
+  }
+
+  .header-language-icon {
+    display: none;
+  }
+
+  .header-language-code {
+    position: absolute;
+    left: 10px;
+    z-index: 1;
+    display: block;
+    color: var(--color-text);
+    font-size: 0.78rem;
+    font-weight: 750;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .header-language-chevron {
+    right: 10px;
   }
 
   .header-username {
@@ -255,4 +362,3 @@
     display: none;
   }
 }
-
