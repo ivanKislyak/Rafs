@@ -675,3 +675,23 @@ msgstr "Заполните это поле."
 #: .\templates\registration\login.html:41
 msgid "Don't have an account yet?"
 msgstr "Ещё нет аккаунта?"
+
+#: .\templates\_header.html:48
+msgid "Search movies"
+msgstr "Поиск фильмов"
+
+#: .\templates\_header.html:55
+msgid "Clear search"
+msgstr "Очистить поиск"
+
+#: .\templates\_header.html:66
+msgid "Search history"
+msgstr "История поиска"
+
+#: .\templates\_header.html:82
+msgid "Popular searches"
+msgstr "Популярные запросы"
+
+#: .\templates\_header.html:98
+msgid "No search suggestions yet"
+msgstr "Подсказок пока нет"

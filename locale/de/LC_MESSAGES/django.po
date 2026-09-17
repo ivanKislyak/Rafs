@@ -673,3 +673,23 @@ msgstr "Fülle dieses Feld aus."
 #: .\templates\registration\login.html:41
 msgid "Don't have an account yet?"
 msgstr "Du hast noch kein Konto?"
+
+#: .\templates\_header.html:48
+msgid "Search movies"
+msgstr "Filme suchen"
+
+#: .\templates\_header.html:55
+msgid "Clear search"
+msgstr "Suche löschen"
+
+#: .\templates\_header.html:66
+msgid "Search history"
+msgstr "Suchverlauf"
+
+#: .\templates\_header.html:82
+msgid "Popular searches"
+msgstr "Beliebte Suchanfragen"
+
+#: .\templates\_header.html:98
+msgid "No search suggestions yet"
+msgstr "Noch keine Suchvorschläge"

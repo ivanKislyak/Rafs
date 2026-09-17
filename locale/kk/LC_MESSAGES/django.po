@@ -673,3 +673,23 @@ msgstr "Осы өрісті толтырыңыз."
 #: .\templates\registration\login.html:41
 msgid "Don't have an account yet?"
 msgstr "Әлі тіркелгіңіз жоқ па?"
+
+#: .\templates\_header.html:48
+msgid "Search movies"
+msgstr "Фильмдерді іздеу"
+
+#: .\templates\_header.html:55
+msgid "Clear search"
+msgstr "Іздеуді тазалау"
+
+#: .\templates\_header.html:66
+msgid "Search history"
+msgstr "Іздеу тарихы"
+
+#: .\templates\_header.html:82
+msgid "Popular searches"
+msgstr "Танымал сұраулар"
+
+#: .\templates\_header.html:98
+msgid "No search suggestions yet"
+msgstr "Әзірге іздеу ұсыныстары жоқ"

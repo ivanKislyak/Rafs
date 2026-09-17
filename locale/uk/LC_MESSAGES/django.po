@@ -676,3 +676,23 @@ msgstr "Заповніть це поле."
 #: .\templates\registration\login.html:41
 msgid "Don't have an account yet?"
 msgstr "У вас ще немає облікового запису?"
+
+#: .\templates\_header.html:48
+msgid "Search movies"
+msgstr "Пошук фільмів"
+
+#: .\templates\_header.html:55
+msgid "Clear search"
+msgstr "Очистити пошук"
+
+#: .\templates\_header.html:66
+msgid "Search history"
+msgstr "Історія пошуку"
+
+#: .\templates\_header.html:82
+msgid "Popular searches"
+msgstr "Популярні запити"
+
+#: .\templates\_header.html:98
+msgid "No search suggestions yet"
+msgstr "Підказок поки немає"

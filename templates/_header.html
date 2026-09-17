@@ -28,11 +28,76 @@
         </div>
     </nav>
 
-    <div class="search-bar-wrapper">
-        <div class="search-bar-container">
-            <form action="{% url 'movies:show_search_results' %}">
-                <input type="text" class="">
-            </form>
+    <div class="search-bar-wrapper" data-header-search>
+        <form class="search-bar-form"
+              action="{% url 'movies:show_search_results' %}"
+              method="post"
+              data-header-search-form>
+            {% csrf_token %}
+            <div class="search-bar-container">
+                <svg class="search-bar-icon"
+                     viewBox="0 0 24 24"
+                     aria-hidden="true"
+                     focusable="false">
+                    <circle cx="11" cy="11" r="6.5"></circle>
+                    <path d="m16 16 4 4"></path>
+                </svg>
+                <input class="search-bar-input"
+                       type="search"
+                       name="query"
+                       placeholder="{% translate 'Search movies' %}"
+                       autocomplete="off"
+                       aria-expanded="false"
+                       aria-controls="header-search-suggestions"
+                       data-header-search-input>
+                <button class="search-bar-clear"
+                        type="button"
+                        aria-label="{% translate 'Clear search' %}"
+                        data-header-search-clear
+                        hidden>×</button>
+            </div>
+        </form>
+        <div class="searchBoxSuggetions"
+             id="header-search-suggestions"
+             role="listbox"
+             data-header-search-suggestions
+             hidden>
+            {# Both context values are expected to be iterables of search query strings. #}
+            {% if search_history %}
+                <p class="search-suggestions-title">{% translate "Search history" %}</p>
+                <div class="search-suggestions-list">
+                    {% for search_query in search_history %}
+                        <button class="search-suggestion-card"
+                                type="button"
+                                role="option"
+                                data-search-value="{{ search_query }}">
+                            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                <circle cx="12" cy="12" r="8.5"></circle>
+                                <path d="M12 7.5V12l3 2"></path>
+                            </svg>
+                            <span>{{ search_query }}</span>
+                        </button>
+                    {% endfor %}
+                </div>
+            {% elif popular_searches %}
+                <p class="search-suggestions-title">{% translate "Popular searches" %}</p>
+                <div class="search-suggestions-list">
+                    {% for search_query in popular_searches %}
+                        <button class="search-suggestion-card"
+                                type="button"
+                                role="option"
+                                data-search-value="{{ search_query }}">
+                            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                <path d="M5 16.5 10 11l3 3 6-7"></path>
+                                <path d="M14.5 7H19v4.5"></path>
+                            </svg>
+                            <span>{{ search_query }}</span>
+                        </button>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="search-suggestions-empty">{% translate "No search suggestions yet" %}</p>
+            {% endif %}
         </div>
     </div>
 
