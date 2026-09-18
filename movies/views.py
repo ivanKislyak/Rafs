@@ -12,10 +12,12 @@ from django.http import HttpResponse
 from requests import RequestException
 
 from .forms import MovieFilterForm, ReviewForm, ReviewReplyForm, WikidataSearchForm
-from .models import Movie, Review, ReviewVote, Genre, Person, WatchStatus
+from .models import Movie, Review, ReviewVote, Genre, Person, WatchStatus, SearchHistory
 
 from .services.wikidata import search_wikidata_media, fetch_movie_details_raw, parse_movie_details
 from .services.import_wikidata import import_parsed_data_to_db 
+
+from django.contrib.gis.geoip2 import GeoIP2
 
 def catalog(request):
     filter_form = MovieFilterForm(request.GET or None)
@@ -164,6 +166,27 @@ def vote_review(request):
     except (json.JSONDecodeError, TypeError, ValueError):
         return JsonResponse({"error": "Неверный формат данных"}, status=400)
 
+def show_popular_results(request):
+    return None
+
+def show_last_search_history(request):
+    if request.user.is_authenticated: 
+        last_search_history_list = SearchHistory.objects.filter(user=request.user).order_by('-created_at')[:10]
+    else:
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+
+    # Определяем страну
+    g = GeoIP2()
+    try:
+        country_info = g.country(ip)
+        country_code = country_info['country_code']  # Например: 'RU', 'US'
+    except Exception:
+        country_code = 'US'  # Дефолтное значение, если IP локальный (127.0.0.1)
+        
 @require_POST
 def show_search_results(requset):
     pass
