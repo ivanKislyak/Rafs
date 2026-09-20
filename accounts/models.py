@@ -32,6 +32,11 @@ class User(AbstractUser):
         OTHER = 'O', _("Other")
 
     sex = models.CharField(max_length=1, choices=SexChoice.choices, null=False, blank=True, default='')
+    country_code = models.CharField(
+        max_length=2,
+        blank=True,
+        default="",
+    )
     bd_date = models.DateField(null=True, blank=True)
 
     def delete(self, using=None, keep_parents=False):

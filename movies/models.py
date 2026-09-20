@@ -191,8 +191,9 @@ class WatchStatus(models.Model):
         constraints = [models.UniqueConstraint(fields=["user", "movie"], name="unique_movie_status")]
 
 class SearchHistory(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="review_votes")
-    searsh_query = models.CharacterField(max_length=255, unique=False, blank=False)
-   
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="watch_history")
+    searsh_query = models.CharField(max_length=255, unique=False, blank=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
     class Meta:
         ordering = ['-created_at']
