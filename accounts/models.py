@@ -8,6 +8,12 @@ class Achievement(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=500)
 
+class SearchHistory(models.Model):
+    searsh_query = models.CharField(max_length=500, unique=False, blank=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
 
 class User(AbstractUser):
     user_lvl = models.IntegerField(default=1)
@@ -18,12 +24,17 @@ class User(AbstractUser):
     achievement = models.ManyToManyField(
         Achievement,
         blank=True,
-        related_name="users"
+        related_name="achievements"
     )
     movies = models.ManyToManyField(
         Movie,
         blank=True,
-        related_name="users"
+        related_name="movies"
+    )
+    search_history = models.ManyToManyField(
+        SearchHistory,
+        blank=True,
+        related_name="search_history"
     )
 
     class SexChoice(models.TextChoices):

@@ -27,10 +27,9 @@
             </div>
         </div>
     </nav>
-
     <div class="search-bar-wrapper" data-header-search>
         <form class="search-bar-form"
-              action="{% url 'movies:show_search_results' %}"
+              action="{% url 'movies:search_query' %}"
               method="post"
               data-header-search-form>
             {% csrf_token %}
@@ -55,6 +54,26 @@
                         aria-label="{% translate 'Clear search' %}"
                         data-header-search-clear
                         hidden>×</button>
+                <button type="submit">
+                    <div style="width: 100%;
+                                height: 100%;
+                                display: block;
+                                fill: currentcolor">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             height="24"
+                             viewBox="0 0 24 24"
+                             width="24"
+                             focusable="false"
+                             aria-hidden="true"
+                             style="pointer-events: none;
+                                    display: inherit;
+                                    width: 100%;
+                                    height: 100%">
+                            <path d="M11 2a9 9 0 105.641 16.01.966.966 0 00.152.197l3.5 3.5a1 1 0 101.414-1.414l-3.5-3.5a1 1 0 00-.197-.153A8.96 8.96 0 0020 11a9 9 0 00-9-9Zm0 2a7 7 0 110 14 7 7 0 010-14Z">
+                            </path>
+                        </svg>
+                    </div>
+                </button>
             </div>
         </form>
         <div class="searchBoxSuggetions"
@@ -100,37 +119,39 @@
             {% endif %}
         </div>
     </div>
-
-    <form class="header-language-form"
-          action="{% url 'set_language' %}"
-          method="post">
-        {% csrf_token %}
-        <input name="next" type="hidden" value="{{ redirect_to }}">
-        {% get_current_language as LANGUAGE_CODE %}
-        <span class="header-language-control">
-            <svg class="header-language-icon"
-                 viewBox="0 0 24 24"
-                 aria-hidden="true"
-                 focusable="false">
-                <circle cx="12" cy="12" r="8.5"></circle>
-                <path d="M3.8 12h16.4M12 3.5c2.3 2.4 3.4 5.2 3.4 8.5S14.3 18.1 12 20.5M12 3.5C9.7 5.9 8.6 8.7 8.6 12s1.1 6.1 3.4 8.5"></path>
-            </svg>
-            <span class="header-language-code" aria-hidden="true">{{ LANGUAGE_CODE|upper }}</span>
-            <select class="header-language-select"
-                    name="language"
-                    onchange="this.form.submit()">
-                {% get_available_languages as LANGUAGES %}
-                {% get_language_info_list for LANGUAGES as languages %}
-                {% for language in languages %}
-                    <option value="{{ language.code }}"
-                            {% if language.code == LANGUAGE_CODE %} selected{% endif %}>
-                        {{ language.name_local|capfirst  }}
-                    </option>
-                {% endfor %}
-            </select>
-            <span class="header-language-chevron" aria-hidden="true"></span>
-        </span>
-    </form>
+    {% if not user.is_authenticated %}
+        <form class="header-language-form"
+              action="{% url 'set_language' %}"
+              method="post">
+            {% csrf_token %}
+            <input name="next" type="hidden" value="{{ redirect_to }}">
+            {% get_current_language as LANGUAGE_CODE %}
+            <span class="header-language-control">
+                <svg class="header-language-icon"
+                     viewBox="0 0 24 24"
+                     aria-hidden="true"
+                     focusable="false">
+                    <circle cx="12" cy="12" r="8.5"></circle>
+                    <path d="M3.8 12h16.4M12 3.5c2.3 2.4 3.4 5.2 3.4 8.5S14.3 18.1 12 20.5M12 3.5C9.7 5.9 8.6 8.7 8.6 12s1.1 6.1 3.4 8.5">
+                    </path>
+                </svg>
+                <span class="header-language-code" aria-hidden="true">{{ LANGUAGE_CODE|upper }}</span>
+                <select class="header-language-select"
+                        name="language"
+                        onchange="this.form.submit()">
+                    {% get_available_languages as LANGUAGES %}
+                    {% get_language_info_list for LANGUAGES as languages %}
+                    {% for language in languages %}
+                        <option value="{{ language.code }}"
+                                {% if language.code == LANGUAGE_CODE %} selected{% endif %}>
+                            {{ language.name_local|capfirst }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <span class="header-language-chevron" aria-hidden="true"></span>
+            </span>
+        </form>
+    {% endif %}
     <nav class="header-account" aria-label="{% translate 'Account' %}">
         {% if user.is_authenticated %}
             <details class="header-profile">
@@ -178,6 +199,37 @@
                             <span>{% translate "Open profile" %}</span>
                         </a>
                         <hr class="short-hr">
+                        <form class="header-language-form"
+                              action="{% url 'set_language' %}"
+                              method="post">
+                            {% csrf_token %}
+                            <input name="next" type="hidden" value="{{ redirect_to }}">
+                            {% get_current_language as LANGUAGE_CODE %}
+                            <span class="header-language-control">
+                                <svg class="header-language-icon"
+                                     viewBox="0 0 24 24"
+                                     aria-hidden="true"
+                                     focusable="false">
+                                    <circle cx="12" cy="12" r="8.5"></circle>
+                                    <path d="M3.8 12h16.4M12 3.5c2.3 2.4 3.4 5.2 3.4 8.5S14.3 18.1 12 20.5M12 3.5C9.7 5.9 8.6 8.7 8.6 12s1.1 6.1 3.4 8.5">
+                                    </path>
+                                </svg>
+                                <span class="header-language-code" aria-hidden="true">{{ LANGUAGE_CODE|upper }}</span>
+                                <select class="header-language-select"
+                                        name="language"
+                                        onchange="this.form.submit()">
+                                    {% get_available_languages as LANGUAGES %}
+                                    {% get_language_info_list for LANGUAGES as languages %}
+                                    {% for language in languages %}
+                                        <option value="{{ language.code }}"
+                                                {% if language.code == LANGUAGE_CODE %} selected{% endif %}>
+                                            {{ language.name_local|capfirst }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                                <span class="header-language-chevron" aria-hidden="true"></span>
+                            </span>
+                        </form>
                         <a class="about-site-button" href="{% url 'core:about' %}">{% translate "About" %}</a>
                         <form class="header-logout-form" action="{% url 'logout' %}" method="post">
                             {% csrf_token %}

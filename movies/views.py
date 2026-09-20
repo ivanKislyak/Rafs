@@ -12,7 +12,7 @@ from django.http import HttpResponse
 from requests import RequestException
 
 from .forms import MovieFilterForm, ReviewForm, ReviewReplyForm, WikidataSearchForm
-from .models import Movie, Review, ReviewVote, Genre, Person, WatchStatus, SearchHistory
+from .models import Movie, Review, ReviewVote, Genre, Person, WatchStatus
 
 from .services.wikidata import search_wikidata_media, fetch_movie_details_raw, parse_movie_details
 from .services.import_wikidata import import_parsed_data_to_db 
@@ -167,8 +167,10 @@ def vote_review(request):
     except (json.JSONDecodeError, TypeError, ValueError):
         return JsonResponse({"error": "Неверный формат данных"}, status=400)
 
-def search_query(requset):
-    pass
+def search_query(request):
+    if request.method == 'POST':
+        user_argument = request.POST.get('query', '')
+        return HttpResponse(f"Вы ввели: {user_argument}")
 
 def show_popular_results(request):
     country_code = get_country_code(request)
