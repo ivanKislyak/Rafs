@@ -3,17 +3,11 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 from movies.models import Movie
+from django.conf import settings
 
 class Achievement(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=500)
-
-class SearchHistory(models.Model):
-    searsh_query = models.CharField(max_length=500, unique=False, blank=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        ordering = ['-created_at']
 
 class User(AbstractUser):
     user_lvl = models.IntegerField(default=1)
@@ -24,17 +18,12 @@ class User(AbstractUser):
     achievement = models.ManyToManyField(
         Achievement,
         blank=True,
-        related_name="achievements"
+        related_name="users"
     )
     movies = models.ManyToManyField(
         Movie,
         blank=True,
-        related_name="movies"
-    )
-    search_history = models.ManyToManyField(
-        SearchHistory,
-        blank=True,
-        related_name="search_history"
+        related_name="users"
     )
 
     class SexChoice(models.TextChoices):
@@ -71,3 +60,15 @@ class User(AbstractUser):
 
     def __str__(self):
         return f"{self.username} with email - {self.email} has {self.user_frames} frames and {self.user_lvl} lvl"
+
+class SearchHistory(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="search_history",
+    )
+    query = models.CharField(max_length=200)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
