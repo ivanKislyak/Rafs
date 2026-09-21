@@ -678,6 +678,10 @@ msgstr "Du hast noch kein Konto?"
 msgid "Search movies"
 msgstr "Filme suchen"
 
+#: .\templates\_header.html:51
+msgid "Movies, series, people..."
+msgstr "Filme, Serien, Personen..."
+
 #: .\templates\_header.html:55
 msgid "Clear search"
 msgstr "Suche löschen"

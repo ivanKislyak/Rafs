@@ -680,6 +680,10 @@ msgstr "Ещё нет аккаунта?"
 msgid "Search movies"
 msgstr "Поиск фильмов"
 
+#: .\templates\_header.html:51
+msgid "Movies, series, people..."
+msgstr "Фильмы, сериалы, люди..."
+
 #: .\templates\_header.html:55
 msgid "Clear search"
 msgstr "Очистить поиск"

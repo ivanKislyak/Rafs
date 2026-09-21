@@ -678,6 +678,10 @@ msgstr "Әлі тіркелгіңіз жоқ па?"
 msgid "Search movies"
 msgstr "Фильмдерді іздеу"
 
+#: .\templates\_header.html:51
+msgid "Movies, series, people..."
+msgstr "Фильмдер, сериалдар, адамдар..."
+
 #: .\templates\_header.html:55
 msgid "Clear search"
 msgstr "Іздеуді тазалау"
