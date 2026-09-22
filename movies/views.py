@@ -169,8 +169,12 @@ def vote_review(request):
 
 def search_query(request):
     if request.method == 'POST':
-        user_argument = request.POST.get('query', '')
-        return HttpResponse(f"Вы ввели: {user_argument}")
+        user_query = request.POST.get('query', '')
+
+        # suitable_results = Movie.objects.filter()
+
+        return render(request, "movies/search_results.html", 
+                      {"user_query": user_query})
 
 def show_popular_results(request):
     country_code = get_country_code(request)

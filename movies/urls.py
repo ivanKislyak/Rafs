@@ -17,5 +17,5 @@ urlpatterns = [
     path('reviews/', views.show_reviews, name='show_reviews'),
     path('results/', views.show_search_results, name='show_search_results'),
     path('search/suggestions/', views.show_suggested_results, name='show_suggested_results'),
-    path('search/', views.search_query, name='search_query')
+    path('search/', views.search_query, name='search_query'),
 ]
