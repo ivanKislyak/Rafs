@@ -174,9 +174,9 @@ def search_query(request):
         results = []
         
         if user_argument:
-            movie_vector = SearchVector('translations__wikidata_name', weight='A') + SearchVector('translations__description' weight='B') + SearchVector('type_of_work', weight='C')
+            movie_vector = SearchVector('translations__wikidata_name', weight='A') + SearchVector('translations__description', weight='B') + SearchVector('type_of_work', weight='C')
             movies = Movie.objects.annonate(rank=SearchRank())
-        
+
         return HttpResponse(f"Вы ввели: {user_argument}")
 
 def show_popular_results(request):
