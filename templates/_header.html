@@ -30,7 +30,7 @@
     <div class="search-bar-wrapper" data-header-search>
         <form class="search-bar-form"
               action="{% url 'movies:search_query' %}"
-              method="post"
+              method="get"
               data-header-search-form>
             {% csrf_token %}
             <div class="search-bar-container">
