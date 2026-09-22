@@ -169,8 +169,14 @@ def vote_review(request):
         return JsonResponse({"error": "Неверный формат данных"}, status=400)
 
 def search_query(request):
-    if request.method == 'POST':
-        user_argument = request.POST.get('query', '')
+    if request.method == 'GET':
+        user_argument = request.GET.get('query', '')
+        results = []
+        
+        if user_argument:
+            movie_vector = SearchVector('translations__wikidata_name', weight='A') + SearchVector('translations__description' weight='B') + SearchVector('type_of_work', weight='C')
+            movies = Movie.objects.annonate(rank=SearchRank())
+        
         return HttpResponse(f"Вы ввели: {user_argument}")
 
 def show_popular_results(request):
