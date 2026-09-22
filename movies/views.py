@@ -2,6 +2,7 @@ import json
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.translation import gettext as _
 
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
@@ -168,13 +169,15 @@ def vote_review(request):
         return JsonResponse({"error": "Неверный формат данных"}, status=400)
 
 def search_query(request):
-    if request.method == 'POST':
-        user_query = request.POST.get('query', '')
-
-        # suitable_results = Movie.objects.filter()
-
-        return render(request, "movies/search_results.html", 
-                      {"user_query": user_query})
+    if request.method == 'GET':
+        user_argument = request.GET.get('query', '')
+        results = []
+        
+        if user_argument:
+            movie_vector = SearchVector('translations__wikidata_name', weight='A') + SearchVector('translations__description' weight='B') + SearchVector('type_of_work', weight='C')
+            movies = Movie.objects.annonate(rank=SearchRank())
+        
+        return HttpResponse(f"Вы ввели: {user_argument}")
 
 def show_popular_results(request):
     country_code = get_country_code(request)
