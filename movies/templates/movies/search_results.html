@@ -32,4 +32,11 @@
     {% endif %}
 {% endblock %}
 {% block content %}
+{% for result in results %}
+    <div>
+        <p>
+            {{ result }}
+        </p>
+    </div>
+{% endfor %}
 {% endblock %}

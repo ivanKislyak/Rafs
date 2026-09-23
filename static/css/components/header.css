@@ -329,6 +329,7 @@
   position: relative;
   display: flex;
   align-items: center;
+  min-width: 0;
 }
 
 .header-language-icon {
@@ -349,29 +350,31 @@
   min-height: 40px;
   max-width: 180px;
   padding: 8px 34px 8px 38px;
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   appearance: none;
-  background-color: var(--color-surface-raised);
+  background-color: color-mix(in srgb, var(--color-surface-raised) 82%, transparent);
   color: var(--color-text);
   cursor: pointer;
   font: inherit;
   font-size: 0.9rem;
-  font-weight: 650;
+  font-weight: 600;
   line-height: 1.2;
   transition:
     border-color 160ms ease,
-    background-color 160ms ease;
+    background-color 160ms ease,
+    color 160ms ease;
 }
 
-.header-language-select:hover {
+.header-language-control:hover .header-language-select,
+.header-language-select:focus-visible {
   border-color: var(--rafs-red);
   background-color: color-mix(in srgb, var(--color-surface-raised) 88%, var(--rafs-red) 12%);
 }
 
 .header-language-select:focus-visible {
-  border-color: var(--rafs-red);
-  outline: 0px;
-  outline-offset: 0px;
+  outline: 3px solid var(--color-focus-visible-outline);
+  outline-offset: 2px;
 }
 
 .header-language-select option {
@@ -388,10 +391,34 @@
   border-bottom: 2px solid var(--color-text-muted);
   transform: translateY(-2px) rotate(45deg);
   pointer-events: none;
+  transition: border-color 160ms ease;
+}
+
+.header-language-control:hover .header-language-icon,
+.header-language-control:hover .header-language-chevron {
+  stroke: var(--rafs-red-soft);
+  border-color: var(--rafs-red-soft);
 }
 
 .header-language-code {
   display: none;
+}
+
+.header-profile-menu .header-language-form {
+  width: 100%;
+  margin: 0;
+}
+
+.header-profile-menu .header-language-control,
+.header-profile-menu .header-language-select {
+  width: 100%;
+}
+
+.header-profile-menu .header-language-select {
+  max-width: none;
+  min-height: 38px;
+  background-color: transparent;
+  font-size: 0.86rem;
 }
 
 .header-account {
