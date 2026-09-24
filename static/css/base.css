@@ -7,15 +7,14 @@
 }
 
 :root {
-  /* Logo palette */
-  --rafs-red-deep: #a9241d;
-  --rafs-red-action: #c72921;
-  --rafs-red: #db392f;
-  --rafs-red-on-dark: #f0584a;
-  --rafs-red-soft: #fb8273;
-  --rafs-red-tint: #fbdcd8;
+  --rafs-logo-red: #a9241d;
 
-  /* Dark theme (by default) */
+  --rafs-red-deep: #681010;
+  --rafs-red-action: #911818;
+  --rafs-red-hover: #a51d1d;
+  --rafs-red-accent: #c43131;
+  --rafs-red-tint: #ead8d6;
+
   --color-bg: #0b0c0f;
   --color-surface: #13151a;
   --color-surface-raised: #1b1e24;
@@ -24,17 +23,22 @@
   --color-text: #f4f1ed;
   --color-text-muted: #aeb1b8;
 
-  --color-accent: var(--rafs-red-on-dark);
+  --color-accent: var(--rafs-red-accent);
+
   --color-action: var(--rafs-red-action);
-  --color-action-hover: var(--rafs-red);
+  --color-action-hover: var(--rafs-red-hover);
   --color-action-active: var(--rafs-red-deep);
   --color-action-text: #ffffff;
 
-  --color-focus-visible-outline: var(--rafs-red-soft);
+  --color-focus-visible-outline: var(--rafs-red-accent);
 
-  --color-accent-glow: rgb(219 57 47 / 18%);
+  --color-surface-hover: color-mix(in srgb, var(--color-text) 5%, var(--color-surface-raised));
 
-  /* Spacing system */
+  --color-accent-surface-subtle: color-mix(in srgb, var(--rafs-red-accent) 8%, var(--color-surface-raised));
+  --color-accent-surface-hover: color-mix(in srgb, var(--rafs-red-action) 24%, var(--color-surface-raised));
+
+  --color-accent-glow: rgb(196 49 49 / 16%);
+
   --space-xs: 3px;
   --space-s: 5px;
   --space-m: 10px;
@@ -49,9 +53,9 @@
 
   --color-text: #17191d;
   --color-text-muted: #646a73;
-
   --color-accent: var(--rafs-red-action);
-  --color-accent-glow: rgb(219 57 47 / 8%);
+  --color-accent-surface-hover: color-mix(in srgb, var(--rafs-red-action) 8%, var(--color-surface-raised));
+  --color-accent-glow: rgb(145 24 24 / 8%);
 }
 
 @font-face {

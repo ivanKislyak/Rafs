@@ -29,8 +29,8 @@
 
 .header-profile-trigger:hover,
 .header-profile[open] .header-profile-trigger {
-  border-color: var(--color-border);
-  background-color: var(--color-accent-glow);
+  border-color: color-mix(in srgb, var(--color-accent) 45%, var(--color-border));
+  background-color: var(--color-surface-hover);
 }
 
 .header-profile-trigger:focus-visible {
@@ -92,7 +92,7 @@
 .header-profile-label {
   display: block;
   margin-bottom: 3px;
-  color: var(--rafs-red-soft);
+  color: var(--color-accent);
   font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.12em;
@@ -139,7 +139,7 @@
 }
 
 .header-profile-stat:first-child .header-profile-stat-value {
-  color: var(--rafs-red-soft);
+  color: var(--color-accent);
 }
 
 .header-profile-actions {

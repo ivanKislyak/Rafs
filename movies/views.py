@@ -13,14 +13,24 @@ from django.views.decorators.http import require_POST
 from django.http import HttpResponse
 from requests import RequestException
 
-from .forms import MovieFilterForm, ReviewForm, ReviewReplyForm, WikidataSearchForm
-from .models import Movie, Review, ReviewVote, Genre, Person, WatchStatus
+from .forms import (
+    MovieFilterForm, 
+    ReviewForm, 
+    ReviewReplyForm, 
+    WikidataSearchForm
+    )
+from .models import (
+    Movie, Review, 
+    ReviewVote, Genre, 
+    Person, WatchStatus)
 from accounts.models import User
 
-from .services.wikidata import search_wikidata_media, fetch_movie_details_raw, parse_movie_details
+from .services.wikidata import (
+    search_wikidata_media, 
+    fetch_movie_details_raw, 
+    parse_movie_details,
+    )
 from .services.import_wikidata import import_parsed_data_to_db 
-
-from django.contrib.gis.geoip2 import GeoIP2
 from core.utils import get_country_code
 
 def catalog(request):
@@ -180,13 +190,13 @@ def search_query(request):
 
             movie_vector = (
                 SearchVector('translations__wikidata_name', weight='A') 
-                + SearchVector('translations__description', weight='B') 
-                + SearchVector('type_of_work', weight='C') 
-                + SearchVector('genres', weight='C')
-                + SearchVector('countries', weight='C')
-                + SearchVector('studio', weight='C')
-                + SearchVector('director', weight='C')
-                + SearchVector('actors', weight='C')
+                + SearchVector('translations__wikidata_description', weight='B') 
+                + SearchVector('type_of_work__translations__name', weight='C') 
+                + SearchVector('genres__translations__name', weight='C')
+                + SearchVector('countries__translations__name', weight='C')
+                + SearchVector('studio__translations__name', weight='C')
+                + SearchVector('director__translations__name', weight='C')
+                + SearchVector('actors__translations__name', weight='C')
             )
 
             movies = Movie.objects.annotate(

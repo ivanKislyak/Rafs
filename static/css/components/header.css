@@ -150,7 +150,7 @@
 }
 
 .search-bar-container:focus-within {
-  border-color: var(--rafs-red);
+  border-color: var(--color-accent);
   background-color: var(--color-surface-raised);
 }
 
@@ -210,7 +210,7 @@
 }
 
 .search-bar-clear:hover {
-  background-color: var(--color-accent-glow);
+  background-color: var(--color-accent-surface-hover);
   color: var(--color-text);
 }
 
@@ -221,7 +221,7 @@
   padding: 0 14px;
   border: 0;
   border-left: 1px solid var(--color-border);
-  background-color: var(--color-accent-glow);
+  background-color: var(--color-accent-surface-subtle);
   color: var(--color-text);
   cursor: pointer;
   font: inherit;
@@ -292,7 +292,7 @@
 .search-suggestion-card:hover,
 .search-suggestion-card:focus-visible {
   outline: none;
-  background-color: var(--color-accent-glow);
+  background-color: var(--color-surface-hover);
 }
 
 .search-suggestion-card svg {
@@ -368,8 +368,8 @@
 
 .header-language-control:hover .header-language-select,
 .header-language-select:focus-visible {
-  border-color: var(--rafs-red);
-  background-color: color-mix(in srgb, var(--color-surface-raised) 88%, var(--rafs-red) 12%);
+  border-color: color-mix(in srgb, var(--color-accent) 45%, var(--color-border));
+  background-color: var(--color-surface-hover);
 }
 
 .header-language-select:focus-visible {
@@ -396,8 +396,8 @@
 
 .header-language-control:hover .header-language-icon,
 .header-language-control:hover .header-language-chevron {
-  stroke: var(--rafs-red-soft);
-  border-color: var(--rafs-red-soft);
+  stroke: var(--color-accent);
+  border-color: var(--color-accent);
 }
 
 .header-language-code {
@@ -440,7 +440,7 @@
   width: 40px;
   height: 40px;
   flex-shrink: 0;
-  border: 2px solid var(--rafs-red);
+  border: 2px solid var(--color-accent);
   border-radius: 50%;
   background-color: var(--color-surface-raised);
   object-fit: cover;
@@ -491,9 +491,9 @@
 .about-site-button:hover,
 .header-auth-link:hover,
 .header-logout-button:hover {
-  border-color: var(--rafs-red);
-  background-color: var(--color-accent-glow);
-  color: #ffffff;
+  border-color: color-mix(in srgb, var(--color-accent) 45%, var(--color-border));
+  background-color: var(--color-accent-surface-hover);
+  color: var(--color-text);
 }
 
 .header-register-link {
@@ -503,7 +503,9 @@
 }
 
 .header-register-link:hover {
-  background-color: var(--rafs-red);
+  border-color: var(--color-action-hover);
+  background-color: var(--color-action-hover);
+  color: var(--color-action-text);
 }
 
 .about-site-button:focus-visible,

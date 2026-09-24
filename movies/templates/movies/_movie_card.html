@@ -7,17 +7,23 @@
                  src="{{ movie.cover.url }}"
                  data-fallback-src="{% static 'movies/images/nocover.png' %}"
                  onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
-                 alt="{{ movie.name }}" />
+                 alt="{{ movie.name }}" 
+                 loading="lazy"
+                 />
         {% elif movie.cover_url %}
             <img class="movie-card-cover"
                  src="{{ movie.cover_url }}"
                  alt="{{ movie.name }}"
                  data-fallback-src="{% static 'movies/images/nocover.png' %}"
-                 onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;" />
+                 onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;" 
+                 loading="lazy"
+                 />
         {% else %}
             <img class="movie-card-cover"
                  src="{% static 'movies/images/nocover.png' %}"
-                 alt="{{ movie.name }}" />
+                 alt="{{ movie.name }}" 
+                 loading="lazy"
+                 />
         {% endif %}
         <div class="movie-info">
             <h2>{{ movie.name }}</h2>
