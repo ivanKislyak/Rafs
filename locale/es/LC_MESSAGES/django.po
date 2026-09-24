@@ -680,8 +680,8 @@ msgid "Search movies"
 msgstr "Buscar películas"
 
 #: .\templates\_header.html:51
-msgid "Movies, series, people..."
-msgstr "Películas, series, personas..."
+msgid "Movies, people, reviews..."
+msgstr "Películas, personas, reseñas..."
 
 #: .\templates\_header.html:55
 msgid "Clear search"

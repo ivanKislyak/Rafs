@@ -682,8 +682,8 @@ msgid "Search movies"
 msgstr "Пошук фільмів"
 
 #: .\templates\_header.html:51
-msgid "Movies, series, people..."
-msgstr "Фільми, серіали, люди..."
+msgid "Movies, people, reviews..."
+msgstr "Фільми, люди, рецензії..."
 
 #: .\templates\_header.html:55
 msgid "Clear search"

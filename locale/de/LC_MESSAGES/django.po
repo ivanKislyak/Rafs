@@ -679,8 +679,8 @@ msgid "Search movies"
 msgstr "Filme suchen"
 
 #: .\templates\_header.html:51
-msgid "Movies, series, people..."
-msgstr "Filme, Serien, Personen..."
+msgid "Movies, people, reviews..."
+msgstr "Filme, Personen, Rezensionen..."
 
 #: .\templates\_header.html:55
 msgid "Clear search"
