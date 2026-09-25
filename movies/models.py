@@ -6,6 +6,9 @@ from django.db.models import Avg
 from taggit.managers import TaggableManager
 from .movie_models import TypeOfWork, Genre, Country, Studio, Person
 from parler.models import TranslatableModel, TranslatedFields
+from django.contrib.postgres.indexes import GinIndex
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.utils.translation import gettext_lazy as _
 
 class Movie(TranslatableModel):
@@ -170,6 +173,21 @@ class ReplyVote(BaseVote):
 
     class Meta:
         constraints = [models.UniqueConstraint(fields=["user", "reply"], name="unique_user_reply_vote")]
+
+
+
+class GlobalSearchIndex(models.Model):
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
+    
+    search_text = models.TextField()
+
+    class Meta:
+        indexes = [
+            GinIndex(name='global_search_trgm_idx', fields=['search_text'], opclasses=['gin_trgm_ops']),
+        ]
+
 
 class WatchStatus(models.Model):
     class StatusChoice(models.TextChoices):

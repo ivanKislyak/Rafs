@@ -3,11 +3,13 @@ from itertools import chain
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.translation import gettext as _
 
-from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, TrigramSimilarity
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.postgres.aggregates import StringAgg
 from django.db.models import Avg, F, Count, Value, CharField
+from django.db.models.functions import Greatest
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.http import HttpResponse
@@ -22,7 +24,9 @@ from .forms import (
 from .models import (
     Movie, Review, 
     ReviewVote, Genre, 
-    Person, WatchStatus)
+    Person, WatchStatus,
+    GlobalSearchIndex,
+    )
 from accounts.models import User
 
 from .services.wikidata import (
@@ -181,41 +185,23 @@ def vote_review(request):
         return JsonResponse({"error": "Неверный формат данных"}, status=400)
 
 def search_query(request):
-    if request.method == 'GET':
-        user_argument = request.GET.get('query', '')
-        results = []
-        
-        if user_argument:
-            query_obj = SearchQuery(user_argument)
-
-            movie_vector = (
-                SearchVector('translations__wikidata_name', weight='A') 
-                + SearchVector('translations__wikidata_description', weight='B') 
-                + SearchVector('type_of_work__translations__name', weight='C') 
-                + SearchVector('genres__translations__name', weight='C')
-                + SearchVector('countries__translations__name', weight='C')
-                + SearchVector('studio__translations__name', weight='C')
-                + SearchVector('director__translations__name', weight='C')
-                + SearchVector('actors__translations__name', weight='C')
-            )
-
-            movies = Movie.objects.annotate(
-                rank=SearchRank(movie_vector, query_obj),
-                result_type=Value('movie', output_field=CharField())
-                ).filter(rank__gte=0.01)
-
-            user_vector = SearchVector('username', weight='A')
-            users = User.objects.annotate(
-                rank=SearchRank(user_vector, query_obj),
-                result_type=Value('user', output_field=CharField())
-            )
-            results = sorted(
-                chain(movies, users),
-                key=lambda instance: instance.rank,
-                reverse=True
-            )
-
-        return render(request, 'movies/search_results.html', {'results': results, 'query': user_argument})
+    user_argument = request.GET.get('query', '')
+    search_results = []
+    
+    if user_argument:
+        search_results = (
+            GlobalSearchIndex.objects
+            .annotate(similarity=TrigramSimilarity('search_text', user_argument))
+            .filter(similarity__gt=0.2)
+            .order_by('-similarity')
+            .select_related('content_type')
+            .prefetch_related('content_object') 
+        )
+    
+    return render(request, 'movies/search_results.html', {
+        'results': search_results, 
+        'query': user_argument
+    })
 
 def show_popular_results(request):
     country_code = get_country_code(request)
