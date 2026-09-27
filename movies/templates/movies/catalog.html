@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 {% load i18n %}
-{% block title %}
-    {% translate "Catalog" %}
-{% endblock %}
+{% block title %}{% translate "Movie catalog" %} · RAFS{% endblock %}
+{% block meta_description %}{% translate "Explore the RAFS catalog: filter movies, compare viewer ratings, and read reviews" %}{% endblock %}
+{% block og_title %}{% translate "Movie catalog" %} · RAFS{% endblock %}
+{% block og_description %}{% translate "Explore the RAFS catalog: filter movies, compare viewer ratings, and read reviews" %}{% endblock %}
 {% block extra_css %}
     <link rel="stylesheet"
           href="{% static 'movies/css/components/movie-card.css' %}">

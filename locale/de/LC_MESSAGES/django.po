@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: RAFS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-13 16:38+0500\n"
+"POT-Creation-Date: 2026-09-27 10:23+0500\n"
 "PO-Revision-Date: 2026-09-13 17:00+0500\n"
 "Last-Translator: RAFS contributors\n"
 "Language-Team: German\n"
@@ -16,6 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
 #: .\accounts\models.py:15
 msgid "email address"
 msgstr "E-Mail-Adresse"
@@ -32,395 +33,386 @@ msgstr "Weiblich"
 msgid "Other"
 msgstr "Andere"
 
-#: .\accounts\templates\accounts\profile.html:4 .\templates\_header.html:51
+#: .\accounts\templates\accounts\profile.html:5 .\templates\_header.html:160
 msgid "Profile"
 msgstr "Profil"
 
-#: .\accounts\templates\accounts\register.html:4
-#: .\accounts\templates\accounts\register.html:53 .\templates\_header.html:97
-#: .\templates\registration\login.html:41
+#: .\accounts\templates\accounts\register.html:5
+#: .\accounts\templates\accounts\register.html:55 .\templates\_header.html:237
+#: .\templates\registration\login.html:43
 msgid "Sign up"
 msgstr "Registrieren"
 
-#: .\accounts\templates\accounts\register.html:13
-#: .\core\templates\core\about_site.html:25
+#: .\accounts\templates\accounts\register.html:15
+#: .\core\templates\core\about_site.html:27
 msgid "Create an account"
 msgstr "Konto erstellen"
 
-#: .\accounts\templates\accounts\register.html:14
+#: .\accounts\templates\accounts\register.html:16
 msgid "Rate movies, write reviews, and build your watch history."
 msgstr "Bewerte Filme, schreibe Rezensionen und baue deinen Wiedergabeverlauf auf."
 
-#: .\accounts\templates\accounts\register.html:23
-#: .\templates\registration\login.html:23
+#: .\accounts\templates\accounts\register.html:25
+#: .\templates\registration\login.html:25
 msgid "Username"
 msgstr "Benutzername"
 
-#: .\accounts\templates\accounts\register.html:25
+#: .\accounts\templates\accounts\register.html:27
 msgid "Email"
 msgstr "E-Mail"
 
-#: .\accounts\templates\accounts\register.html:27
-#: .\templates\registration\login.html:25
+#: .\accounts\templates\accounts\register.html:29
+#: .\templates\registration\login.html:27
 msgid "Password"
 msgstr "Passwort"
 
-#: .\accounts\templates\accounts\register.html:29
+#: .\accounts\templates\accounts\register.html:31
 msgid "Confirm password"
 msgstr "Passwort bestätigen"
 
-#: .\accounts\templates\accounts\register.html:37
+#: .\accounts\templates\accounts\register.html:39
 msgid "You can use letters, numbers, and the characters @ . + - _"
 msgstr "Du kannst Buchstaben, Zahlen und die Zeichen @ . + - _ verwenden."
 
-#: .\accounts\templates\accounts\register.html:41
-msgid ""
-"Use at least 8 characters. The password should not be too common or entirely "
-"numeric."
+#: .\accounts\templates\accounts\register.html:43
+msgid "Use at least 8 characters. The password should not be too common or entirely numeric."
 msgstr "Verwende mindestens 8 Zeichen. Das Passwort sollte nicht zu häufig verwendet werden oder nur aus Zahlen bestehen."
 
-#: .\accounts\templates\accounts\register.html:44
+#: .\accounts\templates\accounts\register.html:46
 msgid "Enter the same password again."
 msgstr "Gib dasselbe Passwort noch einmal ein."
 
-#: .\accounts\templates\accounts\register.html:55
+#: .\accounts\templates\accounts\register.html:57
 msgid "Already have an account?"
 msgstr "Du hast bereits ein Konto?"
 
-#: .\accounts\templates\accounts\register.html:55 .\templates\_header.html:95
-#: .\templates\registration\login.html:39
+#: .\accounts\templates\accounts\register.html:57 .\templates\_header.html:235
+#: .\templates\registration\login.html:41
 msgid "Log in"
 msgstr "Anmelden"
 
-#: .\config\settings.py:161
+#: .\config\settings.py:163
 msgid "English"
 msgstr "Englisch"
 
-#: .\config\settings.py:162
+#: .\config\settings.py:164
 msgid "Russian"
 msgstr "Russisch"
 
-#: .\config\settings.py:163
+#: .\config\settings.py:165
 msgid "Ukrainian"
 msgstr "ukrainisch"
 
-#: .\config\settings.py:164
+#: .\config\settings.py:166
 msgid "Kazakh"
 msgstr "Kasachisch"
 
-#: .\config\settings.py:165
+#: .\config\settings.py:167
 msgid "Spanish"
 msgstr "Spanisch"
 
-#: .\config\settings.py:166
+#: .\config\settings.py:168
 msgid "German"
 msgstr "Deutsch"
 
-#: .\core\templates\core\about_site.html:4
+#: .\core\templates\core\about_site.html:5
 msgid "About RAFS"
 msgstr "Über RAFS"
 
-#: .\core\templates\core\about_site.html:12
+#: .\core\templates\core\about_site.html:14
 msgid "About the project"
 msgstr "Über das Projekt"
 
-#: .\core\templates\core\about_site.html:14
+#: .\core\templates\core\about_site.html:16
 msgid "Not just choosing a movie."
 msgstr "Nicht nur einen Film auswählen."
 
-#: .\core\templates\core\about_site.html:15
+#: .\core\templates\core\about_site.html:17
 msgid "Understanding why it is right for you."
 msgstr "Verstehen, warum er zu dir passt."
 
-#: .\core\templates\core\about_site.html:18
-msgid ""
-"RAFS is a place for honest ratings, thoughtful reviews, and finding movies "
-"that truly match your taste."
+#: .\core\templates\core\about_site.html:20
+msgid "RAFS is a place for honest ratings, thoughtful reviews, and finding movies that truly match your taste."
 msgstr "RAFS ist ein Ort für ehrliche Bewertungen, durchdachte Rezensionen und Filme, die wirklich deinem Geschmack entsprechen."
 
-#: .\core\templates\core\about_site.html:22
+#: .\core\templates\core\about_site.html:24
 msgid "Browse catalog"
 msgstr "Katalog ansehen"
 
-#: .\core\templates\core\about_site.html:30
+#: .\core\templates\core\about_site.html:33
 msgid "RAFS logo"
 msgstr "RAFS-Logo"
 
-#: .\core\templates\core\about_site.html:31
+#: .\core\templates\core\about_site.html:34
 msgid "Watch. Rate. Find your own."
 msgstr "Ansehen. Bewerten. Deinen Film finden."
 
-#: .\core\templates\core\about_site.html:36
+#: .\core\templates\core\about_site.html:39
 msgid "What matters here"
 msgstr "Worauf es hier ankommt"
 
-#: .\core\templates\core\about_site.html:37
+#: .\core\templates\core\about_site.html:40
 msgid "Cinema begins after the final credits"
 msgstr "Kino beginnt nach dem Abspann"
 
-#: .\core\templates\core\about_site.html:42
+#: .\core\templates\core\about_site.html:45
 msgid "Honest ratings"
 msgstr "Ehrliche Bewertungen"
 
-#: .\core\templates\core\about_site.html:44
-msgid ""
-"Give a movie your score and break down your impression by the criteria that "
-"truly matter to you."
+#: .\core\templates\core\about_site.html:47
+msgid "Give a movie your score and break down your impression by the criteria that truly matter to you."
 msgstr "Gib einem Film deine Bewertung und schlüssle deinen Eindruck nach den Kriterien auf, die dir wirklich wichtig sind."
 
-#: .\core\templates\core\about_site.html:49
+#: .\core\templates\core\about_site.html:52
 msgid "Real reviews"
 msgstr "Echte Rezensionen"
 
-#: .\core\templates\core\about_site.html:51
-msgid ""
-"Share your thoughts without rigid templates and help others understand "
-"whether a movie is worth their time."
+#: .\core\templates\core\about_site.html:54
+msgid "Share your thoughts without rigid templates and help others understand whether a movie is worth their time."
 msgstr "Teile deine Gedanken ohne starre Vorlagen und hilf anderen zu entscheiden, ob ein Film ihre Zeit wert ist."
 
-#: .\core\templates\core\about_site.html:56
+#: .\core\templates\core\about_site.html:59
 msgid "Taste matches"
 msgstr "Geschmacklich passend"
 
-#: .\core\templates\core\about_site.html:58
-msgid ""
-"In the future, RAFS will find people with similar ratings and recommend "
-"movies based on their actual choices."
+#: .\core\templates\core\about_site.html:61
+msgid "In the future, RAFS will find people with similar ratings and recommend movies based on their actual choices."
 msgstr "In Zukunft findet RAFS Menschen mit ähnlichen Bewertungen und empfiehlt Filme anhand ihrer tatsächlichen Auswahl."
 
-#: .\core\templates\core\about_site.html:65
+#: .\core\templates\core\about_site.html:68
 msgid "Project development"
 msgstr "Projektentwicklung"
 
-#: .\core\templates\core\about_site.html:66
+#: .\core\templates\core\about_site.html:69
 msgid "RAFS grows with your watch history"
 msgstr "RAFS wächst mit deinem Wiedergabeverlauf"
 
-#: .\core\templates\core\about_site.html:70
+#: .\core\templates\core\about_site.html:73
 msgid "Available now"
 msgstr "Jetzt verfügbar"
 
-#: .\core\templates\core\about_site.html:71
+#: .\core\templates\core\about_site.html:74
 msgid "Catalog, ratings, and reviews"
 msgstr "Katalog, Bewertungen und Rezensionen"
 
-#: .\core\templates\core\about_site.html:73
-msgid ""
-"Choose movies, save your personal impressions, and see ratings from other "
-"users."
+#: .\core\templates\core\about_site.html:75
+msgid "Choose movies, save your personal impressions, and see ratings from other users."
 msgstr "Wähle Filme aus, speichere deine persönlichen Eindrücke und sieh dir Bewertungen anderer Nutzer an."
 
-#: .\core\templates\core\about_site.html:77
+#: .\core\templates\core\about_site.html:78
 msgid "Next stage"
 msgstr "Nächste Stufe"
 
-#: .\core\templates\core\about_site.html:78
+#: .\core\templates\core\about_site.html:79
 msgid "Recommendations and custom tags"
 msgstr "Empfehlungen und benutzerdefinierte Tags"
 
-#: .\core\templates\core\about_site.html:80
-msgid ""
-"Personal collections and flexible tags will help you find not only popular "
-"movies, but films that truly feel right for you."
+#: .\core\templates\core\about_site.html:81
+msgid "Personal collections and flexible tags will help you find not only popular movies, but films that truly feel right for you."
 msgstr "Persönliche Sammlungen und flexible Tags helfen dir, nicht nur beliebte Filme zu finden, sondern auch solche, die wirklich zu dir passen."
 
-#: .\core\templates\core\about_site.html:87
+#: .\core\templates\core\about_site.html:88
 msgid "Your next movie"
 msgstr "Dein nächster Film"
 
-#: .\core\templates\core\about_site.html:88
+#: .\core\templates\core\about_site.html:89
 msgid "It may already be waiting for you in the catalog."
 msgstr "Vielleicht wartet er bereits im Katalog auf dich."
 
-#: .\core\templates\core\about_site.html:91
-#: .\movies\templates\movies\catalog.html:17
+#: .\core\templates\core\about_site.html:92
+#: .\movies\templates\movies\catalog.html:19
 msgid "Find a movie"
 msgstr "Film finden"
 
-#: .\core\templates\core\home.html:4
+#: .\core\templates\core\home.html:5
 msgid "RAFS – Movie ratings and reviews"
 msgstr "RAFS – Filmbewertungen und Rezensionen"
 
-#: .\core\templates\core\home.html:11
-msgid ""
-"RAFS is a service for rating movies based on several criteria. View audience "
-"ratings, write reviews, and find movies that suit your taste."
+#: .\core\templates\core\home.html:13
+msgid "RAFS is a service for rating movies based on several criteria. View audience ratings, write reviews, and find movies that suit your taste."
 msgstr "RAFS ist ein Dienst zur Bewertung von Filmen anhand mehrerer Kriterien. Sieh dir Zuschauerwertungen an, schreibe Rezensionen und finde Filme nach deinem Geschmack."
 
-#: .\core\templates\core\home.html:15
+#: .\core\templates\core\home.html:17
 msgid "Top movies"
 msgstr "Top-Filme"
 
-#: .\core\templates\core\home.html:22
+#: .\core\templates\core\home.html:24
 msgid "There are no movies. You might want to refresh the catalog later."
 msgstr "Noch keine Filme vorhanden. Schau später noch einmal in den Katalog."
 
-#: .\movies\models.py:176
+#: .\movies\models.py:194
 msgid "I'll watch it"
 msgstr "Möchte ich sehen"
 
-#: .\movies\models.py:177
+#: .\movies\models.py:195
 msgid "Viewed"
 msgstr "Angesehen"
 
-#: .\movies\models.py:178
+#: .\movies\models.py:196
 msgid "I'm not interested"
 msgstr "Kein Interesse"
 
-#: .\movies\models.py:179
+#: .\movies\models.py:197
 msgid "I'm watching it right now"
 msgstr "Sehe ich gerade"
 
-#: .\movies\models.py:180
+#: .\movies\models.py:198
 msgid "I dropped watching it"
 msgstr "Abgebrochen"
 
-#: .\movies\models.py:181
+#: .\movies\models.py:199
 msgid "Rewatching"
 msgstr "Sehe ich erneut"
 
-#: .\movies\templates\movies\_movie_card.html:26
+#: .\movies\templates\movies\_movie_card.html:32
 msgid "RAFS rating:"
 msgstr "RAFS-Wertung:"
 
-#: .\movies\templates\movies\_movie_card.html:28
-#: .\movies\templates\movies\movie_detail.html:70
+#: .\movies\templates\movies\_movie_card.html:34
+#: .\movies\templates\movies\movie_detail.html:56
 msgid "RECOMMENDED!"
 msgstr "EMPFOHLEN!"
 
-#: .\movies\templates\movies\_movie_card.html:31
-#: .\movies\templates\movies\movie_detail.html:73
+#: .\movies\templates\movies\_movie_card.html:37
+#: .\movies\templates\movies\movie_detail.html:59
 msgid "Not rated yet"
 msgstr "Noch nicht bewertet"
 
-#: .\movies\templates\movies\catalog.html:4 .\templates\_footer.html:19
+#: .\movies\templates\movies\catalog.html:5 .\templates\_footer.html:19
 #: .\templates\_header.html:21
 msgid "Catalog"
 msgstr "Katalog"
 
-#: .\movies\templates\movies\catalog.html:16
+#: .\movies\templates\movies\catalog.html:18
 msgid "Search the catalog"
 msgstr "Katalog durchsuchen"
 
-#: .\movies\templates\movies\catalog.html:20
-#: .\movies\templates\movies\wd_search_form.html:80
+#: .\movies\templates\movies\catalog.html:22
+#: .\movies\templates\movies\wd_search_form.html:82
 msgid "Found:"
 msgstr "Gefunden:"
 
-#: .\movies\templates\movies\catalog.html:39
+#: .\movies\templates\movies\catalog.html:41 .\templates\_header.html:60
 msgid "Find"
 msgstr "Finden"
 
-#: .\movies\templates\movies\catalog.html:40
+#: .\movies\templates\movies\catalog.html:42
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: .\movies\templates\movies\catalog.html:50
+#: .\movies\templates\movies\catalog.html:52
 msgid "There are no movies. You might want to refresh the catalog later"
 msgstr "Noch keine Filme vorhanden. Schau später noch einmal in den Katalog"
 
-#: .\movies\templates\movies\movie_detail.html:35
+#: .\movies\templates\movies\movie_detail.html:14
+msgid "Ratings and reviews"
+msgstr "Bewertungen und Rezensionen"
+
+#: .\movies\templates\movies\movie_detail.html:15
+#: .\movies\templates\movies\movie_detail.html:18
+msgid "Viewer ratings and reviews on RAFS. Share your opinion"
+msgstr "Bewertungen und Rezensionen von Zuschauern auf RAFS. Teile deine Meinung"
+
+#: .\movies\templates\movies\movie_detail.html:21
 msgid "Back to catalog"
 msgstr "Zurück zum Katalog"
 
-#: .\movies\templates\movies\movie_detail.html:59
+#: .\movies\templates\movies\movie_detail.html:45
 msgid "Your rating:"
 msgstr "Deine Bewertung:"
 
-#: .\movies\templates\movies\movie_detail.html:61
+#: .\movies\templates\movies\movie_detail.html:47
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: .\movies\templates\movies\movie_detail.html:63
+#: .\movies\templates\movies\movie_detail.html:49
 msgid "Rate"
 msgstr "Bewerten"
 
-#: .\movies\templates\movies\movie_detail.html:66
+#: .\movies\templates\movies\movie_detail.html:52
 msgid "Year:"
 msgstr "Jahr:"
 
-#: .\movies\templates\movies\movie_detail.html:68
+#: .\movies\templates\movies\movie_detail.html:54
 msgid "Rating:"
 msgstr "Bewertung:"
 
-#: .\movies\templates\movies\movie_detail.html:90
-#: .\movies\templates\movies\reviews.html:4 .\templates\_header.html:25
+#: .\movies\templates\movies\movie_detail.html:76
+#: .\movies\templates\movies\reviews.html:5 .\templates\_header.html:25
 msgid "Reviews"
 msgstr "Rezensionen"
 
-#: .\movies\templates\movies\movie_detail.html:112
+#: .\movies\templates\movies\movie_detail.html:98
 msgid "Contains spoilers"
 msgstr "Enthält Spoiler"
 
-#: .\movies\templates\movies\movie_detail.html:121
+#: .\movies\templates\movies\movie_detail.html:107
 msgid "Spoiler hidden"
 msgstr "Spoiler versteckt"
 
-#: .\movies\templates\movies\movie_detail.html:122
+#: .\movies\templates\movies\movie_detail.html:108
 msgid "Review"
 msgstr "Rezension"
 
-#: .\movies\templates\movies\movie_detail.html:123
+#: .\movies\templates\movies\movie_detail.html:109
 msgid "Show"
 msgstr "Zeigen"
 
-#: .\movies\templates\movies\movie_detail.html:124
+#: .\movies\templates\movies\movie_detail.html:110
 msgid "Hide"
 msgstr "Verstecken"
 
-#: .\movies\templates\movies\movie_detail.html:140
+#: .\movies\templates\movies\movie_detail.html:126
 msgid "Like this review"
 msgstr "Diese Rezension mit ‚Gefällt mir‘ bewerten"
 
-#: .\movies\templates\movies\movie_detail.html:154
+#: .\movies\templates\movies\movie_detail.html:140
 msgid "Dislike this review"
 msgstr "Diese Rezension mit ‚Gefällt mir nicht‘ bewerten"
 
-#: .\movies\templates\movies\movie_detail.html:176
+#: .\movies\templates\movies\movie_detail.html:162
 msgid "Reply"
 msgstr "Antworten"
 
-#: .\movies\templates\movies\movie_detail.html:194
-#: .\movies\templates\movies\movie_detail.html:243
+#: .\movies\templates\movies\movie_detail.html:180
+#: .\movies\templates\movies\movie_detail.html:229
 msgid "Delete"
 msgstr "Löschen"
 
-#: .\movies\templates\movies\movie_detail.html:206
+#: .\movies\templates\movies\movie_detail.html:192
 msgid "There are no reviews yet. Be the first to leave one!"
 msgstr "Noch keine Rezensionen vorhanden. Schreibe die erste!"
 
-#: .\movies\templates\movies\movie_detail.html:224
+#: .\movies\templates\movies\movie_detail.html:210
 msgid "Delete review"
 msgstr "Rezension löschen"
 
-#: .\movies\templates\movies\movie_detail.html:225
+#: .\movies\templates\movies\movie_detail.html:211
 msgid "Are you sure you want to delete it?"
 msgstr "Wirklich löschen?"
 
-#: .\movies\templates\movies\movie_detail.html:229
-msgid ""
-"The review will be removed from the site. This action cannot be undone after "
-"confirmation."
+#: .\movies\templates\movies\movie_detail.html:215
+msgid "The review will be removed from the site. This action cannot be undone after confirmation."
 msgstr "Die Rezension wird von der Website entfernt. Nach der Bestätigung kann diese Aktion nicht rückgängig gemacht werden."
 
-#: .\movies\templates\movies\movie_detail.html:234
-#: .\movies\templates\movies\movie_detail.html:352
+#: .\movies\templates\movies\movie_detail.html:220
+#: .\movies\templates\movies\movie_detail.html:338
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: .\movies\templates\movies\movie_detail.html:303
+#: .\movies\templates\movies\movie_detail.html:289
 msgid "Unable to save your reaction"
 msgstr "Deine Reaktion konnte nicht gespeichert werden"
 
-#: .\movies\templates\movies\movie_detail.html:348
+#: .\movies\templates\movies\movie_detail.html:334
 msgid "Your reply"
 msgstr "Deine Antwort"
 
-#: .\movies\templates\movies\movie_detail.html:349
+#: .\movies\templates\movies\movie_detail.html:335
 msgid "Write a reply to the review..."
 msgstr "Schreibe eine Antwort auf die Rezension..."
 
-#: .\movies\templates\movies\movie_detail.html:351
+#: .\movies\templates\movies\movie_detail.html:337
 msgid "Send"
 msgstr "Senden"
 
@@ -432,127 +424,131 @@ msgstr "Rezension zu"
 msgid "Movie review"
 msgstr "Filmrezension"
 
-#: .\movies\templates\movies\review_form.html:28
+#: .\movies\templates\movies\review_form.html:29
 msgid "Current overall rating"
 msgstr "Aktuelle Gesamtbewertung"
 
-#: .\movies\templates\movies\review_form.html:42
+#: .\movies\templates\movies\review_form.html:43
 msgid "Primary"
 msgstr "Hauptkriterium"
 
-#: .\movies\templates\movies\review_form.html:75
+#: .\movies\templates\movies\review_form.html:77
 msgid "Overall review rating"
 msgstr "Gesamtbewertung"
 
-#: .\movies\templates\movies\review_form.html:77
+#: .\movies\templates\movies\review_form.html:79
 msgid "Overall rating"
 msgstr "Gesamtbewertung"
 
-#: .\movies\templates\movies\review_form.html:78
+#: .\movies\templates\movies\review_form.html:80
 msgid "Average across all enabled criteria"
 msgstr "Durchschnitt über alle aktivierten Kriterien"
 
-#: .\movies\templates\movies\review_form.html:105
+#: .\movies\templates\movies\review_form.html:107
 msgid "Publish review"
 msgstr "Rezension veröffentlichen"
 
-#: .\movies\templates\movies\review_form.html:166
+#: .\movies\templates\movies\review_form.html:168
 msgid "out of 10"
 msgstr "von 10"
 
-#: .\movies\templates\movies\wd_search_form.html:4
+#: .\movies\templates\movies\search_results.html:68
+msgid "Nothing was found"
+msgstr "Nichts gefunden"
+
+#: .\movies\templates\movies\wd_search_form.html:5
 msgid "Search Wikidata — RAFS"
 msgstr "Wikidata durchsuchen – RAFS"
 
-#: .\movies\templates\movies\wd_search_form.html:11
+#: .\movies\templates\movies\wd_search_form.html:13
 msgid "Editor tools"
 msgstr "Editor-Tools"
 
-#: .\movies\templates\movies\wd_search_form.html:12
+#: .\movies\templates\movies\wd_search_form.html:14
 msgid "Search for movies on Wikidata"
 msgstr "Filme auf Wikidata suchen"
 
-#: .\movies\templates\movies\wd_search_form.html:13
+#: .\movies\templates\movies\wd_search_form.html:15
 msgid "Find a movie or series and copy its QID for further use."
 msgstr "Suche einen Film oder eine Serie und kopiere die QID zur weiteren Verwendung."
 
-#: .\movies\templates\movies\wd_search_form.html:23
+#: .\movies\templates\movies\wd_search_form.html:25
 msgid "Title"
 msgstr "Titel"
 
-#: .\movies\templates\movies\wd_search_form.html:33
+#: .\movies\templates\movies\wd_search_form.html:35
 msgid "Clear title"
 msgstr "Titel löschen"
 
-#: .\movies\templates\movies\wd_search_form.html:39
+#: .\movies\templates\movies\wd_search_form.html:41
 msgid "At least two characters"
 msgstr "Mindestens zwei Zeichen"
 
-#: .\movies\templates\movies\wd_search_form.html:43
+#: .\movies\templates\movies\wd_search_form.html:45
 msgid "Result language"
 msgstr "Ergebnissprache"
 
-#: .\movies\templates\movies\wd_search_form.html:48
+#: .\movies\templates\movies\wd_search_form.html:50
 msgid "Title and description"
 msgstr "Titel und Beschreibung"
 
-#: .\movies\templates\movies\wd_search_form.html:52
+#: .\movies\templates\movies\wd_search_form.html:54 .\templates\_header.html:60
 msgid "Search"
 msgstr "Suchen"
 
-#: .\movies\templates\movies\wd_search_form.html:62
+#: .\movies\templates\movies\wd_search_form.html:64
 msgid "Check your search"
 msgstr "Suche überprüfen"
 
-#: .\movies\templates\movies\wd_search_form.html:63
+#: .\movies\templates\movies\wd_search_form.html:65
 msgid "Correct the highlighted fields and try again."
 msgstr "Korrigiere die markierten Felder und versuche es erneut."
 
-#: .\movies\templates\movies\wd_search_form.html:70
+#: .\movies\templates\movies\wd_search_form.html:72
 msgid "Wikidata is temporarily unavailable"
 msgstr "Wikidata ist vorübergehend nicht verfügbar"
 
-#: .\movies\templates\movies\wd_search_form.html:71
+#: .\movies\templates\movies\wd_search_form.html:73
 msgid "Wait a moment and try again — your search has been preserved."
 msgstr "Warte einen Moment und versuche es erneut – deine Suche wurde gespeichert."
 
-#: .\movies\templates\movies\wd_search_form.html:77
+#: .\movies\templates\movies\wd_search_form.html:79
 msgid "Results"
 msgstr "Ergebnisse"
 
-#: .\movies\templates\movies\wd_search_form.html:78
+#: .\movies\templates\movies\wd_search_form.html:80
 msgid "Matching titles"
 msgstr "Passende Titel"
 
-#: .\movies\templates\movies\wd_search_form.html:95
+#: .\movies\templates\movies\wd_search_form.html:97
 msgid "This title does not have a description in the selected language yet."
 msgstr "Für diesen Titel gibt es noch keine Beschreibung in der ausgewählten Sprache."
 
-#: .\movies\templates\movies\wd_search_form.html:106
+#: .\movies\templates\movies\wd_search_form.html:108
 msgid "Copy QID"
 msgstr "QID kopieren"
 
-#: .\movies\templates\movies\wd_search_form.html:112
+#: .\movies\templates\movies\wd_search_form.html:114
 msgid "Open in Wikidata"
 msgstr "In Wikidata öffnen"
 
-#: .\movies\templates\movies\wd_search_form.html:122
+#: .\movies\templates\movies\wd_search_form.html:124
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: .\movies\templates\movies\wd_search_form.html:132
+#: .\movies\templates\movies\wd_search_form.html:134
 msgid "Nothing found"
 msgstr "Nichts gefunden"
 
-#: .\movies\templates\movies\wd_search_form.html:133
+#: .\movies\templates\movies\wd_search_form.html:135
 msgid "Try the original title or select another language."
 msgstr "Versuche es mit dem Originaltitel oder wähle eine andere Sprache."
 
-#: .\movies\templates\movies\wd_search_form.html:144
+#: .\movies\templates\movies\wd_search_form.html:146
 msgid "Start with a title"
 msgstr "Mit einem Titel beginnen"
 
-#: .\movies\templates\movies\wd_search_form.html:145
+#: .\movies\templates\movies\wd_search_form.html:147
 msgid "For example: Fight Club, Dune, or The Matrix."
 msgstr "Zum Beispiel: Fight Club, Dune oder The Matrix."
 
@@ -564,7 +560,7 @@ msgstr "Finde etwas, das deinem Geschmack entspricht!"
 msgid "Navigation"
 msgstr "Navigation"
 
-#: .\templates\_footer.html:20 .\templates\_header.html:77
+#: .\templates\_footer.html:20 .\templates\_header.html:217
 msgid "About"
 msgstr "Über RAFS"
 
@@ -588,97 +584,7 @@ msgstr "Daten:"
 msgid "Images:"
 msgstr "Bilder:"
 
-#: .\templates\_header.html:30
-msgid "Account"
-msgstr "Konto"
-
-#: .\templates\_header.html:35
-msgid "Open profile menu"
-msgstr "Profilmenü öffnen"
-
-#: .\templates\_header.html:41 .\templates\_header.html:45
-msgid "Avatar of user"
-msgstr "Avatar des Nutzers"
-
-#: .\templates\_header.html:55
-msgid "Your current level"
-msgstr "Dein aktuelles Level"
-
-#: .\templates\_header.html:56
-msgid "Level"
-msgstr "Level"
-
-#: .\templates\_header.html:61
-msgid "Frames are your experience points"
-msgstr "Frames sind deine Erfahrungspunkte"
-
-#: .\templates\_header.html:62
-msgid "Frames"
-msgstr "Frames"
-
-#: .\templates\_header.html:74
-msgid "Open profile"
-msgstr "Profil öffnen"
-
-#: .\templates\_header.html:88
-msgid "Log out"
-msgstr "Abmelden"
-
-#: .\templates\base.html:14
-msgid ""
-"RAFS is a service for rating movies based on several criteria. Check out "
-"viewer ratings, write reviews, and find movies that suit your taste"
-msgstr "RAFS ist ein Dienst zur Bewertung von Filmen anhand mehrerer Kriterien. Sieh dir Zuschauerwertungen an, schreibe Rezensionen und finde Filme nach deinem Geschmack"
-
-#: .\templates\base.html:19
-msgid "RAFS – Movie Ratings and Reviews"
-msgstr "RAFS – Filmbewertungen und Rezensionen"
-
-#: .\templates\base.html:21
-msgid "Rate movies, post reviews, and find movies that suit your taste"
-msgstr "Bewerte Filme, veröffentliche Rezensionen und finde Filme nach deinem Geschmack"
-
-#: .\templates\base.html:67
-msgid "Awarded"
-msgstr "Gutgeschrieben"
-
-#: .\templates\base.html:69
-msgid "For a New Review"
-msgstr "Für eine neue Rezension"
-
-#: .\templates\base.html:79
-msgid "Close notification"
-msgstr "Benachrichtigung schließen"
-
-#: .\templates\registration\login.html:4
-msgid "Log in to RAFS"
-msgstr "Bei RAFS anmelden"
-
-#: .\templates\registration\login.html:13
-msgid "Log in to your account"
-msgstr "Bei deinem Konto anmelden"
-
-#: .\templates\registration\login.html:14
-msgid "Continue rating movies and sharing your impressions."
-msgstr "Bewerte weiterhin Filme und teile deine Eindrücke."
-
-#: .\templates\registration\login.html:17
-msgid "Unable to log in. Check your username and password."
-msgstr "Anmeldung nicht möglich. Überprüfe deinen Benutzernamen und dein Passwort."
-
-#: .\templates\registration\login.html:32
-msgid "Fill in this field."
-msgstr "Fülle dieses Feld aus."
-
-#: .\templates\registration\login.html:41
-msgid "Don't have an account yet?"
-msgstr "Du hast noch kein Konto?"
-
 #: .\templates\_header.html:48
-msgid "Search movies"
-msgstr "Filme suchen"
-
-#: .\templates\_header.html:51
 msgid "Movies, people, reviews..."
 msgstr "Filme, Personen, Rezensionen..."
 
@@ -686,14 +592,101 @@ msgstr "Filme, Personen, Rezensionen..."
 msgid "Clear search"
 msgstr "Suche löschen"
 
-#: .\templates\_header.html:66
+#: .\templates\_header.html:70
 msgid "Search history"
 msgstr "Suchverlauf"
 
-#: .\templates\_header.html:82
+#: .\templates\_header.html:86
 msgid "Popular searches"
 msgstr "Beliebte Suchanfragen"
 
-#: .\templates\_header.html:98
+#: .\templates\_header.html:102
 msgid "No search suggestions yet"
 msgstr "Noch keine Suchvorschläge"
+
+#: .\templates\_header.html:139
+msgid "Account"
+msgstr "Konto"
+
+#: .\templates\_header.html:144
+msgid "Open profile menu"
+msgstr "Profilmenü öffnen"
+
+#: .\templates\_header.html:150 .\templates\_header.html:154
+msgid "Avatar of user"
+msgstr "Avatar des Nutzers"
+
+#: .\templates\_header.html:164
+msgid "Your current level"
+msgstr "Dein aktuelles Level"
+
+#: .\templates\_header.html:165
+msgid "Level"
+msgstr "Level"
+
+#: .\templates\_header.html:170
+msgid "Frames are your experience points"
+msgstr "Frames sind deine Erfahrungspunkte"
+
+#: .\templates\_header.html:171
+msgid "Frames"
+msgstr "Frames"
+
+#: .\templates\_header.html:183
+msgid "Open profile"
+msgstr "Profil öffnen"
+
+#: .\templates\_header.html:228
+msgid "Log out"
+msgstr "Abmelden"
+
+#: .\templates\base.html:15
+msgid "RAFS is a service for rating movies based on several criteria. Check out viewer ratings, write reviews, and find movies that suit your taste"
+msgstr "RAFS ist ein Dienst zur Bewertung von Filmen anhand mehrerer Kriterien. Sieh dir Zuschauerwertungen an, schreibe Rezensionen und finde Filme nach deinem Geschmack"
+
+#: .\templates\base.html:20
+msgid "RAFS – Movie Ratings and Reviews"
+msgstr "RAFS – Filmbewertungen und Rezensionen"
+
+#: .\templates\base.html:22
+msgid "Rate movies, post reviews, and find movies that suit your taste"
+msgstr "Bewerte Filme, veröffentliche Rezensionen und finde Filme nach deinem Geschmack"
+
+#: .\templates\base.html:65
+msgid "Awarded"
+msgstr "Gutgeschrieben"
+
+#: .\templates\base.html:67
+msgid "For a New Review"
+msgstr "Für eine neue Rezension"
+
+#: .\templates\base.html:77
+msgid "Close notification"
+msgstr "Benachrichtigung schließen"
+
+#: .\templates\registration\login.html:5
+msgid "Log in to RAFS"
+msgstr "Bei RAFS anmelden"
+
+#: .\templates\registration\login.html:15
+msgid "Log in to your account"
+msgstr "Bei deinem Konto anmelden"
+
+#: .\templates\registration\login.html:16
+msgid "Continue rating movies and sharing your impressions."
+msgstr "Bewerte weiterhin Filme und teile deine Eindrücke."
+
+#: .\templates\registration\login.html:19
+msgid "Unable to log in. Check your username and password."
+msgstr "Anmeldung nicht möglich. Überprüfe deinen Benutzernamen und dein Passwort."
+
+#: .\templates\registration\login.html:34
+msgid "Fill in this field."
+msgstr "Fülle dieses Feld aus."
+
+#: .\templates\registration\login.html:43
+msgid "Don't have an account yet?"
+msgstr "Du hast noch kein Konto?"
+
+#~ msgid "Search movies"
+#~ msgstr "Filme suchen"

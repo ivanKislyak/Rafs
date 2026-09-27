@@ -12,17 +12,16 @@
     <link rel="stylesheet" href="{% static 'movies/css/movie-detail.css' %}">
 {% endblock %}
 {% block title %}
-    {{ movie.name }} ({{ movie.year }})
+    {{ query }}
 {% endblock %}
 {% block meta_description %}
-    {{ movie.description|striptags|truncatechars:155 }}
+    {{ query }}
 {% endblock %}
-{% block og_type %}video.movie{% endblock %}
 {% block og_title %}
-    {{ movie.name }} ({{ movie.year }}) — RAFS
+    {{ query }}
 {% endblock %}
 {% block og_description %}
-    {{ movie.description|striptags|truncatechars:200 }}
+    {{ query  }}
 {% endblock %}
 {% block og_image %}
     {% if movie.cover and movie.image_exists %}
@@ -32,11 +31,41 @@
     {% endif %}
 {% endblock %}
 {% block content %}
-{% for result in results %}
-    <div>
-        <p>
-            {{ result }}
-        </p>
-    </div>
-{% endfor %}
+    {% for result in results %}
+        {% with obj=result.content_object %}
+            {% if obj %}
+                <div class="search-item">
+                    {% if result.content_type.model == 'movie' %}
+                        <div class="movie-card">
+                            <h3>🎬 Фильм: {{ obj.translations.first.wikidata_name }}</h3>
+                            <p>{{ obj.translations.first.wikidata_description|truncatewords:20 }}</p>
+                        </div>
+
+                    
+                    {% elif result.content_type.model == 'user' %}
+                        <div class="user-card">
+                            <h3>👤 Пользователь: {{ obj.username }}</h3>
+                            <p>Дата регистрации: {{ obj.date_joined|date:"d.m.Y" }}</p>
+                        </div>
+
+                    {% elif result.content_type.model == 'review' %}
+                        <div class="review-card">
+                            <h3>✍️ Отзыв на фильм: {{ obj.movie.translations.first.wikidata_name }}</h3>
+                            <p>Автор: {{ obj.user.username }}</p>
+                            <p>{{ obj.text|truncatewords:15 }}</p>
+                        </div>
+                    {% endif %}
+                    
+                    <span class="badge">Релевантность: {{ result.similarity|floatformat:2 }}</span>
+                </div>
+            {% if obj %}
+        {% endwith %}
+
+    {% empty %}
+        <div class="nothing-was-found">
+            <p>
+                {% translate "Nothing was found" %}
+            </p>
+        </div>
+    {% endfor %}
 {% endblock %}

@@ -11,26 +11,12 @@
           href="{% static 'movies/css/components/buttons.css' %}">
     <link rel="stylesheet" href="{% static 'movies/css/movie-detail.css' %}">
 {% endblock %}
-{% block title %}
-    {{ movie.name }} ({{ movie.year }})
-{% endblock %}
-{% block meta_description %}
-    {{ movie.description|striptags|truncatechars:155 }}
-{% endblock %}
+{% block title %}{{ movie.name }}{% if movie.year %} ({{ movie.year }}){% endif %} – {% translate "Ratings and reviews" %} · RAFS{% endblock %}
+{% block meta_description %}{% if movie.description %}{{ movie.description|striptags|truncatechars:155 }}{% else %}{{ movie.name }}{% if movie.year %} ({{ movie.year }}){% endif %} – {% translate "Viewer ratings and reviews on RAFS. Share your opinion" %}{% endif %}{% endblock %}
 {% block og_type %}video.movie{% endblock %}
-{% block og_title %}
-    {{ movie.name }} ({{ movie.year }}) — RAFS
-{% endblock %}
-{% block og_description %}
-    {{ movie.description|striptags|truncatechars:200 }}
-{% endblock %}
-{% block og_image %}
-    {% if movie.cover and movie.image_exists %}
-        https://{{ request.get_host }}{{ movie.cover.url }}
-    {% else %}
-        https://rafs.app{% static 'images/rafs-preview-v3.png' %}
-    {% endif %}
-{% endblock %}
+{% block og_title %}{{ movie.name }}{% if movie.year %} ({{ movie.year }}){% endif %} – RAFS{% endblock %}
+{% block og_description %}{% if movie.description %}{{ movie.description|striptags|truncatechars:200 }}{% else %}{{ movie.name }} – {% translate "Viewer ratings and reviews on RAFS. Share your opinion" %}{% endif %}{% endblock %}
+{% block og_image %}{% if movie.cover and movie.image_exists %}https://rafs.app{{ movie.cover.url }}{% elif movie.cover_url %}{{ movie.cover_url }}{% else %}https://rafs.app{% static 'images/rafs-preview-v3.png' %}{% endif %}{% endblock %}
 {% block content %}
     <a class="btn" href="{% url 'movies:catalog' %}">← {% translate "Back to catalog" %}</a>
     <hr />

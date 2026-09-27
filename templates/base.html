@@ -1,7 +1,8 @@
 {% load static %}
 {% load i18n %}
 <!DOCTYPE html>
-<html lang="ru">
+{% get_current_language as CURRENT_LANGUAGE %}
+<html lang="{{ CURRENT_LANGUAGE }}">
     <head>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
               rel="stylesheet"
@@ -22,9 +23,6 @@
             <meta property="og:url" content="https://rafs.app{{ request.path }}">
             <meta property="og:image"
                   content="{% block og_image %}https://rafs.app{% static 'images/rafs-preview-v3.png' %}{% endblock %}">
-            <meta property="og:image:type" content="image/png">
-            <meta property="og:image:width" content="1200">
-            <meta property="og:image:height" content="630">
         {% endblock %}
         <meta name="viewport"
               content="width=device-width, user-scalable=yes, initial-scale=1.0" />
