@@ -68,7 +68,7 @@ class Movie(TranslatableModel):
 
     def __str__(self):
         if self.year:
-            return f"{self.name}, ({self.year})"
+            return f"{self.name} ({self.year})"
         else:
             return self.name
 
