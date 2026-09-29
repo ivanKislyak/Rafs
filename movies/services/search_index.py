@@ -19,7 +19,10 @@ def update_all_exist_indexes():
 
     for movie in all_movies.iterator(chunk_size=1000):
         print(movie, [(main_movie_data.wikidata_name, main_movie_data.wikidata_description) for main_movie_data in movie.translations.all()], 
-              [t.name for genre in movie.genres.all() for t in genre.translations.all()])
+              [t.name for genre in movie.genres.all() for t in genre.translations.all()],
+              [],
+              [],
+              [],)
     
     # for movie_translation in movie_translations:
     #     movie_data.append(
