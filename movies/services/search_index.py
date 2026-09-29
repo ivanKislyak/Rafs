@@ -13,16 +13,18 @@ def update_all_exist_indexes():
     movie_data = []
 
     all_movies = Movie.objects.all().prefetch_related(
-        'translations', 'genres__translations', 
+        'translations', 'type_of_work__translations',
+        'genres__translations', 'actors__translations',
         'countries__translations', 'studio__translations',
-        'type_of_work__translations')
+        )
 
     for movie in all_movies.iterator(chunk_size=1000):
-        print(movie, [(main_movie_data.wikidata_name, main_movie_data.wikidata_description) for main_movie_data in movie.translations.all()], 
-              [t.name for genre in movie.genres.all() for t in genre.translations.all()],
-              [],
-              [],
-              [],)
+        print(movie, movie.year, [(main_movie_data.wikidata_name, main_movie_data.wikidata_description) for main_movie_data in movie.translations.all()],
+              [t.name for t in movie.type_of_work.translations.all()] if movie.type_of_work else [], [t.name for genre in movie.genres.all() for t in genre.translations.all()],
+              [t.name for actor in movie.actors.all() for t in actor.translations.all()],
+              [t.name for country in movie.countries.all() for t in country.translations.all()],
+              [t.name for a_studio in movie.studio.all() for t in a_studio.translations.all()],
+             )
     
     # for movie_translation in movie_translations:
     #     movie_data.append(
