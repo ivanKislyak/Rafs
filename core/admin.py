@@ -7,10 +7,27 @@ from movies.movie_models import (
     Country, Studio,
     Person
 )
+from parler.admin import TranslatableAdmin
 
-admin.site.register(TypeOfWork)
-admin.site.register(Genre)
-admin.site.register(Country)
-admin.site.register(Studio)
-admin.site.register(Person)
+
+@admin.register(TypeOfWork)
+class GenreAdmin(TranslatableAdmin):
+    list_display = ('name', 'wikidata_id')
+
+@admin.register(Genre)
+class GenreAdmin(TranslatableAdmin):
+    list_display = ('name', 'wikidata_id')
+
+@admin.register(Country)
+class GenreAdmin(TranslatableAdmin):
+    list_display = ('name', 'wikidata_id')
+
+@admin.register(Studio)
+class GenreAdmin(TranslatableAdmin):
+    list_display = ('name', 'wikidata_id')
+
+@admin.register(Person)
+class GenreAdmin(TranslatableAdmin):
+    list_display = ('name', 'wikidata_id')
+
 
