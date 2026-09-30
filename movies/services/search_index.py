@@ -38,12 +38,17 @@ def update_all_exist_indexes():
              )
         
         movie_ids.add(movie.id)
-        
-        
+    
+    existed_movie_ids = set(
+        GlobalSearchIndex.objects.filter(
+            content_type=ContentType.objects.get_for_model(Movie),
+            object_id__in=movie_ids
+        ).values_list('object_id', flat=True)
+    )
 
-    existed_movies = GlobalSearchIndex.objects.filter(
-        content_type=ContentType.objects.get_for_model(Movie)
-        ).in_bulk(movie_ids, field_name='object_id')
+    new_movie_ids = movie_ids - existed_movie_ids
+    new_movies = Movie.objects.filter(id__in=new_movie_ids)
     
     print(movie_data)
-    print('existed_movies:', existed_movies)
+    print('new_movie_ids:', new_movie_ids)
+    print('movies to add: ', new_movies)
