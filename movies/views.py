@@ -7,10 +7,12 @@ from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
+from django.core.exceptions import PermissionDenied
 from django.contrib.postgres.aggregates import StringAgg
-from django.db.models import Avg, F, Count, Value, CharField
+from django.db.models import Avg, F, Count, Value, CharField, Prefetch
 from django.db.models.functions import Greatest
 from django.http import JsonResponse
+from django.urls import reverse
 from django.views.decorators.http import require_POST
 from django.http import HttpResponse
 from requests import RequestException
@@ -22,7 +24,7 @@ from .forms import (
     WikidataSearchForm
     )
 from .models import (
-    Movie, Review, 
+    Movie, Review, ReviewReply,
     ReviewVote, Genre, 
     Person, WatchStatus,
     GlobalSearchIndex,
@@ -67,11 +69,15 @@ def catalog(request):
 
 def movie_detail(request, movie_id):
     movie = get_object_or_404(Movie, pk=movie_id)
+    replies = ReviewReply.objects.select_related("user").order_by("created_at")
     reviews = list(
         Review.objects.filter(movie=movie)
         .exclude(text="")
         .select_related("user")
-        .prefetch_related("votes")
+        .prefetch_related(
+            "votes",
+            Prefetch("replies", queryset=replies, to_attr="loaded_replies"),
+        )
     )
     user_already_rated_this = False
     watch_status = False
@@ -99,12 +105,18 @@ def movie_detail(request, movie_id):
         user_already_rated_this = Review.objects.filter(movie=movie, user=request.user).first()
         watch_status = WatchStatus.objects.filter(movie=movie, user=request.user).first()
 
+    try:
+        open_replies_id = int(request.GET.get("replies", ""))
+    except (TypeError, ValueError):
+        open_replies_id = None
+
     return render(request, "movies/movie_detail.html",
                   {"movie": movie, 
                    "reviews": reviews,
                    "user_already_rated_this": user_already_rated_this,
                    "watch_status_model": WatchStatus,
-                   "watch_status": watch_status})
+                   "watch_status": watch_status,
+                   "open_replies_id": open_replies_id})
 
 @login_required
 def make_review_form(request, movie_id):
@@ -263,11 +275,32 @@ def set_movie_status(request):
 @login_required
 @require_POST
 def delete_review(request, review_id):
-    review = get_object_or_404(Review, id=review_id, user=request.user)
+    review = get_object_or_404(Review, id=review_id)
+    if review.user_id != request.user.id and not request.user.is_superuser:
+        raise PermissionDenied
+
     movie_id = review.movie_id
 
     review.delete()
     return redirect("movies:detail", movie_id=movie_id)
+
+
+@login_required
+@require_POST
+def delete_reply(request, reply_id):
+    reply = get_object_or_404(
+        ReviewReply.objects.select_related("review"),
+        id=reply_id,
+    )
+    if reply.user_id != request.user.id and not request.user.is_superuser:
+        raise PermissionDenied
+
+    review_id = reply.review_id
+    movie_id = reply.review.movie_id
+    reply.delete()
+
+    detail_url = reverse("movies:detail", kwargs={"movie_id": movie_id})
+    return redirect(f"{detail_url}?replies={review_id}#review-{review_id}")
 
 @login_required
 @require_POST
@@ -284,7 +317,8 @@ def reply_review(request, review_id):
     else:
         messages.error(request, "Ответ не может быть пустым")
 
-    return redirect("movies:detail", movie_id=review.movie_id)
+    detail_url = reverse("movies:detail", kwargs={"movie_id": review.movie_id})
+    return redirect(f"{detail_url}?replies={review.id}#review-{review.id}")
 
 @staff_member_required
 def wikidata_search(request):

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: RAFS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-27 10:23+0500\n"
+"POT-Creation-Date: 2026-10-01 12:11+0500\n"
 "PO-Revision-Date: 2026-09-13 17:00+0500\n"
 "Last-Translator: RAFS contributors\n"
 "Language-Team: German\n"
@@ -17,28 +17,206 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\accounts\models.py:15
+#: .\accounts\forms.py:41
+msgid "The image must be smaller than 12 MB."
+msgstr "Das Bild muss kleiner als 12 MB sein."
+
+#: .\accounts\forms.py:54
+msgid "Upload a valid image file."
+msgstr "Lade eine gültige Bilddatei hoch."
+
+#: .\accounts\forms.py:66
+#: .\accounts\templates\accounts\moderation_application.html:23
+msgid "Contact email"
+msgstr "Kontakt-E-Mail"
+
+#: .\accounts\models.py:18
 msgid "email address"
 msgstr "E-Mail-Adresse"
 
-#: .\accounts\models.py:30
+#: .\accounts\models.py:33
 msgid "Male"
 msgstr "Männlich"
 
-#: .\accounts\models.py:31
+#: .\accounts\models.py:34
 msgid "Female"
 msgstr "Weiblich"
 
-#: .\accounts\models.py:32
+#: .\accounts\models.py:35
 msgid "Other"
 msgstr "Andere"
 
-#: .\accounts\templates\accounts\profile.html:5 .\templates\_header.html:160
+#: .\accounts\templates\accounts\moderation_application.html:5
+#: .\accounts\templates\accounts\moderation_application.html:15
+msgid "Moderation application"
+msgstr "Bewerbung als Moderator"
+
+#: .\accounts\templates\accounts\moderation_application.html:14
+msgid "RAFS team"
+msgstr "RAFS-Team"
+
+#: .\accounts\templates\accounts\moderation_application.html:19
+msgid "Application already submitted"
+msgstr "Bewerbung bereits eingereicht"
+
+#: .\accounts\templates\accounts\moderation_application.html:20
+msgid "Your application has already been submitted. Please wait for it to be accepted."
+msgstr "Deine Bewerbung wurde bereits eingereicht. Bitte warte, bis sie angenommen wird."
+
+#: .\accounts\templates\accounts\moderation_application.html:27
+msgid "Submitted"
+msgstr "Eingereicht"
+
+#: .\accounts\templates\accounts\moderation_application.html:34
+msgid "Enter a real email address where the RAFS team can contact you. You can submit this application only once."
+msgstr "Gib eine echte E-Mail-Adresse an, unter der dich das RAFS-Team erreichen kann. Du kannst diese Bewerbung nur einmal einreichen."
+
+#: .\accounts\templates\accounts\moderation_application.html:44
+msgid "Submit application"
+msgstr "Bewerbung einreichen"
+
+#: .\accounts\templates\accounts\moderation_application.html:50
+msgid "Back to profile"
+msgstr "Zurück zum Profil"
+
+#: .\accounts\templates\accounts\moderation_applications_admin.html:5
+#: .\accounts\templates\accounts\moderation_applications_admin.html:16
+msgid "Moderation applications"
+msgstr "Moderationsbewerbungen"
+
+#: .\accounts\templates\accounts\moderation_applications_admin.html:15
+msgid "Administration"
+msgstr "Verwaltung"
+
+#: .\accounts\templates\accounts\moderation_applications_admin.html:28
+#: .\accounts\templates\accounts\moderation_applications_admin.html:32
+#: .\accounts\templates\accounts\profile.html:19
+#: .\accounts\templates\accounts\profile.html:23 .\templates\_header.html:150
+#: .\templates\_header.html:154
+msgid "Avatar of user"
+msgstr "Avatar des Nutzers"
+
+#: .\accounts\templates\accounts\moderation_applications_admin.html:43
+msgid "Application actions"
+msgstr "Bewerbungsaktionen"
+
+#: .\accounts\templates\accounts\moderation_applications_admin.html:45
+msgid "Approve"
+msgstr "Annehmen"
+
+#: .\accounts\templates\accounts\moderation_applications_admin.html:48
+msgid "Reject"
+msgstr "Ablehnen"
+
+#: .\accounts\templates\accounts\moderation_applications_admin.html:56
+msgid "No applications yet"
+msgstr "Noch keine Bewerbungen"
+
+#: .\accounts\templates\accounts\moderation_applications_admin.html:57
+msgid "New moderation applications will appear on this page."
+msgstr "Neue Moderationsbewerbungen werden auf dieser Seite angezeigt."
+
+#: .\accounts\templates\accounts\profile.html:6 .\templates\_header.html:160
 msgid "Profile"
 msgstr "Profil"
 
+#: .\accounts\templates\accounts\profile.html:28
+msgid "Change avatar"
+msgstr "Avatar ändern"
+
+#: .\accounts\templates\accounts\profile.html:34
+msgid "Choose an image"
+msgstr "Bild auswählen"
+
+#: .\accounts\templates\accounts\profile.html:38
+msgid "The image will be resized and converted to PNG. Maximum size: 12 MB."
+msgstr "Das Bild wird verkleinert und in PNG konvertiert. Maximale Größe: 12 MB."
+
+#: .\accounts\templates\accounts\profile.html:42
+msgid "Upload"
+msgstr "Hochladen"
+
+#: .\accounts\templates\accounts\profile.html:50
+msgid "Remove"
+msgstr "Entfernen"
+
+#: .\accounts\templates\accounts\profile.html:62
+msgid "RAFS profile"
+msgstr "RAFS-Profil"
+
+#: .\accounts\templates\accounts\profile.html:65
+msgid "User role"
+msgstr "Benutzerrolle"
+
+#: .\accounts\templates\accounts\profile.html:70 .\templates\_header.html:165
+msgid "Level"
+msgstr "Level"
+
+#: .\accounts\templates\accounts\profile.html:74 .\templates\_header.html:171
+msgid "Frames"
+msgstr "Frames"
+
+#: .\accounts\templates\accounts\profile.html:78
+msgid "Joined"
+msgstr "Registriert seit"
+
+#: .\accounts\templates\accounts\profile.html:83
+#: .\accounts\templates\accounts\register.html:27
+msgid "Email"
+msgstr "E-Mail"
+
+#: .\accounts\templates\accounts\profile.html:93
+msgid "Apply for moderation"
+msgstr "Als Moderator bewerben"
+
+#: .\accounts\templates\accounts\profile.html:98
+msgid "View applications"
+msgstr "Bewerbungen ansehen"
+
+#: .\accounts\templates\accounts\profile.html:109
+msgid "Activity"
+msgstr "Aktivität"
+
+#: .\accounts\templates\accounts\profile.html:110
+msgid "Community contribution"
+msgstr "Beitrag zur Community"
+
+#: .\accounts\templates\accounts\profile.html:116
+#: .\movies\templates\movies\movie_detail.html:76
+#: .\movies\templates\movies\reviews.html:5 .\templates\_header.html:25
+msgid "Reviews"
+msgstr "Rezensionen"
+
+#: .\accounts\templates\accounts\profile.html:120
+msgid "Replies"
+msgstr "Antworten"
+
+#: .\accounts\templates\accounts\profile.html:128
+msgid "Library"
+msgstr "Bibliothek"
+
+#: .\accounts\templates\accounts\profile.html:129
+msgid "Watch statuses"
+msgstr "Wiedergabestatus"
+
+#: .\accounts\templates\accounts\profile.html:145
+msgid "Progress"
+msgstr "Fortschritt"
+
+#: .\accounts\templates\accounts\profile.html:146
+msgid "Achievements"
+msgstr "Erfolge"
+
+#: .\accounts\templates\accounts\profile.html:169
+msgid "No achievements yet"
+msgstr "Noch keine Erfolge"
+
+#: .\accounts\templates\accounts\profile.html:170
+msgid "They will appear here as the user participates in RAFS."
+msgstr "Sie erscheinen hier, wenn der Nutzer an RAFS teilnimmt."
+
 #: .\accounts\templates\accounts\register.html:5
-#: .\accounts\templates\accounts\register.html:55 .\templates\_header.html:237
+#: .\accounts\templates\accounts\register.html:55 .\templates\_header.html:256
 #: .\templates\registration\login.html:43
 msgid "Sign up"
 msgstr "Registrieren"
@@ -56,10 +234,6 @@ msgstr "Bewerte Filme, schreibe Rezensionen und baue deinen Wiedergabeverlauf au
 #: .\templates\registration\login.html:25
 msgid "Username"
 msgstr "Benutzername"
-
-#: .\accounts\templates\accounts\register.html:27
-msgid "Email"
-msgstr "E-Mail"
 
 #: .\accounts\templates\accounts\register.html:29
 #: .\templates\registration\login.html:27
@@ -86,10 +260,30 @@ msgstr "Gib dasselbe Passwort noch einmal ein."
 msgid "Already have an account?"
 msgstr "Du hast bereits ein Konto?"
 
-#: .\accounts\templates\accounts\register.html:57 .\templates\_header.html:235
+#: .\accounts\templates\accounts\register.html:57 .\templates\_header.html:254
 #: .\templates\registration\login.html:41
 msgid "Log in"
 msgstr "Anmelden"
+
+#: .\accounts\views.py:72
+msgid "Newcomer"
+msgstr "Neuling"
+
+#: .\accounts\views.py:90
+msgid "Avatar removed."
+msgstr "Avatar entfernt."
+
+#: .\accounts\views.py:100
+msgid "Avatar updated."
+msgstr "Avatar aktualisiert."
+
+#: .\accounts\views.py:107
+msgid "Could not update the avatar."
+msgstr "Der Avatar konnte nicht aktualisiert werden."
+
+#: .\accounts\views.py:122
+msgid "Your application has been sent."
+msgstr "Deine Bewerbung wurde eingereicht."
 
 #: .\config\settings.py:163
 msgid "English"
@@ -220,7 +414,7 @@ msgid "It may already be waiting for you in the catalog."
 msgstr "Vielleicht wartet er bereits im Katalog auf dich."
 
 #: .\core\templates\core\about_site.html:92
-#: .\movies\templates\movies\catalog.html:19
+#: .\movies\templates\movies\catalog.html:20
 msgid "Find a movie"
 msgstr "Film finden"
 
@@ -278,29 +472,34 @@ msgstr "EMPFOHLEN!"
 msgid "Not rated yet"
 msgstr "Noch nicht bewertet"
 
-#: .\movies\templates\movies\catalog.html:5 .\templates\_footer.html:19
-#: .\templates\_header.html:21
-msgid "Catalog"
-msgstr "Katalog"
+#: .\movies\templates\movies\catalog.html:4
+#: .\movies\templates\movies\catalog.html:6
+msgid "Movie catalog"
+msgstr "Filmkatalog"
 
-#: .\movies\templates\movies\catalog.html:18
+#: .\movies\templates\movies\catalog.html:5
+#: .\movies\templates\movies\catalog.html:7
+msgid "Explore the RAFS catalog: filter movies, compare viewer ratings, and read reviews"
+msgstr "Entdecke den RAFS-Katalog: Filtere Filme, vergleiche Zuschauerbewertungen und lies Rezensionen"
+
+#: .\movies\templates\movies\catalog.html:19
 msgid "Search the catalog"
 msgstr "Katalog durchsuchen"
 
-#: .\movies\templates\movies\catalog.html:22
+#: .\movies\templates\movies\catalog.html:23
 #: .\movies\templates\movies\wd_search_form.html:82
 msgid "Found:"
 msgstr "Gefunden:"
 
-#: .\movies\templates\movies\catalog.html:41 .\templates\_header.html:60
+#: .\movies\templates\movies\catalog.html:42 .\templates\_header.html:60
 msgid "Find"
 msgstr "Finden"
 
-#: .\movies\templates\movies\catalog.html:42
+#: .\movies\templates\movies\catalog.html:43
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: .\movies\templates\movies\catalog.html:52
+#: .\movies\templates\movies\catalog.html:53
 msgid "There are no movies. You might want to refresh the catalog later"
 msgstr "Noch keine Filme vorhanden. Schau später noch einmal in den Katalog"
 
@@ -336,11 +535,6 @@ msgstr "Jahr:"
 #: .\movies\templates\movies\movie_detail.html:54
 msgid "Rating:"
 msgstr "Bewertung:"
-
-#: .\movies\templates\movies\movie_detail.html:76
-#: .\movies\templates\movies\reviews.html:5 .\templates\_header.html:25
-msgid "Reviews"
-msgstr "Rezensionen"
 
 #: .\movies\templates\movies\movie_detail.html:98
 msgid "Contains spoilers"
@@ -452,7 +646,7 @@ msgstr "Rezension veröffentlichen"
 msgid "out of 10"
 msgstr "von 10"
 
-#: .\movies\templates\movies\search_results.html:68
+#: .\movies\templates\movies\search_results.html:67
 msgid "Nothing was found"
 msgstr "Nichts gefunden"
 
@@ -560,7 +754,11 @@ msgstr "Finde etwas, das deinem Geschmack entspricht!"
 msgid "Navigation"
 msgstr "Navigation"
 
-#: .\templates\_footer.html:20 .\templates\_header.html:217
+#: .\templates\_footer.html:19 .\templates\_header.html:21
+msgid "Catalog"
+msgstr "Katalog"
+
+#: .\templates\_footer.html:20 .\templates\_header.html:236
 msgid "About"
 msgstr "Über RAFS"
 
@@ -612,31 +810,27 @@ msgstr "Konto"
 msgid "Open profile menu"
 msgstr "Profilmenü öffnen"
 
-#: .\templates\_header.html:150 .\templates\_header.html:154
-msgid "Avatar of user"
-msgstr "Avatar des Nutzers"
-
 #: .\templates\_header.html:164
 msgid "Your current level"
 msgstr "Dein aktuelles Level"
-
-#: .\templates\_header.html:165
-msgid "Level"
-msgstr "Level"
 
 #: .\templates\_header.html:170
 msgid "Frames are your experience points"
 msgstr "Frames sind deine Erfahrungspunkte"
 
-#: .\templates\_header.html:171
-msgid "Frames"
-msgstr "Frames"
-
-#: .\templates\_header.html:183
+#: .\templates\_header.html:184
 msgid "Open profile"
 msgstr "Profil öffnen"
 
-#: .\templates\_header.html:228
+#: .\templates\_header.html:221 .\templates\_header.html:234
+msgid "Light theme"
+msgstr "Helles Design"
+
+#: .\templates\_header.html:222
+msgid "Dark theme"
+msgstr "Dunkles Design"
+
+#: .\templates\_header.html:247
 msgid "Log out"
 msgstr "Abmelden"
 
@@ -652,15 +846,15 @@ msgstr "RAFS – Filmbewertungen und Rezensionen"
 msgid "Rate movies, post reviews, and find movies that suit your taste"
 msgstr "Bewerte Filme, veröffentliche Rezensionen und finde Filme nach deinem Geschmack"
 
-#: .\templates\base.html:65
+#: .\templates\base.html:66
 msgid "Awarded"
 msgstr "Gutgeschrieben"
 
-#: .\templates\base.html:67
+#: .\templates\base.html:68
 msgid "For a New Review"
 msgstr "Für eine neue Rezension"
 
-#: .\templates\base.html:77
+#: .\templates\base.html:78
 msgid "Close notification"
 msgstr "Benachrichtigung schließen"
 

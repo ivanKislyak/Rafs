@@ -79,19 +79,33 @@
         </form>
         {% if reviews %}
             {% for review in reviews %}
-                <article class="review-comment">
+                <article class="review-comment" id="review-{{ review.id }}">
                     <div class="review-comment-header">
                         <div class="review-comment-author-block">
-                            {% if review.user.avatar_image %}
-                                <img class="review-comment-avatar"
-                                     src="{{ review.user.avatar_image.url }}"
-                                     alt="{{ review.user.username }}">
+                            {% if review.user.is_deleted %}
+                                <span class="review-comment-avatar-link" aria-hidden="true">
+                                    <img class="review-comment-avatar"
+                                         src="{% static 'images/default_profile_img.png' %}"
+                                         alt="">
+                                </span>
+                                <span class="review-comment-author">{% translate "Deleted user" %}</span>
                             {% else %}
-                                <img class="review-comment-avatar"
-                                     src="{% static 'images/default_profile_img.png' %}"
-                                     alt="{{ review.user.username }}">
+                                <a class="review-comment-avatar-link"
+                                   href="{% url 'accounts:profile' review.user.username %}"
+                                   aria-label="{% translate 'Open user profile' %}: {{ review.user.username }}">
+                                    {% if review.user.avatar_image %}
+                                        <img class="review-comment-avatar"
+                                             src="{{ review.user.avatar_image.url }}"
+                                             alt="{{ review.user.username }}">
+                                    {% else %}
+                                        <img class="review-comment-avatar"
+                                             src="{% static 'images/default_profile_img.png' %}"
+                                             alt="{{ review.user.username }}">
+                                    {% endif %}
+                                </a>
+                                <a class="review-comment-author"
+                                   href="{% url 'accounts:profile' review.user.username %}">{{ review.user.username }}</a>
                             {% endif %}
-                            <span class="review-comment-author">{{ review.user.username }}</span>
                             <div class="review-comment-meta">
                                 <span class="review-comment-rating">{{ review.avg_rating }}</span>
                                 {% if review.contains_spoiler %}
@@ -162,7 +176,7 @@
                                 <span>{% translate "Reply" %}</span>
                             </button>
                         {% endif %}
-                        {% if review.user == request.user %}
+                        {% if review.user == request.user or request.user.is_superuser %}
                             <form class="review-delete-form"
                                   method="post"
                                   action="{% url 'movies:delete_review' review.id %}">
@@ -170,7 +184,10 @@
                                 <input type="hidden" name="action" value="yes">
                                 <button class="review-action-button review-delete-button"
                                         type="button"
-                                        data-delete-review-trigger>
+                                        data-delete-review-trigger
+                                        data-delete-kicker="{% translate 'Delete review' %}"
+                                        data-delete-title="{% translate 'Are you sure you want to delete it?' %}"
+                                        data-delete-description="{% translate 'The review will be removed from the site. This action cannot be undone after confirmation.' %}">
                                     <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                                         <path d="M4 7h16"></path>
                                         <path d="m9 7 1-2h4l1 2"></path>
@@ -183,6 +200,79 @@
                         {% endif %}
                         <span class="review-vote-status" aria-live="polite"></span>
                     </div>
+                    {% if review.loaded_replies %}
+                        <div class="review-replies">
+                            <button class="review-replies-toggle"
+                                    type="button"
+                                    data-replies-toggle
+                                    aria-controls="review-replies-{{ review.id }}"
+                                    aria-expanded="{% if open_replies_id == review.id %}true{% else %}false{% endif %}">
+                                <span data-replies-show {% if open_replies_id == review.id %}hidden{% endif %}>
+                                    {% translate "Show replies" %} · {{ review.loaded_replies|length }}
+                                </span>
+                                <span data-replies-hide {% if open_replies_id != review.id %}hidden{% endif %}>
+                                    {% translate "Hide replies" %}
+                                </span>
+                            </button>
+                            <div class="review-replies-list"
+                                 id="review-replies-{{ review.id }}"
+                                 {% if open_replies_id != review.id %}hidden{% endif %}>
+                                {% for reply in review.loaded_replies %}
+                                    <article class="review-reply">
+                                        <div class="review-reply-header">
+                                            {% if reply.user.is_deleted %}
+                                                <span class="review-reply-avatar-link" aria-hidden="true">
+                                                    <img class="review-reply-avatar"
+                                                         src="{% static 'images/default_profile_img.png' %}"
+                                                         alt="">
+                                                </span>
+                                                <span class="review-reply-author">{% translate "Deleted user" %}</span>
+                                            {% else %}
+                                                <a class="review-reply-avatar-link"
+                                                   href="{% url 'accounts:profile' reply.user.username %}"
+                                                   aria-label="{% translate 'Open user profile' %}: {{ reply.user.username }}">
+                                                    {% if reply.user.avatar_image %}
+                                                        <img class="review-reply-avatar"
+                                                             src="{{ reply.user.avatar_image.url }}"
+                                                             alt="{{ reply.user.username }}">
+                                                    {% else %}
+                                                        <img class="review-reply-avatar"
+                                                             src="{% static 'images/default_profile_img.png' %}"
+                                                             alt="{{ reply.user.username }}">
+                                                    {% endif %}
+                                                </a>
+                                                <a class="review-reply-author"
+                                                   href="{% url 'accounts:profile' reply.user.username %}">{{ reply.user.username }}</a>
+                                            {% endif %}
+                                            <time class="review-reply-date"
+                                                  datetime="{{ reply.created_at|date:'c' }}">{{ reply.created_at|naturaltime }}</time>
+                                            {% if reply.user == request.user or request.user.is_superuser %}
+                                                <form class="review-delete-form review-reply-delete-form"
+                                                      method="post"
+                                                      action="{% url 'movies:delete_reply' reply.id %}">
+                                                    {% csrf_token %}
+                                                    <button class="review-reply-delete"
+                                                            type="button"
+                                                            data-delete-review-trigger
+                                                            data-delete-kicker="{% translate 'Delete reply' %}"
+                                                            data-delete-title="{% translate 'Are you sure you want to delete this reply?' %}"
+                                                            data-delete-description="{% translate 'The reply will be removed from the site. This action cannot be undone after confirmation.' %}"
+                                                            aria-label="{% translate 'Delete reply' %}">
+                                                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                                            <path d="M4 7h16"></path>
+                                                            <path d="m9 7 1-2h4l1 2"></path>
+                                                            <path d="m7 7 1 13h8l1-13"></path>
+                                                        </svg>
+                                                    </button>
+                                                </form>
+                                            {% endif %}
+                                        </div>
+                                        <p class="review-reply-text">{{ reply.text }}</p>
+                                    </article>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
                     <div class="review-reply-container"
                          id="review-action-{{ review.id }}"
                          data-review-id="{{ review.id }}"></div>
@@ -207,11 +297,13 @@
                     </svg>
                 </span>
                 <div>
-                    <span class="review-delete-dialog-kicker">{% translate "Delete review" %}</span>
-                    <h3 id="review-delete-dialog-title">{% translate "Are you sure you want to delete it?" %}</h3>
+                    <span class="review-delete-dialog-kicker"
+                          data-delete-dialog-kicker>{% translate "Delete review" %}</span>
+                    <h3 id="review-delete-dialog-title"
+                        data-delete-dialog-title>{% translate "Are you sure you want to delete it?" %}</h3>
                 </div>
             </div>
-            <p id="review-delete-dialog-description">
+            <p id="review-delete-dialog-description" data-delete-dialog-description>
                 {% translate "The review will be removed from the site. This action cannot be undone after confirmation." %}
             </p>
             <div class="review-delete-dialog-actions">
@@ -306,6 +398,18 @@
         });
     </script>
     <script>
+        document.querySelectorAll("[data-replies-toggle]").forEach((toggle) => {
+            toggle.addEventListener("click", () => {
+                const replies = document.getElementById(toggle.getAttribute("aria-controls"));
+                const willOpen = toggle.getAttribute("aria-expanded") !== "true";
+
+                toggle.setAttribute("aria-expanded", String(willOpen));
+                replies.hidden = !willOpen;
+                toggle.querySelector("[data-replies-show]").hidden = willOpen;
+                toggle.querySelector("[data-replies-hide]").hidden = !willOpen;
+            });
+        });
+
         function hideReplyForm(reviewId) {
             const container = document.getElementById(`review-action-${reviewId}`);
             const trigger = document.querySelector(`[data-reply-for="${reviewId}"]`);
@@ -352,6 +456,15 @@
         const reviewDeleteConfirm = reviewDeleteDialog.querySelector(
             "[data-delete-review-confirm]"
         );
+        const reviewDeleteKicker = reviewDeleteDialog.querySelector(
+            "[data-delete-dialog-kicker]"
+        );
+        const reviewDeleteTitle = reviewDeleteDialog.querySelector(
+            "[data-delete-dialog-title]"
+        );
+        const reviewDeleteDescription = reviewDeleteDialog.querySelector(
+            "[data-delete-dialog-description]"
+        );
         let pendingReviewDeleteForm = null;
         let pendingReviewDeleteTrigger = null;
 
@@ -367,6 +480,9 @@
             trigger.addEventListener("click", () => {
                 pendingReviewDeleteForm = trigger.closest(".review-delete-form");
                 pendingReviewDeleteTrigger = trigger;
+                reviewDeleteKicker.textContent = trigger.dataset.deleteKicker;
+                reviewDeleteTitle.textContent = trigger.dataset.deleteTitle;
+                reviewDeleteDescription.textContent = trigger.dataset.deleteDescription;
 
                 if (typeof reviewDeleteDialog.showModal === "function") {
                     reviewDeleteDialog.showModal();

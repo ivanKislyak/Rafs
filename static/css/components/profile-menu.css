@@ -148,10 +148,44 @@
 }
 
 .header-profile-menu .header-open-profile-page,
+.header-profile-menu .header-theme-toggle,
 .header-profile-menu .header-logout-button {
   width: 100%;
   min-height: 36px;
   margin: 0;
+}
+
+.header-profile-menu .header-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 13px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background-color: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+}
+
+.header-profile-menu .header-theme-toggle:hover {
+  border-color: var(--color-border);
+  background-color: var(--color-surface-hover);
+  color: var(--color-text);
+}
+
+.theme-icon-moon {
+  display: none;
+}
+
+[data-theme="light"] .theme-icon-sun {
+  display: none;
+}
+
+[data-theme="light"] .theme-icon-moon {
+  display: block;
 }
 
 .header-profile-menu .header-open-profile-page {
@@ -180,6 +214,7 @@
 }
 
 .header-profile-menu .header-open-profile-page:focus-visible,
+.header-profile-menu .header-theme-toggle:focus-visible,
 .header-profile-menu .header-logout-button:focus-visible {
   outline: 3px solid var(--color-focus-visible-outline);
   outline-offset: 2px;
