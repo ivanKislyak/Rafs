@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: RAFS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-01 12:11+0500\n"
+"POT-Creation-Date: 2026-10-03 13:08+0500\n"
 "PO-Revision-Date: 2026-09-13 17:00+0500\n"
 "Last-Translator: RAFS contributors\n"
 "Language-Team: German\n"
@@ -26,48 +26,48 @@ msgid "Upload a valid image file."
 msgstr "Lade eine gültige Bilddatei hoch."
 
 #: .\accounts\forms.py:66
-#: .\accounts\templates\accounts\moderation_application.html:23
+#: .\accounts\templates\accounts\moderation_application.html:20
 msgid "Contact email"
 msgstr "Kontakt-E-Mail"
 
-#: .\accounts\models.py:18
+#: .\accounts\models.py:15
 msgid "email address"
 msgstr "E-Mail-Adresse"
 
-#: .\accounts\models.py:33
+#: .\accounts\models.py:30
 msgid "Male"
 msgstr "Männlich"
 
-#: .\accounts\models.py:34
+#: .\accounts\models.py:31
 msgid "Female"
 msgstr "Weiblich"
 
-#: .\accounts\models.py:35
+#: .\accounts\models.py:32
 msgid "Other"
 msgstr "Andere"
 
-#: .\accounts\templates\accounts\moderation_application.html:5
-#: .\accounts\templates\accounts\moderation_application.html:15
+#: .\accounts\templates\accounts\moderation_application.html:4
+#: .\accounts\templates\accounts\moderation_application.html:13
 msgid "Moderation application"
 msgstr "Bewerbung als Moderator"
 
-#: .\accounts\templates\accounts\moderation_application.html:14
+#: .\accounts\templates\accounts\moderation_application.html:12
 msgid "RAFS team"
 msgstr "RAFS-Team"
 
-#: .\accounts\templates\accounts\moderation_application.html:19
+#: .\accounts\templates\accounts\moderation_application.html:16
 msgid "Application already submitted"
 msgstr "Bewerbung bereits eingereicht"
 
-#: .\accounts\templates\accounts\moderation_application.html:20
+#: .\accounts\templates\accounts\moderation_application.html:17
 msgid "Your application has already been submitted. Please wait for it to be accepted."
 msgstr "Deine Bewerbung wurde bereits eingereicht. Bitte warte, bis sie angenommen wird."
 
-#: .\accounts\templates\accounts\moderation_application.html:27
+#: .\accounts\templates\accounts\moderation_application.html:26
 msgid "Submitted"
 msgstr "Eingereicht"
 
-#: .\accounts\templates\accounts\moderation_application.html:34
+#: .\accounts\templates\accounts\moderation_application.html:35
 msgid "Enter a real email address where the RAFS team can contact you. You can submit this application only once."
 msgstr "Gib eine echte E-Mail-Adresse an, unter der dich das RAFS-Team erreichen kann. Du kannst diese Bewerbung nur einmal einreichen."
 
@@ -75,143 +75,182 @@ msgstr "Gib eine echte E-Mail-Adresse an, unter der dich das RAFS-Team erreichen
 msgid "Submit application"
 msgstr "Bewerbung einreichen"
 
-#: .\accounts\templates\accounts\moderation_application.html:50
+#: .\accounts\templates\accounts\moderation_application.html:48
 msgid "Back to profile"
 msgstr "Zurück zum Profil"
 
-#: .\accounts\templates\accounts\moderation_applications_admin.html:5
-#: .\accounts\templates\accounts\moderation_applications_admin.html:16
+#: .\accounts\templates\accounts\moderation_applications_admin.html:4
+#: .\accounts\templates\accounts\moderation_applications_admin.html:13
 msgid "Moderation applications"
 msgstr "Moderationsbewerbungen"
 
-#: .\accounts\templates\accounts\moderation_applications_admin.html:15
+#: .\accounts\templates\accounts\moderation_applications_admin.html:12
 msgid "Administration"
 msgstr "Verwaltung"
 
+#: .\accounts\templates\accounts\moderation_applications_admin.html:24
 #: .\accounts\templates\accounts\moderation_applications_admin.html:28
-#: .\accounts\templates\accounts\moderation_applications_admin.html:32
-#: .\accounts\templates\accounts\profile.html:19
-#: .\accounts\templates\accounts\profile.html:23 .\templates\_header.html:150
+#: .\accounts\templates\accounts\profile.html:16
+#: .\accounts\templates\accounts\profile.html:20 .\templates\_header.html:150
 #: .\templates\_header.html:154
 msgid "Avatar of user"
 msgstr "Avatar des Nutzers"
 
-#: .\accounts\templates\accounts\moderation_applications_admin.html:43
+#: .\accounts\templates\accounts\moderation_applications_admin.html:38
 msgid "Application actions"
 msgstr "Bewerbungsaktionen"
 
-#: .\accounts\templates\accounts\moderation_applications_admin.html:45
+#: .\accounts\templates\accounts\moderation_applications_admin.html:39
 msgid "Approve"
 msgstr "Annehmen"
 
-#: .\accounts\templates\accounts\moderation_applications_admin.html:48
+#: .\accounts\templates\accounts\moderation_applications_admin.html:40
 msgid "Reject"
 msgstr "Ablehnen"
 
-#: .\accounts\templates\accounts\moderation_applications_admin.html:56
+#: .\accounts\templates\accounts\moderation_applications_admin.html:47
 msgid "No applications yet"
 msgstr "Noch keine Bewerbungen"
 
-#: .\accounts\templates\accounts\moderation_applications_admin.html:57
+#: .\accounts\templates\accounts\moderation_applications_admin.html:48
 msgid "New moderation applications will appear on this page."
 msgstr "Neue Moderationsbewerbungen werden auf dieser Seite angezeigt."
 
-#: .\accounts\templates\accounts\profile.html:6 .\templates\_header.html:160
+#: .\accounts\templates\accounts\profile.html:5 .\templates\_header.html:160
 msgid "Profile"
 msgstr "Profil"
 
-#: .\accounts\templates\accounts\profile.html:28
+#: .\accounts\templates\accounts\profile.html:24
 msgid "Change avatar"
 msgstr "Avatar ändern"
 
-#: .\accounts\templates\accounts\profile.html:34
+#: .\accounts\templates\accounts\profile.html:31
 msgid "Choose an image"
 msgstr "Bild auswählen"
 
-#: .\accounts\templates\accounts\profile.html:38
+#: .\accounts\templates\accounts\profile.html:34
 msgid "The image will be resized and converted to PNG. Maximum size: 12 MB."
 msgstr "Das Bild wird verkleinert und in PNG konvertiert. Maximale Größe: 12 MB."
 
-#: .\accounts\templates\accounts\profile.html:42
+#: .\accounts\templates\accounts\profile.html:36
 msgid "Upload"
 msgstr "Hochladen"
 
-#: .\accounts\templates\accounts\profile.html:50
+#: .\accounts\templates\accounts\profile.html:42
 msgid "Remove"
 msgstr "Entfernen"
 
-#: .\accounts\templates\accounts\profile.html:62
+#: .\accounts\templates\accounts\profile.html:52
 msgid "RAFS profile"
 msgstr "RAFS-Profil"
 
-#: .\accounts\templates\accounts\profile.html:65
+#: .\accounts\templates\accounts\profile.html:55
 msgid "User role"
 msgstr "Benutzerrolle"
 
-#: .\accounts\templates\accounts\profile.html:70 .\templates\_header.html:165
+#: .\accounts\templates\accounts\profile.html:59 .\templates\_header.html:165
 msgid "Level"
 msgstr "Level"
 
-#: .\accounts\templates\accounts\profile.html:74 .\templates\_header.html:171
+#: .\accounts\templates\accounts\profile.html:65 .\templates\_header.html:171
 msgid "Frames"
 msgstr "Frames"
 
-#: .\accounts\templates\accounts\profile.html:78
+#: .\accounts\templates\accounts\profile.html:71
 msgid "Joined"
 msgstr "Registriert seit"
 
-#: .\accounts\templates\accounts\profile.html:83
+#: .\accounts\templates\accounts\profile.html:78
 #: .\accounts\templates\accounts\register.html:27
 msgid "Email"
 msgstr "E-Mail"
 
-#: .\accounts\templates\accounts\profile.html:93
+#: .\accounts\templates\accounts\profile.html:89
 msgid "Apply for moderation"
 msgstr "Als Moderator bewerben"
 
-#: .\accounts\templates\accounts\profile.html:98
+#: .\accounts\templates\accounts\profile.html:94
 msgid "View applications"
 msgstr "Bewerbungen ansehen"
 
-#: .\accounts\templates\accounts\profile.html:109
+#: .\accounts\templates\accounts\profile.html:104
 msgid "Activity"
 msgstr "Aktivität"
 
-#: .\accounts\templates\accounts\profile.html:110
+#: .\accounts\templates\accounts\profile.html:105
 msgid "Community contribution"
 msgstr "Beitrag zur Community"
 
-#: .\accounts\templates\accounts\profile.html:116
-#: .\movies\templates\movies\movie_detail.html:76
+#: .\accounts\templates\accounts\profile.html:111
+#: .\movies\templates\movies\movie_detail.html:77
 #: .\movies\templates\movies\reviews.html:5 .\templates\_header.html:25
 msgid "Reviews"
 msgstr "Rezensionen"
 
-#: .\accounts\templates\accounts\profile.html:120
+#: .\accounts\templates\accounts\profile.html:115
 msgid "Replies"
 msgstr "Antworten"
 
-#: .\accounts\templates\accounts\profile.html:128
+#: .\accounts\templates\accounts\profile.html:123
+#| msgid "Could not update the avatar."
+msgid "Unable to update the list"
+msgstr "Liste konnte nicht aktualisiert werden"
+
+#: .\accounts\templates\accounts\profile.html:126
 msgid "Library"
 msgstr "Bibliothek"
 
-#: .\accounts\templates\accounts\profile.html:129
+#: .\accounts\templates\accounts\profile.html:127
 msgid "Watch statuses"
 msgstr "Wiedergabestatus"
 
-#: .\accounts\templates\accounts\profile.html:145
+#: .\accounts\templates\accounts\profile.html:189
+#: .\accounts\templates\accounts\profile.html:212
+#: .\accounts\templates\accounts\profile.html:214
+msgid "Remove from list"
+msgstr "Aus der Liste entfernen"
+
+#: .\accounts\templates\accounts\profile.html:190
+msgid "Removed from list"
+msgstr "Aus der Liste entfernt"
+
+#: .\accounts\templates\accounts\profile.html:191
+msgid "Undo"
+msgstr "Rückgängig"
+
+#: .\accounts\templates\accounts\profile.html:202
+#| msgid "There are no movies. You might want to refresh the catalog later."
+msgid "There are no movies in this section yet."
+msgstr "In diesem Bereich gibt es noch keine Filme."
+
+#: .\accounts\templates\accounts\profile.html:217
+msgid "Remove this movie from the selected list?"
+msgstr "Diesen Film aus der ausgewählten Liste entfernen?"
+
+#: .\accounts\templates\accounts\profile.html:221
+#: .\movies\templates\movies\movie_detail.html:312
+#: .\movies\templates\movies\movie_detail.html:442
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: .\accounts\templates\accounts\profile.html:224
+#| msgid "Confirm password"
+msgid "Confirm"
+msgstr "Bestätigen"
+
+#: .\accounts\templates\accounts\profile.html:232
 msgid "Progress"
 msgstr "Fortschritt"
 
-#: .\accounts\templates\accounts\profile.html:146
+#: .\accounts\templates\accounts\profile.html:233
 msgid "Achievements"
 msgstr "Erfolge"
 
-#: .\accounts\templates\accounts\profile.html:169
+#: .\accounts\templates\accounts\profile.html:255
 msgid "No achievements yet"
 msgstr "Noch keine Erfolge"
 
-#: .\accounts\templates\accounts\profile.html:170
+#: .\accounts\templates\accounts\profile.html:256
 msgid "They will appear here as the user participates in RAFS."
 msgstr "Sie erscheinen hier, wenn der Nutzer an RAFS teilnimmt."
 
@@ -265,23 +304,23 @@ msgstr "Du hast bereits ein Konto?"
 msgid "Log in"
 msgstr "Anmelden"
 
-#: .\accounts\views.py:72
+#: .\accounts\views.py:96
 msgid "Newcomer"
 msgstr "Neuling"
 
-#: .\accounts\views.py:90
+#: .\accounts\views.py:114
 msgid "Avatar removed."
 msgstr "Avatar entfernt."
 
-#: .\accounts\views.py:100
+#: .\accounts\views.py:124
 msgid "Avatar updated."
 msgstr "Avatar aktualisiert."
 
-#: .\accounts\views.py:107
+#: .\accounts\views.py:131
 msgid "Could not update the avatar."
 msgstr "Der Avatar konnte nicht aktualisiert werden."
 
-#: .\accounts\views.py:122
+#: .\accounts\views.py:146
 msgid "Your application has been sent."
 msgstr "Deine Bewerbung wurde eingereicht."
 
@@ -414,7 +453,7 @@ msgid "It may already be waiting for you in the catalog."
 msgstr "Vielleicht wartet er bereits im Katalog auf dich."
 
 #: .\core\templates\core\about_site.html:92
-#: .\movies\templates\movies\catalog.html:20
+#: .\movies\templates\movies\catalog.html:24
 msgid "Find a movie"
 msgstr "Film finden"
 
@@ -434,72 +473,152 @@ msgstr "Top-Filme"
 msgid "There are no movies. You might want to refresh the catalog later."
 msgstr "Noch keine Filme vorhanden. Schau später noch einmal in den Katalog."
 
-#: .\movies\models.py:194
+#: .\movies\forms.py:33
+msgid "Enter a title..."
+msgstr "Titel eingeben..."
+
+#: .\movies\forms.py:39 .\movies\templates\movies\wd_search_form.html:20
+#| msgid "For example: Fight Club, Dune, or The Matrix."
+msgid "For example, Fight Club"
+msgstr "Zum Beispiel: Fight Club"
+
+#: .\movies\forms.py:39
+#| msgid "Movie review"
+msgid "Movie title"
+msgstr "Filmtitel"
+
+#: .\movies\forms.py:40
+#| msgid "Your rating:"
+msgid "Minimum rating"
+msgstr "Mindestbewertung"
+
+#: .\movies\forms.py:41
+msgid "Year from"
+msgstr "Jahr von"
+
+#: .\movies\forms.py:42
+#| msgid "Year:"
+msgid "Year to"
+msgstr "Jahr bis"
+
+#: .\movies\forms.py:57
+msgid "Year to cannot be earlier than year from."
+msgstr "„Jahr bis“ darf nicht vor „Jahr von“ liegen."
+
+#: .\movies\forms.py:73 .\movies\forms.py:83 .\movies\forms.py:93
+#: .\movies\forms.py:103
+msgid "Include"
+msgstr "Einbeziehen"
+
+#: .\movies\forms.py:124
+#| msgid "Overall rating"
+msgid "Overall impression"
+msgstr "Gesamteindruck"
+
+#: .\movies\forms.py:125
+msgid "Concept"
+msgstr "Idee"
+
+#: .\movies\forms.py:126
+msgid "Execution"
+msgstr "Umsetzung"
+
+#: .\movies\forms.py:127
+msgid "Characters"
+msgstr "Figuren"
+
+#: .\movies\forms.py:128
+msgid "Sound design"
+msgstr "Sounddesign"
+
+#: .\movies\forms.py:129
+#| msgid "Review"
+msgid "Review text"
+msgstr "Rezensionstext"
+
+#: .\movies\forms.py:130 .\movies\templates\movies\movie_detail.html:113
+msgid "Contains spoilers"
+msgstr "Enthält Spoiler"
+
+#: .\movies\forms.py:133
+msgid "The overall rating is required. Other criteria are optional."
+msgstr "Die Gesamtbewertung ist erforderlich. Weitere Kriterien sind optional."
+
+#: .\movies\forms.py:134
+msgid "Share your impressions of the movie"
+msgstr "Teile deine Eindrücke zum Film"
+
+#: .\movies\forms.py:146
+#| msgid "Your next movie"
+msgid "Your opinion of the movie..."
+msgstr "Deine Meinung zum Film..."
+
+#: .\movies\models.py:197
 msgid "I'll watch it"
 msgstr "Möchte ich sehen"
 
-#: .\movies\models.py:195
+#: .\movies\models.py:198
 msgid "Viewed"
 msgstr "Angesehen"
 
-#: .\movies\models.py:196
+#: .\movies\models.py:199
 msgid "I'm not interested"
 msgstr "Kein Interesse"
 
-#: .\movies\models.py:197
+#: .\movies\models.py:200
 msgid "I'm watching it right now"
 msgstr "Sehe ich gerade"
 
-#: .\movies\models.py:198
+#: .\movies\models.py:201
 msgid "I dropped watching it"
 msgstr "Abgebrochen"
 
-#: .\movies\models.py:199
+#: .\movies\models.py:202
 msgid "Rewatching"
 msgstr "Sehe ich erneut"
 
-#: .\movies\templates\movies\_movie_card.html:32
+#: .\movies\templates\movies\_movie_card.html:29
 msgid "RAFS rating:"
 msgstr "RAFS-Wertung:"
 
-#: .\movies\templates\movies\_movie_card.html:34
+#: .\movies\templates\movies\_movie_card.html:31
 #: .\movies\templates\movies\movie_detail.html:56
 msgid "RECOMMENDED!"
 msgstr "EMPFOHLEN!"
 
-#: .\movies\templates\movies\_movie_card.html:37
+#: .\movies\templates\movies\_movie_card.html:34
 #: .\movies\templates\movies\movie_detail.html:59
 msgid "Not rated yet"
 msgstr "Noch nicht bewertet"
 
 #: .\movies\templates\movies\catalog.html:4
-#: .\movies\templates\movies\catalog.html:6
+#: .\movies\templates\movies\catalog.html:8
 msgid "Movie catalog"
 msgstr "Filmkatalog"
 
-#: .\movies\templates\movies\catalog.html:5
-#: .\movies\templates\movies\catalog.html:7
+#: .\movies\templates\movies\catalog.html:6
+#: .\movies\templates\movies\catalog.html:10
 msgid "Explore the RAFS catalog: filter movies, compare viewer ratings, and read reviews"
 msgstr "Entdecke den RAFS-Katalog: Filtere Filme, vergleiche Zuschauerbewertungen und lies Rezensionen"
 
-#: .\movies\templates\movies\catalog.html:19
+#: .\movies\templates\movies\catalog.html:23
 msgid "Search the catalog"
 msgstr "Katalog durchsuchen"
 
-#: .\movies\templates\movies\catalog.html:23
-#: .\movies\templates\movies\wd_search_form.html:82
+#: .\movies\templates\movies\catalog.html:27
+#: .\movies\templates\movies\wd_search_form.html:86
 msgid "Found:"
 msgstr "Gefunden:"
 
-#: .\movies\templates\movies\catalog.html:42 .\templates\_header.html:60
+#: .\movies\templates\movies\catalog.html:46 .\templates\_header.html:60
 msgid "Find"
 msgstr "Finden"
 
-#: .\movies\templates\movies\catalog.html:43
+#: .\movies\templates\movies\catalog.html:47
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: .\movies\templates\movies\catalog.html:53
+#: .\movies\templates\movies\catalog.html:57
 msgid "There are no movies. You might want to refresh the catalog later"
 msgstr "Noch keine Filme vorhanden. Schau später noch einmal in den Katalog"
 
@@ -536,77 +655,113 @@ msgstr "Jahr:"
 msgid "Rating:"
 msgstr "Bewertung:"
 
-#: .\movies\templates\movies\movie_detail.html:98
-msgid "Contains spoilers"
-msgstr "Enthält Spoiler"
+#: .\movies\templates\movies\movie_detail.html:69
+msgid "Unable to update the movie status"
+msgstr "Filmstatus konnte nicht aktualisiert werden"
 
-#: .\movies\templates\movies\movie_detail.html:107
+#: .\movies\templates\movies\movie_detail.html:92
+#: .\movies\templates\movies\movie_detail.html:232
+#| msgid "Delete"
+msgid "Deleted user"
+msgstr "Gelöschter Benutzer"
+
+#: .\movies\templates\movies\movie_detail.html:96
+#: .\movies\templates\movies\movie_detail.html:236
+#| msgid "Open profile"
+msgid "Open user profile"
+msgstr "Benutzerprofil öffnen"
+
+#: .\movies\templates\movies\movie_detail.html:122
 msgid "Spoiler hidden"
 msgstr "Spoiler versteckt"
 
-#: .\movies\templates\movies\movie_detail.html:108
+#: .\movies\templates\movies\movie_detail.html:123
 msgid "Review"
 msgstr "Rezension"
 
-#: .\movies\templates\movies\movie_detail.html:109
+#: .\movies\templates\movies\movie_detail.html:124
 msgid "Show"
 msgstr "Zeigen"
 
-#: .\movies\templates\movies\movie_detail.html:110
+#: .\movies\templates\movies\movie_detail.html:125
 msgid "Hide"
 msgstr "Verstecken"
 
-#: .\movies\templates\movies\movie_detail.html:126
+#: .\movies\templates\movies\movie_detail.html:141
 msgid "Like this review"
 msgstr "Diese Rezension mit ‚Gefällt mir‘ bewerten"
 
-#: .\movies\templates\movies\movie_detail.html:140
+#: .\movies\templates\movies\movie_detail.html:155
 msgid "Dislike this review"
 msgstr "Diese Rezension mit ‚Gefällt mir nicht‘ bewerten"
 
-#: .\movies\templates\movies\movie_detail.html:162
+#: .\movies\templates\movies\movie_detail.html:177
 msgid "Reply"
 msgstr "Antworten"
 
-#: .\movies\templates\movies\movie_detail.html:180
-#: .\movies\templates\movies\movie_detail.html:229
-msgid "Delete"
-msgstr "Löschen"
-
-#: .\movies\templates\movies\movie_detail.html:192
-msgid "There are no reviews yet. Be the first to leave one!"
-msgstr "Noch keine Rezensionen vorhanden. Schreibe die erste!"
-
-#: .\movies\templates\movies\movie_detail.html:210
+#: .\movies\templates\movies\movie_detail.html:189
+#: .\movies\templates\movies\movie_detail.html:302
 msgid "Delete review"
 msgstr "Rezension löschen"
 
-#: .\movies\templates\movies\movie_detail.html:211
+#: .\movies\templates\movies\movie_detail.html:190
+#: .\movies\templates\movies\movie_detail.html:303
 msgid "Are you sure you want to delete it?"
 msgstr "Wirklich löschen?"
 
-#: .\movies\templates\movies\movie_detail.html:215
+#: .\movies\templates\movies\movie_detail.html:191
+#: .\movies\templates\movies\movie_detail.html:307
 msgid "The review will be removed from the site. This action cannot be undone after confirmation."
 msgstr "Die Rezension wird von der Website entfernt. Nach der Bestätigung kann diese Aktion nicht rückgängig gemacht werden."
 
-#: .\movies\templates\movies\movie_detail.html:220
-#: .\movies\templates\movies\movie_detail.html:338
-msgid "Cancel"
-msgstr "Abbrechen"
+#: .\movies\templates\movies\movie_detail.html:198
+#: .\movies\templates\movies\movie_detail.html:321
+msgid "Delete"
+msgstr "Löschen"
 
-#: .\movies\templates\movies\movie_detail.html:289
+#: .\movies\templates\movies\movie_detail.html:213
+#| msgid "Replies"
+msgid "Show replies"
+msgstr "Antworten anzeigen"
+
+#: .\movies\templates\movies\movie_detail.html:217
+#| msgid "Replies"
+msgid "Hide replies"
+msgstr "Antworten ausblenden"
+
+#: .\movies\templates\movies\movie_detail.html:259
+#: .\movies\templates\movies\movie_detail.html:262
+#| msgid "Delete review"
+msgid "Delete reply"
+msgstr "Antwort löschen"
+
+#: .\movies\templates\movies\movie_detail.html:260
+#| msgid "Are you sure you want to delete it?"
+msgid "Are you sure you want to delete this reply?"
+msgstr "Möchtest du diese Antwort wirklich löschen?"
+
+#: .\movies\templates\movies\movie_detail.html:261
+#| msgid "The review will be removed from the site. This action cannot be undone after confirmation."
+msgid "The reply will be removed from the site. This action cannot be undone after confirmation."
+msgstr "Die Antwort wird von der Website entfernt. Diese Aktion kann nach der Bestätigung nicht rückgängig gemacht werden."
+
+#: .\movies\templates\movies\movie_detail.html:284
+msgid "There are no reviews yet. Be the first to leave one!"
+msgstr "Noch keine Rezensionen vorhanden. Schreibe die erste!"
+
+#: .\movies\templates\movies\movie_detail.html:381
 msgid "Unable to save your reaction"
 msgstr "Deine Reaktion konnte nicht gespeichert werden"
 
-#: .\movies\templates\movies\movie_detail.html:334
+#: .\movies\templates\movies\movie_detail.html:438
 msgid "Your reply"
 msgstr "Deine Antwort"
 
-#: .\movies\templates\movies\movie_detail.html:335
+#: .\movies\templates\movies\movie_detail.html:439
 msgid "Write a reply to the review..."
 msgstr "Schreibe eine Antwort auf die Rezension..."
 
-#: .\movies\templates\movies\movie_detail.html:337
+#: .\movies\templates\movies\movie_detail.html:441
 msgid "Send"
 msgstr "Senden"
 
@@ -646,7 +801,33 @@ msgstr "Rezension veröffentlichen"
 msgid "out of 10"
 msgstr "von 10"
 
-#: .\movies\templates\movies\search_results.html:67
+#: .\movies\templates\movies\search_results.html:40
+msgid "Movie:"
+msgstr "Film:"
+
+#: .\movies\templates\movies\search_results.html:45
+#| msgid "Username"
+msgid "User:"
+msgstr "Benutzer:"
+
+#: .\movies\templates\movies\search_results.html:46
+msgid "Registration date:"
+msgstr "Registrierungsdatum:"
+
+#: .\movies\templates\movies\search_results.html:50
+#| msgid "Review of"
+msgid "Review of:"
+msgstr "Rezension zu:"
+
+#: .\movies\templates\movies\search_results.html:51
+msgid "Author:"
+msgstr "Autor:"
+
+#: .\movies\templates\movies\search_results.html:55
+msgid "Relevance:"
+msgstr "Relevanz:"
+
+#: .\movies\templates\movies\search_results.html:61
 msgid "Nothing was found"
 msgstr "Nichts gefunden"
 
@@ -666,85 +847,113 @@ msgstr "Filme auf Wikidata suchen"
 msgid "Find a movie or series and copy its QID for further use."
 msgstr "Suche einen Film oder eine Serie und kopiere die QID zur weiteren Verwendung."
 
-#: .\movies\templates\movies\wd_search_form.html:25
-msgid "Title"
-msgstr "Titel"
+#: .\movies\templates\movies\wd_search_form.html:21
+#| msgid "Search"
+msgid "Searching"
+msgstr "Suche läuft"
 
-#: .\movies\templates\movies\wd_search_form.html:35
-msgid "Clear title"
-msgstr "Titel löschen"
+#: .\movies\templates\movies\wd_search_form.html:22
+msgid "QID copied"
+msgstr "QID kopiert"
 
-#: .\movies\templates\movies\wd_search_form.html:41
-msgid "At least two characters"
-msgstr "Mindestens zwei Zeichen"
-
-#: .\movies\templates\movies\wd_search_form.html:45
-msgid "Result language"
-msgstr "Ergebnissprache"
-
-#: .\movies\templates\movies\wd_search_form.html:50
-msgid "Title and description"
-msgstr "Titel und Beschreibung"
-
-#: .\movies\templates\movies\wd_search_form.html:54 .\templates\_header.html:60
-msgid "Search"
-msgstr "Suchen"
-
-#: .\movies\templates\movies\wd_search_form.html:64
-msgid "Check your search"
-msgstr "Suche überprüfen"
-
-#: .\movies\templates\movies\wd_search_form.html:65
-msgid "Correct the highlighted fields and try again."
-msgstr "Korrigiere die markierten Felder und versuche es erneut."
-
-#: .\movies\templates\movies\wd_search_form.html:72
-msgid "Wikidata is temporarily unavailable"
-msgstr "Wikidata ist vorübergehend nicht verfügbar"
-
-#: .\movies\templates\movies\wd_search_form.html:73
-msgid "Wait a moment and try again — your search has been preserved."
-msgstr "Warte einen Moment und versuche es erneut – deine Suche wurde gespeichert."
-
-#: .\movies\templates\movies\wd_search_form.html:79
-msgid "Results"
-msgstr "Ergebnisse"
-
-#: .\movies\templates\movies\wd_search_form.html:80
-msgid "Matching titles"
-msgstr "Passende Titel"
-
-#: .\movies\templates\movies\wd_search_form.html:97
-msgid "This title does not have a description in the selected language yet."
-msgstr "Für diesen Titel gibt es noch keine Beschreibung in der ausgewählten Sprache."
-
-#: .\movies\templates\movies\wd_search_form.html:108
+#: .\movies\templates\movies\wd_search_form.html:23
+#: .\movies\templates\movies\wd_search_form.html:112
 msgid "Copy QID"
 msgstr "QID kopieren"
 
-#: .\movies\templates\movies\wd_search_form.html:114
+#: .\movies\templates\movies\wd_search_form.html:29
+msgid "Title"
+msgstr "Titel"
+
+#: .\movies\templates\movies\wd_search_form.html:39
+msgid "Clear title"
+msgstr "Titel löschen"
+
+#: .\movies\templates\movies\wd_search_form.html:45
+msgid "At least two characters"
+msgstr "Mindestens zwei Zeichen"
+
+#: .\movies\templates\movies\wd_search_form.html:49
+msgid "Result language"
+msgstr "Ergebnissprache"
+
+#: .\movies\templates\movies\wd_search_form.html:54
+msgid "Title and description"
+msgstr "Titel und Beschreibung"
+
+#: .\movies\templates\movies\wd_search_form.html:58 .\templates\_header.html:60
+msgid "Search"
+msgstr "Suchen"
+
+#: .\movies\templates\movies\wd_search_form.html:68
+msgid "Check your search"
+msgstr "Suche überprüfen"
+
+#: .\movies\templates\movies\wd_search_form.html:69
+msgid "Correct the highlighted fields and try again."
+msgstr "Korrigiere die markierten Felder und versuche es erneut."
+
+#: .\movies\templates\movies\wd_search_form.html:76
+msgid "Wikidata is temporarily unavailable"
+msgstr "Wikidata ist vorübergehend nicht verfügbar"
+
+#: .\movies\templates\movies\wd_search_form.html:77
+msgid "Wait a moment and try again — your search has been preserved."
+msgstr "Warte einen Moment und versuche es erneut – deine Suche wurde gespeichert."
+
+#: .\movies\templates\movies\wd_search_form.html:83
+msgid "Results"
+msgstr "Ergebnisse"
+
+#: .\movies\templates\movies\wd_search_form.html:84
+msgid "Matching titles"
+msgstr "Passende Titel"
+
+#: .\movies\templates\movies\wd_search_form.html:101
+msgid "This title does not have a description in the selected language yet."
+msgstr "Für diesen Titel gibt es noch keine Beschreibung in der ausgewählten Sprache."
+
+#: .\movies\templates\movies\wd_search_form.html:118
 msgid "Open in Wikidata"
 msgstr "In Wikidata öffnen"
 
-#: .\movies\templates\movies\wd_search_form.html:124
+#: .\movies\templates\movies\wd_search_form.html:128
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: .\movies\templates\movies\wd_search_form.html:134
+#: .\movies\templates\movies\wd_search_form.html:138
 msgid "Nothing found"
 msgstr "Nichts gefunden"
 
-#: .\movies\templates\movies\wd_search_form.html:135
+#: .\movies\templates\movies\wd_search_form.html:139
 msgid "Try the original title or select another language."
 msgstr "Versuche es mit dem Originaltitel oder wähle eine andere Sprache."
 
-#: .\movies\templates\movies\wd_search_form.html:146
+#: .\movies\templates\movies\wd_search_form.html:150
 msgid "Start with a title"
 msgstr "Mit einem Titel beginnen"
 
-#: .\movies\templates\movies\wd_search_form.html:147
+#: .\movies\templates\movies\wd_search_form.html:151
 msgid "For example: Fight Club, Dune, or The Matrix."
 msgstr "Zum Beispiel: Fight Club, Dune oder The Matrix."
+
+#: .\movies\views.py:145
+#| msgid "Frames"
+msgid "+100 Frames"
+msgstr "+100 Frames"
+
+#: .\movies\views.py:167
+msgid "Invalid vote value"
+msgstr "Ungültiger Abstimmungswert"
+
+#: .\movies\views.py:197 .\movies\views.py:241 .\movies\views.py:247
+#: .\movies\views.py:273
+msgid "Invalid data format"
+msgstr "Ungültiges Datenformat"
+
+#: .\movies\views.py:318
+msgid "The reply cannot be empty"
+msgstr "Die Antwort darf nicht leer sein"
 
 #: .\templates\_footer.html:15
 msgid "Find something that suits your taste!"

@@ -1,4 +1,5 @@
 from django import forms
+from django.utils.translation import gettext_lazy as _
 
 from .models import Review as ReviewModel, ReviewReply
 
@@ -28,15 +29,17 @@ LANG_CHOICES = (
     )
 
 class MovieFilterForm(forms.Form):
-    main_widget = forms.TextInput(attrs={"class": "filter-input", "placeholder": "Введите название...",})
+    main_widget = forms.TextInput(
+        attrs={"class": "filter-input", "placeholder": _("Enter a title...")}
+    )
     year_from_widget = forms.NumberInput(attrs={"class": "filter-input", "placeholder": "1888", })
     year_to_widget = forms.NumberInput(attrs={"class": "filter-input", "placeholder": "2026", })
     min_rate_widget = forms.NumberInput(attrs={"class": "filter-input", "placeholder": "0-10", })
 
-    query = forms.CharField(required=False, min_length=2, max_length=80, help_text='Например, Fight Club', label='Название фильма', widget=main_widget)
-    min_rating = forms.DecimalField(decimal_places=1, required=False, min_value=1.0, max_value=10.0, label='Рейтинг от', widget=min_rate_widget)
-    year_from = forms.IntegerField(required=False, min_value=1888, max_value=2026, label='Год от', widget=year_from_widget)
-    year_to = forms.IntegerField(required=False, min_value=1888, max_value=2026, label='Год до', widget=year_to_widget)
+    query = forms.CharField(required=False, min_length=2, max_length=80, help_text=_("For example, Fight Club"), label=_("Movie title"), widget=main_widget)
+    min_rating = forms.DecimalField(decimal_places=1, required=False, min_value=1.0, max_value=10.0, label=_("Minimum rating"), widget=min_rate_widget)
+    year_from = forms.IntegerField(required=False, min_value=1888, max_value=2026, label=_("Year from"), widget=year_from_widget)
+    year_to = forms.IntegerField(required=False, min_value=1888, max_value=2026, label=_("Year to"), widget=year_to_widget)
 
     def clean(self):
         cleaned_data = super().clean()
@@ -51,7 +54,7 @@ class MovieFilterForm(forms.Form):
         ):
             self.add_error(
                 "year_to",
-                '"Год до" не может быть меньше, чем "Год от".',
+                _("Year to cannot be earlier than year from."),
             )
 
         return cleaned_data
@@ -67,7 +70,7 @@ class ReviewForm(forms.ModelForm):
 
     use_idea_rating = forms.BooleanField(
         required=False,
-        label="Учитывать",
+        label=_("Include"),
         widget=forms.CheckboxInput(
             attrs={
                 "class": "review-rating-toggle-input",
@@ -77,7 +80,7 @@ class ReviewForm(forms.ModelForm):
     )
     use_execution_rating = forms.BooleanField(
         required=False,
-        label="Учитывать",
+        label=_("Include"),
         widget=forms.CheckboxInput(
             attrs={
                 "class": "review-rating-toggle-input",
@@ -87,7 +90,7 @@ class ReviewForm(forms.ModelForm):
     )
     use_characters_rating = forms.BooleanField(
         required=False,
-        label="Учитывать",
+        label=_("Include"),
         widget=forms.CheckboxInput(
             attrs={
                 "class": "review-rating-toggle-input",
@@ -97,7 +100,7 @@ class ReviewForm(forms.ModelForm):
     )
     use_sound_rating = forms.BooleanField(
         required=False,
-        label="Учитывать",
+        label=_("Include"),
         widget=forms.CheckboxInput(
             attrs={
                 "class": "review-rating-toggle-input",
@@ -118,17 +121,17 @@ class ReviewForm(forms.ModelForm):
             "contains_spoiler",
         ]
         labels = {
-            "rating": "Общее впечатление",
-            "idea_rating": "Задумка",
-            "execution_rating": "Реализация",
-            "characters_rating": "Персонажи",
-            "sound_rating": "Саунд-дизайн",
-            "text": "Текст отзыва",
-            "contains_spoiler": "Содержит спойлер",
+            "rating": _("Overall impression"),
+            "idea_rating": _("Concept"),
+            "execution_rating": _("Execution"),
+            "characters_rating": _("Characters"),
+            "sound_rating": _("Sound design"),
+            "text": _("Review text"),
+            "contains_spoiler": _("Contains spoilers"),
         }
         help_texts = {
-            "rating": "Общая оценка обязательна. Остальные критерии можно включить по желанию.",
-            "text": "Поделитесь впечатлениями о фильме",
+            "rating": _("The overall rating is required. Other criteria are optional."),
+            "text": _("Share your impressions of the movie"),
         }
         widgets = {
             "rating": RatingRangeInput(attrs=RATING_RANGE_ATTRS),
@@ -140,7 +143,7 @@ class ReviewForm(forms.ModelForm):
                 attrs={
                     "class": "review-input review-textarea",
                     "rows": 5,
-                    "placeholder": "Ваше мнение о фильме...",
+                    "placeholder": _("Your opinion of the movie..."),
                 }
             ),
             "contains_spoiler": forms.CheckboxInput(attrs={"class": "review-checkbox"}),

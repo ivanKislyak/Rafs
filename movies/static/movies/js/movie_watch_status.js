@@ -39,11 +39,11 @@ watchStatusButtons.forEach((btn) => {
 
       if (!response.ok) {
         btn.classList.remove("is-active");
-        throw new Error(data.error || "Не удалось передать данные о статусе фильма");
+        throw new Error(data.error || container.dataset.errorMessage);
       }
     } catch (error) {
       btn.classList.remove("is-active");
-      throw new Error(error.message || "Не удалось передать данные о статусе фильма");
+      throw new Error(error.message || container.dataset.errorMessage);
     }
   });
 });

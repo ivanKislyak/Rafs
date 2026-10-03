@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: RAFS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-01 12:11+0500\n"
+"POT-Creation-Date: 2026-10-03 13:08+0500\n"
 "PO-Revision-Date: 2026-09-13 17:00+0500\n"
 "Last-Translator: RAFS contributors\n"
 "Language-Team: Ukrainian\n"
@@ -26,48 +26,48 @@ msgid "Upload a valid image file."
 msgstr "Завантажте коректний файл зображення."
 
 #: .\accounts\forms.py:66
-#: .\accounts\templates\accounts\moderation_application.html:23
+#: .\accounts\templates\accounts\moderation_application.html:20
 msgid "Contact email"
 msgstr "Контактна пошта"
 
-#: .\accounts\models.py:18
+#: .\accounts\models.py:15
 msgid "email address"
 msgstr "адреса електронної пошти"
 
-#: .\accounts\models.py:33
+#: .\accounts\models.py:30
 msgid "Male"
 msgstr "Чоловік"
 
-#: .\accounts\models.py:34
+#: .\accounts\models.py:31
 msgid "Female"
 msgstr "Жінка"
 
-#: .\accounts\models.py:35
+#: .\accounts\models.py:32
 msgid "Other"
 msgstr "Інше"
 
-#: .\accounts\templates\accounts\moderation_application.html:5
-#: .\accounts\templates\accounts\moderation_application.html:15
+#: .\accounts\templates\accounts\moderation_application.html:4
+#: .\accounts\templates\accounts\moderation_application.html:13
 msgid "Moderation application"
 msgstr "Заявка на модераторство"
 
-#: .\accounts\templates\accounts\moderation_application.html:14
+#: .\accounts\templates\accounts\moderation_application.html:12
 msgid "RAFS team"
 msgstr "Команда RAFS"
 
-#: .\accounts\templates\accounts\moderation_application.html:19
+#: .\accounts\templates\accounts\moderation_application.html:16
 msgid "Application already submitted"
 msgstr "Заявку вже надіслано"
 
-#: .\accounts\templates\accounts\moderation_application.html:20
+#: .\accounts\templates\accounts\moderation_application.html:17
 msgid "Your application has already been submitted. Please wait for it to be accepted."
 msgstr "Вашу заявку вже надіслано. Очікуйте на її схвалення."
 
-#: .\accounts\templates\accounts\moderation_application.html:27
+#: .\accounts\templates\accounts\moderation_application.html:26
 msgid "Submitted"
 msgstr "Надіслано"
 
-#: .\accounts\templates\accounts\moderation_application.html:34
+#: .\accounts\templates\accounts\moderation_application.html:35
 msgid "Enter a real email address where the RAFS team can contact you. You can submit this application only once."
 msgstr "Укажіть справжню адресу електронної пошти, за якою команда RAFS зможе зв'язатися з вами. Заявку можна подати лише один раз."
 
@@ -75,143 +75,182 @@ msgstr "Укажіть справжню адресу електронної по
 msgid "Submit application"
 msgstr "Надіслати заявку"
 
-#: .\accounts\templates\accounts\moderation_application.html:50
+#: .\accounts\templates\accounts\moderation_application.html:48
 msgid "Back to profile"
 msgstr "Повернутися до профілю"
 
-#: .\accounts\templates\accounts\moderation_applications_admin.html:5
-#: .\accounts\templates\accounts\moderation_applications_admin.html:16
+#: .\accounts\templates\accounts\moderation_applications_admin.html:4
+#: .\accounts\templates\accounts\moderation_applications_admin.html:13
 msgid "Moderation applications"
 msgstr "Заявки на модераторство"
 
-#: .\accounts\templates\accounts\moderation_applications_admin.html:15
+#: .\accounts\templates\accounts\moderation_applications_admin.html:12
 msgid "Administration"
 msgstr "Адміністрування"
 
+#: .\accounts\templates\accounts\moderation_applications_admin.html:24
 #: .\accounts\templates\accounts\moderation_applications_admin.html:28
-#: .\accounts\templates\accounts\moderation_applications_admin.html:32
-#: .\accounts\templates\accounts\profile.html:19
-#: .\accounts\templates\accounts\profile.html:23 .\templates\_header.html:150
+#: .\accounts\templates\accounts\profile.html:16
+#: .\accounts\templates\accounts\profile.html:20 .\templates\_header.html:150
 #: .\templates\_header.html:154
 msgid "Avatar of user"
 msgstr "Аватар користувача"
 
-#: .\accounts\templates\accounts\moderation_applications_admin.html:43
+#: .\accounts\templates\accounts\moderation_applications_admin.html:38
 msgid "Application actions"
 msgstr "Дії із заявкою"
 
-#: .\accounts\templates\accounts\moderation_applications_admin.html:45
+#: .\accounts\templates\accounts\moderation_applications_admin.html:39
 msgid "Approve"
 msgstr "Схвалити"
 
-#: .\accounts\templates\accounts\moderation_applications_admin.html:48
+#: .\accounts\templates\accounts\moderation_applications_admin.html:40
 msgid "Reject"
 msgstr "Відхилити"
 
-#: .\accounts\templates\accounts\moderation_applications_admin.html:56
+#: .\accounts\templates\accounts\moderation_applications_admin.html:47
 msgid "No applications yet"
 msgstr "Заявок поки немає"
 
-#: .\accounts\templates\accounts\moderation_applications_admin.html:57
+#: .\accounts\templates\accounts\moderation_applications_admin.html:48
 msgid "New moderation applications will appear on this page."
 msgstr "Нові заявки на модераторство з'являться на цій сторінці."
 
-#: .\accounts\templates\accounts\profile.html:6 .\templates\_header.html:160
+#: .\accounts\templates\accounts\profile.html:5 .\templates\_header.html:160
 msgid "Profile"
 msgstr "Профіль"
 
-#: .\accounts\templates\accounts\profile.html:28
+#: .\accounts\templates\accounts\profile.html:24
 msgid "Change avatar"
 msgstr "Змінити аватар"
 
-#: .\accounts\templates\accounts\profile.html:34
+#: .\accounts\templates\accounts\profile.html:31
 msgid "Choose an image"
 msgstr "Вибрати зображення"
 
-#: .\accounts\templates\accounts\profile.html:38
+#: .\accounts\templates\accounts\profile.html:34
 msgid "The image will be resized and converted to PNG. Maximum size: 12 MB."
 msgstr "Зображення буде зменшено та перетворено на PNG. Максимальний розмір: 12 МБ."
 
-#: .\accounts\templates\accounts\profile.html:42
+#: .\accounts\templates\accounts\profile.html:36
 msgid "Upload"
 msgstr "Завантажити"
 
-#: .\accounts\templates\accounts\profile.html:50
+#: .\accounts\templates\accounts\profile.html:42
 msgid "Remove"
 msgstr "Видалити"
 
-#: .\accounts\templates\accounts\profile.html:62
+#: .\accounts\templates\accounts\profile.html:52
 msgid "RAFS profile"
 msgstr "Профіль RAFS"
 
-#: .\accounts\templates\accounts\profile.html:65
+#: .\accounts\templates\accounts\profile.html:55
 msgid "User role"
 msgstr "Роль користувача"
 
-#: .\accounts\templates\accounts\profile.html:70 .\templates\_header.html:165
+#: .\accounts\templates\accounts\profile.html:59 .\templates\_header.html:165
 msgid "Level"
 msgstr "Рівень"
 
-#: .\accounts\templates\accounts\profile.html:74 .\templates\_header.html:171
+#: .\accounts\templates\accounts\profile.html:65 .\templates\_header.html:171
 msgid "Frames"
 msgstr "Кадри"
 
-#: .\accounts\templates\accounts\profile.html:78
+#: .\accounts\templates\accounts\profile.html:71
 msgid "Joined"
 msgstr "Дата реєстрації"
 
-#: .\accounts\templates\accounts\profile.html:83
+#: .\accounts\templates\accounts\profile.html:78
 #: .\accounts\templates\accounts\register.html:27
 msgid "Email"
 msgstr "Електронна пошта"
 
-#: .\accounts\templates\accounts\profile.html:93
+#: .\accounts\templates\accounts\profile.html:89
 msgid "Apply for moderation"
 msgstr "Подати заявку на модераторство"
 
-#: .\accounts\templates\accounts\profile.html:98
+#: .\accounts\templates\accounts\profile.html:94
 msgid "View applications"
 msgstr "Переглянути заявки"
 
-#: .\accounts\templates\accounts\profile.html:109
+#: .\accounts\templates\accounts\profile.html:104
 msgid "Activity"
 msgstr "Активність"
 
-#: .\accounts\templates\accounts\profile.html:110
+#: .\accounts\templates\accounts\profile.html:105
 msgid "Community contribution"
 msgstr "Внесок у спільноту"
 
-#: .\accounts\templates\accounts\profile.html:116
-#: .\movies\templates\movies\movie_detail.html:76
+#: .\accounts\templates\accounts\profile.html:111
+#: .\movies\templates\movies\movie_detail.html:77
 #: .\movies\templates\movies\reviews.html:5 .\templates\_header.html:25
 msgid "Reviews"
 msgstr "Рецензії"
 
-#: .\accounts\templates\accounts\profile.html:120
+#: .\accounts\templates\accounts\profile.html:115
 msgid "Replies"
 msgstr "Відповіді"
 
-#: .\accounts\templates\accounts\profile.html:128
+#: .\accounts\templates\accounts\profile.html:123
+#| msgid "Could not update the avatar."
+msgid "Unable to update the list"
+msgstr "Не вдалося оновити список"
+
+#: .\accounts\templates\accounts\profile.html:126
 msgid "Library"
 msgstr "Бібліотека"
 
-#: .\accounts\templates\accounts\profile.html:129
+#: .\accounts\templates\accounts\profile.html:127
 msgid "Watch statuses"
 msgstr "Статуси перегляду"
 
-#: .\accounts\templates\accounts\profile.html:145
+#: .\accounts\templates\accounts\profile.html:189
+#: .\accounts\templates\accounts\profile.html:212
+#: .\accounts\templates\accounts\profile.html:214
+msgid "Remove from list"
+msgstr "Прибрати зі списку"
+
+#: .\accounts\templates\accounts\profile.html:190
+msgid "Removed from list"
+msgstr "Видалено зі списку"
+
+#: .\accounts\templates\accounts\profile.html:191
+msgid "Undo"
+msgstr "Повернути"
+
+#: .\accounts\templates\accounts\profile.html:202
+#| msgid "There are no movies. You might want to refresh the catalog later."
+msgid "There are no movies in this section yet."
+msgstr "У цьому розділі ще немає фільмів."
+
+#: .\accounts\templates\accounts\profile.html:217
+msgid "Remove this movie from the selected list?"
+msgstr "Прибрати цей фільм із вибраного списку?"
+
+#: .\accounts\templates\accounts\profile.html:221
+#: .\movies\templates\movies\movie_detail.html:312
+#: .\movies\templates\movies\movie_detail.html:442
+msgid "Cancel"
+msgstr "Скасувати"
+
+#: .\accounts\templates\accounts\profile.html:224
+#| msgid "Confirm password"
+msgid "Confirm"
+msgstr "Підтвердити"
+
+#: .\accounts\templates\accounts\profile.html:232
 msgid "Progress"
 msgstr "Прогрес"
 
-#: .\accounts\templates\accounts\profile.html:146
+#: .\accounts\templates\accounts\profile.html:233
 msgid "Achievements"
 msgstr "Досягнення"
 
-#: .\accounts\templates\accounts\profile.html:169
+#: .\accounts\templates\accounts\profile.html:255
 msgid "No achievements yet"
 msgstr "Досягнень поки немає"
 
-#: .\accounts\templates\accounts\profile.html:170
+#: .\accounts\templates\accounts\profile.html:256
 msgid "They will appear here as the user participates in RAFS."
 msgstr "Вони з'являться тут у міру участі користувача в RAFS."
 
@@ -265,23 +304,23 @@ msgstr "Вже маєте обліковий запис?"
 msgid "Log in"
 msgstr "Увійти"
 
-#: .\accounts\views.py:72
+#: .\accounts\views.py:96
 msgid "Newcomer"
 msgstr "Новачок"
 
-#: .\accounts\views.py:90
+#: .\accounts\views.py:114
 msgid "Avatar removed."
 msgstr "Аватар видалено."
 
-#: .\accounts\views.py:100
+#: .\accounts\views.py:124
 msgid "Avatar updated."
 msgstr "Аватар оновлено."
 
-#: .\accounts\views.py:107
+#: .\accounts\views.py:131
 msgid "Could not update the avatar."
 msgstr "Не вдалося оновити аватар."
 
-#: .\accounts\views.py:122
+#: .\accounts\views.py:146
 msgid "Your application has been sent."
 msgstr "Вашу заявку надіслано."
 
@@ -414,7 +453,7 @@ msgid "It may already be waiting for you in the catalog."
 msgstr "Можливо, він уже чекає на вас у каталозі."
 
 #: .\core\templates\core\about_site.html:92
-#: .\movies\templates\movies\catalog.html:20
+#: .\movies\templates\movies\catalog.html:24
 msgid "Find a movie"
 msgstr "Знайти фільм"
 
@@ -434,72 +473,152 @@ msgstr "Найкращі фільми"
 msgid "There are no movies. You might want to refresh the catalog later."
 msgstr "Немає фільмів. Ви можете оновити каталог пізніше."
 
-#: .\movies\models.py:194
+#: .\movies\forms.py:33
+msgid "Enter a title..."
+msgstr "Введіть назву..."
+
+#: .\movies\forms.py:39 .\movies\templates\movies\wd_search_form.html:20
+#| msgid "For example: Fight Club, Dune, or The Matrix."
+msgid "For example, Fight Club"
+msgstr "Наприклад, «Бійцівський клуб»"
+
+#: .\movies\forms.py:39
+#| msgid "Movie review"
+msgid "Movie title"
+msgstr "Назва фільму"
+
+#: .\movies\forms.py:40
+#| msgid "Your rating:"
+msgid "Minimum rating"
+msgstr "Рейтинг від"
+
+#: .\movies\forms.py:41
+msgid "Year from"
+msgstr "Рік від"
+
+#: .\movies\forms.py:42
+#| msgid "Year:"
+msgid "Year to"
+msgstr "Рік до"
+
+#: .\movies\forms.py:57
+msgid "Year to cannot be earlier than year from."
+msgstr "«Рік до» не може бути раніше за «Рік від»."
+
+#: .\movies\forms.py:73 .\movies\forms.py:83 .\movies\forms.py:93
+#: .\movies\forms.py:103
+msgid "Include"
+msgstr "Враховувати"
+
+#: .\movies\forms.py:124
+#| msgid "Overall rating"
+msgid "Overall impression"
+msgstr "Загальне враження"
+
+#: .\movies\forms.py:125
+msgid "Concept"
+msgstr "Задум"
+
+#: .\movies\forms.py:126
+msgid "Execution"
+msgstr "Реалізація"
+
+#: .\movies\forms.py:127
+msgid "Characters"
+msgstr "Персонажі"
+
+#: .\movies\forms.py:128
+msgid "Sound design"
+msgstr "Звуковий дизайн"
+
+#: .\movies\forms.py:129
+#| msgid "Review"
+msgid "Review text"
+msgstr "Текст рецензії"
+
+#: .\movies\forms.py:130 .\movies\templates\movies\movie_detail.html:113
+msgid "Contains spoilers"
+msgstr "Містить спойлери"
+
+#: .\movies\forms.py:133
+msgid "The overall rating is required. Other criteria are optional."
+msgstr "Загальна оцінка обов'язкова. Інші критерії можна ввімкнути за бажанням."
+
+#: .\movies\forms.py:134
+msgid "Share your impressions of the movie"
+msgstr "Поділіться враженнями про фільм"
+
+#: .\movies\forms.py:146
+#| msgid "Your next movie"
+msgid "Your opinion of the movie..."
+msgstr "Ваша думка про фільм..."
+
+#: .\movies\models.py:197
 msgid "I'll watch it"
 msgstr "Перегляну"
 
-#: .\movies\models.py:195
+#: .\movies\models.py:198
 msgid "Viewed"
 msgstr "Переглянуто"
 
-#: .\movies\models.py:196
+#: .\movies\models.py:199
 msgid "I'm not interested"
 msgstr "Не цікавить"
 
-#: .\movies\models.py:197
+#: .\movies\models.py:200
 msgid "I'm watching it right now"
 msgstr "Дивлюся зараз"
 
-#: .\movies\models.py:198
+#: .\movies\models.py:201
 msgid "I dropped watching it"
 msgstr "Покинуто"
 
-#: .\movies\models.py:199
+#: .\movies\models.py:202
 msgid "Rewatching"
 msgstr "Передивляюся"
 
-#: .\movies\templates\movies\_movie_card.html:32
+#: .\movies\templates\movies\_movie_card.html:29
 msgid "RAFS rating:"
 msgstr "Рейтинг RAFS:"
 
-#: .\movies\templates\movies\_movie_card.html:34
+#: .\movies\templates\movies\_movie_card.html:31
 #: .\movies\templates\movies\movie_detail.html:56
 msgid "RECOMMENDED!"
 msgstr "РЕКОМЕНДУЄМО!"
 
-#: .\movies\templates\movies\_movie_card.html:37
+#: .\movies\templates\movies\_movie_card.html:34
 #: .\movies\templates\movies\movie_detail.html:59
 msgid "Not rated yet"
 msgstr "Ще не оцінено"
 
 #: .\movies\templates\movies\catalog.html:4
-#: .\movies\templates\movies\catalog.html:6
+#: .\movies\templates\movies\catalog.html:8
 msgid "Movie catalog"
 msgstr "Каталог фільмів"
 
-#: .\movies\templates\movies\catalog.html:5
-#: .\movies\templates\movies\catalog.html:7
+#: .\movies\templates\movies\catalog.html:6
+#: .\movies\templates\movies\catalog.html:10
 msgid "Explore the RAFS catalog: filter movies, compare viewer ratings, and read reviews"
 msgstr "Переглядайте каталог RAFS: фільтруйте фільми, порівнюйте оцінки глядачів і читайте рецензії"
 
-#: .\movies\templates\movies\catalog.html:19
+#: .\movies\templates\movies\catalog.html:23
 msgid "Search the catalog"
 msgstr "Пошук у каталозі"
 
-#: .\movies\templates\movies\catalog.html:23
-#: .\movies\templates\movies\wd_search_form.html:82
+#: .\movies\templates\movies\catalog.html:27
+#: .\movies\templates\movies\wd_search_form.html:86
 msgid "Found:"
 msgstr "Знайдено:"
 
-#: .\movies\templates\movies\catalog.html:42 .\templates\_header.html:60
+#: .\movies\templates\movies\catalog.html:46 .\templates\_header.html:60
 msgid "Find"
 msgstr "Знайти"
 
-#: .\movies\templates\movies\catalog.html:43
+#: .\movies\templates\movies\catalog.html:47
 msgid "Reset"
 msgstr "Скинути"
 
-#: .\movies\templates\movies\catalog.html:53
+#: .\movies\templates\movies\catalog.html:57
 msgid "There are no movies. You might want to refresh the catalog later"
 msgstr "Немає фільмів. Ви можете оновити каталог пізніше"
 
@@ -536,77 +655,113 @@ msgstr "Рік:"
 msgid "Rating:"
 msgstr "Рейтинг:"
 
-#: .\movies\templates\movies\movie_detail.html:98
-msgid "Contains spoilers"
-msgstr "Містить спойлери"
+#: .\movies\templates\movies\movie_detail.html:69
+msgid "Unable to update the movie status"
+msgstr "Не вдалося оновити статус фільму"
 
-#: .\movies\templates\movies\movie_detail.html:107
+#: .\movies\templates\movies\movie_detail.html:92
+#: .\movies\templates\movies\movie_detail.html:232
+#| msgid "Delete"
+msgid "Deleted user"
+msgstr "Видалений користувач"
+
+#: .\movies\templates\movies\movie_detail.html:96
+#: .\movies\templates\movies\movie_detail.html:236
+#| msgid "Open profile"
+msgid "Open user profile"
+msgstr "Відкрити профіль користувача"
+
+#: .\movies\templates\movies\movie_detail.html:122
 msgid "Spoiler hidden"
 msgstr "Спойлер приховано"
 
-#: .\movies\templates\movies\movie_detail.html:108
+#: .\movies\templates\movies\movie_detail.html:123
 msgid "Review"
 msgstr "Рецензія"
 
-#: .\movies\templates\movies\movie_detail.html:109
+#: .\movies\templates\movies\movie_detail.html:124
 msgid "Show"
 msgstr "Показати"
 
-#: .\movies\templates\movies\movie_detail.html:110
+#: .\movies\templates\movies\movie_detail.html:125
 msgid "Hide"
 msgstr "Сховати"
 
-#: .\movies\templates\movies\movie_detail.html:126
+#: .\movies\templates\movies\movie_detail.html:141
 msgid "Like this review"
 msgstr "Поставити вподобайку рецензії"
 
-#: .\movies\templates\movies\movie_detail.html:140
+#: .\movies\templates\movies\movie_detail.html:155
 msgid "Dislike this review"
 msgstr "Поставити дизлайк рецензії"
 
-#: .\movies\templates\movies\movie_detail.html:162
+#: .\movies\templates\movies\movie_detail.html:177
 msgid "Reply"
 msgstr "Відповісти"
 
-#: .\movies\templates\movies\movie_detail.html:180
-#: .\movies\templates\movies\movie_detail.html:229
-msgid "Delete"
-msgstr "Видалити"
-
-#: .\movies\templates\movies\movie_detail.html:192
-msgid "There are no reviews yet. Be the first to leave one!"
-msgstr "Рецензій поки немає. Станьте першим, хто її залишить!"
-
-#: .\movies\templates\movies\movie_detail.html:210
+#: .\movies\templates\movies\movie_detail.html:189
+#: .\movies\templates\movies\movie_detail.html:302
 msgid "Delete review"
 msgstr "Видалити рецензію"
 
-#: .\movies\templates\movies\movie_detail.html:211
+#: .\movies\templates\movies\movie_detail.html:190
+#: .\movies\templates\movies\movie_detail.html:303
 msgid "Are you sure you want to delete it?"
 msgstr "Точно видалити?"
 
-#: .\movies\templates\movies\movie_detail.html:215
+#: .\movies\templates\movies\movie_detail.html:191
+#: .\movies\templates\movies\movie_detail.html:307
 msgid "The review will be removed from the site. This action cannot be undone after confirmation."
 msgstr "Рецензія зникне із сайту. Після підтвердження цю дію неможливо скасувати."
 
-#: .\movies\templates\movies\movie_detail.html:220
-#: .\movies\templates\movies\movie_detail.html:338
-msgid "Cancel"
-msgstr "Скасувати"
+#: .\movies\templates\movies\movie_detail.html:198
+#: .\movies\templates\movies\movie_detail.html:321
+msgid "Delete"
+msgstr "Видалити"
 
-#: .\movies\templates\movies\movie_detail.html:289
+#: .\movies\templates\movies\movie_detail.html:213
+#| msgid "Replies"
+msgid "Show replies"
+msgstr "Показати відповіді"
+
+#: .\movies\templates\movies\movie_detail.html:217
+#| msgid "Replies"
+msgid "Hide replies"
+msgstr "Сховати відповіді"
+
+#: .\movies\templates\movies\movie_detail.html:259
+#: .\movies\templates\movies\movie_detail.html:262
+#| msgid "Delete review"
+msgid "Delete reply"
+msgstr "Видалити відповідь"
+
+#: .\movies\templates\movies\movie_detail.html:260
+#| msgid "Are you sure you want to delete it?"
+msgid "Are you sure you want to delete this reply?"
+msgstr "Ви впевнені, що хочете видалити цю відповідь?"
+
+#: .\movies\templates\movies\movie_detail.html:261
+#| msgid "The review will be removed from the site. This action cannot be undone after confirmation."
+msgid "The reply will be removed from the site. This action cannot be undone after confirmation."
+msgstr "Відповідь буде видалено із сайту. Після підтвердження цю дію неможливо скасувати."
+
+#: .\movies\templates\movies\movie_detail.html:284
+msgid "There are no reviews yet. Be the first to leave one!"
+msgstr "Рецензій поки немає. Станьте першим, хто її залишить!"
+
+#: .\movies\templates\movies\movie_detail.html:381
 msgid "Unable to save your reaction"
 msgstr "Не вдалося зберегти вашу реакцію"
 
-#: .\movies\templates\movies\movie_detail.html:334
+#: .\movies\templates\movies\movie_detail.html:438
 msgid "Your reply"
 msgstr "Ваша відповідь"
 
-#: .\movies\templates\movies\movie_detail.html:335
+#: .\movies\templates\movies\movie_detail.html:439
 msgid "Write a reply to the review..."
 msgstr "Напишіть відповідь на рецензію..."
 
-#: .\movies\templates\movies\movie_detail.html:337
+#: .\movies\templates\movies\movie_detail.html:441
 msgid "Send"
 msgstr "Надіслати"
 
@@ -646,7 +801,33 @@ msgstr "Опублікувати рецензію"
 msgid "out of 10"
 msgstr "з 10"
 
-#: .\movies\templates\movies\search_results.html:67
+#: .\movies\templates\movies\search_results.html:40
+msgid "Movie:"
+msgstr "Фільм:"
+
+#: .\movies\templates\movies\search_results.html:45
+#| msgid "Username"
+msgid "User:"
+msgstr "Користувач:"
+
+#: .\movies\templates\movies\search_results.html:46
+msgid "Registration date:"
+msgstr "Дата реєстрації:"
+
+#: .\movies\templates\movies\search_results.html:50
+#| msgid "Review of"
+msgid "Review of:"
+msgstr "Рецензія на:"
+
+#: .\movies\templates\movies\search_results.html:51
+msgid "Author:"
+msgstr "Автор:"
+
+#: .\movies\templates\movies\search_results.html:55
+msgid "Relevance:"
+msgstr "Релевантність:"
+
+#: .\movies\templates\movies\search_results.html:61
 msgid "Nothing was found"
 msgstr "Нічого не знайдено"
 
@@ -666,85 +847,113 @@ msgstr "Шукайте фільми у Wikidata"
 msgid "Find a movie or series and copy its QID for further use."
 msgstr "Знайдіть фільм або серіал і скопіюйте його QID для подальшого використання."
 
-#: .\movies\templates\movies\wd_search_form.html:25
-msgid "Title"
-msgstr "Назва"
+#: .\movies\templates\movies\wd_search_form.html:21
+#| msgid "Search"
+msgid "Searching"
+msgstr "Шукаємо"
 
-#: .\movies\templates\movies\wd_search_form.html:35
-msgid "Clear title"
-msgstr "Очистити назву"
+#: .\movies\templates\movies\wd_search_form.html:22
+msgid "QID copied"
+msgstr "QID скопійовано"
 
-#: .\movies\templates\movies\wd_search_form.html:41
-msgid "At least two characters"
-msgstr "Принаймні два символи"
-
-#: .\movies\templates\movies\wd_search_form.html:45
-msgid "Result language"
-msgstr "Мова результату"
-
-#: .\movies\templates\movies\wd_search_form.html:50
-msgid "Title and description"
-msgstr "Назва та опис"
-
-#: .\movies\templates\movies\wd_search_form.html:54 .\templates\_header.html:60
-msgid "Search"
-msgstr "Пошук"
-
-#: .\movies\templates\movies\wd_search_form.html:64
-msgid "Check your search"
-msgstr "Перевірте запит"
-
-#: .\movies\templates\movies\wd_search_form.html:65
-msgid "Correct the highlighted fields and try again."
-msgstr "Виправте виділені поля та повторіть спробу."
-
-#: .\movies\templates\movies\wd_search_form.html:72
-msgid "Wikidata is temporarily unavailable"
-msgstr "Вікідані тимчасово недоступні"
-
-#: .\movies\templates\movies\wd_search_form.html:73
-msgid "Wait a moment and try again — your search has been preserved."
-msgstr "Зачекайте трохи та повторіть спробу — ваш пошук збережено."
-
-#: .\movies\templates\movies\wd_search_form.html:79
-msgid "Results"
-msgstr "Результати"
-
-#: .\movies\templates\movies\wd_search_form.html:80
-msgid "Matching titles"
-msgstr "Відповідні твори"
-
-#: .\movies\templates\movies\wd_search_form.html:97
-msgid "This title does not have a description in the selected language yet."
-msgstr "Ця назва ще не має опису вибраною мовою."
-
-#: .\movies\templates\movies\wd_search_form.html:108
+#: .\movies\templates\movies\wd_search_form.html:23
+#: .\movies\templates\movies\wd_search_form.html:112
 msgid "Copy QID"
 msgstr "Копіювати QID"
 
-#: .\movies\templates\movies\wd_search_form.html:114
+#: .\movies\templates\movies\wd_search_form.html:29
+msgid "Title"
+msgstr "Назва"
+
+#: .\movies\templates\movies\wd_search_form.html:39
+msgid "Clear title"
+msgstr "Очистити назву"
+
+#: .\movies\templates\movies\wd_search_form.html:45
+msgid "At least two characters"
+msgstr "Принаймні два символи"
+
+#: .\movies\templates\movies\wd_search_form.html:49
+msgid "Result language"
+msgstr "Мова результату"
+
+#: .\movies\templates\movies\wd_search_form.html:54
+msgid "Title and description"
+msgstr "Назва та опис"
+
+#: .\movies\templates\movies\wd_search_form.html:58 .\templates\_header.html:60
+msgid "Search"
+msgstr "Пошук"
+
+#: .\movies\templates\movies\wd_search_form.html:68
+msgid "Check your search"
+msgstr "Перевірте запит"
+
+#: .\movies\templates\movies\wd_search_form.html:69
+msgid "Correct the highlighted fields and try again."
+msgstr "Виправте виділені поля та повторіть спробу."
+
+#: .\movies\templates\movies\wd_search_form.html:76
+msgid "Wikidata is temporarily unavailable"
+msgstr "Вікідані тимчасово недоступні"
+
+#: .\movies\templates\movies\wd_search_form.html:77
+msgid "Wait a moment and try again — your search has been preserved."
+msgstr "Зачекайте трохи та повторіть спробу — ваш пошук збережено."
+
+#: .\movies\templates\movies\wd_search_form.html:83
+msgid "Results"
+msgstr "Результати"
+
+#: .\movies\templates\movies\wd_search_form.html:84
+msgid "Matching titles"
+msgstr "Відповідні твори"
+
+#: .\movies\templates\movies\wd_search_form.html:101
+msgid "This title does not have a description in the selected language yet."
+msgstr "Ця назва ще не має опису вибраною мовою."
+
+#: .\movies\templates\movies\wd_search_form.html:118
 msgid "Open in Wikidata"
 msgstr "Відкрити у Вікіданих"
 
-#: .\movies\templates\movies\wd_search_form.html:124
+#: .\movies\templates\movies\wd_search_form.html:128
 msgid "Add"
 msgstr "Додати"
 
-#: .\movies\templates\movies\wd_search_form.html:134
+#: .\movies\templates\movies\wd_search_form.html:138
 msgid "Nothing found"
 msgstr "Нічого не знайдено"
 
-#: .\movies\templates\movies\wd_search_form.html:135
+#: .\movies\templates\movies\wd_search_form.html:139
 msgid "Try the original title or select another language."
 msgstr "Спробуйте оригінальну назву або виберіть іншу мову."
 
-#: .\movies\templates\movies\wd_search_form.html:146
+#: .\movies\templates\movies\wd_search_form.html:150
 msgid "Start with a title"
 msgstr "Почніть із назви"
 
-#: .\movies\templates\movies\wd_search_form.html:147
+#: .\movies\templates\movies\wd_search_form.html:151
 msgid "For example: Fight Club, Dune, or The Matrix."
 msgstr "Наприклад: Бійцівський клуб, Дюна або Матриця."
+
+#: .\movies\views.py:145
+#| msgid "Frames"
+msgid "+100 Frames"
+msgstr "+100 Кадрів"
+
+#: .\movies\views.py:167
+msgid "Invalid vote value"
+msgstr "Неприпустиме значення голосу"
+
+#: .\movies\views.py:197 .\movies\views.py:241 .\movies\views.py:247
+#: .\movies\views.py:273
+msgid "Invalid data format"
+msgstr "Неправильний формат даних"
+
+#: .\movies\views.py:318
+msgid "The reply cannot be empty"
+msgstr "Відповідь не може бути порожньою"
 
 #: .\templates\_footer.html:15
 msgid "Find something that suits your taste!"

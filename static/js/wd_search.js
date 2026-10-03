@@ -13,7 +13,7 @@
     clearButton.hidden = queryInput.value.length === 0;
   };
 
-  queryInput?.setAttribute("placeholder", "Например, Бойцовский клуб");
+  queryInput?.setAttribute("placeholder", form.dataset.queryPlaceholder);
   updateClearButton();
 
   queryInput?.addEventListener("input", updateClearButton);
@@ -27,7 +27,7 @@
   form.addEventListener("submit", () => {
     form.classList.add("is-loading");
     if (submitButton) submitButton.disabled = true;
-    if (submitLabel) submitLabel.textContent = "Ищем";
+    if (submitLabel) submitLabel.textContent = form.dataset.searchingLabel;
   });
 
   document.querySelectorAll("[data-wd-copy]").forEach((button) => {
@@ -40,11 +40,11 @@
       try {
         await navigator.clipboard.writeText(qid);
         button.classList.add("is-copied");
-        label.textContent = "QID скопирован";
+        label.textContent = form.dataset.copiedLabel;
 
         window.setTimeout(() => {
           button.classList.remove("is-copied");
-          label.textContent = "Скопировать QID";
+          label.textContent = form.dataset.copyLabel;
         }, 1800);
       } catch (_error) {
         label.textContent = qid;

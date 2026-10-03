@@ -71,7 +71,7 @@ class ReviewFramesRewardTests(TestCase):
 
         self.user.refresh_from_db()
         self.assertEqual(self.user.user_frames, 101)
-        self.assertContains(response, "+100 Кадров")
+        self.assertContains(response, "+100 Frames")
         self.assertContains(response, "frames-reward")
 
     def test_editing_review_does_not_reward_frames_again(self):
@@ -80,7 +80,7 @@ class ReviewFramesRewardTests(TestCase):
 
         self.user.refresh_from_db()
         self.assertEqual(self.user.user_frames, 101)
-        self.assertNotContains(response, "+100 Кадров")
+        self.assertNotContains(response, "+100 Frames")
 
 
 class ReviewVoteTests(TestCase):

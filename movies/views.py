@@ -142,7 +142,7 @@ def make_review_form(request, movie_id):
                 request.user.save()
                 messages.success(
                     request,
-                    "+100 Кадров",
+                    _("+100 Frames"),
                     extra_tags="frames-reward",
                 )
             review.save()
@@ -164,7 +164,7 @@ def vote_review(request):
         vote_value = int(data.get("vote_value"))
 
         if vote_value not in [ReviewVote.VoteChoice.LIKE, ReviewVote.VoteChoice.DISLIKE]:
-            return JsonResponse({"error": "Неверное значение голоса"}, status=400)
+            return JsonResponse({"error": _("Invalid vote value")}, status=400)
 
         review = get_object_or_404(Review, id=review_id)
         vote, created = ReviewVote.objects.get_or_create(
@@ -194,7 +194,7 @@ def vote_review(request):
         })
 
     except (json.JSONDecodeError, TypeError, ValueError):
-        return JsonResponse({"error": "Неверный формат данных"}, status=400)
+        return JsonResponse({"error": _("Invalid data format")}, status=400)
 
 def search_query(request):
     user_argument = request.GET.get('query', '')
@@ -238,13 +238,13 @@ def set_movie_status(request):
     try:
         data = json.loads(request.body)
         if not isinstance(data, dict):
-            return JsonResponse({"error": "Неверный формат данных"}, status=400)
+            return JsonResponse({"error": _("Invalid data format")}, status=400)
 
         movie_id = data.get("movie_id")
         status = data.get("status")
 
         if status not in WatchStatus.StatusChoice.values:
-            return JsonResponse({"error": "Неверный формат данных"}, status=400)
+            return JsonResponse({"error": _("Invalid data format")}, status=400)
 
         movie = get_object_or_404(Movie, id=movie_id)
         user_status, created = WatchStatus.objects.get_or_create(
@@ -270,7 +270,7 @@ def set_movie_status(request):
         })
 
     except (json.JSONDecodeError, TypeError, ValueError):
-        return JsonResponse({"error": "Неверный формат данных"}, status=400)
+        return JsonResponse({"error": _("Invalid data format")}, status=400)
 
 @login_required
 @require_POST
@@ -315,7 +315,7 @@ def reply_review(request, review_id):
         reply.save()
 
     else:
-        messages.error(request, "Ответ не может быть пустым")
+        messages.error(request, _("The reply cannot be empty"))
 
     detail_url = reverse("movies:detail", kwargs={"movie_id": review.movie_id})
     return redirect(f"{detail_url}?replies={review.id}#review-{review.id}")

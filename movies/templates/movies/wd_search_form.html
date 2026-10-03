@@ -17,6 +17,10 @@
         <form class="wd-search-form"
               method="get"
               action="{% url 'movies:wikidata_search' %}"
+              data-query-placeholder="{% translate 'For example, Fight Club' %}"
+              data-searching-label="{% translate 'Searching' %}"
+              data-copied-label="{% translate 'QID copied' %}"
+              data-copy-label="{% translate 'Copy QID' %}"
               data-wd-search-form>
             {% if wd_search_form.non_field_errors %}
                 <div class="wd-search-form-error" role="alert">{{ wd_search_form.non_field_errors }}</div>
