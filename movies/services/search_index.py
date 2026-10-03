@@ -38,7 +38,7 @@ def update_all_exist_indexes():
 
     for movie in all_movies.iterator(chunk_size=1000):
         movie_data.append(
-            GlobalSearchIndex(content_type_of_movie,
+            GlobalSearchIndex(content_type=content_type_of_movie,
                               object_id=movie.pk,
                               search_text=flatten_complex_list(
             [

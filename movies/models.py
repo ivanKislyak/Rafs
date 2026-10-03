@@ -184,7 +184,7 @@ class GlobalSearchIndex(models.Model):
     search_text = models.TextField()
 
     def __str__(self):
-        return f"Type of object - {self.content_type.model.__caption__() if hasattr(self.content_type, 'model') else self.content_type.model.title()}"
+        return f"Model Name: {self.content_type.model_name}"
     
     class Meta:
         indexes = [
