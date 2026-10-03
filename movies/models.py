@@ -184,7 +184,7 @@ class GlobalSearchIndex(models.Model):
     search_text = models.TextField()
 
     def __str__(self):
-        return f"Model Name: {self.content_type.model_name}"
+        return f"Model Name: {self.content_type.model_class().__name__} | Content: {self.search_text[:50]}..."
     
     class Meta:
         indexes = [
