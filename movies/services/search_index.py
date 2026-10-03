@@ -2,11 +2,16 @@ from django.contrib.contenttypes.models import ContentType
 from movies.models import GlobalSearchIndex, Movie, Review
 from movies.movie_models import Person, Studio
 from accounts.models import User
+import logging
+
+logging.basicConfig(
+    level=logging.INFO, 
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    datefmt="%H:%M:%S"
+)
 
 def update_all_exist_indexes():
-    gin_qty_on_start = GlobalSearchIndex.objects.count()
-    
-    print(f'Quantity of GIN objects: {gin_qty_on_start}')
+    logging.info(f"Quantity of GIN objects on start: {GlobalSearchIndex.objects.count()}")
 
     content_type_of_movie = ContentType.objects.get_for_model(Movie)
     content_type_of_review = ContentType.objects.get_for_model(Review)
@@ -61,3 +66,7 @@ def update_all_exist_indexes():
         movie_data,
         batch_size=1000
     )
+
+    logging.info(f"Quantity of GIN objects after addind Movies: {GlobalSearchIndex.objects.count()}")
+
+    
