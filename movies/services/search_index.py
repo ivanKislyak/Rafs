@@ -13,10 +13,13 @@ def update_all_exist_indexes():
     content_type_of_user = ContentType.objects.get_for_model(User)
     content_type_of_person = ContentType.objects.get_for_model(Person)
     content_type_of_studio = ContentType.objects.get_for_model(Studio)
-        
-    movie_data = []
 
-    all_movies = Movie.objects.all().prefetch_related(
+    already_movies_in_db = GlobalSearchIndex.objects.filter(
+        content_type=content_type_of_movie
+        ).values_list("object_id", flat=True)
+    
+    
+    all_movies = Movie.objects.exclude(id__in=already_movies_in_db).prefetch_related(
         'translations', 'type_of_work__translations',
         'genres__translations', 'actors__translations',
         'countries__translations', 'studio__translations',
@@ -36,6 +39,8 @@ def update_all_exist_indexes():
 
         return sep.join(result)
 
+    movie_data = []
+
     for movie in all_movies.iterator(chunk_size=1000):
         movie_data.append(
             GlobalSearchIndex(content_type=content_type_of_movie,
@@ -51,7 +56,7 @@ def update_all_exist_indexes():
             ]
         ))
     )
-        
+
     GlobalSearchIndex.objects.bulk_create(
         movie_data,
         batch_size=1000
