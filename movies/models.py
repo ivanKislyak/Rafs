@@ -183,6 +183,9 @@ class GlobalSearchIndex(models.Model):
     
     search_text = models.TextField()
 
+    def __str__(self):
+        return f"Type of object - {self.content_type.model.__caption__() if hasattr(self.content_type, 'model') else self.content_type.model.title()}"
+    
     class Meta:
         indexes = [
             GinIndex(name='global_search_trgm_idx', fields=['search_text'], opclasses=['gin_trgm_ops']),
