@@ -1,3 +1,4 @@
+import warnings
 from django.core.management.base import BaseCommand, CommandError
 from movies.services.wikidata import fetch_movie_raw, parse_movie_data
 from movies.models import Movie
@@ -9,6 +10,15 @@ class Command(BaseCommand):
         parser.add_argument('wikidata_id', type=str)
 
     def handle(self, *args, **options):
+        warnings.warn(
+            "The 'sync_wikidata_movie' command is deprecated and will be removed in future versions. "
+            "Please use the new 'migrate_movies' command",
+            DeprecationWarning,
+            stacklevel=2
+        )
+
+        self.stdout.write(self.style.WARNING("Запуск устаревшей синхронизации..."))
+
         wikidata_id = options['wikidata_id']
         result = parse_movie_data(fetch_movie_raw(wikidata_id))
         obj, created = Movie.objects.update_or_create(

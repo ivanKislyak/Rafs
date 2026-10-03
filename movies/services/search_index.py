@@ -48,7 +48,12 @@ def update_all_exist_indexes():
 
     new_movie_ids = movie_ids - existed_movie_ids
     new_movies = Movie.objects.filter(id__in=new_movie_ids)
+
     
-    print(movie_data)
-    print('new_movie_ids:', new_movie_ids)
-    print('movies to add: ', new_movies)
+    
+    print('type of this - ', type(movie_data), movie_data)
+    print('\n')
+    print('type of this - ', type(new_movie_ids), new_movie_ids)
+    print('\n')
+    print('type of this - ', type(new_movies), 'movies to add: ', new_movies)
+    print()
