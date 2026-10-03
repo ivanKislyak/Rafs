@@ -1,61 +1,52 @@
 {% extends "base.html" %}
 {% load static %}
 {% load i18n %}
-
 {% block title %}{% translate "Moderation applications" %} · RAFS{% endblock %}
-
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'accounts/css/profile.css' %}">
 {% endblock %}
-
 {% block content %}
-<main class="moderation-admin-page">
-    <header class="moderation-admin-heading">
-        <div>
-            <p class="profile-eyebrow">{% translate "Administration" %}</p>
-            <h1>{% translate "Moderation applications" %}</h1>
-        </div>
-        <span class="profile-section-count">{{ applications|length }}</span>
-    </header>
-
-    {% if applications %}
-        <div class="moderation-application-list">
-            {% for application in applications %}
-                <article class="moderation-application-item">
-                    {% if application.user.avatar_image %}
-                        <img class="moderation-applicant-avatar"
-                             src="{{ application.user.avatar_image.url }}"
-                             alt="{% translate 'Avatar of user' %} {{ application.user.username }}">
-                    {% else %}
-                        <img class="moderation-applicant-avatar"
-                             src="{% static 'images/default_profile_img.png' %}"
-                             alt="{% translate 'Avatar of user' %} {{ application.user.username }}">
-                    {% endif %}
-                    <div class="moderation-applicant-copy">
-                        <a href="{% url 'accounts:profile' application.user.username %}">
-                            {{ application.user.username }}
-                        </a>
-                        <span>{{ application.email }}</span>
-                        <time datetime="{{ application.created_at|date:'c' }}">
-                            {{ application.created_at|date:"DATETIME_FORMAT" }}
-                        </time>
-                    </div>
-                    <div class="moderation-application-actions" aria-label="{% translate 'Application actions' %}">
-                        <button class="profile-button profile-button--primary" type="button" disabled>
-                            {% translate "Approve" %}
-                        </button>
-                        <button class="profile-button profile-button--quiet" type="button" disabled>
-                            {% translate "Reject" %}
-                        </button>
-                    </div>
-                </article>
-            {% endfor %}
-        </div>
-    {% else %}
-        <div class="account-form-status">
-            <strong>{% translate "No applications yet" %}</strong>
-            <p>{% translate "New moderation applications will appear on this page." %}</p>
-        </div>
-    {% endif %}
-</main>
+    <main class="moderation-admin-page">
+        <header class="moderation-admin-heading">
+            <div>
+                <p class="profile-eyebrow">{% translate "Administration" %}</p>
+                <h1>{% translate "Moderation applications" %}</h1>
+            </div>
+            <span class="profile-section-count">{{ applications|length }}</span>
+        </header>
+        {% if applications %}
+            <div class="moderation-application-list">
+                {% for application in applications %}
+                    <article class="moderation-application-item">
+                        {% if application.user.avatar_image %}
+                            <img class="moderation-applicant-avatar"
+                                 src="{{ application.user.avatar_image.url }}"
+                                 alt="{% translate 'Avatar of user' %} {{ application.user.username }}">
+                        {% else %}
+                            <img class="moderation-applicant-avatar"
+                                 src="{% static 'images/default_profile_img.png' %}"
+                                 alt="{% translate 'Avatar of user' %} {{ application.user.username }}">
+                        {% endif %}
+                        <div class="moderation-applicant-copy">
+                            <a href="{% url 'accounts:profile' application.user.username %}">{{ application.user.username }}</a>
+                            <span>{{ application.email }}</span>
+                            <time datetime="{{ application.created_at|date:'c' }}">
+                                {{ application.created_at|date:"DATETIME_FORMAT" }}
+                            </time>
+                        </div>
+                        <div class="moderation-application-actions"
+                             aria-label="{% translate 'Application actions' %}">
+                            <button class="profile-button profile-button--primary" type="button" disabled>{% translate "Approve" %}</button>
+                            <button class="profile-button profile-button--quiet" type="button" disabled>{% translate "Reject" %}</button>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="account-form-status">
+                <strong>{% translate "No applications yet" %}</strong>
+                <p>{% translate "New moderation applications will appear on this page." %}</p>
+            </div>
+        {% endif %}
+    </main>
 {% endblock %}

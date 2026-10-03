@@ -21,7 +21,7 @@
     {{ query }}
 {% endblock %}
 {% block og_description %}
-    {{ query  }}
+    {{ query }}
 {% endblock %}
 {% block og_image %}
     {% if movie.cover and movie.image_exists %}
@@ -40,14 +40,11 @@
                             <h3>🎬 Фильм: {{ obj.translations.first.wikidata_name }}</h3>
                             <p>{{ obj.translations.first.wikidata_description|truncatewords:20 }}</p>
                         </div>
-
-                    
                     {% elif result.content_type.model == 'user' %}
                         <div class="user-card">
                             <h3>👤 Пользователь: {{ obj.username }}</h3>
                             <p>Дата регистрации: {{ obj.date_joined|date:"d.m.Y" }}</p>
                         </div>
-
                     {% elif result.content_type.model == 'review' %}
                         <div class="review-card">
                             <h3>✍️ Отзыв на фильм: {{ obj.movie.translations.first.wikidata_name }}</h3>
@@ -55,17 +52,13 @@
                             <p>{{ obj.text|truncatewords:15 }}</p>
                         </div>
                     {% endif %}
-                    
                     <span class="badge">Релевантность: {{ result.similarity|floatformat:2 }}</span>
                 </div>
-            {% if obj %}
-        {% endwith %}
-
-    {% empty %}
-        <div class="nothing-was-found">
-            <p>
-                {% translate "Nothing was found" %}
-            </p>
-        </div>
-    {% endfor %}
-{% endblock %}
+                {% if obj %}
+                {% endwith %}
+            {% empty %}
+                <div class="nothing-was-found">
+                    <p>{% translate "Nothing was found" %}</p>
+                </div>
+            {% endfor %}
+        {% endblock %}

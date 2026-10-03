@@ -207,10 +207,12 @@
                                     data-replies-toggle
                                     aria-controls="review-replies-{{ review.id }}"
                                     aria-expanded="{% if open_replies_id == review.id %}true{% else %}false{% endif %}">
-                                <span data-replies-show {% if open_replies_id == review.id %}hidden{% endif %}>
+                                <span data-replies-show
+                                      {% if open_replies_id == review.id %}hidden{% endif %}>
                                     {% translate "Show replies" %} · {{ review.loaded_replies|length }}
                                 </span>
-                                <span data-replies-hide {% if open_replies_id != review.id %}hidden{% endif %}>
+                                <span data-replies-hide
+                                      {% if open_replies_id != review.id %}hidden{% endif %}>
                                     {% translate "Hide replies" %}
                                 </span>
                             </button>
@@ -244,8 +246,7 @@
                                                 <a class="review-reply-author"
                                                    href="{% url 'accounts:profile' reply.user.username %}">{{ reply.user.username }}</a>
                                             {% endif %}
-                                            <time class="review-reply-date"
-                                                  datetime="{{ reply.created_at|date:'c' }}">{{ reply.created_at|naturaltime }}</time>
+                                            <time class="review-reply-date" datetime="{{ reply.created_at|date:'c' }}">{{ reply.created_at|naturaltime }}</time>
                                             {% if reply.user == request.user or request.user.is_superuser %}
                                                 <form class="review-delete-form review-reply-delete-form"
                                                       method="post"
@@ -297,10 +298,8 @@
                     </svg>
                 </span>
                 <div>
-                    <span class="review-delete-dialog-kicker"
-                          data-delete-dialog-kicker>{% translate "Delete review" %}</span>
-                    <h3 id="review-delete-dialog-title"
-                        data-delete-dialog-title>{% translate "Are you sure you want to delete it?" %}</h3>
+                    <span class="review-delete-dialog-kicker" data-delete-dialog-kicker>{% translate "Delete review" %}</span>
+                    <h3 id="review-delete-dialog-title" data-delete-dialog-title>{% translate "Are you sure you want to delete it?" %}</h3>
                 </div>
             </div>
             <p id="review-delete-dialog-description" data-delete-dialog-description>

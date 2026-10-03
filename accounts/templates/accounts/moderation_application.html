@@ -1,54 +1,51 @@
 {% extends "base.html" %}
 {% load static %}
 {% load i18n %}
-
 {% block title %}{% translate "Moderation application" %} · RAFS{% endblock %}
-
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'accounts/css/profile.css' %}">
 {% endblock %}
-
 {% block content %}
-<main class="account-form-page">
-    <section class="account-form-card" aria-labelledby="moderation-application-title">
-        <p class="profile-eyebrow">{% translate "RAFS team" %}</p>
-        <h1 id="moderation-application-title">{% translate "Moderation application" %}</h1>
-
-        {% if application %}
-            <div class="account-form-status" role="status">
-                <strong>{% translate "Application already submitted" %}</strong>
-                <p>{% translate "Your application has already been submitted. Please wait for it to be accepted." %}</p>
-                <dl>
-                    <div>
-                        <dt>{% translate "Contact email" %}</dt>
-                        <dd>{{ application.email }}</dd>
-                    </div>
-                    <div>
-                        <dt>{% translate "Submitted" %}</dt>
-                        <dd>{{ application.created_at|date:"DATETIME_FORMAT" }}</dd>
-                    </div>
-                </dl>
-            </div>
-        {% else %}
-            <p class="account-form-intro">
-                {% translate "Enter a real email address where the RAFS team can contact you. You can submit this application only once." %}
-            </p>
-            <form class="account-form" method="post">
-                {% csrf_token %}
-                <div class="account-form-field{% if form.email.errors %} has-error{% endif %}">
-                    <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
-                    {{ form.email }}
-                    {% for error in form.email.errors %}<p class="account-form-error">{{ error }}</p>{% endfor %}
+    <main class="account-form-page">
+        <section class="account-form-card"
+                 aria-labelledby="moderation-application-title">
+            <p class="profile-eyebrow">{% translate "RAFS team" %}</p>
+            <h1 id="moderation-application-title">{% translate "Moderation application" %}</h1>
+            {% if application %}
+                <div class="account-form-status" role="status">
+                    <strong>{% translate "Application already submitted" %}</strong>
+                    <p>{% translate "Your application has already been submitted. Please wait for it to be accepted." %}</p>
+                    <dl>
+                        <div>
+                            <dt>{% translate "Contact email" %}</dt>
+                            <dd>
+                                {{ application.email }}
+                            </dd>
+                        </div>
+                        <div>
+                            <dt>{% translate "Submitted" %}</dt>
+                            <dd>
+                                {{ application.created_at|date:"DATETIME_FORMAT" }}
+                            </dd>
+                        </div>
+                    </dl>
                 </div>
-                <button class="profile-button profile-button--primary" type="submit">
-                    {% translate "Submit application" %}
-                </button>
-            </form>
-        {% endif %}
-
-        <a class="account-form-back" href="{% url 'accounts:profile' user.username %}">
-            ← {% translate "Back to profile" %}
-        </a>
-    </section>
-</main>
+            {% else %}
+                <p class="account-form-intro">
+                    {% translate "Enter a real email address where the RAFS team can contact you. You can submit this application only once." %}
+                </p>
+                <form class="account-form" method="post">
+                    {% csrf_token %}
+                    <div class="account-form-field{% if form.email.errors %} has-error{% endif %}">
+                        <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+                        {{ form.email }}
+                        {% for error in form.email.errors %}<p class="account-form-error">{{ error }}</p>{% endfor %}
+                    </div>
+                    <button class="profile-button profile-button--primary" type="submit">{% translate "Submit application" %}</button>
+                </form>
+            {% endif %}
+            <a class="account-form-back"
+               href="{% url 'accounts:profile' user.username %}">← {% translate "Back to profile" %}</a>
+        </section>
+    </main>
 {% endblock %}

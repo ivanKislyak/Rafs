@@ -2,282 +2,264 @@
 {% load static %}
 {% load humanize %}
 {% load i18n %}
-
 {% block title %}{{ profile_user.username }} · {% translate "Profile" %} · RAFS{% endblock %}
-
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'accounts/css/profile.css' %}">
 {% endblock %}
-
 {% block content %}
-<main class="profile-page">
-    <section class="profile-hero" aria-labelledby="profile-name">
-        <div class="profile-avatar-column">
-            {% if profile_user.avatar_image %}
-                <img class="profile-avatar"
-                     src="{{ profile_user.avatar_image.url }}"
-                     alt="{% translate 'Avatar of user' %} {{ profile_user.username }}">
-            {% else %}
-                <img class="profile-avatar"
-                     src="{% static 'images/default_profile_img.png' %}"
-                     alt="{% translate 'Avatar of user' %} {{ profile_user.username }}">
-            {% endif %}
-
-            {% if is_owner %}
-                <details class="profile-avatar-editor">
-                    <summary>{% translate "Change avatar" %}</summary>
-                    <form action="{% url 'accounts:update-avatar' %}"
-                          method="post"
-                          enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <label class="profile-file-label" for="{{ avatar_form.avatar_image.id_for_label }}">
-                            {% translate "Choose an image" %}
-                        </label>
-                        {{ avatar_form.avatar_image }}
-                        <p class="profile-form-hint">
-                            {% translate "The image will be resized and converted to PNG. Maximum size: 12 MB." %}
-                        </p>
-                        <div class="profile-avatar-actions">
-                            <button class="profile-button profile-button--primary" type="submit">
-                                {% translate "Upload" %}
-                            </button>
-                            {% if profile_user.avatar_image %}
-                                <button class="profile-button profile-button--quiet"
-                                        type="submit"
-                                        name="avatar_action"
-                                        value="delete"
-                                        formnovalidate>
-                                    {% translate "Remove" %}
-                                </button>
-                            {% endif %}
-                        </div>
-                    </form>
-                </details>
-            {% endif %}
-        </div>
-
-        <div class="profile-identity">
-            <div class="profile-name-row">
-                <div>
-                    <p class="profile-eyebrow">{% translate "RAFS profile" %}</p>
-                    <h1 id="profile-name">{{ profile_user.username }}</h1>
-                </div>
-                <span class="profile-role" title="{% translate 'User role' %}">{{ profile_role }}</span>
-            </div>
-
-            <dl class="profile-account-meta">
-                <div>
-                    <dt>{% translate "Level" %}</dt>
-                    <dd>{{ profile_user.user_lvl }}</dd>
-                </div>
-                <div>
-                    <dt>{% translate "Frames" %}</dt>
-                    <dd>{{ profile_user.user_frames|intcomma }}</dd>
-                </div>
-                <div>
-                    <dt>{% translate "Joined" %}</dt>
-                    <dd>{{ profile_user.date_joined|date:"DATE_FORMAT" }}</dd>
-                </div>
+    <main class="profile-page">
+        <section class="profile-hero" aria-labelledby="profile-name">
+            <div class="profile-avatar-column">
+                {% if profile_user.avatar_image %}
+                    <img class="profile-avatar"
+                         src="{{ profile_user.avatar_image.url }}"
+                         alt="{% translate 'Avatar of user' %} {{ profile_user.username }}">
+                {% else %}
+                    <img class="profile-avatar"
+                         src="{% static 'images/default_profile_img.png' %}"
+                         alt="{% translate 'Avatar of user' %} {{ profile_user.username }}">
+                {% endif %}
                 {% if is_owner %}
-                    <div class="profile-private-field">
-                        <dt>{% translate "Email" %}</dt>
-                        <dd>{{ profile_user.email }}</dd>
+                    <details class="profile-avatar-editor">
+                        <summary>{% translate "Change avatar" %}</summary>
+                        <form action="{% url 'accounts:update-avatar' %}"
+                              method="post"
+                              enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <label class="profile-file-label"
+                                   for="{{ avatar_form.avatar_image.id_for_label }}">
+                                {% translate "Choose an image" %}
+                            </label>
+                            {{ avatar_form.avatar_image }}
+                            <p class="profile-form-hint">{% translate "The image will be resized and converted to PNG. Maximum size: 12 MB." %}</p>
+                            <div class="profile-avatar-actions">
+                                <button class="profile-button profile-button--primary" type="submit">{% translate "Upload" %}</button>
+                                {% if profile_user.avatar_image %}
+                                    <button class="profile-button profile-button--quiet"
+                                            type="submit"
+                                            name="avatar_action"
+                                            value="delete"
+                                            formnovalidate>{% translate "Remove" %}</button>
+                                {% endif %}
+                            </div>
+                        </form>
+                    </details>
+                {% endif %}
+            </div>
+            <div class="profile-identity">
+                <div class="profile-name-row">
+                    <div>
+                        <p class="profile-eyebrow">{% translate "RAFS profile" %}</p>
+                        <h1 id="profile-name">{{ profile_user.username }}</h1>
+                    </div>
+                    <span class="profile-role" title="{% translate 'User role' %}">{{ profile_role }}</span>
+                </div>
+                <dl class="profile-account-meta">
+                    <div>
+                        <dt>{% translate "Level" %}</dt>
+                        <dd>
+                            {{ profile_user.user_lvl }}
+                        </dd>
+                    </div>
+                    <div>
+                        <dt>{% translate "Frames" %}</dt>
+                        <dd>
+                            {{ profile_user.user_frames|intcomma }}
+                        </dd>
+                    </div>
+                    <div>
+                        <dt>{% translate "Joined" %}</dt>
+                        <dd>
+                            {{ profile_user.date_joined|date:"DATE_FORMAT" }}
+                        </dd>
+                    </div>
+                    {% if is_owner %}
+                        <div class="profile-private-field">
+                            <dt>{% translate "Email" %}</dt>
+                            <dd>
+                                {{ profile_user.email }}
+                            </dd>
+                        </div>
+                    {% endif %}
+                </dl>
+                {% if is_owner %}
+                    <div class="profile-owner-links">
+                        <a class="profile-button profile-button--secondary"
+                           href="{% url 'accounts:moderation-application' %}">
+                            {% translate "Apply for moderation" %}
+                        </a>
+                        {% if user.is_superuser %}
+                            <a class="profile-button profile-button--quiet"
+                               href="{% url 'accounts:moderation-applications-admin' %}">
+                                {% translate "View applications" %}
+                            </a>
+                        {% endif %}
                     </div>
                 {% endif %}
-            </dl>
-
+            </div>
+        </section>
+        <section class="profile-section" aria-labelledby="profile-activity-title">
+            <div class="profile-section-heading">
+                <div>
+                    <p class="profile-eyebrow">{% translate "Activity" %}</p>
+                    <h2 id="profile-activity-title">{% translate "Community contribution" %}</h2>
+                </div>
+            </div>
+            <div class="profile-summary-grid">
+                <article class="profile-summary-card">
+                    <strong>{{ profile_user.review_count|intcomma }}</strong>
+                    <span>{% translate "Reviews" %}</span>
+                </article>
+                <article class="profile-summary-card">
+                    <strong>{{ profile_user.reply_count|intcomma }}</strong>
+                    <span>{% translate "Replies" %}</span>
+                </article>
+            </div>
+        </section>
+        <section class="profile-section profile-library"
+                 aria-labelledby="profile-watch-title"
+                 data-profile-library
+                 data-update-url="{% url 'movies:set_movie_status' %}"
+                 data-update-error="{% translate 'Unable to update the list' %}">
+            <div class="profile-section-heading">
+                <div>
+                    <p class="profile-eyebrow">{% translate "Library" %}</p>
+                    <h2 id="profile-watch-title">{% translate "Watch statuses" %}</h2>
+                </div>
+            </div>
             {% if is_owner %}
-                <div class="profile-owner-links">
-                    <a class="profile-button profile-button--secondary"
-                       href="{% url 'accounts:moderation-application' %}">
-                        {% translate "Apply for moderation" %}
-                    </a>
-                    {% if user.is_superuser %}
-                        <a class="profile-button profile-button--quiet"
-                           href="{% url 'accounts:moderation-applications-admin' %}">
-                            {% translate "View applications" %}
-                        </a>
-                    {% endif %}
-                </div>
+                <form data-profile-library-csrf hidden>
+                    {% csrf_token %}
+                </form>
             {% endif %}
-        </div>
-    </section>
-
-    <section class="profile-section" aria-labelledby="profile-activity-title">
-        <div class="profile-section-heading">
-            <div>
-                <p class="profile-eyebrow">{% translate "Activity" %}</p>
-                <h2 id="profile-activity-title">{% translate "Community contribution" %}</h2>
-            </div>
-        </div>
-        <div class="profile-summary-grid">
-            <article class="profile-summary-card">
-                <strong>{{ profile_user.review_count|intcomma }}</strong>
-                <span>{% translate "Reviews" %}</span>
-            </article>
-            <article class="profile-summary-card">
-                <strong>{{ profile_user.reply_count|intcomma }}</strong>
-                <span>{% translate "Replies" %}</span>
-            </article>
-        </div>
-    </section>
-
-    <section class="profile-section profile-library"
-             aria-labelledby="profile-watch-title"
-             data-profile-library
-             data-update-url="{% url 'movies:set_movie_status' %}"
-             data-update-error="{% translate 'Unable to update the list' %}">
-        <div class="profile-section-heading">
-            <div>
-                <p class="profile-eyebrow">{% translate "Library" %}</p>
-                <h2 id="profile-watch-title">{% translate "Watch statuses" %}</h2>
-            </div>
-        </div>
-        {% if is_owner %}
-            <form data-profile-library-csrf hidden>
-                {% csrf_token %}
-            </form>
-        {% endif %}
-        <div class="profile-watch-grid">
-            {% for status in watch_statuses %}
-                <button class="profile-watch-item"
-                        type="button"
-                        data-profile-watch-toggle
-                        aria-expanded="false"
-                        aria-controls="profile-watch-panel-{{ forloop.counter }}">
-                    <span>{{ status.label }}</span>
-                    <strong data-profile-watch-count
-                            data-count="{{ status.count }}">{{ status.count|intcomma }}</strong>
-                </button>
-            {% endfor %}
-        </div>
-        <div class="profile-watch-panels">
-            {% for status in watch_statuses %}
-                <div class="profile-watch-panel"
-                     id="profile-watch-panel-{{ forloop.counter }}"
-                     data-profile-watch-panel
-                     hidden>
-                    <div class="profile-watch-movies">
-                        {% for watch_entry in status.movies %}
-                            <article class="profile-watch-movie"
-                                     data-library-movie
-                                     data-movie-id="{{ watch_entry.movie_id }}"
-                                     data-status="{{ status.value }}"
-                                     data-movie-name="{{ watch_entry.movie.name }}">
-                                <a class="profile-watch-movie-cover-link"
-                                   href="{% url 'movies:detail' watch_entry.movie_id %}"
-                                   aria-label="{{ watch_entry.movie.name }}">
-                                    {% if watch_entry.movie.cover and watch_entry.movie.image_exists %}
-                                        <img class="profile-watch-movie-cover"
-                                             src="{{ watch_entry.movie.cover.url }}"
-                                             alt="{{ watch_entry.movie.name }}">
-                                    {% elif watch_entry.movie.cover_url %}
-                                        <img class="profile-watch-movie-cover"
-                                             src="{{ watch_entry.movie.cover_url }}"
-                                             data-fallback-src="{% static 'movies/images/nocover.png' %}"
-                                             onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
-                                             alt="{{ watch_entry.movie.name }}">
-                                    {% else %}
-                                        <img class="profile-watch-movie-cover"
-                                             src="{% static 'movies/images/nocover.png' %}"
-                                             alt="{{ watch_entry.movie.name }}">
-                                    {% endif %}
-                                </a>
-                                <div class="profile-watch-movie-copy">
-                                    <a class="profile-watch-movie-title"
-                                       href="{% url 'movies:detail' watch_entry.movie_id %}">{{ watch_entry.movie.name }}</a>
-                                    {% if watch_entry.movie.year %}
-                                        <span class="profile-watch-movie-year">{{ watch_entry.movie.year }}</span>
-                                    {% endif %}
-                                    <span class="profile-watch-movie-status">{{ status.label }}</span>
-                                </div>
-                                {% if is_owner %}
-                                    <div class="profile-watch-movie-actions">
-                                        <button class="profile-watch-remove"
-                                                type="button"
-                                                data-library-remove>{% translate "Remove from list" %}</button>
-                                        <span class="profile-watch-removed-message"
-                                              data-library-removed
-                                              hidden>{% translate "Removed from list" %}</span>
-                                        <button class="profile-watch-undo"
-                                                type="button"
-                                                data-library-undo
-                                                hidden>{% translate "Undo" %}</button>
-                                    </div>
-                                    <span class="profile-watch-movie-feedback"
-                                          data-library-feedback
-                                          aria-live="polite"></span>
-                                {% endif %}
-                            </article>
-                        {% endfor %}
-                    </div>
-                    <p class="profile-watch-empty"
-                       data-profile-watch-empty
-                       {% if status.count %}hidden{% endif %}>{% translate "There are no movies in this section yet." %}</p>
-                </div>
-            {% endfor %}
-        </div>
-    </section>
-
-    {% if is_owner %}
-        <dialog class="profile-watch-dialog"
-                data-profile-watch-dialog
-                aria-labelledby="profile-watch-dialog-title">
-            <div class="profile-watch-dialog-card">
-                <p class="profile-eyebrow">{% translate "Remove from list" %}</p>
-                <h3 id="profile-watch-dialog-title">
-                    <span>{% translate "Remove from list" %}:</span>
-                    <span data-profile-watch-dialog-name></span>
-                </h3>
-                <p>{% translate "Remove this movie from the selected list?" %}</p>
-                <div class="profile-watch-dialog-actions">
-                    <button class="profile-button profile-button--quiet"
+            <div class="profile-watch-grid">
+                {% for status in watch_statuses %}
+                    <button class="profile-watch-item"
                             type="button"
-                            data-profile-watch-cancel>{% translate "Cancel" %}</button>
-                    <button class="profile-button profile-button--primary"
-                            type="button"
-                            data-profile-watch-confirm>{% translate "Confirm" %}</button>
-                </div>
-            </div>
-        </dialog>
-    {% endif %}
-
-    <section class="profile-section" aria-labelledby="profile-achievements-title">
-        <div class="profile-section-heading">
-            <div>
-                <p class="profile-eyebrow">{% translate "Progress" %}</p>
-                <h2 id="profile-achievements-title">{% translate "Achievements" %}</h2>
-            </div>
-            <span class="profile-section-count">{{ profile_user.profile_achievements|length }}</span>
-        </div>
-
-        {% if profile_user.profile_achievements %}
-            <div class="profile-achievement-grid">
-                {% for achievement in profile_user.profile_achievements %}
-                    <article class="profile-achievement">
-                        <span class="profile-achievement-mark" aria-hidden="true">◆</span>
-                        <div>
-                            <h3>{{ achievement.name }}</h3>
-                            <p>{{ achievement.description }}</p>
-                        </div>
-                    </article>
+                            data-profile-watch-toggle
+                            aria-expanded="false"
+                            aria-controls="profile-watch-panel-{{ forloop.counter }}">
+                        <span>{{ status.label }}</span>
+                        <strong data-profile-watch-count data-count="{{ status.count }}">{{ status.count|intcomma }}</strong>
+                    </button>
                 {% endfor %}
             </div>
-        {% else %}
-            <div class="profile-achievement-empty">
-                <div class="profile-achievement-placeholder" aria-hidden="true">
-                    <span></span><span></span><span></span><span></span><span></span><span></span>
-                </div>
-                <div>
-                    <strong>{% translate "No achievements yet" %}</strong>
-                    <p>{% translate "They will appear here as the user participates in RAFS." %}</p>
-                </div>
+            <div class="profile-watch-panels">
+                {% for status in watch_statuses %}
+                    <div class="profile-watch-panel"
+                         id="profile-watch-panel-{{ forloop.counter }}"
+                         data-profile-watch-panel
+                         hidden>
+                        <div class="profile-watch-movies">
+                            {% for watch_entry in status.movies %}
+                                <article class="profile-watch-movie"
+                                         data-library-movie
+                                         data-movie-id="{{ watch_entry.movie_id }}"
+                                         data-status="{{ status.value }}"
+                                         data-movie-name="{{ watch_entry.movie.name }}">
+                                    <a class="profile-watch-movie-cover-link"
+                                       href="{% url 'movies:detail' watch_entry.movie_id %}"
+                                       aria-label="{{ watch_entry.movie.name }}">
+                                        {% if watch_entry.movie.cover and watch_entry.movie.image_exists %}
+                                            <img class="profile-watch-movie-cover"
+                                                 src="{{ watch_entry.movie.cover.url }}"
+                                                 alt="{{ watch_entry.movie.name }}">
+                                        {% elif watch_entry.movie.cover_url %}
+                                            <img class="profile-watch-movie-cover"
+                                                 src="{{ watch_entry.movie.cover_url }}"
+                                                 data-fallback-src="{% static 'movies/images/nocover.png' %}"
+                                                 onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
+                                                 alt="{{ watch_entry.movie.name }}">
+                                        {% else %}
+                                            <img class="profile-watch-movie-cover"
+                                                 src="{% static 'movies/images/nocover.png' %}"
+                                                 alt="{{ watch_entry.movie.name }}">
+                                        {% endif %}
+                                    </a>
+                                    <div class="profile-watch-movie-copy">
+                                        <a class="profile-watch-movie-title"
+                                           href="{% url 'movies:detail' watch_entry.movie_id %}">{{ watch_entry.movie.name }}</a>
+                                        {% if watch_entry.movie.year %}
+                                            <span class="profile-watch-movie-year">{{ watch_entry.movie.year }}</span>
+                                        {% endif %}
+                                        <span class="profile-watch-movie-status">{{ status.label }}</span>
+                                    </div>
+                                    {% if is_owner %}
+                                        <div class="profile-watch-movie-actions">
+                                            <button class="profile-watch-remove" type="button" data-library-remove>{% translate "Remove from list" %}</button>
+                                            <span class="profile-watch-removed-message" data-library-removed hidden>{% translate "Removed from list" %}</span>
+                                            <button class="profile-watch-undo" type="button" data-library-undo hidden>{% translate "Undo" %}</button>
+                                        </div>
+                                        <span class="profile-watch-movie-feedback"
+                                              data-library-feedback
+                                              aria-live="polite"></span>
+                                    {% endif %}
+                                </article>
+                            {% endfor %}
+                        </div>
+                        <p class="profile-watch-empty"
+                           data-profile-watch-empty
+                           {% if status.count %}hidden{% endif %}>{% translate "There are no movies in this section yet." %}</p>
+                    </div>
+                {% endfor %}
             </div>
+        </section>
+        {% if is_owner %}
+            <dialog class="profile-watch-dialog"
+                    data-profile-watch-dialog
+                    aria-labelledby="profile-watch-dialog-title">
+                <div class="profile-watch-dialog-card">
+                    <p class="profile-eyebrow">{% translate "Remove from list" %}</p>
+                    <h3 id="profile-watch-dialog-title">
+                        <span>{% translate "Remove from list" %}:</span>
+                        <span data-profile-watch-dialog-name></span>
+                    </h3>
+                    <p>{% translate "Remove this movie from the selected list?" %}</p>
+                    <div class="profile-watch-dialog-actions">
+                        <button class="profile-button profile-button--quiet"
+                                type="button"
+                                data-profile-watch-cancel>{% translate "Cancel" %}</button>
+                        <button class="profile-button profile-button--primary"
+                                type="button"
+                                data-profile-watch-confirm>{% translate "Confirm" %}</button>
+                    </div>
+                </div>
+            </dialog>
         {% endif %}
-    </section>
-</main>
+        <section class="profile-section" aria-labelledby="profile-achievements-title">
+            <div class="profile-section-heading">
+                <div>
+                    <p class="profile-eyebrow">{% translate "Progress" %}</p>
+                    <h2 id="profile-achievements-title">{% translate "Achievements" %}</h2>
+                </div>
+                <span class="profile-section-count">{{ profile_user.profile_achievements|length }}</span>
+            </div>
+            {% if profile_user.profile_achievements %}
+                <div class="profile-achievement-grid">
+                    {% for achievement in profile_user.profile_achievements %}
+                        <article class="profile-achievement">
+                            <span class="profile-achievement-mark" aria-hidden="true">◆</span>
+                            <div>
+                                <h3>{{ achievement.name }}</h3>
+                                <p>{{ achievement.description }}</p>
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="profile-achievement-empty">
+                    <div class="profile-achievement-placeholder" aria-hidden="true">
+                        <span></span><span></span><span></span><span></span><span></span><span></span>
+                    </div>
+                    <div>
+                        <strong>{% translate "No achievements yet" %}</strong>
+                        <p>{% translate "They will appear here as the user participates in RAFS." %}</p>
+                    </div>
+                </div>
+            {% endif %}
+        </section>
+    </main>
 {% endblock %}
-
 {% block extra_js %}
     <script src="{% static 'accounts/js/profile-library.js' %}" defer></script>
 {% endblock %}
