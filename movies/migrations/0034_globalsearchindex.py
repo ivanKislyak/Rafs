@@ -16,16 +16,4 @@ class Migration(migrations.Migration):
 
     operations = [
         TrigramExtension(),
-        migrations.CreateModel(
-            name='GlobalSearchIndex',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('object_id', models.PositiveIntegerField()),
-                ('search_text', models.TextField()),
-                ('content_type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='contenttypes.contenttype')),
-            ],
-            options={
-                'indexes': [django.contrib.postgres.indexes.GinIndex(fields=['search_text'], name='global_search_trgm_idx', opclasses=['gin_trgm_ops'])],
-            },
-        ),
     ]

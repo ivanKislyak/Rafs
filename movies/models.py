@@ -9,6 +9,7 @@ from parler.models import TranslatableModel, TranslatedFields
 from django.contrib.postgres.indexes import GinIndex
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.postgres.search import SearchVectorField
 from django.utils.translation import gettext_lazy as _
 
 class Movie(TranslatableModel):
@@ -181,14 +182,14 @@ class GlobalSearchIndex(models.Model):
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
     
-    search_text = models.TextField()
+    search_vector = SearchVectorField(null=True)
 
     def __str__(self):
         return f"Model Name: {self.content_type.model_class().__name__} | Content: {self.search_text[:50]}..."
     
     class Meta:
         indexes = [
-            GinIndex(name='global_search_trgm_idx', fields=['search_text'], opclasses=['gin_trgm_ops']),
+            GinIndex(fields=['search_vector']),
         ]
 
 
