@@ -1,8 +1,10 @@
+from django.contrib.postgres.search import SearchVector
+from parler.models import TranslationDoesNotExist
 from django.contrib.contenttypes.models import ContentType
 from movies.models import GlobalSearchIndex, Movie, Review
 from movies.movie_models import Person, Studio
 from accounts.models import User
-from django.db.models import Q
+from django.db.models import Q, Value
 import logging
 
 logging.basicConfig(
@@ -48,6 +50,65 @@ def update_all_exist_indexes():
 
     movie_data = []
     for movie in all_movies:
+        en_vector = (
+            SearchVector(
+                Value(
+                    wd_name_ru = movie.safe_translation_getter(
+                        'wikidata_name', language_code='en')),
+                        weight='A', config='english'
+            ) +
+            SearchVector(
+                Value(
+                    wd_desc_ru = movie.safe_translation_getter(
+                        'wikidata_description', language_code='en')),
+                        weight='B', config='english'
+            ) +
+            SearchVector(
+                    
+            )
+            )
+        
+        ru_vector = (
+             SearchVector(
+                Value(
+                    wd_name_ru = movie.safe_translation_getter('wikidata_name', language_code='ru')), 
+                    weight='A', 
+                    config='russian') +
+                SearchVector(
+                    Value(
+                        
+                    )
+                )
+        )
+
+        de_vector = (
+             SearchVector(
+                Value(
+                    wd_name_ru = movie.safe_translation_getter('wikidata_name', language_code='de')), 
+                    weight='A', 
+                    config='german') +
+                SearchVector(
+                    Value(
+                        
+                    )
+                )
+        )
+
+        es_vector = (
+             SearchVector(
+                Value(
+                    wd_name_ru = movie.safe_translation_getter('wikidata_name', language_code='es')), 
+                    weight='A', 
+                    config='spanish') +
+                SearchVector(
+                    Value(
+                        
+                    )
+                )
+        )
+            
+        
+
         movie_data.append(
             GlobalSearchIndex(content_type=content_type_of_movie,
                               object_id=movie.pk,
