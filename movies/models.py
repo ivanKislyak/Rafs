@@ -185,7 +185,7 @@ class GlobalSearchIndex(models.Model):
     search_vector = SearchVectorField(null=True)
 
     def __str__(self):
-        return f"Model Name: {self.content_type.model_class().__name__} | Content: {self.search_text[:50]}..."
+        return f"{self.content_type.model} #{self.object_id}"
     
     class Meta:
         indexes = [
