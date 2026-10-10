@@ -2,48 +2,53 @@ const watchStatusButtons = document.querySelectorAll(".movie-watch-status-btn");
 
 watchStatusButtons.forEach((btn) => {
   btn.addEventListener("click", async () => {
-    const container = btn.closest(".movie-watch-status");
-    const movieStatusURL = container ? container.dataset.url : null;
-    const movieStatusCsrf = container ? container.dataset.csrf : null;
-    const movieId = container ? container.dataset.movieId : null;
-    const isActiveBtn = container.querySelector(".is-active");
-
-    if (!btn.classList.contains("is-active")) {
-      container.querySelectorAll(".movie-watch-status-btn").forEach((button) => {
-        if (!reviewVoteUserIsAuthenticated) {
-          window.location.href = reviewVoteLoginUrl;
-          return;
-        }
-        button.classList.remove("is-active");
-      });
-
-      btn.classList.add("is-active");
-    } else {
-      btn.classList.remove("is-active");
+    if (!reviewVoteUserIsAuthenticated) {
+      window.location.href = reviewVoteLoginUrl;
+      return;
     }
 
+    const container = btn.closest(".movie-watch-status");
+    if (!container || container.dataset.pending === "true") {
+      return;
+    }
+
+    const buttons = container.querySelectorAll(".movie-watch-status-btn");
+
+    container.dataset.pending = "true";
+    buttons.forEach((button) => {
+      button.disabled = true;
+    });
+
     try {
-      const response = await fetch(movieStatusURL, {
+      const response = await fetch(container.dataset.url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-CSRFToken": movieStatusCsrf,
+          "X-CSRFToken": container.dataset.csrf,
         },
         body: JSON.stringify({
-          movie_id: movieId,
+          movie_id: container.dataset.movieId,
           status: btn.dataset.value,
         }),
       });
 
-      const data = await response.json().catch(() => ({}));
+      const data = await response.json();
 
       if (!response.ok) {
-        btn.classList.remove("is-active");
         throw new Error(data.error || container.dataset.errorMessage);
       }
+
+      buttons.forEach((button) => {
+        button.classList.toggle("is-active", button.dataset.value === data.status);
+      });
     } catch (error) {
-      btn.classList.remove("is-active");
-      throw new Error(error.message || container.dataset.errorMessage);
+      console.error(error);
+      window.alert(container.dataset.errorMessage);
+    } finally {
+      delete container.dataset.pending;
+      buttons.forEach((button) => {
+        button.disabled = false;
+      });
     }
   });
 });
