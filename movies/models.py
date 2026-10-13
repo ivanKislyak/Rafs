@@ -66,6 +66,8 @@ class Movie(TranslatableModel):
 
     class Meta:
         ordering = ['-rate', 'name']
+        verbose_name = "Movie"
+        verbose_name_plural = "Movies"
 
     def __str__(self):
         if self.year:
@@ -108,6 +110,8 @@ class Review(models.Model):
 
 
     class Meta:
+        verbose_name = "Review"
+        verbose_name_plural = "Reviews"
         ordering = ['-created_at']
         constraints = [
             models.UniqueConstraint(fields=['user', 'movie'], 
@@ -140,6 +144,8 @@ class ReviewReply(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
+        verbose_name = "Review Reply"
+        verbose_name_plural = "Review Replies"
         ordering = ['created_at']
 
     def __str__(self):
@@ -164,6 +170,8 @@ class ReviewVote(BaseVote):
     review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name="votes")
 
     class Meta:
+        verbose_name = "Review Vote"
+        verbose_name_plural = "Review Votes"
         constraints = [models.UniqueConstraint(fields=["user", "review"], name="unique_user_review_vote")]
 
 
@@ -173,8 +181,9 @@ class ReplyVote(BaseVote):
     reply = models.ForeignKey(ReviewReply, on_delete=models.CASCADE, related_name="votes")
 
     class Meta:
+        verbose_name = "Reply Vote"
+        verbose_name_plural = "Reply Votes"
         constraints = [models.UniqueConstraint(fields=["user", "reply"], name="unique_user_reply_vote")]
-
 
 
 class GlobalSearchIndex(models.Model):
@@ -188,6 +197,8 @@ class GlobalSearchIndex(models.Model):
         return f"{self.content_type.model} #{self.object_id}"
     
     class Meta:
+        verbose_name = "Global Search Index"
+        verbose_name_plural = "Global Search Indexes"
         indexes = [
             GinIndex(fields=['search_vector']),
         ]
@@ -210,4 +221,6 @@ class WatchStatus(models.Model):
         return self.status
 
     class Meta:
+        verbose_name = "Watch Status"
+        verbose_name_plural = "Watch Statuses"
         constraints = [models.UniqueConstraint(fields=["user", "movie"], name="unique_movie_status")]

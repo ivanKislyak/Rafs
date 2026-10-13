@@ -7,6 +7,10 @@ class TypeOfWork(TranslatableModel):
         name = models.CharField(max_length=200, blank=True)
     )
 
+    class Meta:
+        verbose_name = "Watch Status"
+        verbose_name_plural = "Watch Statuses"
+
     def __str__(self):
         return self.safe_translation_getter(
             "name",
@@ -21,6 +25,10 @@ class Genre(TranslatableModel):
         name = models.CharField(max_length=200, blank=True)
     )
 
+    class Meta:
+        verbose_name = "Genre"
+        verbose_name_plural = "Genres"
+
     def __str__(self):
         return self.safe_translation_getter(
             "name",
@@ -33,6 +41,10 @@ class Country(TranslatableModel):
     translations = TranslatedFields(
         name = models.CharField(max_length=200, blank=True)
     )
+
+    class Meta: 
+        verbose_name = "Country"
+        verbose_name_plural = "Countries"
 
     def __str__(self):
         return self.safe_translation_getter(
@@ -48,6 +60,10 @@ class Studio(TranslatableModel):
         name = models.CharField(max_length=200, blank=True)
     )
 
+    class Meta:
+        verbose_name = "Studio"
+        verbose_name_plural = "Studios"
+
     def __str__(self):
         return self.safe_translation_getter(
             "name",
@@ -62,13 +78,13 @@ class Person(TranslatableModel):
         name = models.CharField(max_length=200, blank=True)
     )
 
+    class Meta:
+        verbose_name = "Person"
+        verbose_name_plural = "Persons"
+
     def __str__(self):
         return self.safe_translation_getter(
             "name",
             default=self.wikidata_id,
             any_language=True,
         )
-
-
-
-
