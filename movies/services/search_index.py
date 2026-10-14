@@ -1,115 +1,449 @@
-from django.contrib.postgres.search import SearchVector
-from parler.models import TranslationDoesNotExist
-from django.contrib.contenttypes.models import ContentType
-from movies.models import GlobalSearchIndex, Movie, Review
-from movies.movie_models import Person, Studio
-from accounts.models import User
-from django.db.models import Q, Value
 import logging
 
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.postgres.search import SearchVector
+from django.db.models import Prefetch, Value
+
+from accounts.models import User
+from movies.models import GlobalSearchIndex, Movie, Review
+from movies.movie_models import Country, Genre, Person, Studio, TypeOfWork
+
+
 BATCH_SIZE = 1000
+ENGLISH_TRANSLATIONS_ATTR = "_search_english_translations"
 
-logging.basicConfig(
-    level=logging.INFO, 
-    format="%(asctime)s [%(levelname)s] %(message)s",
-    datefmt="%H:%M:%S"
-)
+logger = logging.getLogger(__name__)
 
-def join_en_names(subfield):
-    return " ".join(
-        field.safe_translation_getter(
-            "name", language_code="en", default=""
-        ) or ""
-        for field in subfield
+
+def _clean_text(value):
+    if value is None:
+        return ""
+    return str(value).strip()
+
+
+def _join_unique(values):
+    unique_values = []
+    seen = set()
+
+    for value in values:
+        text = _clean_text(value)
+        key = text.casefold()
+        if not text or key in seen:
+            continue
+
+        seen.add(key)
+        unique_values.append(text)
+
+    return " ".join(unique_values)
+
+
+def _english_translation_prefetch(lookup, model):
+    translation_model = model._parler_meta.root_model
+    translations = translation_model.objects.filter(language_code="en")
+    return Prefetch(
+        lookup,
+        queryset=translations,
+        to_attr=ENGLISH_TRANSLATIONS_ATTR,
     )
+
+
+def _english_value(instance, field_name):
+    translations = getattr(instance, ENGLISH_TRANSLATIONS_ATTR, ())
+    if not translations:
+        return ""
+    return _clean_text(getattr(translations[0], field_name, ""))
+
+
+def _english_named_queryset(model):
+    return model.objects.only("pk", "wikidata_id").prefetch_related(
+        _english_translation_prefetch("translations", model)
+    )
+
+
+def _build_search_vector(text_a="", text_b="", text_c="", text_d=""):
+    return (
+        SearchVector(Value(text_a), weight="A", config="english")
+        + SearchVector(Value(text_b), weight="B", config="english")
+        + SearchVector(Value(text_c), weight="C", config="english")
+        + SearchVector(Value(text_d), weight="D", config="english")
+    )
+
 
 def index_new_movies():
-    logging.info(f"Quantity of GIN objects on start: {GlobalSearchIndex.objects.count()}")
-    content_type_of_movie = ContentType.objects.get_for_model(Movie)
+    content_type = ContentType.objects.get_for_model(Movie)
+    indexed_object_ids = GlobalSearchIndex.objects.filter(
+        content_type=content_type
+    ).values_list("object_id", flat=True)
 
-    already_movies_in_db = GlobalSearchIndex.objects.filter(
-        content_type=content_type_of_movie
-        ).values("object_id")
-    
-    
-    all_movies = Movie.objects.exclude(id__in=already_movies_in_db).prefetch_related(
-        'translations', 'type_of_work__translations',
-        'genres__translations', 'actors__translations',
-        'countries__translations', 'studio__translations',
+    movies = (
+        Movie.objects.exclude(pk__in=indexed_object_ids)
+        .select_related("type_of_work")
+        .only(
+            "pk",
+            "wikidata_id",
+            "imdb_id",
+            "year",
+            "type_of_work_id",
+            "name",
+            "description",
         )
-
-    movie_data = []
-    
-    for movie in all_movies.iterator(chunk_size=BATCH_SIZE):
-        name_en = movie.safe_translation_getter(
-            "wikidata_name", language_code="en", default=""
-        ) or ""
-
-        description_en = movie.safe_translation_getter(
-            "wikidata_description", language_code="en", default=""
-        ) or ""
-
-        genres_en = join_en_names(movie.genres.all())
-        actors_en = join_en_names(movie.actors.all())
-        countries_en = join_en_names(movie.countries.all())
-
-        en_vector = (
-            SearchVector(Value(name_en), weight="A", config="english")
-            + SearchVector(Value(description_en), weight="B", config="english")
-            + SearchVector(Value(genres_en), weight="C", config="english")
-            + SearchVector(Value(actors_en), weight="C", config="english")
-            + SearchVector(Value(countries_en), weight="C", config="english")
+        .prefetch_related(
+            _english_translation_prefetch("translations", Movie),
+            _english_translation_prefetch(
+                "type_of_work__translations", TypeOfWork
+            ),
+            Prefetch(
+                "genres",
+                queryset=_english_named_queryset(Genre),
+                to_attr="_search_genres",
+            ),
+            Prefetch(
+                "actors",
+                queryset=_english_named_queryset(Person),
+                to_attr="_search_actors",
+            ),
+            Prefetch(
+                "countries",
+                queryset=_english_named_queryset(Country),
+                to_attr="_search_countries",
+            ),
+            Prefetch(
+                "studio",
+                queryset=_english_named_queryset(Studio),
+                to_attr="_search_studios",
+            ),
+            Prefetch(
+                "director",
+                queryset=_english_named_queryset(Person),
+                to_attr="_search_directors",
+            ),
+            Prefetch(
+                "screenwriter",
+                queryset=_english_named_queryset(Person),
+                to_attr="_search_screenwriters",
+            ),
+            Prefetch(
+                "producer",
+                queryset=_english_named_queryset(Person),
+                to_attr="_search_producers",
+            ),
+            Prefetch(
+                "composer",
+                queryset=_english_named_queryset(Person),
+                to_attr="_search_composers",
+            ),
+            "tags",
         )
-            
-        movie_data.append(
-            GlobalSearchIndex(content_type=content_type_of_movie,
-                              object_id=movie.pk,
-                              search_vector=en_vector)
+    )
+
+    documents = []
+    prepared_count = 0
+
+    for movie in movies.iterator(chunk_size=BATCH_SIZE):
+        type_of_work_name = ""
+        if movie.type_of_work is not None:
+            type_of_work_name = _english_value(movie.type_of_work, "name")
+
+        names = _join_unique(
+            [_english_value(movie, "wikidata_name"), movie.name]
         )
-
-        if len(movie_data) >= BATCH_SIZE:
-            GlobalSearchIndex.objects.bulk_create(movie_data, ignore_conflicts=True)
-            movie_data.clear()
-
-    GlobalSearchIndex.objects.bulk_create(movie_data, ignore_conflicts=True)
-    logging.info(f"Quantity of GIN objects after adding Movies: {GlobalSearchIndex.objects.count()}")
-
-def update_all_gin_reviews():
-    content_type_of_review = ContentType.objects.get_for_model(Review)
-    already_reviews_in_db = GlobalSearchIndex.objects.filter(
-        content_type=content_type_of_review
-        ).values("object_id")
-    
-    all_reviews = Review.objects.exclude(Q(id__in=already_reviews_in_db) | Q(text__isnull=True) | Q(text__exact="")
-                    ).select_related('user', 'movie', 'movie__type_of_work').prefetch_related(
-                    'movie__translations', 
-                    'movie__type_of_work__translations',
-                    'movie__genres', 
-                    'movie__genres__translations')
-
-    review_data = []
-    for review in all_reviews:
-        review_data.append(
-            GlobalSearchIndex(content_type=content_type_of_review,
-                              object_id=review.pk,
-                              search_text=flatten_complex_list(
-            [review.user.username, review.user.first_name, review.user.last_name, review.text, 
-                [(main_movie_data.wikidata_name, main_movie_data.wikidata_description) for main_movie_data in review.movie.translations.all()],
-                [t.name for t in review.movie.type_of_work.translations.all()] if review.movie.type_of_work else [], 
-                [t.name for genre in review.movie.genres.all() for t in genre.translations.all()],
-                review.movie.name, review.movie.description
+        descriptions = _join_unique(
+            [_english_value(movie, "wikidata_description"), movie.description]
+        )
+        related_names = _join_unique(
+            [
+                type_of_work_name,
+                *(_english_value(item, "name") for item in movie._search_genres),
+                *(_english_value(item, "name") for item in movie._search_actors),
+                *(_english_value(item, "name") for item in movie._search_countries),
+                *(_english_value(item, "name") for item in movie._search_studios),
+                *(_english_value(item, "name") for item in movie._search_directors),
+                *(
+                    _english_value(item, "name")
+                    for item in movie._search_screenwriters
+                ),
+                *(_english_value(item, "name") for item in movie._search_producers),
+                *(_english_value(item, "name") for item in movie._search_composers),
+                *(tag.name for tag in movie.tags.all()),
             ]
-        ))
+        )
+        identifiers = _join_unique(
+            [movie.year, movie.imdb_id, movie.wikidata_id]
+        )
+
+        documents.append(
+            GlobalSearchIndex(
+                content_type=content_type,
+                object_id=movie.pk,
+                search_vector=_build_search_vector(
+                    text_a=names,
+                    text_b=descriptions,
+                    text_c=related_names,
+                    text_d=identifiers,
+                ),
+            )
+        )
+        prepared_count += 1
+
+        if len(documents) >= BATCH_SIZE:
+            GlobalSearchIndex.objects.bulk_create(
+                documents,
+                batch_size=BATCH_SIZE,
+                ignore_conflicts=True,
+            )
+            documents.clear()
+
+    if documents:
+        GlobalSearchIndex.objects.bulk_create(
+            documents,
+            batch_size=BATCH_SIZE,
+            ignore_conflicts=True,
+        )
+
+    logger.info(
+        "Prepared %s new movie search documents for insertion.",
+        prepared_count,
     )
 
-    GlobalSearchIndex.objects.bulk_create(
-        review_data,
-        batch_size=1000
+
+def index_new_reviews():
+    content_type = ContentType.objects.get_for_model(Review)
+    indexed_object_ids = GlobalSearchIndex.objects.filter(
+        content_type=content_type
+    ).values_list("object_id", flat=True)
+
+    reviews = (
+        Review.objects.filter(user__is_deleted=False, user__is_active=True)
+        .exclude(pk__in=indexed_object_ids)
+        .exclude(text__isnull=True)
+        .exclude(text__regex=r"^\s*$")
+        .select_related("user", "movie", "movie__type_of_work")
+        .only(
+            "pk",
+            "text",
+            "user_id",
+            "user__username",
+            "movie_id",
+            "movie__name",
+            "movie__type_of_work_id",
+        )
+        .prefetch_related(
+            _english_translation_prefetch("movie__translations", Movie),
+            _english_translation_prefetch(
+                "movie__type_of_work__translations", TypeOfWork
+            ),
+            Prefetch(
+                "movie__genres",
+                queryset=_english_named_queryset(Genre),
+                to_attr="_search_genres",
+            ),
+        )
     )
 
-    logging.info(f"Quantity of GIN objects after addind Reviews: {GlobalSearchIndex.objects.count()}")
+    documents = []
+    prepared_count = 0
 
-    # should create functions for these:
-    # content_type_of_user = ContentType.objects.get_for_model(User)
-    # content_type_of_person = ContentType.objects.get_for_model(Person)
-    # content_type_of_studio = ContentType.objects.get_for_model(Studio)
+    for review in reviews.iterator(chunk_size=BATCH_SIZE):
+        type_of_work_name = ""
+        if review.movie.type_of_work is not None:
+            type_of_work_name = _english_value(
+                review.movie.type_of_work,
+                "name",
+            )
+
+        movie_names = _join_unique(
+            [_english_value(review.movie, "wikidata_name"), review.movie.name]
+        )
+        review_context = _join_unique(
+            [
+                review.user.username,
+                type_of_work_name,
+                *(
+                    _english_value(genre, "name")
+                    for genre in review.movie._search_genres
+                ),
+            ]
+        )
+
+        documents.append(
+            GlobalSearchIndex(
+                content_type=content_type,
+                object_id=review.pk,
+                search_vector=_build_search_vector(
+                    text_a=_clean_text(review.text),
+                    text_b=movie_names,
+                    text_c=review_context,
+                ),
+            )
+        )
+        prepared_count += 1
+
+        if len(documents) >= BATCH_SIZE:
+            GlobalSearchIndex.objects.bulk_create(
+                documents,
+                batch_size=BATCH_SIZE,
+                ignore_conflicts=True,
+            )
+            documents.clear()
+
+    if documents:
+        GlobalSearchIndex.objects.bulk_create(
+            documents,
+            batch_size=BATCH_SIZE,
+            ignore_conflicts=True,
+        )
+
+    logger.info(
+        "Prepared %s new review search documents for insertion.",
+        prepared_count,
+    )
+
+
+def index_new_users():
+    content_type = ContentType.objects.get_for_model(User)
+    indexed_object_ids = GlobalSearchIndex.objects.filter(
+        content_type=content_type
+    ).values_list("object_id", flat=True)
+
+    users = (
+        User.objects.filter(is_deleted=False, is_active=True)
+        .exclude(pk__in=indexed_object_ids)
+        .only("pk", "username")
+    )
+
+    documents = []
+    prepared_count = 0
+
+    for user in users.iterator(chunk_size=BATCH_SIZE):
+        documents.append(
+            GlobalSearchIndex(
+                content_type=content_type,
+                object_id=user.pk,
+                search_vector=_build_search_vector(
+                    text_a=_clean_text(user.username)
+                ),
+            )
+        )
+        prepared_count += 1
+
+        if len(documents) >= BATCH_SIZE:
+            GlobalSearchIndex.objects.bulk_create(
+                documents,
+                batch_size=BATCH_SIZE,
+                ignore_conflicts=True,
+            )
+            documents.clear()
+
+    if documents:
+        GlobalSearchIndex.objects.bulk_create(
+            documents,
+            batch_size=BATCH_SIZE,
+            ignore_conflicts=True,
+        )
+
+    logger.info(
+        "Prepared %s new user search documents for insertion.",
+        prepared_count,
+    )
+
+
+def index_new_persons():
+    content_type = ContentType.objects.get_for_model(Person)
+    indexed_object_ids = GlobalSearchIndex.objects.filter(
+        content_type=content_type
+    ).values_list("object_id", flat=True)
+
+    persons = (
+        Person.objects.exclude(pk__in=indexed_object_ids)
+        .only("pk", "wikidata_id")
+        .prefetch_related(
+            _english_translation_prefetch("translations", Person)
+        )
+    )
+
+    documents = []
+    prepared_count = 0
+
+    for person in persons.iterator(chunk_size=BATCH_SIZE):
+        documents.append(
+            GlobalSearchIndex(
+                content_type=content_type,
+                object_id=person.pk,
+                search_vector=_build_search_vector(
+                    text_a=_english_value(person, "name"),
+                    text_d=_clean_text(person.wikidata_id),
+                ),
+            )
+        )
+        prepared_count += 1
+
+        if len(documents) >= BATCH_SIZE:
+            GlobalSearchIndex.objects.bulk_create(
+                documents,
+                batch_size=BATCH_SIZE,
+                ignore_conflicts=True,
+            )
+            documents.clear()
+
+    if documents:
+        GlobalSearchIndex.objects.bulk_create(
+            documents,
+            batch_size=BATCH_SIZE,
+            ignore_conflicts=True,
+        )
+
+    logger.info(
+        "Prepared %s new person search documents for insertion.",
+        prepared_count,
+    )
+
+
+def index_new_studios():
+    content_type = ContentType.objects.get_for_model(Studio)
+    indexed_object_ids = GlobalSearchIndex.objects.filter(
+        content_type=content_type
+    ).values_list("object_id", flat=True)
+
+    studios = (
+        Studio.objects.exclude(pk__in=indexed_object_ids)
+        .only("pk", "wikidata_id")
+        .prefetch_related(
+            _english_translation_prefetch("translations", Studio)
+        )
+    )
+
+    documents = []
+    prepared_count = 0
+
+    for studio in studios.iterator(chunk_size=BATCH_SIZE):
+        documents.append(
+            GlobalSearchIndex(
+                content_type=content_type,
+                object_id=studio.pk,
+                search_vector=_build_search_vector(
+                    text_a=_english_value(studio, "name"),
+                    text_d=_clean_text(studio.wikidata_id),
+                ),
+            )
+        )
+        prepared_count += 1
+
+        if len(documents) >= BATCH_SIZE:
+            GlobalSearchIndex.objects.bulk_create(
+                documents,
+                batch_size=BATCH_SIZE,
+                ignore_conflicts=True,
+            )
+            documents.clear()
+
+    if documents:
+        GlobalSearchIndex.objects.bulk_create(
+            documents,
+            batch_size=BATCH_SIZE,
+            ignore_conflicts=True,
+        )
+
+    logger.info(
+        "Prepared %s new studio search documents for insertion.",
+        prepared_count,
+    )
