@@ -1,5 +1,7 @@
 {% load static %}
 {% load i18n %}
+{% firstof movie.wikidata_name movie.name as movie_title %}
+{% firstof movie.wikidata_description movie.description as movie_description %}
 <article class="movie-card">
     <a class="a-block" href="{% url 'movies:detail' movie.pk %}">
         {% if movie.cover and movie.image_exists %}
@@ -7,23 +9,23 @@
                  src="{{ movie.cover.url }}"
                  data-fallback-src="{% static 'movies/images/nocover.png' %}"
                  onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
-                 alt="{{ movie.name }}"
+                 alt="{{ movie_title }}"
                  loading="lazy" />
         {% elif movie.cover_url %}
             <img class="movie-card-cover"
                  src="{{ movie.cover_url }}"
-                 alt="{{ movie.name }}"
+                 alt="{{ movie_title }}"
                  data-fallback-src="{% static 'movies/images/nocover.png' %}"
                  onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
                  loading="lazy" />
         {% else %}
             <img class="movie-card-cover"
                  src="{% static 'movies/images/nocover.png' %}"
-                 alt="{{ movie.name }}"
+                 alt="{{ movie_title }}"
                  loading="lazy" />
         {% endif %}
         <div class="movie-info">
-            <h2>{{ movie.name }}</h2>
+            <h2>{{ movie_title }}</h2>
             <p>{{ movie.year }}</p>
             {% if movie.avg_rating %}
                 <p>{% translate "RAFS rating:" %} {{ movie.avg_rating }}</p>
@@ -34,7 +36,7 @@
                 <p>{% translate "Not rated yet" %}</p>
             {% endif %}
             <div class="movie-description">
-                <p>{{ movie.description|truncatewords:15|linebreaksbr }}</p>
+                <p>{{ movie_description|truncatewords:15|linebreaksbr }}</p>
             </div>
         </div>
     </a>
