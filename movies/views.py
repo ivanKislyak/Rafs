@@ -197,17 +197,17 @@ def vote_review(request):
         return JsonResponse({"error": _("Invalid data format")}, status=400)
 
 def search_query(request):
-    user_argument = request.GET.get('query', '')
+    user_argument = request.GET.get('query', '').strip()
     search_results = []
     
     if user_argument:
+        query = SearchQuery(user_argument, config='english')
         search_results = (
-            GlobalSearchIndex.objects
-            .annotate(similarity=TrigramSimilarity('search_text', user_argument))
-            .filter(similarity__gt=0.2)
-            .order_by('-similarity')
-            .select_related('content_type')
-            .prefetch_related('content_object') 
+            GlobalSearchIndex.objects.annotate(
+                rank=SearchRank('search_vector', query)
+            )
+            .filter(search_vector=query)
+            .order_by('-rank')
         )
     
     return render(request, 'movies/search_results.html', {
