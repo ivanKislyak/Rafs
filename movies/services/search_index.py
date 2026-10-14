@@ -50,61 +50,33 @@ def update_all_exist_indexes():
 
     movie_data = []
     for movie in all_movies:
+        name_en = movie.safe_translation_getter(
+            "wikidata_name", language_code="en", default=""
+        ) or ""
+
+        description_en = movie.safe_translation_getter(
+            "wikidata_description", language_code="en", default=""
+        ) or ""
+
+        genres_en = " ".join(
+            genre.safe_translation_getter(
+                "name", language_code="en", default=""
+            ) or ""
+            for genre in movie.genres.all()
+        )
+
+        actors_en = " ".join(
+            actor.safe_translation_getter(
+                "name", language_code="en", default=""
+            ) or ""
+            for actor in movie.actors.all()
+        )
+
         en_vector = (
-            SearchVector(
-                Value(
-                    wd_name_ru = movie.safe_translation_getter(
-                        'wikidata_name', language_code='en')),
-                        weight='A', config='english'
-            ) +
-            SearchVector(
-                Value(
-                    wd_desc_ru = movie.safe_translation_getter(
-                        'wikidata_description', language_code='en')),
-                        weight='B', config='english'
-            ) +
-            SearchVector(
-                    
-            )
-            )
-        
-        ru_vector = (
-             SearchVector(
-                Value(
-                    wd_name_ru = movie.safe_translation_getter('wikidata_name', language_code='ru')), 
-                    weight='A', 
-                    config='russian') +
-                SearchVector(
-                    Value(
-                        
-                    )
-                )
-        )
-
-        de_vector = (
-             SearchVector(
-                Value(
-                    wd_name_ru = movie.safe_translation_getter('wikidata_name', language_code='de')), 
-                    weight='A', 
-                    config='german') +
-                SearchVector(
-                    Value(
-                        
-                    )
-                )
-        )
-
-        es_vector = (
-             SearchVector(
-                Value(
-                    wd_name_ru = movie.safe_translation_getter('wikidata_name', language_code='es')), 
-                    weight='A', 
-                    config='spanish') +
-                SearchVector(
-                    Value(
-                        
-                    )
-                )
+            SearchVector(Value(name_en), weight="A", config="english")
+            + SearchVector(Value(description_en), weight="B", config="english")
+            + SearchVector(Value(genres_en), weight="C", config="english")
+            + SearchVector(Value(actors_en), weight="C", config="english")
         )
             
         
