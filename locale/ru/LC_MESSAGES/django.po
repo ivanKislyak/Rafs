@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: RAFS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-03 13:08+0500\n"
+"POT-Creation-Date: 2026-10-14 15:46+0500\n"
 "PO-Revision-Date: 2026-09-13 17:00+0500\n"
 "Last-Translator: RAFS contributors\n"
 "Language-Team: Russian\n"
@@ -91,8 +91,12 @@ msgstr "Администрирование"
 #: .\accounts\templates\accounts\moderation_applications_admin.html:24
 #: .\accounts\templates\accounts\moderation_applications_admin.html:28
 #: .\accounts\templates\accounts\profile.html:16
-#: .\accounts\templates\accounts\profile.html:20 .\templates\_header.html:150
-#: .\templates\_header.html:154
+#: .\accounts\templates\accounts\profile.html:20
+#: .\movies\templates\movies\search_results.html:103
+#: .\movies\templates\movies\search_results.html:107
+#: .\movies\templates\movies\search_results.html:152
+#: .\movies\templates\movies\search_results.html:156
+#: .\templates\_header.html:150 .\templates\_header.html:154
 msgid "Avatar of user"
 msgstr "Аватар пользователя"
 
@@ -157,6 +161,7 @@ msgid "Frames"
 msgstr "Кадры"
 
 #: .\accounts\templates\accounts\profile.html:71
+#: .\movies\templates\movies\search_results.html:167
 msgid "Joined"
 msgstr "Дата регистрации"
 
@@ -192,7 +197,6 @@ msgid "Replies"
 msgstr "Ответы"
 
 #: .\accounts\templates\accounts\profile.html:123
-#| msgid "Could not update the avatar."
 msgid "Unable to update the list"
 msgstr "Не удалось обновить список"
 
@@ -219,7 +223,6 @@ msgid "Undo"
 msgstr "Вернуть"
 
 #: .\accounts\templates\accounts\profile.html:202
-#| msgid "There are no movies. You might want to refresh the catalog later."
 msgid "There are no movies in this section yet."
 msgstr "В этом разделе пока нет фильмов."
 
@@ -234,7 +237,6 @@ msgid "Cancel"
 msgstr "Отмена"
 
 #: .\accounts\templates\accounts\profile.html:224
-#| msgid "Confirm password"
 msgid "Confirm"
 msgstr "Подтвердить"
 
@@ -478,17 +480,14 @@ msgid "Enter a title..."
 msgstr "Введите название..."
 
 #: .\movies\forms.py:39 .\movies\templates\movies\wd_search_form.html:20
-#| msgid "For example: Fight Club, Dune, or The Matrix."
 msgid "For example, Fight Club"
 msgstr "Например, «Бойцовский клуб»"
 
 #: .\movies\forms.py:39
-#| msgid "Movie review"
 msgid "Movie title"
 msgstr "Название фильма"
 
 #: .\movies\forms.py:40
-#| msgid "Your rating:"
 msgid "Minimum rating"
 msgstr "Рейтинг от"
 
@@ -497,7 +496,6 @@ msgid "Year from"
 msgstr "Год от"
 
 #: .\movies\forms.py:42
-#| msgid "Year:"
 msgid "Year to"
 msgstr "Год до"
 
@@ -511,7 +509,6 @@ msgid "Include"
 msgstr "Учитывать"
 
 #: .\movies\forms.py:124
-#| msgid "Overall rating"
 msgid "Overall impression"
 msgstr "Общее впечатление"
 
@@ -532,7 +529,6 @@ msgid "Sound design"
 msgstr "Саунд-дизайн"
 
 #: .\movies\forms.py:129
-#| msgid "Review"
 msgid "Review text"
 msgstr "Текст рецензии"
 
@@ -549,31 +545,30 @@ msgid "Share your impressions of the movie"
 msgstr "Поделитесь впечатлениями о фильме"
 
 #: .\movies\forms.py:146
-#| msgid "Your next movie"
 msgid "Your opinion of the movie..."
 msgstr "Ваше мнение о фильме..."
 
-#: .\movies\models.py:197
+#: .\movies\models.py:212
 msgid "I'll watch it"
 msgstr "Посмотрю"
 
-#: .\movies\models.py:198
+#: .\movies\models.py:213
 msgid "Viewed"
 msgstr "Просмотрено"
 
-#: .\movies\models.py:199
+#: .\movies\models.py:214
 msgid "I'm not interested"
 msgstr "Не интересует"
 
-#: .\movies\models.py:200
+#: .\movies\models.py:215
 msgid "I'm watching it right now"
 msgstr "Смотрю сейчас"
 
-#: .\movies\models.py:201
+#: .\movies\models.py:216
 msgid "I dropped watching it"
 msgstr "Брошено"
 
-#: .\movies\models.py:202
+#: .\movies\models.py:217
 msgid "Rewatching"
 msgstr "Пересматриваю"
 
@@ -632,6 +627,7 @@ msgid "Viewer ratings and reviews on RAFS. Share your opinion"
 msgstr "Оценки и рецензии зрителей на RAFS. Поделитесь своим мнением"
 
 #: .\movies\templates\movies\movie_detail.html:21
+#: .\movies\templates\movies\search_results.html:230
 msgid "Back to catalog"
 msgstr "Вернуться в каталог"
 
@@ -661,13 +657,15 @@ msgstr "Не удалось обновить статус фильма"
 
 #: .\movies\templates\movies\movie_detail.html:92
 #: .\movies\templates\movies\movie_detail.html:232
-#| msgid "Delete"
+#: .\movies\templates\movies\search_results.html:95
+#: .\movies\templates\movies\search_results.html:120
+#: .\movies\templates\movies\search_results.html:140
+#: .\movies\templates\movies\search_results.html:143
 msgid "Deleted user"
 msgstr "Удалённый пользователь"
 
 #: .\movies\templates\movies\movie_detail.html:96
 #: .\movies\templates\movies\movie_detail.html:236
-#| msgid "Open profile"
 msgid "Open user profile"
 msgstr "Открыть профиль пользователя"
 
@@ -676,6 +674,7 @@ msgid "Spoiler hidden"
 msgstr "Спойлер скрыт"
 
 #: .\movies\templates\movies\movie_detail.html:123
+#: .\movies\templates\movies\search_results.html:112
 msgid "Review"
 msgstr "Рецензия"
 
@@ -720,28 +719,23 @@ msgid "Delete"
 msgstr "Удалить"
 
 #: .\movies\templates\movies\movie_detail.html:213
-#| msgid "Replies"
 msgid "Show replies"
 msgstr "Показать ответы"
 
 #: .\movies\templates\movies\movie_detail.html:217
-#| msgid "Replies"
 msgid "Hide replies"
 msgstr "Скрыть ответы"
 
 #: .\movies\templates\movies\movie_detail.html:259
 #: .\movies\templates\movies\movie_detail.html:262
-#| msgid "Delete review"
 msgid "Delete reply"
 msgstr "Удалить ответ"
 
 #: .\movies\templates\movies\movie_detail.html:260
-#| msgid "Are you sure you want to delete it?"
 msgid "Are you sure you want to delete this reply?"
 msgstr "Вы уверены, что хотите удалить этот ответ?"
 
 #: .\movies\templates\movies\movie_detail.html:261
-#| msgid "The review will be removed from the site. This action cannot be undone after confirmation."
 msgid "The reply will be removed from the site. This action cannot be undone after confirmation."
 msgstr "Ответ будет удалён с сайта. После подтверждения это действие нельзя отменить."
 
@@ -801,35 +795,56 @@ msgstr "Опубликовать отзыв"
 msgid "out of 10"
 msgstr "из 10"
 
-#: .\movies\templates\movies\search_results.html:40
-msgid "Movie:"
-msgstr "Фильм:"
+#: .\movies\templates\movies\search_results.html:7
+#: .\movies\templates\movies\search_results.html:11
+#: .\movies\templates\movies\search_results.html:15
+#: .\movies\templates\movies\search_results.html:19
+#: .\movies\templates\movies\search_results.html:29
+#: .\movies\templates\movies\wd_search_form.html:58 .\templates\_header.html:60
+msgid "Search"
+msgstr "Найти"
 
-#: .\movies\templates\movies\search_results.html:45
-#| msgid "Username"
-msgid "User:"
-msgstr "Пользователь:"
+#: .\movies\templates\movies\search_results.html:30
+#: .\movies\templates\movies\search_results.html:36
+#: .\movies\templates\movies\wd_search_form.html:83
+msgid "Results"
+msgstr "Результаты"
 
-#: .\movies\templates\movies\search_results.html:46
-msgid "Registration date:"
-msgstr "Дата регистрации:"
+#: .\movies\templates\movies\search_results.html:70
+#| msgid "Movie:"
+msgid "Movie"
+msgstr "Фильм"
 
-#: .\movies\templates\movies\search_results.html:50
-#| msgid "Review of"
-msgid "Review of:"
-msgstr "Рецензия на:"
-
-#: .\movies\templates\movies\search_results.html:51
-msgid "Author:"
-msgstr "Автор:"
-
-#: .\movies\templates\movies\search_results.html:55
+#: .\movies\templates\movies\search_results.html:72
+#: .\movies\templates\movies\search_results.html:128
+#: .\movies\templates\movies\search_results.html:162
+#: .\movies\templates\movies\search_results.html:187
+#: .\movies\templates\movies\search_results.html:209
 msgid "Relevance:"
 msgstr "Релевантность:"
 
-#: .\movies\templates\movies\search_results.html:61
+#: .\movies\templates\movies\search_results.html:142
+#: .\movies\templates\movies\search_results.html:160
+#| msgid "User:"
+msgid "User"
+msgstr "Пользователь"
+
+#: .\movies\templates\movies\search_results.html:185
+msgid "Person"
+msgstr "Персона"
+
+#: .\movies\templates\movies\search_results.html:207
+msgid "Studio"
+msgstr "Студия"
+
+#: .\movies\templates\movies\search_results.html:228
 msgid "Nothing was found"
 msgstr "Ничего не найдено"
+
+#: .\movies\templates\movies\search_results.html:229
+#: .\movies\templates\movies\wd_search_form.html:68
+msgid "Check your search"
+msgstr "Проверьте запрос"
 
 #: .\movies\templates\movies\wd_search_form.html:5
 msgid "Search Wikidata — RAFS"
@@ -848,7 +863,6 @@ msgid "Find a movie or series and copy its QID for further use."
 msgstr "Найдите фильм или сериал и скопируйте его QID для дальнейшего использования."
 
 #: .\movies\templates\movies\wd_search_form.html:21
-#| msgid "Search"
 msgid "Searching"
 msgstr "Ищем"
 
@@ -881,14 +895,6 @@ msgstr "Язык результатов"
 msgid "Title and description"
 msgstr "Название и описание"
 
-#: .\movies\templates\movies\wd_search_form.html:58 .\templates\_header.html:60
-msgid "Search"
-msgstr "Найти"
-
-#: .\movies\templates\movies\wd_search_form.html:68
-msgid "Check your search"
-msgstr "Проверьте запрос"
-
 #: .\movies\templates\movies\wd_search_form.html:69
 msgid "Correct the highlighted fields and try again."
 msgstr "Исправьте выделенные поля и повторите попытку."
@@ -900,10 +906,6 @@ msgstr "Викиданные временно недоступны"
 #: .\movies\templates\movies\wd_search_form.html:77
 msgid "Wait a moment and try again — your search has been preserved."
 msgstr "Подождите немного и повторите попытку — ваш поиск сохранен."
-
-#: .\movies\templates\movies\wd_search_form.html:83
-msgid "Results"
-msgstr "Результаты"
 
 #: .\movies\templates\movies\wd_search_form.html:84
 msgid "Matching titles"
@@ -938,7 +940,6 @@ msgid "For example: Fight Club, Dune, or The Matrix."
 msgstr "Например: «Бойцовский клуб», «Дюна» или «Матрица»."
 
 #: .\movies\views.py:145
-#| msgid "Frames"
 msgid "+100 Frames"
 msgstr "+100 Кадров"
 
@@ -1090,6 +1091,16 @@ msgstr "Заполните это поле."
 #: .\templates\registration\login.html:43
 msgid "Don't have an account yet?"
 msgstr "Ещё нет аккаунта?"
+
+#~ msgid "Registration date:"
+#~ msgstr "Дата регистрации:"
+
+#~| msgid "Review of"
+#~ msgid "Review of:"
+#~ msgstr "Рецензия на:"
+
+#~ msgid "Author:"
+#~ msgstr "Автор:"
 
 #~ msgid "Search movies"
 #~ msgstr "Поиск фильмов"

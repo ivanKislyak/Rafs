@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: RAFS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-03 13:08+0500\n"
+"POT-Creation-Date: 2026-10-14 15:46+0500\n"
 "PO-Revision-Date: 2026-09-13 17:00+0500\n"
 "Last-Translator: RAFS contributors\n"
 "Language-Team: German\n"
@@ -91,8 +91,12 @@ msgstr "Verwaltung"
 #: .\accounts\templates\accounts\moderation_applications_admin.html:24
 #: .\accounts\templates\accounts\moderation_applications_admin.html:28
 #: .\accounts\templates\accounts\profile.html:16
-#: .\accounts\templates\accounts\profile.html:20 .\templates\_header.html:150
-#: .\templates\_header.html:154
+#: .\accounts\templates\accounts\profile.html:20
+#: .\movies\templates\movies\search_results.html:103
+#: .\movies\templates\movies\search_results.html:107
+#: .\movies\templates\movies\search_results.html:152
+#: .\movies\templates\movies\search_results.html:156
+#: .\templates\_header.html:150 .\templates\_header.html:154
 msgid "Avatar of user"
 msgstr "Avatar des Nutzers"
 
@@ -157,6 +161,7 @@ msgid "Frames"
 msgstr "Frames"
 
 #: .\accounts\templates\accounts\profile.html:71
+#: .\movies\templates\movies\search_results.html:167
 msgid "Joined"
 msgstr "Registriert seit"
 
@@ -192,7 +197,6 @@ msgid "Replies"
 msgstr "Antworten"
 
 #: .\accounts\templates\accounts\profile.html:123
-#| msgid "Could not update the avatar."
 msgid "Unable to update the list"
 msgstr "Liste konnte nicht aktualisiert werden"
 
@@ -219,7 +223,6 @@ msgid "Undo"
 msgstr "Rückgängig"
 
 #: .\accounts\templates\accounts\profile.html:202
-#| msgid "There are no movies. You might want to refresh the catalog later."
 msgid "There are no movies in this section yet."
 msgstr "In diesem Bereich gibt es noch keine Filme."
 
@@ -234,7 +237,6 @@ msgid "Cancel"
 msgstr "Abbrechen"
 
 #: .\accounts\templates\accounts\profile.html:224
-#| msgid "Confirm password"
 msgid "Confirm"
 msgstr "Bestätigen"
 
@@ -478,17 +480,14 @@ msgid "Enter a title..."
 msgstr "Titel eingeben..."
 
 #: .\movies\forms.py:39 .\movies\templates\movies\wd_search_form.html:20
-#| msgid "For example: Fight Club, Dune, or The Matrix."
 msgid "For example, Fight Club"
 msgstr "Zum Beispiel: Fight Club"
 
 #: .\movies\forms.py:39
-#| msgid "Movie review"
 msgid "Movie title"
 msgstr "Filmtitel"
 
 #: .\movies\forms.py:40
-#| msgid "Your rating:"
 msgid "Minimum rating"
 msgstr "Mindestbewertung"
 
@@ -497,7 +496,6 @@ msgid "Year from"
 msgstr "Jahr von"
 
 #: .\movies\forms.py:42
-#| msgid "Year:"
 msgid "Year to"
 msgstr "Jahr bis"
 
@@ -511,7 +509,6 @@ msgid "Include"
 msgstr "Einbeziehen"
 
 #: .\movies\forms.py:124
-#| msgid "Overall rating"
 msgid "Overall impression"
 msgstr "Gesamteindruck"
 
@@ -532,7 +529,6 @@ msgid "Sound design"
 msgstr "Sounddesign"
 
 #: .\movies\forms.py:129
-#| msgid "Review"
 msgid "Review text"
 msgstr "Rezensionstext"
 
@@ -549,31 +545,30 @@ msgid "Share your impressions of the movie"
 msgstr "Teile deine Eindrücke zum Film"
 
 #: .\movies\forms.py:146
-#| msgid "Your next movie"
 msgid "Your opinion of the movie..."
 msgstr "Deine Meinung zum Film..."
 
-#: .\movies\models.py:197
+#: .\movies\models.py:212
 msgid "I'll watch it"
 msgstr "Möchte ich sehen"
 
-#: .\movies\models.py:198
+#: .\movies\models.py:213
 msgid "Viewed"
 msgstr "Angesehen"
 
-#: .\movies\models.py:199
+#: .\movies\models.py:214
 msgid "I'm not interested"
 msgstr "Kein Interesse"
 
-#: .\movies\models.py:200
+#: .\movies\models.py:215
 msgid "I'm watching it right now"
 msgstr "Sehe ich gerade"
 
-#: .\movies\models.py:201
+#: .\movies\models.py:216
 msgid "I dropped watching it"
 msgstr "Abgebrochen"
 
-#: .\movies\models.py:202
+#: .\movies\models.py:217
 msgid "Rewatching"
 msgstr "Sehe ich erneut"
 
@@ -632,6 +627,7 @@ msgid "Viewer ratings and reviews on RAFS. Share your opinion"
 msgstr "Bewertungen und Rezensionen von Zuschauern auf RAFS. Teile deine Meinung"
 
 #: .\movies\templates\movies\movie_detail.html:21
+#: .\movies\templates\movies\search_results.html:230
 msgid "Back to catalog"
 msgstr "Zurück zum Katalog"
 
@@ -661,13 +657,15 @@ msgstr "Filmstatus konnte nicht aktualisiert werden"
 
 #: .\movies\templates\movies\movie_detail.html:92
 #: .\movies\templates\movies\movie_detail.html:232
-#| msgid "Delete"
+#: .\movies\templates\movies\search_results.html:95
+#: .\movies\templates\movies\search_results.html:120
+#: .\movies\templates\movies\search_results.html:140
+#: .\movies\templates\movies\search_results.html:143
 msgid "Deleted user"
 msgstr "Gelöschter Benutzer"
 
 #: .\movies\templates\movies\movie_detail.html:96
 #: .\movies\templates\movies\movie_detail.html:236
-#| msgid "Open profile"
 msgid "Open user profile"
 msgstr "Benutzerprofil öffnen"
 
@@ -676,6 +674,7 @@ msgid "Spoiler hidden"
 msgstr "Spoiler versteckt"
 
 #: .\movies\templates\movies\movie_detail.html:123
+#: .\movies\templates\movies\search_results.html:112
 msgid "Review"
 msgstr "Rezension"
 
@@ -720,28 +719,23 @@ msgid "Delete"
 msgstr "Löschen"
 
 #: .\movies\templates\movies\movie_detail.html:213
-#| msgid "Replies"
 msgid "Show replies"
 msgstr "Antworten anzeigen"
 
 #: .\movies\templates\movies\movie_detail.html:217
-#| msgid "Replies"
 msgid "Hide replies"
 msgstr "Antworten ausblenden"
 
 #: .\movies\templates\movies\movie_detail.html:259
 #: .\movies\templates\movies\movie_detail.html:262
-#| msgid "Delete review"
 msgid "Delete reply"
 msgstr "Antwort löschen"
 
 #: .\movies\templates\movies\movie_detail.html:260
-#| msgid "Are you sure you want to delete it?"
 msgid "Are you sure you want to delete this reply?"
 msgstr "Möchtest du diese Antwort wirklich löschen?"
 
 #: .\movies\templates\movies\movie_detail.html:261
-#| msgid "The review will be removed from the site. This action cannot be undone after confirmation."
 msgid "The reply will be removed from the site. This action cannot be undone after confirmation."
 msgstr "Die Antwort wird von der Website entfernt. Diese Aktion kann nach der Bestätigung nicht rückgängig gemacht werden."
 
@@ -801,35 +795,56 @@ msgstr "Rezension veröffentlichen"
 msgid "out of 10"
 msgstr "von 10"
 
-#: .\movies\templates\movies\search_results.html:40
-msgid "Movie:"
-msgstr "Film:"
+#: .\movies\templates\movies\search_results.html:7
+#: .\movies\templates\movies\search_results.html:11
+#: .\movies\templates\movies\search_results.html:15
+#: .\movies\templates\movies\search_results.html:19
+#: .\movies\templates\movies\search_results.html:29
+#: .\movies\templates\movies\wd_search_form.html:58 .\templates\_header.html:60
+msgid "Search"
+msgstr "Suchen"
 
-#: .\movies\templates\movies\search_results.html:45
-#| msgid "Username"
-msgid "User:"
-msgstr "Benutzer:"
+#: .\movies\templates\movies\search_results.html:30
+#: .\movies\templates\movies\search_results.html:36
+#: .\movies\templates\movies\wd_search_form.html:83
+msgid "Results"
+msgstr "Ergebnisse"
 
-#: .\movies\templates\movies\search_results.html:46
-msgid "Registration date:"
-msgstr "Registrierungsdatum:"
+#: .\movies\templates\movies\search_results.html:70
+#| msgid "Movie:"
+msgid "Movie"
+msgstr "Film"
 
-#: .\movies\templates\movies\search_results.html:50
-#| msgid "Review of"
-msgid "Review of:"
-msgstr "Rezension zu:"
-
-#: .\movies\templates\movies\search_results.html:51
-msgid "Author:"
-msgstr "Autor:"
-
-#: .\movies\templates\movies\search_results.html:55
+#: .\movies\templates\movies\search_results.html:72
+#: .\movies\templates\movies\search_results.html:128
+#: .\movies\templates\movies\search_results.html:162
+#: .\movies\templates\movies\search_results.html:187
+#: .\movies\templates\movies\search_results.html:209
 msgid "Relevance:"
 msgstr "Relevanz:"
 
-#: .\movies\templates\movies\search_results.html:61
+#: .\movies\templates\movies\search_results.html:142
+#: .\movies\templates\movies\search_results.html:160
+#| msgid "User:"
+msgid "User"
+msgstr "Benutzer"
+
+#: .\movies\templates\movies\search_results.html:185
+msgid "Person"
+msgstr "Person"
+
+#: .\movies\templates\movies\search_results.html:207
+msgid "Studio"
+msgstr "Studio"
+
+#: .\movies\templates\movies\search_results.html:228
 msgid "Nothing was found"
 msgstr "Nichts gefunden"
+
+#: .\movies\templates\movies\search_results.html:229
+#: .\movies\templates\movies\wd_search_form.html:68
+msgid "Check your search"
+msgstr "Suche überprüfen"
 
 #: .\movies\templates\movies\wd_search_form.html:5
 msgid "Search Wikidata — RAFS"
@@ -848,7 +863,6 @@ msgid "Find a movie or series and copy its QID for further use."
 msgstr "Suche einen Film oder eine Serie und kopiere die QID zur weiteren Verwendung."
 
 #: .\movies\templates\movies\wd_search_form.html:21
-#| msgid "Search"
 msgid "Searching"
 msgstr "Suche läuft"
 
@@ -881,14 +895,6 @@ msgstr "Ergebnissprache"
 msgid "Title and description"
 msgstr "Titel und Beschreibung"
 
-#: .\movies\templates\movies\wd_search_form.html:58 .\templates\_header.html:60
-msgid "Search"
-msgstr "Suchen"
-
-#: .\movies\templates\movies\wd_search_form.html:68
-msgid "Check your search"
-msgstr "Suche überprüfen"
-
 #: .\movies\templates\movies\wd_search_form.html:69
 msgid "Correct the highlighted fields and try again."
 msgstr "Korrigiere die markierten Felder und versuche es erneut."
@@ -900,10 +906,6 @@ msgstr "Wikidata ist vorübergehend nicht verfügbar"
 #: .\movies\templates\movies\wd_search_form.html:77
 msgid "Wait a moment and try again — your search has been preserved."
 msgstr "Warte einen Moment und versuche es erneut – deine Suche wurde gespeichert."
-
-#: .\movies\templates\movies\wd_search_form.html:83
-msgid "Results"
-msgstr "Ergebnisse"
 
 #: .\movies\templates\movies\wd_search_form.html:84
 msgid "Matching titles"
@@ -938,7 +940,6 @@ msgid "For example: Fight Club, Dune, or The Matrix."
 msgstr "Zum Beispiel: Fight Club, Dune oder The Matrix."
 
 #: .\movies\views.py:145
-#| msgid "Frames"
 msgid "+100 Frames"
 msgstr "+100 Frames"
 
@@ -1090,6 +1091,16 @@ msgstr "Fülle dieses Feld aus."
 #: .\templates\registration\login.html:43
 msgid "Don't have an account yet?"
 msgstr "Du hast noch kein Konto?"
+
+#~ msgid "Registration date:"
+#~ msgstr "Registrierungsdatum:"
+
+#~| msgid "Review of"
+#~ msgid "Review of:"
+#~ msgstr "Rezension zu:"
+
+#~ msgid "Author:"
+#~ msgstr "Autor:"
 
 #~ msgid "Search movies"
 #~ msgstr "Filme suchen"

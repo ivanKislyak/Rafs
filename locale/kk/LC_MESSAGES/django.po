@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: RAFS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-03 13:08+0500\n"
+"POT-Creation-Date: 2026-10-14 15:46+0500\n"
 "PO-Revision-Date: 2026-09-13 17:00+0500\n"
 "Last-Translator: RAFS contributors\n"
 "Language-Team: Kazakh\n"
@@ -91,8 +91,12 @@ msgstr "Әкімшілік"
 #: .\accounts\templates\accounts\moderation_applications_admin.html:24
 #: .\accounts\templates\accounts\moderation_applications_admin.html:28
 #: .\accounts\templates\accounts\profile.html:16
-#: .\accounts\templates\accounts\profile.html:20 .\templates\_header.html:150
-#: .\templates\_header.html:154
+#: .\accounts\templates\accounts\profile.html:20
+#: .\movies\templates\movies\search_results.html:103
+#: .\movies\templates\movies\search_results.html:107
+#: .\movies\templates\movies\search_results.html:152
+#: .\movies\templates\movies\search_results.html:156
+#: .\templates\_header.html:150 .\templates\_header.html:154
 msgid "Avatar of user"
 msgstr "Пайдаланушының аватары"
 
@@ -157,6 +161,7 @@ msgid "Frames"
 msgstr "Кадрлар"
 
 #: .\accounts\templates\accounts\profile.html:71
+#: .\movies\templates\movies\search_results.html:167
 msgid "Joined"
 msgstr "Тіркелген күні"
 
@@ -192,7 +197,6 @@ msgid "Replies"
 msgstr "Жауаптар"
 
 #: .\accounts\templates\accounts\profile.html:123
-#| msgid "Could not update the avatar."
 msgid "Unable to update the list"
 msgstr "Тізімді жаңарту мүмкін болмады"
 
@@ -219,7 +223,6 @@ msgid "Undo"
 msgstr "Қайтару"
 
 #: .\accounts\templates\accounts\profile.html:202
-#| msgid "There are no movies. You might want to refresh the catalog later."
 msgid "There are no movies in this section yet."
 msgstr "Бұл бөлімде әзірге фильмдер жоқ."
 
@@ -234,7 +237,6 @@ msgid "Cancel"
 msgstr "Болдырмау"
 
 #: .\accounts\templates\accounts\profile.html:224
-#| msgid "Confirm password"
 msgid "Confirm"
 msgstr "Растау"
 
@@ -478,17 +480,14 @@ msgid "Enter a title..."
 msgstr "Атауын енгізіңіз..."
 
 #: .\movies\forms.py:39 .\movies\templates\movies\wd_search_form.html:20
-#| msgid "For example: Fight Club, Dune, or The Matrix."
 msgid "For example, Fight Club"
 msgstr "Мысалы, «Жекпе-жек клубы»"
 
 #: .\movies\forms.py:39
-#| msgid "Movie review"
 msgid "Movie title"
 msgstr "Фильм атауы"
 
 #: .\movies\forms.py:40
-#| msgid "Your rating:"
 msgid "Minimum rating"
 msgstr "Ең төменгі рейтинг"
 
@@ -497,7 +496,6 @@ msgid "Year from"
 msgstr "Жылдан бастап"
 
 #: .\movies\forms.py:42
-#| msgid "Year:"
 msgid "Year to"
 msgstr "Жылға дейін"
 
@@ -511,7 +509,6 @@ msgid "Include"
 msgstr "Ескеру"
 
 #: .\movies\forms.py:124
-#| msgid "Overall rating"
 msgid "Overall impression"
 msgstr "Жалпы әсер"
 
@@ -532,7 +529,6 @@ msgid "Sound design"
 msgstr "Дыбыс дизайны"
 
 #: .\movies\forms.py:129
-#| msgid "Review"
 msgid "Review text"
 msgstr "Рецензия мәтіні"
 
@@ -549,31 +545,30 @@ msgid "Share your impressions of the movie"
 msgstr "Фильм туралы әсеріңізбен бөлісіңіз"
 
 #: .\movies\forms.py:146
-#| msgid "Your next movie"
 msgid "Your opinion of the movie..."
 msgstr "Фильм туралы пікіріңіз..."
 
-#: .\movies\models.py:197
+#: .\movies\models.py:212
 msgid "I'll watch it"
 msgstr "Көремін"
 
-#: .\movies\models.py:198
+#: .\movies\models.py:213
 msgid "Viewed"
 msgstr "Көрілді"
 
-#: .\movies\models.py:199
+#: .\movies\models.py:214
 msgid "I'm not interested"
 msgstr "Қызықтырмайды"
 
-#: .\movies\models.py:200
+#: .\movies\models.py:215
 msgid "I'm watching it right now"
 msgstr "Қазір көріп жатырмын"
 
-#: .\movies\models.py:201
+#: .\movies\models.py:216
 msgid "I dropped watching it"
 msgstr "Көруді тоқтаттым"
 
-#: .\movies\models.py:202
+#: .\movies\models.py:217
 msgid "Rewatching"
 msgstr "Қайта көріп жатырмын"
 
@@ -632,6 +627,7 @@ msgid "Viewer ratings and reviews on RAFS. Share your opinion"
 msgstr "RAFS-тағы көрермендердің бағалары мен рецензиялары. Пікіріңізбен бөлісіңіз"
 
 #: .\movies\templates\movies\movie_detail.html:21
+#: .\movies\templates\movies\search_results.html:230
 msgid "Back to catalog"
 msgstr "Каталогқа қайту"
 
@@ -661,13 +657,15 @@ msgstr "Фильм мәртебесін жаңарту мүмкін болмад
 
 #: .\movies\templates\movies\movie_detail.html:92
 #: .\movies\templates\movies\movie_detail.html:232
-#| msgid "Delete"
+#: .\movies\templates\movies\search_results.html:95
+#: .\movies\templates\movies\search_results.html:120
+#: .\movies\templates\movies\search_results.html:140
+#: .\movies\templates\movies\search_results.html:143
 msgid "Deleted user"
 msgstr "Жойылған пайдаланушы"
 
 #: .\movies\templates\movies\movie_detail.html:96
 #: .\movies\templates\movies\movie_detail.html:236
-#| msgid "Open profile"
 msgid "Open user profile"
 msgstr "Пайдаланушы профилін ашу"
 
@@ -676,6 +674,7 @@ msgid "Spoiler hidden"
 msgstr "Спойлер жасырылған"
 
 #: .\movies\templates\movies\movie_detail.html:123
+#: .\movies\templates\movies\search_results.html:112
 msgid "Review"
 msgstr "Рецензия"
 
@@ -720,28 +719,23 @@ msgid "Delete"
 msgstr "Жою"
 
 #: .\movies\templates\movies\movie_detail.html:213
-#| msgid "Replies"
 msgid "Show replies"
 msgstr "Жауаптарды көрсету"
 
 #: .\movies\templates\movies\movie_detail.html:217
-#| msgid "Replies"
 msgid "Hide replies"
 msgstr "Жауаптарды жасыру"
 
 #: .\movies\templates\movies\movie_detail.html:259
 #: .\movies\templates\movies\movie_detail.html:262
-#| msgid "Delete review"
 msgid "Delete reply"
 msgstr "Жауапты жою"
 
 #: .\movies\templates\movies\movie_detail.html:260
-#| msgid "Are you sure you want to delete it?"
 msgid "Are you sure you want to delete this reply?"
 msgstr "Бұл жауапты жойғыңыз келетініне сенімдісіз бе?"
 
 #: .\movies\templates\movies\movie_detail.html:261
-#| msgid "The review will be removed from the site. This action cannot be undone after confirmation."
 msgid "The reply will be removed from the site. This action cannot be undone after confirmation."
 msgstr "Жауап сайттан жойылады. Растағаннан кейін бұл әрекетті қайтару мүмкін емес."
 
@@ -801,35 +795,56 @@ msgstr "Рецензияны жариялау"
 msgid "out of 10"
 msgstr "10-нан"
 
-#: .\movies\templates\movies\search_results.html:40
-msgid "Movie:"
-msgstr "Фильм:"
+#: .\movies\templates\movies\search_results.html:7
+#: .\movies\templates\movies\search_results.html:11
+#: .\movies\templates\movies\search_results.html:15
+#: .\movies\templates\movies\search_results.html:19
+#: .\movies\templates\movies\search_results.html:29
+#: .\movies\templates\movies\wd_search_form.html:58 .\templates\_header.html:60
+msgid "Search"
+msgstr "Іздеу"
 
-#: .\movies\templates\movies\search_results.html:45
-#| msgid "Username"
-msgid "User:"
-msgstr "Пайдаланушы:"
+#: .\movies\templates\movies\search_results.html:30
+#: .\movies\templates\movies\search_results.html:36
+#: .\movies\templates\movies\wd_search_form.html:83
+msgid "Results"
+msgstr "Нәтижелер"
 
-#: .\movies\templates\movies\search_results.html:46
-msgid "Registration date:"
-msgstr "Тіркелген күні:"
+#: .\movies\templates\movies\search_results.html:70
+#| msgid "Movie:"
+msgid "Movie"
+msgstr "Фильм"
 
-#: .\movies\templates\movies\search_results.html:50
-#| msgid "Review of"
-msgid "Review of:"
-msgstr "Рецензия:"
-
-#: .\movies\templates\movies\search_results.html:51
-msgid "Author:"
-msgstr "Автор:"
-
-#: .\movies\templates\movies\search_results.html:55
+#: .\movies\templates\movies\search_results.html:72
+#: .\movies\templates\movies\search_results.html:128
+#: .\movies\templates\movies\search_results.html:162
+#: .\movies\templates\movies\search_results.html:187
+#: .\movies\templates\movies\search_results.html:209
 msgid "Relevance:"
 msgstr "Сәйкестік:"
 
-#: .\movies\templates\movies\search_results.html:61
+#: .\movies\templates\movies\search_results.html:142
+#: .\movies\templates\movies\search_results.html:160
+#| msgid "User:"
+msgid "User"
+msgstr "Пайдаланушы"
+
+#: .\movies\templates\movies\search_results.html:185
+msgid "Person"
+msgstr "Тұлға"
+
+#: .\movies\templates\movies\search_results.html:207
+msgid "Studio"
+msgstr "Студия"
+
+#: .\movies\templates\movies\search_results.html:228
 msgid "Nothing was found"
 msgstr "Ештеңе табылмады"
+
+#: .\movies\templates\movies\search_results.html:229
+#: .\movies\templates\movies\wd_search_form.html:68
+msgid "Check your search"
+msgstr "Сұрауды тексеріңіз"
 
 #: .\movies\templates\movies\wd_search_form.html:5
 msgid "Search Wikidata — RAFS"
@@ -848,7 +863,6 @@ msgid "Find a movie or series and copy its QID for further use."
 msgstr "Фильмді немесе сериалды тауып, кейін пайдалану үшін оның QID кодын көшіріңіз."
 
 #: .\movies\templates\movies\wd_search_form.html:21
-#| msgid "Search"
 msgid "Searching"
 msgstr "Ізделуде"
 
@@ -881,14 +895,6 @@ msgstr "Нәтиже тілі"
 msgid "Title and description"
 msgstr "Атауы мен сипаттамасы"
 
-#: .\movies\templates\movies\wd_search_form.html:58 .\templates\_header.html:60
-msgid "Search"
-msgstr "Іздеу"
-
-#: .\movies\templates\movies\wd_search_form.html:68
-msgid "Check your search"
-msgstr "Сұрауды тексеріңіз"
-
 #: .\movies\templates\movies\wd_search_form.html:69
 msgid "Correct the highlighted fields and try again."
 msgstr "Бөлектелген өрістерді түзетіп, әрекетті қайталаңыз."
@@ -900,10 +906,6 @@ msgstr "Уикидеректер уақытша қолжетімсіз"
 #: .\movies\templates\movies\wd_search_form.html:77
 msgid "Wait a moment and try again — your search has been preserved."
 msgstr "Сәл күтіп, әрекетті қайталаңыз — іздеуіңіз сақталды."
-
-#: .\movies\templates\movies\wd_search_form.html:83
-msgid "Results"
-msgstr "Нәтижелер"
 
 #: .\movies\templates\movies\wd_search_form.html:84
 msgid "Matching titles"
@@ -938,7 +940,6 @@ msgid "For example: Fight Club, Dune, or The Matrix."
 msgstr "Мысалы: Fight Club, Dune немесе The Matrix."
 
 #: .\movies\views.py:145
-#| msgid "Frames"
 msgid "+100 Frames"
 msgstr "+100 Кадр"
 
@@ -1090,6 +1091,16 @@ msgstr "Осы өрісті толтырыңыз."
 #: .\templates\registration\login.html:43
 msgid "Don't have an account yet?"
 msgstr "Әлі тіркелгіңіз жоқ па?"
+
+#~ msgid "Registration date:"
+#~ msgstr "Тіркелген күні:"
+
+#~| msgid "Review of"
+#~ msgid "Review of:"
+#~ msgstr "Рецензия:"
+
+#~ msgid "Author:"
+#~ msgstr "Автор:"
 
 #~ msgid "Search movies"
 #~ msgstr "Фильмдерді іздеу"

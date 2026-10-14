@@ -194,7 +194,7 @@ class GlobalSearchIndex(models.Model):
     search_vector = SearchVectorField(null=True)
 
     def __str__(self):
-        return f"{self.content_type.model} #{self.object_id}"
+        return f"{self.content_type.model} #{self.object_id} and query - {self.content_object}"
     
     class Meta:
         verbose_name = "Global Search Index"
