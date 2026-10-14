@@ -14,39 +14,38 @@ from django.utils.translation import gettext_lazy as _
 
 class Movie(TranslatableModel):
     # Main data
-    wikidata_id = models.CharField(max_length=20, unique=True, null=True, blank=True)
-    imdb_id = models.CharField(max_length=20, null=True, blank=True, db_index=True)
+    wikidata_id = models.CharField(verbose_name="ID on wikidata.org", max_length=20, unique=True, null=True, blank=True)
+    imdb_id = models.CharField(verbose_name="ID on imdb.com", max_length=20, null=True, blank=True, db_index=True)
 
     translations = TranslatedFields(
-        wikidata_name = models.CharField(max_length=200, blank=True),
-        wikidata_description = models.TextField(blank=True)
+        wikidata_name = models.CharField(verbose_name="Movie Name", max_length=500, blank=True),
+        wikidata_description = models.TextField(verbose_name="Movie Description", blank=True)
     )
 
-    year = models.PositiveSmallIntegerField(null=True, blank=True)
-
+    year = models.PositiveSmallIntegerField(verbose_name="Year of Release", null=True, blank=True)
     type_of_work = models.ForeignKey(
         TypeOfWork, 
         on_delete=models.SET_NULL, 
         blank=True,
         null=True, 
-        related_name="movies")
+        related_name="movies",
+        verbose_name="Type of Work")
 
-    genres = models.ManyToManyField(Genre, blank=True, related_name="movies")
-    countries = models.ManyToManyField(Country, blank=True, related_name="movies")
-    studio = models.ManyToManyField(Studio, blank=True, related_name="movies")
+    genres = models.ManyToManyField(Genre, blank=True, related_name="movies", verbose_name="Genres")
+    countries = models.ManyToManyField(Country, blank=True, related_name="movies", verbose_name="Countries")
+    studio = models.ManyToManyField(Studio, blank=True, related_name="movies", verbose_name="Studios")
 
     # Persons
-    director = models.ManyToManyField(Person, blank=True, related_name="directed_movies")
-    screenwriter = models.ManyToManyField(Person, blank=True, related_name="written_movies")
-    producer = models.ManyToManyField(Person, blank=True, related_name="produced_movies")
-    composer = models.ManyToManyField(Person, blank=True, related_name="composed_movies")
-    actors = models.ManyToManyField(Person, blank=True, related_name="acted_in_movies")
+    director = models.ManyToManyField(Person, blank=True, related_name="directed_movies", verbose_name="Directors")
+    screenwriter = models.ManyToManyField(Person, blank=True, related_name="written_movies", verbose_name="Screenwriters")
+    producer = models.ManyToManyField(Person, blank=True, related_name="produced_movies", verbose_name="Producers")
+    composer = models.ManyToManyField(Person, blank=True, related_name="composed_movies", verbose_name="Composers")
+    actors = models.ManyToManyField(Person, blank=True, related_name="acted_in_movies", verbose_name="Actors")
 
     cover_url = models.URLField(blank=True)
     last_synced_at = models.DateTimeField(null=True, blank=True)
 
     name = models.CharField(max_length=200, blank=True) # Night of the Day of the Dawn of the Son of the Bride...
-
     rate = models.DecimalField(decimal_places=1, max_digits=3, null=True, blank=True)
     description = models.TextField(blank=True)
     tags = TaggableManager()

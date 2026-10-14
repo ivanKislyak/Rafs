@@ -1,6 +1,7 @@
 import math
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import MinValueValidator
 from django.utils.translation import gettext_lazy as _
 from movies.models import Movie
 from django.conf import settings
@@ -10,8 +11,9 @@ class Achievement(models.Model):
     description = models.CharField(max_length=500)
 
 class User(AbstractUser):
-    user_lvl = models.IntegerField(default=1)
-    user_frames = models.IntegerField(default=1)
+    about = models.TextField(blank=True, max_length=1000, verbose_name="About")
+    user_lvl = models.IntegerField(default=1, validators=[MinValueValidator(1)])
+    user_frames = models.IntegerField(default=1, validators=[MinValueValidator(1)])
     email = models.EmailField(_("email address"), unique=True, max_length=256)
     avatar_image = models.ImageField(upload_to="users/avatars/", blank=True, null=True)
     is_deleted = models.BooleanField(default=False)
@@ -57,6 +59,10 @@ class User(AbstractUser):
             kwargs["update_fields"] = list(update_fields)
 
         super().save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = _("User")
+        verbose_name_plural = _("Users")
 
     def __str__(self):
         return f"{self.username} with email - {self.email} has {self.user_frames} frames and {self.user_lvl} lvl"
