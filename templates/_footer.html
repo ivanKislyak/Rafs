@@ -18,7 +18,8 @@
                 <p class="navigation-label">{% translate "Navigation" %}</p>
                 <a class="catalog-category-footer" href="{% url 'movies:catalog' %}">{% translate "Catalog" %}</a>
                 <a class="about-site-footer" href="{% url 'core:about' %}">{% translate "About" %}</a>
-                <p>{% translate "Community guidelines" %}</p>
+                <a class="community-guidelines-footer"
+                   href="{% url 'core:community_guidelines' %}">{% translate "Community guidelines" %}</a>
                 <p class="feedback-info">{% translate "Feedback" %}</p>
             </div>
         </div>

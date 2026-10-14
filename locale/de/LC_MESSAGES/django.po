@@ -1104,3 +1104,87 @@ msgstr "Du hast noch kein Konto?"
 
 #~ msgid "Search movies"
 #~ msgstr "Filme suchen"
+
+#: core/templates/core/community_guidelines.html
+msgid "RAFS community guidelines for reviews, replies and public profiles: honest ratings, respectful discussion and moderation."
+msgstr "RAFS-Community-Richtlinien für Rezensionen, Antworten und öffentliche Profile: ehrliche Bewertungen, respektvolle Diskussionen und Moderation."
+
+#: core/templates/core/community_guidelines.html
+msgid "RAFS brings together people who enjoy films, series, anime and animation. We value honest ratings, open discussion and respect for people, even when our tastes differ."
+msgstr "RAFS bringt Menschen zusammen, die Filme, Serien, Anime und Animation mögen. Wir schätzen ehrliche Bewertungen, offene Diskussionen und Respekt gegenüber Menschen, auch wenn sich unsere Geschmäcker unterscheiden."
+
+#: core/templates/core/community_guidelines.html
+msgid "About the community and these rules"
+msgstr "Über die Community und diese Regeln"
+
+#: core/templates/core/community_guidelines.html
+msgid "These rules apply to reviews, replies, public profiles and other user publications on RAFS. They help us discuss what we watch freely while treating one another with respect."
+msgstr "Diese Regeln gelten für Rezensionen, Antworten, öffentliche Profile und andere Beiträge von Nutzern auf RAFS. Sie helfen uns, frei über das Gesehene zu sprechen und respektvoll miteinander umzugehen."
+
+#: core/templates/core/community_guidelines.html
+msgid "Criticism and conversation"
+msgstr "Kritik und Austausch"
+
+#: core/templates/core/community_guidelines.html
+msgid "Profanity, harsh reviews and unpopular opinions are allowed. Giving a film a low rating or disagreeing with the majority is not a violation in itself. Criticise the work and the arguments, rather than attacking the person behind an opinion."
+msgstr "Fluchen, scharfe Rezensionen und unpopuläre Meinungen sind erlaubt. Eine niedrige Filmbewertung oder eine abweichende Meinung ist für sich genommen kein Regelverstoß. Kritisiere das Werk und die Argumente, statt die Person hinter einer Meinung anzugreifen."
+
+#: core/templates/core/community_guidelines.html
+msgid "Threats, targeted harassment and degrading attacks based on origin, nationality, religion, gender or other personal characteristics are prohibited."
+msgstr "Drohungen, gezielte Schikanen und herabwürdigende Angriffe aufgrund von Herkunft, Nationalität, Religion, Geschlecht oder anderen persönlichen Merkmalen sind verboten."
+
+#: core/templates/core/community_guidelines.html
+msgid "Spoilers"
+msgstr "Spoiler"
+
+#: core/templates/core/community_guidelines.html
+msgid "If your review reveals important plot details, use the spoiler checkbox before publishing it. Replies do not have this checkbox: clearly warn readers about spoilers at the start of your reply, before revealing any plot details."
+msgstr "Wenn deine Rezension wichtige Handlungsdetails verrät, aktiviere vor der Veröffentlichung die Spoiler-Markierung. Antworten haben diese Markierung nicht: Warne gleich am Anfang deiner Antwort deutlich vor Spoilern, bevor du Handlungsdetails verrätst."
+
+#: core/templates/core/community_guidelines.html
+msgid "Spam and manipulation"
+msgstr "Spam und Manipulation"
+
+#: core/templates/core/community_guidelines.html
+msgid "Mass posting of repeated content, intrusive advertising, phishing and malicious links are prohibited. Do not use additional accounts or automation to artificially increase reactions, ratings or Frames. Useful links and relevant mentions of other resources are welcome."
+msgstr "Massenhaft wiederholte Beiträge, aufdringliche Werbung, Phishing und schädliche Links sind verboten. Nutze keine zusätzlichen Konten oder Automatisierung, um Reaktionen, Bewertungen oder Frames künstlich zu erhöhen. Nützliche Links und passende Hinweise auf andere Quellen sind willkommen."
+
+#: core/templates/core/community_guidelines.html
+msgid "Personal data and prohibited content"
+msgstr "Persönliche Daten und unzulässige Inhalte"
+
+#: core/templates/core/community_guidelines.html
+msgid "Do not publish another person’s non-public personal data without their consent. Pornographic avatars and public materials, calls for violence, extremist propaganda and illegal content are prohibited."
+msgstr "Veröffentliche keine nicht öffentlichen persönlichen Daten anderer Menschen ohne deren Zustimmung. Pornografische Avatare und öffentliche Materialien, Aufrufe zu Gewalt, extremistische Propaganda und rechtswidrige Inhalte sind verboten."
+
+#: core/templates/core/community_guidelines.html
+msgid "Discussing or critically analysing these subjects as they appear in films is not, in itself, propaganda. Keep the distinction between examining a theme and promoting violence or extremism."
+msgstr "Die Diskussion oder kritische Analyse dieser Themen im Film ist für sich genommen keine Propaganda. Unterscheide zwischen der Auseinandersetzung mit einem Thema und der Förderung von Gewalt oder Extremismus."
+
+#: core/templates/core/community_guidelines.html
+msgid "Moderation"
+msgstr "Moderation"
+
+#: core/templates/core/community_guidelines.html
+msgid "The RAFS founder defines the rules and appoints moderators. Moderators act within their assigned authority and the published rules."
+msgstr "Der Gründer von RAFS legt die Regeln fest und ernennt Moderatoren. Moderatoren handeln im Rahmen ihrer Befugnisse und der veröffentlichten Regeln."
+
+#: core/templates/core/community_guidelines.html
+msgid "Possible measures include a request to edit a publication, hiding or removing content, a warning, a temporary restriction or an account ban. The measure depends on the severity, context and repetition of the violation. Warnings do not have to precede every restriction or ban."
+msgstr "Mögliche Maßnahmen sind die Bitte, einen Beitrag zu ändern, das Ausblenden oder Entfernen von Inhalten, eine Verwarnung, eine vorübergehende Einschränkung oder eine Kontosperre. Die Maßnahme hängt von Schwere, Kontext und Wiederholung des Verstoßes ab. Nicht jeder Einschränkung oder Sperre muss eine Verwarnung vorausgehen."
+
+#: core/templates/core/community_guidelines.html
+msgid "Review of moderation decisions"
+msgstr "Überprüfung von Moderationsentscheidungen"
+
+#: core/templates/core/community_guidelines.html
+msgid "You may contact the administration to request a review of a moderation decision. Explain what happened and provide context that could affect the decision. Where possible, a different moderator will review your request."
+msgstr "Du kannst dich an die Administration wenden, um die Überprüfung einer Moderationsentscheidung zu beantragen. Erkläre, was passiert ist, und nenne den Kontext, der die Entscheidung beeinflussen könnte. Wenn möglich, prüft ein anderer Moderator deine Anfrage."
+
+#: core/templates/core/community_guidelines.html
+msgid "Changes to the rules"
+msgstr "Änderungen der Regeln"
+
+#: core/templates/core/community_guidelines.html
+msgid "The current version of the community guidelines is available on this page."
+msgstr "Die aktuelle Fassung der Community-Richtlinien ist auf dieser Seite verfügbar."

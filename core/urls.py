@@ -7,5 +7,10 @@ app_name = "core"
 urlpatterns = [
     path("", HomePageView.as_view(), name="home"),
     path('i18n/', include('django.conf.urls.i18n')),
-    path("about_site/", TemplateView.as_view(template_name="core/about_site.html"), name="about")
+    path("about_site/", TemplateView.as_view(template_name="core/about_site.html"), name="about"),
+    path(
+        "community-guidelines/",
+        TemplateView.as_view(template_name="core/community_guidelines.html"),
+        name="community_guidelines",
+    ),
 ]

@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load static i18n %}
+{% block title %}{% translate "Community guidelines" %} · RAFS{% endblock %}
+{% block meta_description %}{% blocktranslate trimmed %}
+                RAFS community guidelines for reviews, replies and public profiles: honest ratings, respectful
+                discussion and moderation.
+            {% endblocktranslate %}{% endblock %}
+{% block og_title %}{% translate "Community guidelines" %} · RAFS{% endblock %}
+{% block og_description %}{% blocktranslate trimmed %}
+                RAFS community guidelines for reviews, replies and public profiles: honest ratings, respectful
+                discussion and moderation.
+            {% endblocktranslate %}{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'core/css/community-guidelines.css' %}">
+{% endblock %}
+{% block content %}
+    <main class="community-guidelines" aria-labelledby="community-guidelines-title">
+        <header class="community-guidelines-header">
+            <h1 id="community-guidelines-title">{% translate "Community guidelines" %}</h1>
+            <p class="community-guidelines-intro">{% blocktranslate trimmed %}
+                RAFS brings together people who enjoy films, series, anime and animation. We value honest ratings,
+                open discussion and respect for people, even when our tastes differ.
+            {% endblocktranslate %}</p>
+        </header>
+        <section aria-labelledby="guidelines-scope">
+            <h2 id="guidelines-scope">{% translate "About the community and these rules" %}</h2>
+            <p>{% blocktranslate trimmed %}
+                These rules apply to reviews, replies, public profiles and other user publications on RAFS. They
+                help us discuss what we watch freely while treating one another with respect.
+            {% endblocktranslate %}</p>
+        </section>
+        <section aria-labelledby="guidelines-discussion">
+            <h2 id="guidelines-discussion">{% translate "Criticism and conversation" %}</h2>
+            <p>{% blocktranslate trimmed %}
+                Profanity, harsh reviews and unpopular opinions are allowed. Giving a film a low rating or
+                disagreeing with the majority is not a violation in itself. Criticise the work and the arguments,
+                rather than attacking the person behind an opinion.
+            {% endblocktranslate %}</p>
+            <p>{% blocktranslate trimmed %}
+                Threats, targeted harassment and degrading attacks based on origin, nationality, religion, gender or
+                other personal characteristics are prohibited.
+            {% endblocktranslate %}</p>
+        </section>
+        <section aria-labelledby="guidelines-spoilers">
+            <h2 id="guidelines-spoilers">{% translate "Spoilers" %}</h2>
+            <p>{% blocktranslate trimmed %}
+                If your review reveals important plot details, use the spoiler checkbox before publishing it.
+                Replies do not have this checkbox: clearly warn readers about spoilers at the start of your reply,
+                before revealing any plot details.
+            {% endblocktranslate %}</p>
+        </section>
+        <section aria-labelledby="guidelines-spam">
+            <h2 id="guidelines-spam">{% translate "Spam and manipulation" %}</h2>
+            <p>{% blocktranslate trimmed %}
+                Mass posting of repeated content, intrusive advertising, phishing and malicious links are
+                prohibited. Do not use additional accounts or automation to artificially increase reactions, ratings
+                or Frames. Useful links and relevant mentions of other resources are welcome.
+            {% endblocktranslate %}</p>
+        </section>
+        <section aria-labelledby="guidelines-privacy">
+            <h2 id="guidelines-privacy">{% translate "Personal data and prohibited content" %}</h2>
+            <p>{% blocktranslate trimmed %}
+                Do not publish another person’s non-public personal data without their consent. Pornographic avatars
+                and public materials, calls for violence, extremist propaganda and illegal content are prohibited.
+            {% endblocktranslate %}</p>
+            <p>{% blocktranslate trimmed %}
+                Discussing or critically analysing these subjects as they appear in films is not, in itself,
+                propaganda. Keep the distinction between examining a theme and promoting violence or extremism.
+            {% endblocktranslate %}</p>
+        </section>
+        <section aria-labelledby="guidelines-moderation">
+            <h2 id="guidelines-moderation">{% translate "Moderation" %}</h2>
+            <p>{% blocktranslate trimmed %}
+                The RAFS founder defines the rules and appoints moderators. Moderators act within their assigned
+                authority and the published rules.
+            {% endblocktranslate %}</p>
+            <p>{% blocktranslate trimmed %}
+                Possible measures include a request to edit a publication, hiding or removing content, a warning, a
+                temporary restriction or an account ban. The measure depends on the severity, context and repetition
+                of the violation. Warnings do not have to precede every restriction or ban.
+            {% endblocktranslate %}</p>
+        </section>
+        <section aria-labelledby="guidelines-appeals">
+            <h2 id="guidelines-appeals">{% translate "Review of moderation decisions" %}</h2>
+            <p>{% blocktranslate trimmed %}
+                You may contact the administration to request a review of a moderation decision. Explain what
+                happened and provide context that could affect the decision. Where possible, a different moderator
+                will review your request.
+            {% endblocktranslate %}</p>
+        </section>
+        <section aria-labelledby="guidelines-changes">
+            <h2 id="guidelines-changes">{% translate "Changes to the rules" %}</h2>
+            <p>{% blocktranslate trimmed %}
+                The current version of the community guidelines is available on this page.
+            {% endblocktranslate %}</p>
+        </section>
+    </main>
+{% endblock %}
