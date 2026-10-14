@@ -7,6 +7,8 @@ from accounts.models import User
 from django.db.models import Q, Value
 import logging
 
+BATCH_SIZE = 1000
+
 logging.basicConfig(
     level=logging.INFO, 
     format="%(asctime)s [%(levelname)s] %(message)s",
@@ -14,27 +16,36 @@ logging.basicConfig(
 )
 
 def flatten_complex_list(data: list, sep=' '):
-        result = []
-        stack = [data]
+    """Expands nested lists into a single line.
 
-        while stack:
-            item = stack.pop()
+    .. deprecated:: 1.4.0
+    This function is deprecated.
+    """
 
-            if isinstance(item, (list, tuple)):
-                stack.extend(reversed(item))
-            elif item is not None:
-                result.append(str(item))
+    result = []
+    stack = [data]
 
-        return sep.join(result)
+    while stack:
+        item = stack.pop()
 
-def update_all_exist_indexes():
+        if isinstance(item, (list, tuple)):
+            stack.extend(reversed(item))
+        elif item is not None:
+            result.append(str(item))
+
+    return sep.join(result)
+
+def join_en_names(subfield):
+    return " ".join(
+        field.safe_translation_getter(
+            "name", language_code="en", default=""
+        ) or ""
+        for field in subfield
+    ) 
+
+def index_new_movies():
     logging.info(f"Quantity of GIN objects on start: {GlobalSearchIndex.objects.count()}")
-
     content_type_of_movie = ContentType.objects.get_for_model(Movie)
-    content_type_of_review = ContentType.objects.get_for_model(Review)
-    content_type_of_user = ContentType.objects.get_for_model(User)
-    content_type_of_person = ContentType.objects.get_for_model(Person)
-    content_type_of_studio = ContentType.objects.get_for_model(Studio)
 
     already_movies_in_db = GlobalSearchIndex.objects.filter(
         content_type=content_type_of_movie
@@ -47,9 +58,9 @@ def update_all_exist_indexes():
         'countries__translations', 'studio__translations',
         )
 
-
     movie_data = []
-    for movie in all_movies:
+    
+    for movie in all_movies.iterator(chunk_size=BATCH_SIZE):
         name_en = movie.safe_translation_getter(
             "wikidata_name", language_code="en", default=""
         ) or ""
@@ -58,52 +69,34 @@ def update_all_exist_indexes():
             "wikidata_description", language_code="en", default=""
         ) or ""
 
-        genres_en = " ".join(
-            genre.safe_translation_getter(
-                "name", language_code="en", default=""
-            ) or ""
-            for genre in movie.genres.all()
-        )
-
-        actors_en = " ".join(
-            actor.safe_translation_getter(
-                "name", language_code="en", default=""
-            ) or ""
-            for actor in movie.actors.all()
-        )
+        genres_en = join_en_names(movie.genres.all())
+        actors_en = join_en_names(movie.actors.all())
+        countries_en = join_en_names(movie.countries.all())
 
         en_vector = (
             SearchVector(Value(name_en), weight="A", config="english")
             + SearchVector(Value(description_en), weight="B", config="english")
             + SearchVector(Value(genres_en), weight="C", config="english")
             + SearchVector(Value(actors_en), weight="C", config="english")
+            + SearchVector(Value(countries_en), weight="C", config="english")
         )
             
-        
-
         movie_data.append(
             GlobalSearchIndex(content_type=content_type_of_movie,
                               object_id=movie.pk,
-                              search_text=flatten_complex_list(
-            [
-                [(main_movie_data.wikidata_name, main_movie_data.wikidata_description) for main_movie_data in movie.translations.all()],
-                [t.name for t in movie.type_of_work.translations.all()] if movie.type_of_work else [], 
-                [t.name for genre in movie.genres.all() for t in genre.translations.all()],
-                [t.name for actor in movie.actors.all() for t in actor.translations.all()],
-                [t.name for country in movie.countries.all() for t in country.translations.all()],
-                [t.name for a_studio in movie.studio.all() for t in a_studio.translations.all()],
-                movie.name, movie.description
-            ]
-        ))
-    )
+                              search_vector=en_vector)
+        )
 
-    GlobalSearchIndex.objects.bulk_create(
-        movie_data,
-        batch_size=1000
-    )
+        if len(movie_data) >= BATCH_SIZE:
+            GlobalSearchIndex.objects.bulk_create(movie_data)
+            movie_data.clear()
 
-    logging.info(f"Quantity of GIN objects after addind Movies: {GlobalSearchIndex.objects.count()}")
+    GlobalSearchIndex.objects.bulk_create(movie_data)
     
+    logging.info(f"Quantity of GIN objects after addind Movies: {GlobalSearchIndex.objects.count()}")
+
+def update_all_gin_reviews():
+    content_type_of_review = ContentType.objects.get_for_model(Review)
     already_reviews_in_db = GlobalSearchIndex.objects.filter(
         content_type=content_type_of_review
         ).values("object_id")
@@ -136,3 +129,8 @@ def update_all_exist_indexes():
     )
 
     logging.info(f"Quantity of GIN objects after addind Reviews: {GlobalSearchIndex.objects.count()}")
+
+    # should create functions for these:
+    # content_type_of_user = ContentType.objects.get_for_model(User)
+    # content_type_of_person = ContentType.objects.get_for_model(Person)
+    # content_type_of_studio = ContentType.objects.get_for_model(Studio)

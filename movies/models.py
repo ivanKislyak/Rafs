@@ -202,6 +202,9 @@ class GlobalSearchIndex(models.Model):
         indexes = [
             GinIndex(fields=['search_vector']),
         ]
+        constraints = [
+            models.UniqueConstraint(fields=["content_type", "object_id"], name="unique_gsi_target"),
+        ]
 
 
 class WatchStatus(models.Model):
