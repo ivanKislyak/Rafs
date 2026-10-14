@@ -1,0 +1,6 @@
+{% load i18n %}
+{% for review in reviews %}
+    {% include "movies/_review_card.html" with feed=True %}
+{% empty %}
+    <p class="reviews-feed-empty">{% translate "There are no reviews yet. Be the first to leave one!" %}</p>
+{% endfor %}

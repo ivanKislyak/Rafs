@@ -8,9 +8,12 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.exceptions import PermissionDenied
+from django.core.paginator import Paginator
 from django.contrib.postgres.aggregates import StringAgg
-from django.db.models import Avg, F, Count, Value, CharField, Prefetch
+from django.db.models import Avg, F, Count, Value, CharField, Prefetch, Q, OuterRef, Subquery
 from django.db.models.functions import Greatest
+from django.db.models.functions import Coalesce
+from django.template.loader import render_to_string
 from django.http import JsonResponse
 from django.urls import reverse
 from django.views.decorators.http import require_POST
@@ -160,6 +163,8 @@ def make_review_form(request, movie_id):
 def vote_review(request):
     try:
         data = json.loads(request.body)
+        if not isinstance(data, dict):
+            return JsonResponse({"error": _("Invalid data format")}, status=400)
         review_id = data.get("review_id")
         vote_value = int(data.get("vote_value"))
 
@@ -223,14 +228,7 @@ def show_popular_results(request):
 
 def show_last_search_history(request):
     return None
-        
-@require_POST
-def show_search_results(requset):
-    pass
 
-@require_POST
-def show_suggested_results(request):
-    pass
 
 @login_required
 @require_POST
@@ -282,6 +280,8 @@ def delete_review(request, review_id):
     movie_id = review.movie_id
 
     review.delete()
+    if request.POST.get("source") == "reviews":
+        return redirect(_review_feed_return_url(request))
     return redirect("movies:detail", movie_id=movie_id)
 
 
@@ -298,6 +298,9 @@ def delete_reply(request, reply_id):
     review_id = reply.review_id
     movie_id = reply.review.movie_id
     reply.delete()
+
+    if request.POST.get("source") == "reviews":
+        return redirect(_review_feed_return_url(request, review_id))
 
     detail_url = reverse("movies:detail", kwargs={"movie_id": movie_id})
     return redirect(f"{detail_url}?replies={review_id}#review-{review_id}")
@@ -317,6 +320,8 @@ def reply_review(request, review_id):
     else:
         messages.error(request, _("The reply cannot be empty"))
 
+    if request.POST.get("source") == "reviews":
+        return redirect(_review_feed_return_url(request, review.id))
     detail_url = reverse("movies:detail", kwargs={"movie_id": review.movie_id})
     return redirect(f"{detail_url}?replies={review.id}#review-{review.id}")
 
@@ -350,5 +355,56 @@ def wikidata_save_item(request, qid):
     imported = import_parsed_data_to_db(qid, parsed)
     return redirect("movies:detail", movie_id=imported.id)
 
+def _review_feed_return_url(request, review_id=None):
+    try:
+        page = max(1, int(request.POST.get("page", 1)))
+    except (TypeError, ValueError):
+        page = 1
+    url = f'{reverse("movies:show_reviews")}?page={page}'
+    if review_id is not None:
+        url += f"&replies={review_id}#review-{review_id}"
+    return url
+
+
 def show_reviews(request):
-    return render(request, "movies/reviews.html")
+    # Slice in SQL before fetching authors, movies and replies.
+    reviews = (
+        Review.objects.select_related("user", "movie")
+        .annotate(
+            like_count=Count("votes", filter=Q(votes__value=1)),
+            dislike_count=Count("votes", filter=Q(votes__value=-1)),
+        )
+        .order_by("-created_at", "-pk")
+        .prefetch_related(Prefetch(
+            "replies",
+            queryset=ReviewReply.objects.select_related("user").order_by("created_at", "pk"),
+            to_attr="loaded_replies",
+        ))
+    )
+    if request.user.is_authenticated:
+        user_vote = ReviewVote.objects.filter(
+            review_id=OuterRef("pk"), user=request.user,
+        ).values("value")[:1]
+        reviews = reviews.annotate(user_vote=Coalesce(Subquery(user_vote), Value(0)))
+    else:
+        reviews = reviews.annotate(user_vote=Value(0))
+
+    page_obj = Paginator(reviews, 10).get_page(request.GET.get("page"))
+    try:
+        open_replies_id = int(request.GET.get("replies", ""))
+    except (TypeError, ValueError):
+        open_replies_id = None
+    context = {
+        "reviews": page_obj.object_list,
+        "page_obj": page_obj,
+        "open_replies_id": open_replies_id,
+    }
+    if request.GET.get("format") == "json":
+        return JsonResponse({
+            "html": render_to_string("movies/_review_feed_page.html", context, request=request),
+            "next_url": (
+                f'{reverse("movies:show_reviews")}?page={page_obj.next_page_number()}'
+                if page_obj.has_next() else None
+            ),
+        })
+    return render(request, "movies/reviews.html", context)

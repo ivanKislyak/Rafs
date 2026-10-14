@@ -1,9 +1,36 @@
 {% extends "base.html" %}
-{% load static %}
-{% load i18n %}
-{% block title %}
-    {% translate "Reviews" %}
+{% load static i18n %}
+{% block title %}{% translate "Reviews" %} · RAFS{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'movies/css/components/review-thread.css' %}">
+    <link rel="stylesheet" href="{% static 'movies/css/reviews.css' %}">
 {% endblock %}
 {% block content %}
-    <script src="{% static 'movies/js/reviews.js' %}" defer></script>
+<main class="reviews-feed" data-reviews-feed
+      data-vote-url="{% url 'movies:vote_review' %}"
+      data-login-url="{% url 'login' %}?next={{ request.get_full_path|urlencode }}"
+      data-authenticated="{{ user.is_authenticated|yesno:'true,false' }}"
+      data-error="{% translate 'Something went wrong. Please try again.' %}"
+      data-loading="{% translate 'Loading...' %}"
+      data-more="{% translate 'Load more reviews' %}"
+      data-end="{% translate 'You have reached the end of the reviews.' %}">
+    <header class="reviews-feed-heading">
+        <span class="reviews-feed-kicker">RAFS · {% translate "Community" %}</span>
+        <h1>{% translate "Reviews" %}</h1>
+        <p>{% translate "What viewers think: reviews, ratings and conversations about movies." %}</p>
+    </header>
+    <form id="review-vote-csrf" hidden>{% csrf_token %}</form>
+    <div data-review-list>
+        {% include "movies/_review_feed_page.html" %}
+    </div>
+    <nav class="reviews-pagination" aria-label="{% translate 'Review pages' %}">
+        {% if page_obj.has_previous %}<a href="?page={{ page_obj.previous_page_number }}">{% translate "Previous" %}</a>{% endif %}
+        <a data-load-more href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% endif %}" {% if not page_obj.has_next %}hidden{% endif %}>{% translate "Load more reviews" %}</a>
+    </nav>
+    <p class="reviews-feed-status" data-feed-status role="status" aria-live="polite"></p>
+    <div data-feed-sentinel aria-hidden="true"></div>
+    <noscript><p>{% translate "Open a movie to reply to a review or vote." %}</p></noscript>
+    {% include "movies/_review_delete_dialog.html" %}
+</main>
 {% endblock %}
+{% block extra_js %}<script src="{% static 'movies/js/reviews.js' %}" defer></script>{% endblock %}
