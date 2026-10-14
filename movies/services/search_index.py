@@ -15,33 +15,13 @@ logging.basicConfig(
     datefmt="%H:%M:%S"
 )
 
-def flatten_complex_list(data: list, sep=' '):
-    """Expands nested lists into a single line.
-
-    .. deprecated:: 1.4.0
-    This function is deprecated.
-    """
-
-    result = []
-    stack = [data]
-
-    while stack:
-        item = stack.pop()
-
-        if isinstance(item, (list, tuple)):
-            stack.extend(reversed(item))
-        elif item is not None:
-            result.append(str(item))
-
-    return sep.join(result)
-
 def join_en_names(subfield):
     return " ".join(
         field.safe_translation_getter(
             "name", language_code="en", default=""
         ) or ""
         for field in subfield
-    ) 
+    )
 
 def index_new_movies():
     logging.info(f"Quantity of GIN objects on start: {GlobalSearchIndex.objects.count()}")
@@ -88,12 +68,11 @@ def index_new_movies():
         )
 
         if len(movie_data) >= BATCH_SIZE:
-            GlobalSearchIndex.objects.bulk_create(movie_data)
+            GlobalSearchIndex.objects.bulk_create(movie_data, ignore_conflicts=True)
             movie_data.clear()
 
-    GlobalSearchIndex.objects.bulk_create(movie_data)
-    
-    logging.info(f"Quantity of GIN objects after addind Movies: {GlobalSearchIndex.objects.count()}")
+    GlobalSearchIndex.objects.bulk_create(movie_data, ignore_conflicts=True)
+    logging.info(f"Quantity of GIN objects after adding Movies: {GlobalSearchIndex.objects.count()}")
 
 def update_all_gin_reviews():
     content_type_of_review = ContentType.objects.get_for_model(Review)
