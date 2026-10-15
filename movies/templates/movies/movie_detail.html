@@ -18,8 +18,8 @@
 {% block og_description %}{% if movie.description %}{{ movie.description|striptags|truncatechars:200 }}{% else %}{{ movie.name }} – {% translate "Viewer ratings and reviews on RAFS. Share your opinion" %}{% endif %}{% endblock %}
 {% block og_image %}{% if movie.cover and movie.image_exists %}https://rafs.app{{ movie.cover.url }}{% elif movie.cover_url %}{{ movie.cover_url }}{% else %}https://rafs.app{% static 'images/rafs-preview-v3.png' %}{% endif %}{% endblock %}
 {% block content %}
-    <a class="btn" href="{% url 'movies:catalog' %}">← {% translate "Back to catalog" %}</a>
-    <hr />
+    <main class="page-shell movie-page">
+    <a class="movie-back-link" href="{% url 'movies:catalog' %}">← {% translate "Back to catalog" %}</a>
     <article class="movie-detail-main-container">
         {% if movie.cover and movie.image_exists %}
             <img class="movie-detail-cover"
@@ -39,29 +39,26 @@
                  alt="{{ movie.name }}" />
         {% endif %}
         <div class="movie-detail-main-textinfo">
-            <div class="movie-name">
-                <h1>{{ movie.name }}</h1>
+            <p class="page-kicker">RAFS · {% translate "Ratings and reviews" %}</p>
+            <h1>{{ movie.name }}</h1>
+            <div class="movie-detail-meta">
+                {% if movie.year %}<span>{{ movie.year }}</span>{% endif %}
+                {% with movie_rating=movie.avg_rating %}
+                    {% if movie_rating %}<span class="movie-detail-rating">{% translate "RAFS rating:" %} <strong>{{ movie_rating }}</strong> / 10</span>
+                    {% else %}<span>{% translate "Not rated yet" %}</span>{% endif %}
+                {% endwith %}
+            </div>
+            <div class="movie-detail-actions">
                 {% if user_already_rated_this %}
-                    <p>{% translate "Your rating:" %}</p>
-                    <p class="review-live-score-value">{{ user_already_rated_this.avg_rating }}</p>
+                    <span>{% translate "Your rating:" %} <strong>{{ user_already_rated_this.avg_rating }}</strong></span>
                     <a class="btn" href="{% url 'movies:review_form' movie.id %}">{% translate "Edit" %}</a>
                 {% else %}
                     <a class="btn" href="{% url 'movies:review_form' movie.id %}">{% translate "Rate" %}</a>
                 {% endif %}
             </div>
-            <p>{% translate "Year:" %} {{ movie.year }}</p>
-            {% if movie.rate %}
-                <p>{% translate "Rating:" %} {{ movie.rate }}</p>
-                {% if movie.rate >= 8 %}
-                    <p>{% translate "RECOMMENDED!" %}</p>
-                {% endif %}
-            {% else %}
-                <p>{% translate "Not rated yet" %}</p>
-            {% endif %}
         </div>
+        {% if movie.description %}<p class="movie-detail-main-description">{{ movie.description }}</p>{% endif %}
     </article>
-    <p class="movie-detail-main-description">{{ movie.description }}</p>
-    <hr />
     <div class="movie-watch-status"
          data-movie-id="{{ movie.id }}"
          data-url="{% url 'movies:set_movie_status' %}"
@@ -69,10 +66,9 @@
          data-error-message="{% translate 'Unable to update the movie status' %}">
         {% for choice in watch_status_model.StatusChoice.choices %}
             <button class="movie-watch-status-btn {% if watch_status.status == choice.0 %}is-active{% endif %}"
-                    data-value="{{ choice.0 }}">{{ choice.1 }}</button>
+                    type="button" aria-pressed="{% if watch_status.status == choice.0 %}true{% else %}false{% endif %}" data-value="{{ choice.0 }}">{{ choice.1 }}</button>
         {% endfor %}
     </div>
-    <hr />
     <section class="review-comments">
         <h2 class="review-comments-title">{% translate "Reviews" %}</h2>
         <form id="review-vote-csrf" hidden>
@@ -87,6 +83,7 @@
         {% endif %}
     </section>
     {% include "movies/_review_delete_dialog.html" %}
+    </main>
     <script>
         const reviewVoteUrl = "{% url 'movies:vote_review' %}";
         const reviewVoteLoginUrl = "{% url 'login' %}?next={{ request.path|urlencode }}";

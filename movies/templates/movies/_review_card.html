@@ -4,7 +4,7 @@
         <div class="review-comment-author-block">
             {% if review.user.is_deleted %}
                 <span class="review-comment-avatar-link" aria-hidden="true">
-                    <img loading="lazy" decoding="async" class="review-comment-avatar"
+                    <img loading="lazy" decoding="async" class="review-comment-avatar" data-fallback-src="{% static 'images/default_profile_img.png' %}" onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
                          src="{% static 'images/default_profile_img.png' %}"
                          alt="">
                 </span>
@@ -14,11 +14,11 @@
                    href="{% url 'accounts:profile' review.user.username %}"
                    aria-label="{% translate 'Open user profile' %}: {{ review.user.username }}">
                     {% if review.user.avatar_image %}
-                        <img loading="lazy" decoding="async" class="review-comment-avatar"
+                        <img loading="lazy" decoding="async" class="review-comment-avatar" data-fallback-src="{% static 'images/default_profile_img.png' %}" onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
                              src="{{ review.user.avatar_image.url }}"
                              alt="{{ review.user.username }}">
                     {% else %}
-                        <img loading="lazy" decoding="async" class="review-comment-avatar"
+                        <img loading="lazy" decoding="async" class="review-comment-avatar" data-fallback-src="{% static 'images/default_profile_img.png' %}" onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
                              src="{% static 'images/default_profile_img.png' %}"
                              alt="{{ review.user.username }}">
                     {% endif %}
@@ -155,7 +155,7 @@
                         <div class="review-reply-header">
                             {% if reply.user.is_deleted %}
                                 <span class="review-reply-avatar-link" aria-hidden="true">
-                                    <img loading="lazy" decoding="async" class="review-reply-avatar"
+                                    <img loading="lazy" decoding="async" class="review-reply-avatar" data-fallback-src="{% static 'images/default_profile_img.png' %}" onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
                                          src="{% static 'images/default_profile_img.png' %}"
                                          alt="">
                                 </span>
@@ -165,11 +165,11 @@
                                    href="{% url 'accounts:profile' reply.user.username %}"
                                    aria-label="{% translate 'Open user profile' %}: {{ reply.user.username }}">
                                     {% if reply.user.avatar_image %}
-                                        <img loading="lazy" decoding="async" class="review-reply-avatar"
+                                        <img loading="lazy" decoding="async" class="review-reply-avatar" data-fallback-src="{% static 'images/default_profile_img.png' %}" onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
                                              src="{{ reply.user.avatar_image.url }}"
                                              alt="{{ reply.user.username }}">
                                     {% else %}
-                                        <img loading="lazy" decoding="async" class="review-reply-avatar"
+                                        <img loading="lazy" decoding="async" class="review-reply-avatar" data-fallback-src="{% static 'images/default_profile_img.png' %}" onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
                                              src="{% static 'images/default_profile_img.png' %}"
                                              alt="{{ reply.user.username }}">
                                     {% endif %}

@@ -32,7 +32,7 @@
 .review-comments {
   display: grid;
   gap: var(--space-m);
-  margin: 20px 10px;
+  margin: 28px 0;
 }
 
 .review-comments-title {
@@ -42,16 +42,18 @@
 }
 
 .review-comment {
-  background-color: var(--color-bg);
-  padding: var(--space-m);
+  background: transparent;
+  padding: 26px 0;
+  border-top: 1px solid var(--color-border);
   display: grid;
-  gap: var(--space-s);
+  min-width: 0;
+  gap: 16px;
 }
 
 .review-comment-details {
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--color-border) 78%, transparent);
-  border-radius: 10px;
+  border: 0;
+  border-radius: 4px;
   background: color-mix(in srgb, var(--color-surface-raised) 52%, transparent);
 }
 
@@ -98,7 +100,7 @@
   flex: 0 0 auto;
   border-radius: 50%;
   background-color: var(--color-accent);
-  box-shadow: 0 0 0 4px var(--color-accent-glow);
+
 }
 
 .review-comment-details-action {
@@ -158,14 +160,16 @@
   display: flex;
   justify-content: space-between;
   gap: var(--space-s);
-  align-items: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
 }
 
 .review-comment-author-block {
   display: flex;
   align-items: center;
   gap: var(--space-s);
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
+  min-width: 0;
   color: var(--color-text);
 }
 
@@ -173,7 +177,8 @@
   color: var(--color-text);
   font-weight: 700;
   text-decoration: none;
-  white-space: nowrap;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 a.review-comment-author:hover,
@@ -196,12 +201,12 @@ a.review-reply-author:hover {
 
 .review-comment-rating {
   font-weight: 600;
-  color: var(--color-action);
+  color: var(--color-text);
 }
 
 .review-comment-spoiler {
   padding: 4px 10px;
-  border-radius: 999px;
+  border-radius: 4px;
   background-color: color-mix(in srgb, var(--color-border) 20%, var(--color-surface-raised));
   color: var(--color-text);
   font-size: 0.9rem;
@@ -209,7 +214,9 @@ a.review-reply-author:hover {
 
 .review-comment-text {
   margin: 0;
-  line-height: 1.6;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
   color: var(--color-text);
 }
 
@@ -225,7 +232,8 @@ a.review-reply-author:hover {
   min-width: 0;
   min-height: 36px;
   margin-top: 2px;
-  white-space: nowrap;
+  white-space: normal;
+  flex-wrap: wrap;
 }
 
 .review-votes {
@@ -234,9 +242,9 @@ a.review-reply-author:hover {
   width: fit-content;
   margin: 0;
   overflow: hidden;
-  border: 1px solid var(--color-border);
-  border-radius: 999px;
-  background-color: var(--color-surface-raised);
+  border: 0;
+  border-radius: 4px;
+  background-color: var(--color-surface);
 }
 
 .review-vote-button {
@@ -245,7 +253,7 @@ a.review-reply-author:hover {
   justify-content: center;
   gap: 6px;
   min-width: 48px;
-  height: 36px;
+  min-height: 44px;
   padding: 0 12px;
   border: 0;
   background-color: transparent;
@@ -257,7 +265,7 @@ a.review-reply-author:hover {
 }
 
 .review-vote-button + .review-vote-button {
-  border-left: 1px solid var(--color-border);
+  border-left: 0;
 }
 
 .review-vote-button:hover,
@@ -302,7 +310,7 @@ a.review-reply-author:hover {
 .review-vote-status {
   min-width: 0;
   overflow: hidden;
-  color: var(--rafs-red-soft);
+  color: var(--color-accent);
   font-size: 0.82rem;
   text-overflow: ellipsis;
 }
@@ -316,12 +324,13 @@ a.review-reply-author:hover {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  height: 36px;
+  min-height: 44px;
   padding: 0 12px;
-  border: 1px solid var(--color-border);
-  border-radius: 999px;
-  background-color: var(--color-surface-raised);
+  border: 0;
+  border-radius: 4px;
+  background-color: transparent;
   color: var(--color-text-muted);
+  text-decoration: none;
   cursor: pointer;
   font: inherit;
   font-size: 0.86rem;
@@ -346,7 +355,7 @@ a.review-reply-author:hover {
 
 .review-action-button:hover,
 .review-action-button.is-active {
-  border-color: color-mix(in srgb, var(--rafs-red) 55%, var(--color-border));
+  border-color: color-mix(in srgb, var(--color-accent) 55%, var(--color-border));
   background-color: var(--color-accent-glow);
   color: var(--color-text);
 }
@@ -370,8 +379,8 @@ a.review-reply-author:hover {
 
 .review-delete-button:hover {
   border-color: var(--rafs-red-action);
-  background-color: color-mix(in srgb, var(--rafs-red) 14%, transparent);
-  color: var(--rafs-red-soft);
+  background-color: color-mix(in srgb, var(--color-accent) 14%, transparent);
+  color: var(--color-accent);
 }
 
 .review-delete-dialog {
@@ -380,14 +389,14 @@ a.review-reply-author:hover {
   padding: 0;
   overflow: visible;
   border: 0;
-  border-radius: 16px;
+  border-radius: 4px;
   background-color: transparent;
   color: var(--color-text);
 }
 
 .review-delete-dialog::backdrop {
   background-color: rgb(4 5 7 / 74%);
-  backdrop-filter: blur(4px);
+
   animation: review-delete-backdrop-in 180ms ease-out;
 }
 
@@ -395,9 +404,9 @@ a.review-reply-author:hover {
   position: relative;
   overflow: hidden;
   padding: 22px;
-  border: 1px solid color-mix(in srgb, var(--rafs-red) 38%, var(--color-border));
-  border-radius: 16px;
-  background: radial-gradient(circle at 8% 0%, rgb(219 57 47 / 16%), transparent 38%), var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background: var(--color-surface);
   box-shadow: 0 28px 80px rgb(0 0 0 / 58%);
   animation: review-delete-dialog-in 210ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
@@ -409,7 +418,7 @@ a.review-reply-author:hover {
   right: 0;
   left: 0;
   height: 3px;
-  background: linear-gradient(90deg, var(--rafs-red-action), var(--rafs-red-soft), transparent 78%);
+  background: var(--color-accent);
 }
 
 .review-delete-dialog-heading {
@@ -423,10 +432,10 @@ a.review-reply-author:hover {
   width: 48px;
   height: 48px;
   flex: 0 0 48px;
-  border: 1px solid rgb(219 57 47 / 34%);
-  border-radius: 12px;
-  background-color: rgb(219 57 47 / 12%);
-  color: var(--rafs-red-soft);
+  border: 0;
+  border-radius: 4px;
+  background-color: var(--color-accent-glow);
+  color: var(--color-accent);
   place-items: center;
 }
 
@@ -443,7 +452,7 @@ a.review-reply-author:hover {
 .review-delete-dialog-kicker {
   display: block;
   margin-bottom: 3px;
-  color: var(--rafs-red-soft);
+  color: var(--color-accent);
   font-size: 0.68rem;
   font-weight: 800;
   letter-spacing: 0.11em;
@@ -480,7 +489,7 @@ a.review-reply-author:hover {
   min-height: 38px;
   padding: 8px 14px;
   border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border-radius: 4px;
   cursor: pointer;
   font: inherit;
   font-size: 0.86rem;
@@ -498,7 +507,7 @@ a.review-reply-author:hover {
 }
 
 .review-delete-dialog-cancel:hover {
-  border-color: color-mix(in srgb, var(--rafs-red) 45%, var(--color-border));
+  border-color: color-mix(in srgb, var(--color-accent) 45%, var(--color-border));
   background-color: var(--color-accent-glow);
   color: var(--color-text);
 }
@@ -511,8 +520,8 @@ a.review-reply-author:hover {
 }
 
 .review-delete-dialog-confirm:hover {
-  border-color: var(--rafs-red);
-  background-color: var(--rafs-red);
+  border-color: var(--color-accent);
+  background-color: var(--color-accent);
 }
 
 .review-delete-dialog-confirm:disabled {
@@ -558,7 +567,8 @@ a.review-reply-author:hover {
 }
 
 .review-replies-toggle {
-  padding: 5px 0;
+  min-height: 44px;
+  padding: 8px 0;
   border: 0;
   background-color: transparent;
   color: var(--color-accent);
@@ -576,7 +586,8 @@ a.review-reply-author:hover {
   display: grid;
   width: 100%;
   gap: 8px;
-  padding-left: 20px;
+  min-width: 0;
+  padding-left: 14px;
   border-left: 1px solid var(--color-border);
 }
 
@@ -587,10 +598,11 @@ a.review-reply-author:hover {
 .review-reply {
   display: grid;
   gap: 7px;
-  padding: 11px 12px;
-  border: 1px solid var(--color-border);
-  border-radius: 9px;
-  background-color: var(--color-surface-raised);
+  min-width: 0;
+  padding: 10px 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
 }
 
 .review-reply-header {
@@ -598,6 +610,7 @@ a.review-reply-author:hover {
   min-width: 0;
   align-items: center;
   gap: 7px;
+  flex-wrap: wrap;
 }
 
 .review-reply-avatar {
@@ -632,11 +645,11 @@ a.review-reply-author:hover {
 
 .review-reply-delete {
   display: grid;
-  width: 28px;
-  height: 28px;
+  width: 44px;
+  height: 44px;
   padding: 0;
   border: 1px solid transparent;
-  border-radius: 6px;
+  border-radius: 4px;
   background-color: transparent;
   color: var(--color-text-muted);
   cursor: pointer;
@@ -678,9 +691,9 @@ a.review-reply-author:hover {
   gap: 10px;
   margin-top: 6px;
   padding: 14px;
-  border: 1px solid var(--color-border);
-  border-radius: 10px;
-  background: linear-gradient(110deg, rgb(219 57 47 / 8%), transparent 48%), var(--color-surface-raised);
+  border: 0;
+  border-radius: 4px;
+  background: var(--color-surface);
 }
 
 .review-reply-label {
@@ -694,7 +707,7 @@ a.review-reply-author:hover {
   min-height: 84px;
   padding: 10px 12px;
   border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border-radius: 4px;
   background-color: var(--color-bg);
   color: var(--color-text);
   font: inherit;
@@ -722,10 +735,10 @@ a.review-reply-author:hover {
 
 .review-reply-submit,
 .review-reply-cancel {
-  min-height: 34px;
+  min-height: 44px;
   padding: 7px 13px;
   border: 1px solid var(--color-border);
-  border-radius: 7px;
+  border-radius: 4px;
   cursor: pointer;
   font: inherit;
   font-size: 0.84rem;
@@ -739,7 +752,7 @@ a.review-reply-author:hover {
 }
 
 .review-reply-submit:hover {
-  background-color: var(--rafs-red);
+  background-color: var(--color-accent);
 }
 
 .review-reply-cancel {
@@ -801,7 +814,7 @@ a.review-reply-author:hover {
   }
 
   .review-vote-button {
-    min-width: 42px;
+    min-width: 44px;
     padding: 0 8px;
   }
 

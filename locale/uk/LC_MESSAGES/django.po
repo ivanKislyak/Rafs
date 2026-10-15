@@ -368,7 +368,7 @@ msgstr "Зрозуміти, чому він підходить саме вам."
 
 #: .\core\templates\core\about_site.html:20
 msgid "RAFS is a place for honest ratings, thoughtful reviews, and finding movies that truly match your taste."
-msgstr "RAFS — це місце для чесних оцінок, вдумливих рецензій і пошуку фільмів, які справді відповідають вашому смаку."
+msgstr "RAFS – це місце для чесних оцінок, вдумливих рецензій і пошуку фільмів, які справді відповідають вашому смаку."
 
 #: .\core\templates\core\about_site.html:24
 msgid "Browse catalog"
@@ -461,11 +461,11 @@ msgstr "Знайти фільм"
 
 #: .\core\templates\core\home.html:5
 msgid "RAFS – Movie ratings and reviews"
-msgstr "RAFS — оцінки та рецензії на фільми"
+msgstr "RAFS – оцінки та рецензії на фільми"
 
 #: .\core\templates\core\home.html:13
 msgid "RAFS is a service for rating movies based on several criteria. View audience ratings, write reviews, and find movies that suit your taste."
-msgstr "RAFS — це сервіс для оцінювання фільмів за кількома критеріями. Переглядайте оцінки аудиторії, пишіть рецензії та знаходьте фільми на свій смак."
+msgstr "RAFS – це сервіс для оцінювання фільмів за кількома критеріями. Переглядайте оцінки аудиторії, пишіть рецензії та знаходьте фільми на свій смак."
 
 #: .\core\templates\core\home.html:17
 msgid "Top movies"
@@ -847,8 +847,8 @@ msgid "Check your search"
 msgstr "Перевірте запит"
 
 #: .\movies\templates\movies\wd_search_form.html:5
-msgid "Search Wikidata — RAFS"
-msgstr "Пошук у Вікіданих — RAFS"
+msgid "Search Wikidata – RAFS"
+msgstr "Пошук у Вікіданих – RAFS"
 
 #: .\movies\templates\movies\wd_search_form.html:13
 msgid "Editor tools"
@@ -904,8 +904,8 @@ msgid "Wikidata is temporarily unavailable"
 msgstr "Вікідані тимчасово недоступні"
 
 #: .\movies\templates\movies\wd_search_form.html:77
-msgid "Wait a moment and try again — your search has been preserved."
-msgstr "Зачекайте трохи та повторіть спробу — ваш пошук збережено."
+msgid "Wait a moment and try again – your search has been preserved."
+msgstr "Зачекайте трохи та повторіть спробу – ваш пошук збережено."
 
 #: .\movies\templates\movies\wd_search_form.html:84
 msgid "Matching titles"
@@ -1026,7 +1026,7 @@ msgstr "Ваш поточний рівень"
 
 #: .\templates\_header.html:170
 msgid "Frames are your experience points"
-msgstr "Кадри — ваші очки досвіду"
+msgstr "Кадри – ваші очки досвіду"
 
 #: .\templates\_header.html:184
 msgid "Open profile"
@@ -1046,11 +1046,11 @@ msgstr "Вийти"
 
 #: .\templates\base.html:15
 msgid "RAFS is a service for rating movies based on several criteria. Check out viewer ratings, write reviews, and find movies that suit your taste"
-msgstr "RAFS — це сервіс для оцінювання фільмів за кількома критеріями. Перевіряйте оцінки глядачів, пишіть рецензії та знаходьте фільми на свій смак"
+msgstr "RAFS – це сервіс для оцінювання фільмів за кількома критеріями. Перевіряйте оцінки глядачів, пишіть рецензії та знаходьте фільми на свій смак"
 
 #: .\templates\base.html:20
 msgid "RAFS – Movie Ratings and Reviews"
-msgstr "RAFS — оцінки та рецензії на фільми"
+msgstr "RAFS – оцінки та рецензії на фільми"
 
 #: .\templates\base.html:22
 msgid "Rate movies, post reviews, and find movies that suit your taste"
@@ -1188,3 +1188,15 @@ msgstr "Зміни правил"
 #: core/templates/core/community_guidelines.html
 msgid "The current version of the community guidelines is available on this page."
 msgstr "Актуальна редакція правил спільноти доступна на цій сторінці."
+
+#: templates/_header_language.html
+msgid "Language"
+msgstr "Мова"
+
+#: accounts/templates/accounts/profile.html
+msgid "Choose file"
+msgstr "Вибрати файл"
+
+#: accounts/templates/accounts/profile.html
+msgid "No file selected"
+msgstr "Файл не вибрано"

@@ -1,259 +1,176 @@
-{% load static %}
-{% load humanize %}
-{% load i18n %}
-<header class="main-header">
-    <nav class="main-nav">
+{% load static humanize i18n %}
+<header class="main-header" data-site-header>
+    <div class="header-inner">
         <a class="logo" href="{% url 'core:home' %}">
-            <img class="red-logo-img"
-                 src="{% static 'images/red_gl_rafs_logo.png' %}"
-                 alt=""
-                 aria-hidden="true" />
-            <img class="blue-logo-img"
-                 src="{% static 'images/blue_gl_rafs_logo.png' %}"
-                 alt=""
-                 aria-hidden="true" />
-            <img class="logo-img"
-                 src="{% static 'images/def_rafs_logo.png' %}"
-                 alt="RAFS" />
+            <img class="red-logo-img" src="{% static 'images/red_gl_rafs_logo.png' %}" alt="" aria-hidden="true" width="86" height="48">
+            <img class="blue-logo-img" src="{% static 'images/blue_gl_rafs_logo.png' %}" alt="" aria-hidden="true" width="86" height="48">
+            <img class="logo-img" src="{% static 'images/def_rafs_logo.png' %}" alt="RAFS" width="86" height="48">
         </a>
-        <div class="main-buttons">
-            <div class="catalog-container">
-                <a class="catalog-category" href="{% url 'movies:catalog' %}">{% translate "Catalog" %}</a>
-                <hr class="active-tab-indicator">
-            </div>
-            <div class="reviews-container">
-                <a class="reviews-category" href="{% url 'movies:show_reviews' %}">{% translate "Reviews" %}</a>
-                <hr class="active-tab-indicator">
+        <div class="header-navigation" id="header-navigation">
+            <nav class="main-buttons" aria-label="{% translate 'Navigation' %}">
+                <div class="catalog-container"><a class="catalog-category" href="{% url 'movies:catalog' %}">{% translate "Catalog" %}</a></div>
+                <div class="reviews-container"><a class="reviews-category" href="{% url 'movies:show_reviews' %}">{% translate "Reviews" %}</a></div>
+            </nav>
+            <div class="header-navigation-extras">
+                <a href="{% url 'core:home' %}">{% translate "Top movies" %}</a>
+                <a href="{% url 'core:about' %}">{% translate "About" %}</a>
+                <a href="{% url 'core:community_guidelines' %}">{% translate "Community guidelines" %}</a>
+                {% if not user.is_authenticated %}
+                    <a href="{% url 'accounts:register' %}">{% translate "Sign up" %}</a>
+                    {% include "_header_language.html" %}
+                    {% include "_theme_toggle.html" %}
+                {% endif %}
             </div>
         </div>
-    </nav>
-    <div class="search-bar-wrapper" data-header-search>
-        <form class="search-bar-form"
-              action="{% url 'movies:search_query' %}"
-              method="get"
-              data-header-search-form>
-            {% csrf_token %}
-            <div class="search-bar-container">
-                <span class="search-bar-leading-icon" aria-hidden="true">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                         viewBox="0 0 24 24"
-                         focusable="false">
-                        <path d="M11 2a9 9 0 1 0 5.641 16.01.966.966 0 0 0 .152.197l3.5 3.5a1 1 0 1 0 1.414-1.414l-3.5-3.5a1 1 0 0 0-.197-.153A8.96 8.96 0 0 0 20 11a9 9 0 0 0-9-9Zm0 2a7 7 0 1 1 0 14 7 7 0 0 1 0-14Z">
-                        </path>
-                    </svg>
-                </span>
-                <input class="search-bar-input"
-                       type="search"
-                       name="query"
-                       placeholder="{% translate 'Movies, people, reviews...' %}"
-                       autocomplete="off"
-                       aria-expanded="false"
-                       aria-controls="header-search-suggestions"
-                       data-header-search-input>
-                <button class="search-bar-clear"
-                        type="button"
-                        aria-label="{% translate 'Clear search' %}"
-                        data-header-search-clear
-                        hidden>×</button>
-                <button class="search-bar-submit"
-                        type="submit"
-                        aria-label="{% translate 'Search' %}">{% translate "Find" %}</button>
-            </div>
-        </form>
-        <div class="searchBoxSuggetions"
-             id="header-search-suggestions"
-             role="listbox"
-             data-header-search-suggestions
-             hidden>
-            {# Both context values are expected to be iterables of search query strings. #}
-            {% if search_history %}
-                <p class="search-suggestions-title">{% translate "Search history" %}</p>
-                <div class="search-suggestions-list">
-                    {% for search_query in search_history %}
-                        <button class="search-suggestion-card"
-                                type="button"
-                                role="option"
-                                data-search-value="{{ search_query }}">
-                            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                                <circle cx="12" cy="12" r="8.5"></circle>
-                                <path d="M12 7.5V12l3 2"></path>
-                            </svg>
-                            <span>{{ search_query }}</span>
-                        </button>
-                    {% endfor %}
-                </div>
-            {% elif popular_searches %}
-                <p class="search-suggestions-title">{% translate "Popular searches" %}</p>
-                <div class="search-suggestions-list">
-                    {% for search_query in popular_searches %}
-                        <button class="search-suggestion-card"
-                                type="button"
-                                role="option"
-                                data-search-value="{{ search_query }}">
-                            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                                <path d="M5 16.5 10 11l3 3 6-7"></path>
-                                <path d="M14.5 7H19v4.5"></path>
-                            </svg>
-                            <span>{{ search_query }}</span>
-                        </button>
-                    {% endfor %}
-                </div>
-            {% else %}
-                <p class="search-suggestions-empty">{% translate "No search suggestions yet" %}</p>
-            {% endif %}
-        </div>
-    </div>
-    {% if not user.is_authenticated %}
-        <form class="header-language-form"
-              action="{% url 'set_language' %}"
-              method="post">
-            {% csrf_token %}
-            <input name="next" type="hidden" value="{{ redirect_to }}">
-            {% get_current_language as LANGUAGE_CODE %}
-            <span class="header-language-control">
-                <svg class="header-language-icon"
-                     viewBox="0 0 24 24"
-                     aria-hidden="true"
-                     focusable="false">
-                    <circle cx="12" cy="12" r="8.5"></circle>
-                    <path d="M3.8 12h16.4M12 3.5c2.3 2.4 3.4 5.2 3.4 8.5S14.3 18.1 12 20.5M12 3.5C9.7 5.9 8.6 8.7 8.6 12s1.1 6.1 3.4 8.5">
-                    </path>
-                </svg>
-                <span class="header-language-code" aria-hidden="true">{{ LANGUAGE_CODE|upper }}</span>
-                <select class="header-language-select"
-                        name="language"
-                        onchange="this.form.submit()">
-                    {% get_available_languages as LANGUAGES %}
-                    {% get_language_info_list for LANGUAGES as languages %}
-                    {% for language in languages %}
-                        <option value="{{ language.code }}"
-                                {% if language.code == LANGUAGE_CODE %} selected{% endif %}>
-                            {{ language.name_local|capfirst }}
-                        </option>
-                    {% endfor %}
-                </select>
-                <span class="header-language-chevron" aria-hidden="true"></span>
-            </span>
-        </form>
-    {% endif %}
-    <nav class="header-account" aria-label="{% translate 'Account' %}">
-        {% if user.is_authenticated %}
-            <details class="header-profile">
-                <summary class="header-profile-trigger header-tooltip"
-                         data-profile-reward-target
-                         data-tooltip="{% translate 'Open profile menu' %}">
-                    <span class="header-user">
-                        <span class="header-username">{{ user.username }}</span>
-                        {% if user.avatar_image %}
-                            <img class="header-user-avatar"
-                                 src="{{ user.avatar_image.url }}"
-                                 alt="{% translate 'Avatar of user' %} {{ user.username }}">
-                        {% else %}
-                            <img class="header-user-avatar"
-                                 src="{% static 'images/default_profile_img.png' %}"
-                                 alt="{% translate 'Avatar of user' %} {{ user.username }}">
-                        {% endif %}
+        <div class="search-bar-wrapper" id="header-search" data-header-search>
+            <form class="search-bar-form"
+                  action="{% url 'movies:search_query' %}"
+                  method="get"
+                  data-header-search-form>
+                {% csrf_token %}
+                <div class="search-bar-container">
+                    <span class="search-bar-leading-icon" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             viewBox="0 0 24 24"
+                             focusable="false">
+                            <path d="M11 2a9 9 0 1 0 5.641 16.01.966.966 0 0 0 .152.197l3.5 3.5a1 1 0 1 0 1.414-1.414l-3.5-3.5a1 1 0 0 0-.197-.153A8.96 8.96 0 0 0 20 11a9 9 0 0 0-9-9Zm0 2a7 7 0 1 1 0 14 7 7 0 0 1 0-14Z">
+                            </path>
+                        </svg>
                     </span>
-                    <span class="header-profile-chevron" aria-hidden="true"></span>
-                </summary>
-                <div class="header-profile-menu">
-                    <span class="header-profile-label">{% translate "Profile" %}</span>
-                    <span class="header-profile-name">{{ user.username }}</span>
-                    <div class="header-profile-stats">
-                        <div class="header-profile-stat header-tooltip"
-                             data-tooltip="{% translate 'Your current level' %}">
-                            <span class="header-profile-stat-name">{% translate "Level" %}</span>
-                            <strong class="header-profile-stat-value">{{ user.user_lvl }}</strong>
-                        </div>
-                        <div class="header-profile-stat header-tooltip"
-                             data-frames-balance
-                             data-tooltip="{% translate 'Frames are your experience points' %}">
-                            <span class="header-profile-stat-name">{% translate "Frames" %}</span>
-                            <strong class="header-profile-stat-value">{{ user.user_frames|intcomma }}</strong>
-                        </div>
-                    </div>
-                    <div class="header-profile-actions">
-                        <a class="header-open-profile-page"
-                           href="{% url 'accounts:profile' user.username %}">
-                            <svg class="header-profile-action-icon"
-                                 viewBox="0 0 24 24"
-                                 aria-hidden="true">
-                                <circle cx="12" cy="8" r="4"></circle>
-                                <path d="M5 20c.8-4 3.2-6 7-6s6.2 2 7 6"></path>
-                            </svg>
-                            <span>{% translate "Open profile" %}</span>
-                        </a>
-                        <hr class="short-hr">
-                        <form class="header-language-form"
-                              action="{% url 'set_language' %}"
-                              method="post">
-                            {% csrf_token %}
-                            <input name="next" type="hidden" value="{{ redirect_to }}">
-                            {% get_current_language as LANGUAGE_CODE %}
-                            <span class="header-language-control">
-                                <svg class="header-language-icon"
-                                     viewBox="0 0 24 24"
-                                     aria-hidden="true"
-                                     focusable="false">
+                    <input class="search-bar-input"
+                           aria-label="{% translate 'Search' %}"
+                           type="search"
+                           name="query"
+                           placeholder="{% translate 'Movies, people, reviews...' %}"
+                           autocomplete="off"
+                           aria-expanded="false"
+                           aria-controls="header-search-suggestions"
+                           data-header-search-input>
+                    <button class="search-bar-clear"
+                            type="button"
+                            aria-label="{% translate 'Clear search' %}"
+                            data-header-search-clear
+                            hidden>×</button>
+                    <button class="search-bar-submit"
+                            type="submit"
+                            aria-label="{% translate 'Search' %}">{% translate "Find" %}</button>
+                </div>
+            </form>
+            <div class="searchBoxSuggetions"
+                 id="header-search-suggestions"
+                 role="listbox"
+                 data-header-search-suggestions
+                 hidden>
+                {# Both context values are expected to be iterables of search query strings. #}
+                {% if search_history %}
+                    <p class="search-suggestions-title">{% translate "Search history" %}</p>
+                    <div class="search-suggestions-list">
+                        {% for search_query in search_history %}
+                            <button class="search-suggestion-card"
+                                    type="button"
+                                    role="option"
+                                    data-search-value="{{ search_query }}">
+                                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                                     <circle cx="12" cy="12" r="8.5"></circle>
-                                    <path d="M3.8 12h16.4M12 3.5c2.3 2.4 3.4 5.2 3.4 8.5S14.3 18.1 12 20.5M12 3.5C9.7 5.9 8.6 8.7 8.6 12s1.1 6.1 3.4 8.5">
-                                    </path>
+                                    <path d="M12 7.5V12l3 2"></path>
                                 </svg>
-                                <span class="header-language-code" aria-hidden="true">{{ LANGUAGE_CODE|upper }}</span>
-                                <select class="header-language-select"
-                                        name="language"
-                                        onchange="this.form.submit()">
-                                    {% get_available_languages as LANGUAGES %}
-                                    {% get_language_info_list for LANGUAGES as languages %}
-                                    {% for language in languages %}
-                                        <option value="{{ language.code }}"
-                                                {% if language.code == LANGUAGE_CODE %} selected{% endif %}>
-                                            {{ language.name_local|capfirst }}
-                                        </option>
-                                    {% endfor %}
-                                </select>
-                                <span class="header-language-chevron" aria-hidden="true"></span>
-                            </span>
-                        </form>
-                        <button class="header-theme-toggle"
-                                type="button"
-                                data-theme-toggle
-                                data-light-label="{% translate 'Light theme' %}"
-                                data-dark-label="{% translate 'Dark theme' %}">
-                            <svg class="header-profile-action-icon theme-icon-sun"
-                                 viewBox="0 0 24 24"
-                                 aria-hidden="true">
-                                <circle cx="12" cy="12" r="3.5"></circle>
-                                <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path>
-                            </svg>
-                            <svg class="header-profile-action-icon theme-icon-moon"
-                                 viewBox="0 0 24 24"
-                                 aria-hidden="true">
-                                <path d="M20 15.2A8.5 8.5 0 0 1 8.8 4a8.5 8.5 0 1 0 11.2 11.2Z"></path>
-                            </svg>
-                            <span data-theme-toggle-label>{% translate "Light theme" %}</span>
+                                <span>{{ search_query }}</span>
+                            </button>
+                        {% endfor %}
+                    </div>
+                {% elif popular_searches %}
+                    <p class="search-suggestions-title">{% translate "Popular searches" %}</p>
+                    <div class="search-suggestions-list">
+                        {% for search_query in popular_searches %}
+                            <button class="search-suggestion-card"
+                                    type="button"
+                                    role="option"
+                                    data-search-value="{{ search_query }}">
+                                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                    <path d="M5 16.5 10 11l3 3 6-7"></path>
+                                    <path d="M14.5 7H19v4.5"></path>
+                                </svg>
+                                <span>{{ search_query }}</span>
+                            </button>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="search-suggestions-empty">{% translate "No search suggestions yet" %}</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="header-controls">
+            <button class="header-icon-button header-search-toggle" type="button" data-header-search-toggle
+                    aria-label="{% translate 'Search' %}" aria-expanded="false" aria-controls="header-search">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 4 4"></path></svg>
+            </button>
+            <nav class="header-account" aria-label="{% translate 'Account' %}">
+                {% if user.is_authenticated %}
+                    <div class="header-profile">
+                        <button class="header-profile-trigger" type="button" data-profile-reward-target
+                                aria-label="{% translate 'Open profile menu' %}" aria-expanded="false" aria-controls="header-profile-panel">
+                            <span class="header-username">{{ user.username }}</span>
+                            <img class="header-user-avatar" src="{% if user.avatar_image %}{{ user.avatar_image.url }}{% else %}{% static 'images/default_profile_img.png' %}{% endif %}"
+                                 data-fallback-src="{% static 'images/default_profile_img.png' %}"
+                                 onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;" alt="">
+                            <span class="header-profile-chevron" aria-hidden="true"></span>
                         </button>
-                        <a class="about-site-button" href="{% url 'core:about' %}">{% translate "About" %}</a>
-                        <form class="header-logout-form" action="{% url 'logout' %}" method="post">
-                            {% csrf_token %}
-                            <button class="header-logout-button" type="submit">
+                    <div class="header-profile-menu" id="header-profile-panel" hidden>
+                        <span class="header-profile-label">{% translate "Profile" %}</span>
+                        <span class="header-profile-name">{{ user.username }}</span>
+                        <div class="header-profile-stats">
+                            <div class="header-profile-stat header-tooltip"
+                                 data-tooltip="{% translate 'Your current level' %}">
+                                <span class="header-profile-stat-name">{% translate "Level" %}</span>
+                                <strong class="header-profile-stat-value">{{ user.user_lvl }}</strong>
+                            </div>
+                            <div class="header-profile-stat header-tooltip"
+                                 data-frames-balance
+                                 data-tooltip="{% translate 'Frames are your experience points' %}">
+                                <span class="header-profile-stat-name">{% translate "Frames" %}</span>
+                                <strong class="header-profile-stat-value">{{ user.user_frames|intcomma }}</strong>
+                            </div>
+                        </div>
+                        <div class="header-profile-actions">
+                            <a class="header-open-profile-page"
+                               href="{% url 'accounts:profile' user.username %}">
                                 <svg class="header-profile-action-icon"
                                      viewBox="0 0 24 24"
                                      aria-hidden="true">
-                                    <path d="M10 5H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4"></path>
-                                    <path d="m15 8 4 4-4 4"></path>
-                                    <path d="M9 12h10"></path>
+                                    <circle cx="12" cy="8" r="4"></circle>
+                                    <path d="M5 20c.8-4 3.2-6 7-6s6.2 2 7 6"></path>
                                 </svg>
-                                <span>{% translate "Log out" %}</span>
-                            </button>
-                        </form>
+                                <span>{% translate "Open profile" %}</span>
+                            </a>
+                            {% include "_header_language.html" %}
+                            {% include "_theme_toggle.html" %}
+                            <a class="about-site-button" href="{% url 'core:about' %}">{% translate "About" %}</a>
+                            <form class="header-logout-form" action="{% url 'logout' %}" method="post">
+                                {% csrf_token %}
+                                <button class="header-logout-button" type="submit">
+                                    <svg class="header-profile-action-icon"
+                                         viewBox="0 0 24 24"
+                                         aria-hidden="true">
+                                        <path d="M10 5H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4"></path>
+                                        <path d="m15 8 4 4-4 4"></path>
+                                        <path d="M9 12h10"></path>
+                                    </svg>
+                                    <span>{% translate "Log out" %}</span>
+                                </button>
+                            </form>
+                        </div>
                     </div>
-                </div>
-            </details>
-        {% else %}
-            <a class="header-auth-link header-login-link" href="{% url 'login' %}">{% translate "Log in" %}</a>
-            <a class="header-auth-link header-register-link"
-               href="{% url 'accounts:register' %}">{% translate "Sign up" %}</a>
-        {% endif %}
-    </nav>
+
+                    </div>
+                {% else %}
+                    <a class="header-auth-link header-login-link" href="{% url 'login' %}">{% translate "Log in" %}</a>
+                {% endif %}
+            </nav>
+            <button class="header-icon-button header-navigation-toggle" type="button" data-header-navigation-toggle
+                    aria-label="{% translate 'Navigation' %}" aria-expanded="false" aria-controls="header-navigation">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+        </div>
+    </div>
 </header>

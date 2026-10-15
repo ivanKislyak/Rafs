@@ -17,39 +17,12 @@
     <link rel="stylesheet" href="{% static 'movies/css/catalog.css' %}">
 {% endblock %}
 {% block content %}
-    <section class="catalog-filter-panel">
-        <div class="catalog-filter-header">
-            <div>
-                <p class="catalog-filter-kicker">{% translate "Search the catalog" %}</p>
-                <h1>{% translate "Find a movie" %}</h1>
-            </div>
-            <p class="catalog-results-count">
-                {% translate "Found:" %} <strong>{{ page_obj.paginator.count }}</strong>
-            </p>
-        </div>
-        <form class="movie-filter" method="get" novalidate>
-            {% if filter_form.non_field_errors %}
-                <div class="filter-errors">{{ filter_form.non_field_errors }}</div>
-            {% endif %}
-            <div class="filter-grid">
-                {% for field in filter_form %}
-                    <div class="filter-field">
-                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                        {{ field }}
-                        {% if field.errors %}
-                            <div class="filter-errors">{{ field.errors }}</div>
-                        {% endif %}
-                    </div>
-                {% endfor %}
-            </div>
-            <div class="filter-actions">
-                <button class="filter-submit" type="submit">{% translate "Find" %}</button>
-                <a class="filter-reset" href="{% url 'movies:catalog' %}">{% translate "Reset" %}</a>
-            </div>
-        </form>
-    </section>
-    <hr>
-    <div class="main-catalog-page-with-movie-cards"
+    <main class="page-shell catalog-page">
+    <header class="page-heading">
+        <div><p class="page-kicker">RAFS</p><h1>{% translate "Catalog" %}</h1></div>
+        <p class="catalog-results-count">{% translate "Found:" %} <strong>{{ page_obj.paginator.count }}</strong></p>
+    </header>
+    <div class="main-catalog-page-with-movie-cards movie-grid"
         data-catalog-list>
         {% include "movies/_catalog_page.html" %}
     </div>
@@ -69,6 +42,7 @@
     </p>
 
     <div data-catalog-sentinel aria-hidden="true" style="height: 1px;"></div>
+    </main>
     <script defer>
         const reviewsTab = document.querySelector(".catalog-container");
 

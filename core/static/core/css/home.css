@@ -1,17 +1,7 @@
-/* Home page. */
-
-.movie-info {
-  color: var(--color-text);
-}
-
-.the-best-movies-label {
-  padding: 10px;
-  color: var(--color-text);
-}
-
-.user-avatar {
-  width: 10%;
-  height: auto;
-  aspect-ratio: 1 / 1;
-  border-radius: 100%;
+/* The home page uses the same poster grid and heading as the catalog. */
+.home-page .empty-msg {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--color-text-muted);
+  line-height: 1.6;
 }

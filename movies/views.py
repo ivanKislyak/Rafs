@@ -233,11 +233,10 @@ def search_query(request):
     if user_argument:
         query = SearchQuery(user_argument, config='english')
         search_results = (
-            GlobalSearchIndex.objects.annotate(
-                rank=SearchRank('search_vector', query)
-            )
+            GlobalSearchIndex.objects
             .filter(search_vector=query)
-            .order_by('-rank')
+            .annotate(rank=SearchRank(F("search_vector"), query))
+            .order_by('-rank', "pk")
         )
     
     return render(request, 'movies/search_results.html', {

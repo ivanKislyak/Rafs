@@ -2,7 +2,7 @@
 {% load static %}
 {% load i18n %}
 {% block title %}
-    {% translate "Search Wikidata — RAFS" %}
+    {% translate "Search Wikidata – RAFS" %}
 {% endblock %}
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'movies/css/wikidata-search.css' %}">
@@ -74,7 +74,7 @@
                         <span class="wd-search-state-mark" aria-hidden="true">!</span>
                         <div>
                             <h2>{% translate "Wikidata is temporarily unavailable" %}</h2>
-                            <p>{% translate "Wait a moment and try again — your search has been preserved." %}</p>
+                            <p>{% translate "Wait a moment and try again – your search has been preserved." %}</p>
                         </div>
                     </div>
                 {% elif search_result %}

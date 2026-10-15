@@ -72,7 +72,8 @@ class ProfilePageTests(TestCase):
 
         self.assertContains(response, self.owner.email)
         self.assertContains(response, "Change avatar")
-        self.assertContains(response, "Apply for moderation")
+        self.assertNotContains(response, "Apply for moderation")
+        self.assertNotContains(response, "View applications")
         self.assertTrue(response.context["is_owner"])
 
     def test_profile_statistics_are_correct(self):

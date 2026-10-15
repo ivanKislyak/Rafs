@@ -1,7 +1,6 @@
 {% load static %}
 {% load i18n %}
 {% firstof movie.wikidata_name movie.name as movie_title %}
-{% firstof movie.wikidata_description movie.description as movie_description %}
 <article class="movie-card">
     <a class="a-block" href="{% url 'movies:detail' movie.pk %}">
         {% if movie.cover and movie.image_exists %}
@@ -25,18 +24,14 @@
                  loading="lazy" />
         {% endif %}
         <div class="movie-info">
-            <h2>{{ movie_title }}</h2>
-            <p>{{ movie.year }}</p>
-            {% if movie.avg_rating %}
-                <p>{% translate "RAFS rating:" %} {{ movie.avg_rating }}</p>
-                {% if movie.avg_rating >= 8 %}
-                    <p>{% translate "RECOMMENDED!" %}</p>
+            <h2 title="{{ movie_title }}">{{ movie_title }}</h2>
+            <div class="movie-card-meta">
+                {% if movie.year %}<span>{{ movie.year }}</span>{% endif %}
+                {% if movie.avg_rating %}
+                    <span class="movie-card-rating"><span class="visually-hidden">{% translate "RAFS rating:" %} </span>{{ movie.avg_rating }}<span class="movie-card-rating-scale"> / 10</span></span>
+                {% else %}
+                    <span>{% translate "Not rated yet" %}</span>
                 {% endif %}
-            {% else %}
-                <p>{% translate "Not rated yet" %}</p>
-            {% endif %}
-            <div class="movie-description">
-                <p>{{ movie_description|truncatewords:15|linebreaksbr }}</p>
             </div>
         </div>
     </a>

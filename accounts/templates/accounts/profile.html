@@ -11,26 +11,32 @@
         <section class="profile-hero" aria-labelledby="profile-name">
             <div class="profile-avatar-column">
                 {% if profile_user.avatar_image %}
-                    <img class="profile-avatar"
+                    <img class="profile-avatar" data-fallback-src="{% static 'images/default_profile_img.png' %}" onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
                          src="{{ profile_user.avatar_image.url }}"
                          alt="{% translate 'Avatar of user' %} {{ profile_user.username }}">
                 {% else %}
-                    <img class="profile-avatar"
+                    <img class="profile-avatar" data-fallback-src="{% static 'images/default_profile_img.png' %}" onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
                          src="{% static 'images/default_profile_img.png' %}"
                          alt="{% translate 'Avatar of user' %} {{ profile_user.username }}">
                 {% endif %}
                 {% if is_owner %}
-                    <details class="profile-avatar-editor">
-                        <summary>{% translate "Change avatar" %}</summary>
+                    <details class="profile-avatar-editor" data-avatar-editor>
+                        <summary aria-controls="profile-avatar-panel" aria-expanded="false">{% translate "Change avatar" %}</summary>
                         <form action="{% url 'accounts:update-avatar' %}"
+                              id="profile-avatar-panel"
+                              aria-labelledby="profile-avatar-editor-title"
                               method="post"
                               enctype="multipart/form-data">
                             {% csrf_token %}
-                            <label class="profile-file-label"
-                                   for="{{ avatar_form.avatar_image.id_for_label }}">
+                            <p class="profile-file-label" id="profile-avatar-editor-title">
                                 {% translate "Choose an image" %}
-                            </label>
-                            {{ avatar_form.avatar_image }}
+                            </p>
+                            <div hidden>{{ avatar_form.avatar_image }}</div>
+                            <button class="profile-button" type="button" data-avatar-choose
+                                    aria-describedby="profile-avatar-filename">{% translate "Choose file" %}</button>
+                            <p class="profile-avatar-filename" id="profile-avatar-filename"
+                               data-avatar-filename data-empty="{% translate 'No file selected' %}"
+                               role="status" aria-live="polite" aria-atomic="true">{% translate "No file selected" %}</p>
                             <p class="profile-form-hint">{% translate "The image will be resized and converted to PNG. Maximum size: 12 MB." %}</p>
                             <div class="profile-avatar-actions">
                                 <button class="profile-button profile-button--primary" type="submit">{% translate "Upload" %}</button>
@@ -41,6 +47,8 @@
                                             value="delete"
                                             formnovalidate>{% translate "Remove" %}</button>
                                 {% endif %}
+                                <button class="profile-button profile-button--quiet" type="button"
+                                        data-avatar-cancel>{% translate "Cancel" %}</button>
                             </div>
                         </form>
                     </details>
@@ -82,20 +90,6 @@
                         </div>
                     {% endif %}
                 </dl>
-                {% if is_owner %}
-                    <div class="profile-owner-links">
-                        <a class="profile-button profile-button--secondary"
-                           href="{% url 'accounts:moderation-application' %}">
-                            {% translate "Apply for moderation" %}
-                        </a>
-                        {% if user.is_superuser %}
-                            <a class="profile-button profile-button--quiet"
-                               href="{% url 'accounts:moderation-applications-admin' %}">
-                                {% translate "View applications" %}
-                            </a>
-                        {% endif %}
-                    </div>
-                {% endif %}
             </div>
         </section>
         <section class="profile-section" aria-labelledby="profile-activity-title">
@@ -248,9 +242,6 @@
                 </div>
             {% else %}
                 <div class="profile-achievement-empty">
-                    <div class="profile-achievement-placeholder" aria-hidden="true">
-                        <span></span><span></span><span></span><span></span><span></span><span></span>
-                    </div>
                     <div>
                         <strong>{% translate "No achievements yet" %}</strong>
                         <p>{% translate "They will appear here as the user participates in RAFS." %}</p>
@@ -261,5 +252,6 @@
     </main>
 {% endblock %}
 {% block extra_js %}
+    <script src="{% static 'accounts/js/profile-avatar.js' %}" defer></script>
     <script src="{% static 'accounts/js/profile-library.js' %}" defer></script>
 {% endblock %}

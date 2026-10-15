@@ -41,7 +41,7 @@ class CatalogRatingFilterTests(TestCase):
 
     def test_min_rating_uses_review_average(self):
         response = self.client.get(reverse("movies:catalog"), {"min_rating": 8})
-        movies = list(response.context["movie"].values_list("name", flat=True))
+        movies = [movie.name for movie in response.context["page_obj"]]
 
         self.assertIn("High review rating", movies)
         self.assertNotIn("Low review rating", movies)

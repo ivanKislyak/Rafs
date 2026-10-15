@@ -40,6 +40,7 @@ watchStatusButtons.forEach((btn) => {
 
       buttons.forEach((button) => {
         button.classList.toggle("is-active", button.dataset.value === data.status);
+        button.setAttribute("aria-pressed", String(button.dataset.value === data.status));
       });
     } catch (error) {
       console.error(error);

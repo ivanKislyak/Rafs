@@ -13,15 +13,16 @@
     {% translate "RAFS is a service for rating movies based on several criteria. View audience ratings, write reviews, and find movies that suit your taste." %}
 {% endblock %}
 {% block content %}
-    <nav class="movie-info">
-        <h1 class="the-best-movies-label">{% translate "Top movies" %}</h1>
-    </nav>
-    <hr />
-    {% for movie in top_movies %}
-        {% include 'movies/_movie_card.html' with movie=movie %}
-    {% empty %}
-        <div class="empty-msg">
-            <p>{% translate "There are no movies. You might want to refresh the catalog later." %}</p>
+    <main class="page-shell home-page">
+        <header class="page-heading">
+            <div><p class="page-kicker">RAFS</p><h1>{% translate "Top movies" %}</h1></div>
+        </header>
+        <div class="movie-grid">
+            {% for movie in top_movies %}
+                {% include 'movies/_movie_card.html' with movie=movie %}
+            {% empty %}
+                <p class="empty-msg">{% translate "There are no movies. You might want to refresh the catalog later." %}</p>
+            {% endfor %}
         </div>
-    {% endfor %}
+    </main>
 {% endblock %}

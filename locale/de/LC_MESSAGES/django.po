@@ -847,7 +847,7 @@ msgid "Check your search"
 msgstr "Suche überprüfen"
 
 #: .\movies\templates\movies\wd_search_form.html:5
-msgid "Search Wikidata — RAFS"
+msgid "Search Wikidata – RAFS"
 msgstr "Wikidata durchsuchen – RAFS"
 
 #: .\movies\templates\movies\wd_search_form.html:13
@@ -904,7 +904,7 @@ msgid "Wikidata is temporarily unavailable"
 msgstr "Wikidata ist vorübergehend nicht verfügbar"
 
 #: .\movies\templates\movies\wd_search_form.html:77
-msgid "Wait a moment and try again — your search has been preserved."
+msgid "Wait a moment and try again – your search has been preserved."
 msgstr "Warte einen Moment und versuche es erneut – deine Suche wurde gespeichert."
 
 #: .\movies\templates\movies\wd_search_form.html:84
@@ -1188,3 +1188,15 @@ msgstr "Änderungen der Regeln"
 #: core/templates/core/community_guidelines.html
 msgid "The current version of the community guidelines is available on this page."
 msgstr "Die aktuelle Fassung der Community-Richtlinien ist auf dieser Seite verfügbar."
+
+#: templates/_header_language.html
+msgid "Language"
+msgstr "Sprache"
+
+#: accounts/templates/accounts/profile.html
+msgid "Choose file"
+msgstr "Datei auswählen"
+
+#: accounts/templates/accounts/profile.html
+msgid "No file selected"
+msgstr "Keine Datei ausgewählt"

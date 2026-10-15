@@ -62,7 +62,7 @@
                     </div>
                     <div class="review-rating-controls">
                         {{ field }}
-                        <output class="review-rating-value" for="{{ field.id_for_label }}">—</output>
+                        <output class="review-rating-value" for="{{ field.id_for_label }}">–</output>
                     </div>
                     {% if field.errors %}
                         <div class="review-form-errors">{{ field.errors }}</div>
@@ -176,7 +176,7 @@
               syncRangeView();
             } else {
               ratingOutput.value = "";
-              ratingOutput.textContent = "—";
+              ratingOutput.textContent = "–";
             }
           };
 
