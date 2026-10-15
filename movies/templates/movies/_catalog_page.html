@@ -1,0 +1,3 @@
+{% for movie in page_obj %}
+    {% include "movies/_movie_card.html" with movie=movie %}
+{% endfor %}

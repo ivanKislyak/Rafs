@@ -67,8 +67,33 @@ def catalog(request):
 
         if year_to is not None:
             all_movies = all_movies.filter(year__lte=year_to)
+        
+    page_obj = Paginator(all_movies, 25).get_page(request.GET.get("page"))
+    
+    next_page = (
+        page_obj.next_page_number()
+        if page_obj.has_next()
+        else None
+    )
+    
+    context = {
+        "page_obj": page_obj,
+        "filter_form": filter_form,
+        "next_page": next_page,
+    }
 
-    return render(request, "movies/catalog.html", context={"movie": all_movies, "filter_form": filter_form})
+    if request.GET.get("format") == "json":
+        html = render_to_string(
+            "movies/_catalog_page.html",
+            context,
+            request=request,
+        )
+        return JsonResponse({
+            "html": html,
+            "next_page": next_page,
+        })
+
+    return render(request, "movies/catalog.html", context)
 
 def movie_detail(request, movie_id):
     movie = get_object_or_404(Movie, pk=movie_id)

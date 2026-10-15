@@ -24,7 +24,7 @@
                 <h1>{% translate "Find a movie" %}</h1>
             </div>
             <p class="catalog-results-count">
-                {% translate "Found:" %} <strong>{{ movie|length }}</strong>
+                {% translate "Found:" %} <strong>{{ page_obj.paginator.count }}</strong>
             </p>
         </div>
         <form class="movie-filter" method="get" novalidate>
@@ -49,15 +49,26 @@
         </form>
     </section>
     <hr>
-    <div class="main-catalog-page-with-movie-cards">
-        {% for movie in movie %}
-            {% include 'movies/_movie_card.html' with movie=movie %}
-        {% empty %}
-            <div class="abot-found-movies">
-                <p>{% translate "There are no movies. You might want to refresh the catalog later" %}</p>
-            </div>
-        {% endfor %}
+    <div class="main-catalog-page-with-movie-cards"
+        data-catalog-list>
+        {% include "movies/_catalog_page.html" %}
     </div>
+
+    <button type="button"
+            data-catalog-more
+            data-next-page="{{ next_page|default_if_none:'' }}"
+            {% if not next_page %}hidden{% endif %}>
+        {% translate "Load more" %}
+    </button>
+
+    <p data-catalog-status
+        role="status"
+        aria-live="polite"
+        data-loading="{% translate 'Loading...' %}"
+        data-error="{% translate 'Something went wrong. Please try again.' %}">
+    </p>
+
+    <div data-catalog-sentinel aria-hidden="true" style="height: 1px;"></div>
     <script defer>
         const reviewsTab = document.querySelector(".catalog-container");
 
@@ -65,4 +76,7 @@
         reviewsTab.classList.add("activated-category");
     }
     </script>
+{% endblock %}
+{% block extra_js %}
+    <script src="{% static 'movies/js/catalog.js' %}" defer></script>
 {% endblock %}
