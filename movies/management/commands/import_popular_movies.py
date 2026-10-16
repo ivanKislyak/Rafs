@@ -51,6 +51,10 @@ RELATIONS = {
 REGIONS = {"en": "US", "ru": "RU", "uk": "UA", "kk": "KZ", "es": "ES", "de": "DE"}
 QID = re.compile(r"Q[1-9]\d*\Z")
 IMDB = re.compile(r"tt\d+\Z")
+MEDIA_FIELDS = {
+    "movie": ("title", "release_date", "P4947"),
+    "tv": ("name", "first_air_date", "P4983"),
+}
 
 
 def clean(value):
@@ -337,8 +341,9 @@ class API:
                 result[qid] = entity
         return result
 
-    def resolve(self, details):
-        """Batch exact-ID lookup for movies without Wikidata IDs in TMDB."""
+    def resolve(self, details, media_type="movie"):
+        """Batch exact-ID lookup; movie remains the existing command's default."""
+        tmdb_property = MEDIA_FIELDS[media_type][2]
         result, unresolved = {}, []
         for item in details:
             ext = item.get("external_ids", {})
@@ -358,7 +363,7 @@ class API:
         tmdb_literals = " ".join(json.dumps(str(x["id"])) for x in unresolved)
         imdb_values = {clean(x.get("external_ids", {}).get("imdb_id") or x.get("imdb_id")) for x in unresolved}
         imdb_literals = " ".join(json.dumps(x) for x in sorted(imdb_values) if IMDB.fullmatch(x))
-        branches = [f'{{ VALUES ?identifier {{ {tmdb_literals} }} ?item wdt:P4947 ?identifier . BIND("tmdb" AS ?source) }}']
+        branches = [f'{{ VALUES ?identifier {{ {tmdb_literals} }} ?item wdt:{tmdb_property} ?identifier . BIND("tmdb" AS ?source) }}']
         if imdb_literals:
             branches.append(f'{{ VALUES ?identifier {{ {imdb_literals} }} ?item wdt:P345 ?identifier . BIND("imdb" AS ?source) }}')
         query = ('PREFIX wdt: <http://www.wikidata.org/prop/direct/> '
@@ -405,20 +410,20 @@ def fill_translations(obj, translations):
     return changed
 
 
-def localized_movie(item, entity, languages):
+def localized_movie(item, entity, languages, title_field="title"):
     variants = defaultdict(list)
     for row in item.get("translations", {}).get("translations", []):
         variants[row.get("iso_639_1")].append(row)
     result = {}
     for language in languages:
         options = sorted(variants[language], key=lambda x: x.get("iso_3166_1") != REGIONS.get(language))
-        title = next((clean(x.get("data", {}).get("title")) for x in options if clean(x.get("data", {}).get("title"))), "")
+        title = next((clean(x.get("data", {}).get(title_field)) for x in options if clean(x.get("data", {}).get(title_field))), "")
         overview = next((clean(x.get("data", {}).get("overview")) for x in options if clean(x.get("data", {}).get("overview"))), "")
         label = clean(entity.get("labels", {}).get(language, {}).get("value"))
         description = clean(entity.get("descriptions", {}).get(language, {}).get("value"))
         if language == "en":
             overview = overview or clean(item.get("overview"))
-            title = title or label or clean(item.get("title"))
+            title = title or label or clean(item.get(title_field))
         values = {"wikidata_name": title or label, "wikidata_description": overview or description}
         if any(values.values()):
             result[language] = values
@@ -467,7 +472,13 @@ def relation_data(entity, related_entities, languages):
     return result
 
 
-def import_one(item, original_qid, entity, related_entities, languages, poster_url, dry_run=False):
+def import_one(item, original_qid, entity, related_entities, languages, poster_url, dry_run=False,
+               *, media_type="movie", confirmed_type=None):
+    title_field, date_field, tmdb_property = MEDIA_FIELDS[media_type]
+    if media_type == "tv" and not confirmed_type:
+        raise ImportIssue("Для TV необходим подтверждённый тип произведения; film по умолчанию запрещён.")
+    if confirmed_type and confirmed_type not in claim_qids(entity, ("P31",)):
+        raise ImportIssue("Тип произведения не подтверждён P31 Wikidata.")
     qid = clean(entity.get("id"))
     if not QID.fullmatch(qid) or "missing" in entity:
         raise ImportIssue("Wikidata entity отсутствует.")
@@ -479,23 +490,24 @@ def import_one(item, original_qid, entity, related_entities, languages, poster_u
         raise ImportIssue("TMDB и Wikidata сообщают разные IMDb ID.")
     if not imdb and len(wd_imdbs) == 1:
         imdb = next(iter(wd_imdbs))
-    tmdb_ids = {clean(x) for x in claim_values(entity, "P4947")}
+    tmdb_ids = {clean(x) for x in claim_values(entity, tmdb_property)}
     if tmdb_ids and str(item["id"]) not in tmdb_ids:
         raise ImportIssue("TMDB и Wikidata сообщают разные TMDB ID.")
-    release = clean(item.get("release_date"))
+    release = clean(item.get(date_field))
     year = int(release[:4]) if re.match(r"^[1-9]\d{3}-\d{2}-\d{2}$", release) else None
     if year is None:
         years = []
-        for value in claim_values(entity, "P577"):
+        date_properties = ("P580", "P577") if media_type == "tv" else ("P577",)
+        for value in (value for prop in date_properties for value in claim_values(entity, prop)):
             time_value = clean(value.get("time")) if isinstance(value, dict) else ""
             match = re.match(r"^\+(\d{4})-", time_value)
             if match and 0 < int(match[1]) < 10000:
                 years.append(int(match[1]))
         year = min(years) if years else None
-    texts = localized_movie(item, entity, languages)
+    texts = localized_movie(item, entity, languages, title_field)
     names = {v["wikidata_name"] for v in texts.values() if v["wikidata_name"]}
     names.update(clean(value.get("value")) for value in entity.get("labels", {}).values())
-    names.add(clean(item.get("title")))
+    names.add(clean(item.get(title_field)))
     obj = find_existing(qid, original_qid, imdb, {x for x in names if x}, year)
     created = obj is None
     if dry_run:
@@ -507,7 +519,7 @@ def import_one(item, original_qid, entity, related_entities, languages, poster_u
         if obj is None:
             obj = Movie.objects.create(
                 wikidata_id=qid, imdb_id=imdb or None, year=year,
-                name=limit_text(Movie, "name", texts.get("en", {}).get("wikidata_name") or item.get("title") or qid),
+                name=limit_text(Movie, "name", texts.get("en", {}).get("wikidata_name") or item.get(title_field) or qid),
                 description=clean(texts.get("en", {}).get("wikidata_description")),
                 cover_url=poster_url,
             )
@@ -523,7 +535,7 @@ def import_one(item, original_qid, entity, related_entities, languages, poster_u
             fields.append("cover_url")
         if obj.type_of_work_id is None:
             types = claim_qids(entity, ("P31",))
-            type_qid = "Q11424" if "Q11424" in types else next(iter(types), "Q11424")
+            type_qid = confirmed_type or ("Q11424" if "Q11424" in types else next(iter(types), "Q11424"))
             type_obj, _ = TypeOfWork.objects.get_or_create(wikidata_id=type_qid)
             type_data = related_entities.get(type_qid, {})
             fill_translations(type_obj, {lang: {"name": type_data.get("labels", {}).get(lang, {}).get("value", "")}
