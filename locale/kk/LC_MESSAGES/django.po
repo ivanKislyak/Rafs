@@ -1200,3 +1200,23 @@ msgstr "Файл таңдау"
 #: accounts/templates/accounts/profile.html
 msgid "No file selected"
 msgstr "Файл таңдалмады"
+
+#: templates/base.html core/templates/core/home.html core/templates/core/about_site.html
+msgid "RAFS is a site for ratings and reviews of films, series and anime."
+msgstr "RAFS – фильмдерге, сериалдарға және анимеге баға беріп, рецензия жазуға арналған сайт."
+
+#: core/templates/core/home.html
+msgid "Explore films, series and anime on RAFS. Read viewer reviews, compare ratings and share your own impressions."
+msgstr "RAFS сайтынан фильмдер, сериалдар мен аниме табыңыз. Көрермендердің рецензияларын оқып, бағаларды салыстырыңыз және өз әсеріңізбен бөлісіңіз."
+
+#: core/templates/core/about_site.html
+msgid "Learn about RAFS, a community for honest ratings and reviews of films, series and anime, and the project's plans."
+msgstr "Фильмдерге, сериалдарға және анимеге шынайы баға беріп, рецензия жазатын RAFS қауымдастығы және жобаның жоспарлары туралы біліңіз."
+
+#: movies/templates/movies/catalog.html
+msgid "Browse films, series and anime in the RAFS catalog. Compare viewer ratings and read reviews."
+msgstr "RAFS каталогынан фильмдер, сериалдар мен аниме таңдаңыз. Көрермендердің бағаларын салыстырып, рецензияларын оқыңыз."
+
+#: movies/templates/movies/reviews.html
+msgid "Read viewer reviews of films, series and anime on RAFS. Explore ratings, replies and discussions."
+msgstr "RAFS сайтында көрермендердің фильмдерге, сериалдарға және анимеге жазған рецензияларын оқыңыз. Бағалармен, жауаптармен және талқылаулармен танысыңыз."

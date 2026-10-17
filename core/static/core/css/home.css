@@ -1,4 +1,11 @@
 /* The home page uses the same poster grid and heading as the catalog. */
+.home-description {
+  max-width: 65ch;
+  margin: 0 0 1.5rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
 .home-page .empty-msg {
   grid-column: 1 / -1;
   margin: 0;

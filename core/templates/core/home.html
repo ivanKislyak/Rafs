@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% load i18n %}
+{% load seo %}
 {% block title %}
     {% translate "RAFS – Movie ratings and reviews" %}
 {% endblock %}
@@ -10,13 +11,16 @@
           href="{% static 'movies/css/components/movie-card.css' %}">
 {% endblock %}
 {% block meta_description %}
-    {% translate "RAFS is a service for rating movies based on several criteria. View audience ratings, write reviews, and find movies that suit your taste." %}
+    {% translate "Explore films, series and anime on RAFS. Read viewer reviews, compare ratings and share your own impressions." %}
 {% endblock %}
+{% block og_description %}{% translate "Explore films, series and anime on RAFS. Read viewer reviews, compare ratings and share your own impressions." %}{% endblock %}
+{% block structured_data %}{% website_json_ld %}{% endblock %}
 {% block content %}
     <main class="page-shell home-page">
         <header class="page-heading">
             <div><p class="page-kicker">RAFS</p><h1>{% translate "Top movies" %}</h1></div>
         </header>
+        <p class="home-description">{% translate "RAFS is a site for ratings and reviews of films, series and anime." %}</p>
         <div class="movie-grid">
             {% for movie in top_movies %}
                 {% include 'movies/_movie_card.html' with movie=movie %}

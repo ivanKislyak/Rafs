@@ -1,0 +1,392 @@
+{
+  "base.html": {
+    "en": {
+      "with_year": "RAFS",
+      "without_year": "RAFS"
+    },
+    "ru": {
+      "with_year": "RAFS",
+      "without_year": "RAFS"
+    },
+    "uk": {
+      "with_year": "RAFS",
+      "without_year": "RAFS"
+    },
+    "kk": {
+      "with_year": "RAFS",
+      "without_year": "RAFS"
+    },
+    "es": {
+      "with_year": "RAFS",
+      "without_year": "RAFS"
+    },
+    "de": {
+      "with_year": "RAFS",
+      "without_year": "RAFS"
+    }
+  },
+  "registration/login.html": {
+    "en": {
+      "with_year": "Log in to RAFS",
+      "without_year": "Log in to RAFS"
+    },
+    "ru": {
+      "with_year": "Войти в RAFS",
+      "without_year": "Войти в RAFS"
+    },
+    "uk": {
+      "with_year": "Увійти до RAFS",
+      "without_year": "Увійти до RAFS"
+    },
+    "kk": {
+      "with_year": "RAFS жүйесіне кіріңіз",
+      "without_year": "RAFS жүйесіне кіріңіз"
+    },
+    "es": {
+      "with_year": "Iniciar sesión en RAFS",
+      "without_year": "Iniciar sesión en RAFS"
+    },
+    "de": {
+      "with_year": "Bei RAFS anmelden",
+      "without_year": "Bei RAFS anmelden"
+    }
+  },
+  "core/about_site.html": {
+    "en": {
+      "with_year": "About RAFS",
+      "without_year": "About RAFS"
+    },
+    "ru": {
+      "with_year": "О RAFS",
+      "without_year": "О RAFS"
+    },
+    "uk": {
+      "with_year": "Про RAFS",
+      "without_year": "Про RAFS"
+    },
+    "kk": {
+      "with_year": "RAFS туралы",
+      "without_year": "RAFS туралы"
+    },
+    "es": {
+      "with_year": "Acerca de RAFS",
+      "without_year": "Acerca de RAFS"
+    },
+    "de": {
+      "with_year": "Über RAFS",
+      "without_year": "Über RAFS"
+    }
+  },
+  "core/community_guidelines.html": {
+    "en": {
+      "with_year": "Community guidelines · RAFS",
+      "without_year": "Community guidelines · RAFS"
+    },
+    "ru": {
+      "with_year": "Правила сообщества · RAFS",
+      "without_year": "Правила сообщества · RAFS"
+    },
+    "uk": {
+      "with_year": "Настанови спільноти · RAFS",
+      "without_year": "Настанови спільноти · RAFS"
+    },
+    "kk": {
+      "with_year": "Қауымдастық нұсқаулары · RAFS",
+      "without_year": "Қауымдастық нұсқаулары · RAFS"
+    },
+    "es": {
+      "with_year": "Pautas comunitarias · RAFS",
+      "without_year": "Pautas comunitarias · RAFS"
+    },
+    "de": {
+      "with_year": "Community-Richtlinien · RAFS",
+      "without_year": "Community-Richtlinien · RAFS"
+    }
+  },
+  "core/home.html": {
+    "en": {
+      "with_year": "RAFS – Movie ratings and reviews",
+      "without_year": "RAFS – Movie ratings and reviews"
+    },
+    "ru": {
+      "with_year": "RAFS – оценки и рецензии на фильмы",
+      "without_year": "RAFS – оценки и рецензии на фильмы"
+    },
+    "uk": {
+      "with_year": "RAFS – оцінки та рецензії на фільми",
+      "without_year": "RAFS – оцінки та рецензії на фільми"
+    },
+    "kk": {
+      "with_year": "RAFS – фильм бағалары мен рецензиялары",
+      "without_year": "RAFS – фильм бағалары мен рецензиялары"
+    },
+    "es": {
+      "with_year": "RAFS – valoraciones y reseñas de películas",
+      "without_year": "RAFS – valoraciones y reseñas de películas"
+    },
+    "de": {
+      "with_year": "RAFS – Filmbewertungen und Rezensionen",
+      "without_year": "RAFS – Filmbewertungen und Rezensionen"
+    }
+  },
+  "movies/catalog.html": {
+    "en": {
+      "with_year": "Movie catalog · RAFS",
+      "without_year": "Movie catalog · RAFS"
+    },
+    "ru": {
+      "with_year": "Каталог фильмов · RAFS",
+      "without_year": "Каталог фильмов · RAFS"
+    },
+    "uk": {
+      "with_year": "Каталог фільмів · RAFS",
+      "without_year": "Каталог фільмів · RAFS"
+    },
+    "kk": {
+      "with_year": "Фильмдер каталогы · RAFS",
+      "without_year": "Фильмдер каталогы · RAFS"
+    },
+    "es": {
+      "with_year": "Catálogo de películas · RAFS",
+      "without_year": "Catálogo de películas · RAFS"
+    },
+    "de": {
+      "with_year": "Filmkatalog · RAFS",
+      "without_year": "Filmkatalog · RAFS"
+    }
+  },
+  "movies/movie_detail.html": {
+    "en": {
+      "with_year": "SEO Film &amp; &lt;Example&gt; (2024) – Ratings and reviews · RAFS",
+      "without_year": "Фильм с длинным названием – Ratings and reviews · RAFS"
+    },
+    "ru": {
+      "with_year": "SEO Film &amp; &lt;Example&gt; (2024) – Оценки и рецензии · RAFS",
+      "without_year": "Фильм с длинным названием – Оценки и рецензии · RAFS"
+    },
+    "uk": {
+      "with_year": "SEO Film &amp; &lt;Example&gt; (2024) – Оцінки та рецензії · RAFS",
+      "without_year": "Фильм с длинным названием – Оцінки та рецензії · RAFS"
+    },
+    "kk": {
+      "with_year": "SEO Film &amp; &lt;Example&gt; (2024) – Бағалар мен рецензиялар · RAFS",
+      "without_year": "Фильм с длинным названием – Бағалар мен рецензиялар · RAFS"
+    },
+    "es": {
+      "with_year": "SEO Film &amp; &lt;Example&gt; (2024) – Valoraciones y reseñas · RAFS",
+      "without_year": "Фильм с длинным названием – Valoraciones y reseñas · RAFS"
+    },
+    "de": {
+      "with_year": "SEO Film &amp; &lt;Example&gt; (2024) – Bewertungen und Rezensionen · RAFS",
+      "without_year": "Фильм с длинным названием – Bewertungen und Rezensionen · RAFS"
+    }
+  },
+  "movies/review_form.html": {
+    "en": {
+      "with_year": "Review of SEO Film &amp; &lt;Example&gt;",
+      "without_year": "Review of Фильм с длинным названием"
+    },
+    "ru": {
+      "with_year": "Рецензия на SEO Film &amp; &lt;Example&gt;",
+      "without_year": "Рецензия на Фильм с длинным названием"
+    },
+    "uk": {
+      "with_year": "Рецензія на SEO Film &amp; &lt;Example&gt;",
+      "without_year": "Рецензія на Фильм с длинным названием"
+    },
+    "kk": {
+      "with_year": "Рецензия: SEO Film &amp; &lt;Example&gt;",
+      "without_year": "Рецензия: Фильм с длинным названием"
+    },
+    "es": {
+      "with_year": "Reseña de SEO Film &amp; &lt;Example&gt;",
+      "without_year": "Reseña de Фильм с длинным названием"
+    },
+    "de": {
+      "with_year": "Rezension zu SEO Film &amp; &lt;Example&gt;",
+      "without_year": "Rezension zu Фильм с длинным названием"
+    }
+  },
+  "movies/reviews.html": {
+    "en": {
+      "with_year": "Reviews · RAFS",
+      "without_year": "Reviews · RAFS"
+    },
+    "ru": {
+      "with_year": "Рецензии · RAFS",
+      "without_year": "Рецензии · RAFS"
+    },
+    "uk": {
+      "with_year": "Рецензії · RAFS",
+      "without_year": "Рецензії · RAFS"
+    },
+    "kk": {
+      "with_year": "Рецензиялар · RAFS",
+      "without_year": "Рецензиялар · RAFS"
+    },
+    "es": {
+      "with_year": "Reseñas · RAFS",
+      "without_year": "Reseñas · RAFS"
+    },
+    "de": {
+      "with_year": "Rezensionen · RAFS",
+      "without_year": "Rezensionen · RAFS"
+    }
+  },
+  "movies/search_results.html": {
+    "en": {
+      "with_year": "Search: film query · RAFS",
+      "without_year": "Search · RAFS"
+    },
+    "ru": {
+      "with_year": "Найти: film query · RAFS",
+      "without_year": "Найти · RAFS"
+    },
+    "uk": {
+      "with_year": "Пошук: film query · RAFS",
+      "without_year": "Пошук · RAFS"
+    },
+    "kk": {
+      "with_year": "Іздеу: film query · RAFS",
+      "without_year": "Іздеу · RAFS"
+    },
+    "es": {
+      "with_year": "Buscar: film query · RAFS",
+      "without_year": "Buscar · RAFS"
+    },
+    "de": {
+      "with_year": "Suchen: film query · RAFS",
+      "without_year": "Suchen · RAFS"
+    }
+  },
+  "movies/wd_search_form.html": {
+    "en": {
+      "with_year": "Search Wikidata – RAFS",
+      "without_year": "Search Wikidata – RAFS"
+    },
+    "ru": {
+      "with_year": "Поиск в Wikidata – RAFS",
+      "without_year": "Поиск в Wikidata – RAFS"
+    },
+    "uk": {
+      "with_year": "Пошук у Вікіданих – RAFS",
+      "without_year": "Пошук у Вікіданих – RAFS"
+    },
+    "kk": {
+      "with_year": "Уикидеректе іздеу – RAFS",
+      "without_year": "Уикидеректе іздеу – RAFS"
+    },
+    "es": {
+      "with_year": "Buscar en Wikidata – RAFS",
+      "without_year": "Buscar en Wikidata – RAFS"
+    },
+    "de": {
+      "with_year": "Wikidata durchsuchen – RAFS",
+      "without_year": "Wikidata durchsuchen – RAFS"
+    }
+  },
+  "accounts/moderation_application.html": {
+    "en": {
+      "with_year": "Moderation application · RAFS",
+      "without_year": "Moderation application · RAFS"
+    },
+    "ru": {
+      "with_year": "Заявка на модераторство · RAFS",
+      "without_year": "Заявка на модераторство · RAFS"
+    },
+    "uk": {
+      "with_year": "Заявка на модераторство · RAFS",
+      "without_year": "Заявка на модераторство · RAFS"
+    },
+    "kk": {
+      "with_year": "Модератор болуға өтінім · RAFS",
+      "without_year": "Модератор болуға өтінім · RAFS"
+    },
+    "es": {
+      "with_year": "Solicitud para moderación · RAFS",
+      "without_year": "Solicitud para moderación · RAFS"
+    },
+    "de": {
+      "with_year": "Bewerbung als Moderator · RAFS",
+      "without_year": "Bewerbung als Moderator · RAFS"
+    }
+  },
+  "accounts/moderation_applications_admin.html": {
+    "en": {
+      "with_year": "Moderation applications · RAFS",
+      "without_year": "Moderation applications · RAFS"
+    },
+    "ru": {
+      "with_year": "Заявки на модераторство · RAFS",
+      "without_year": "Заявки на модераторство · RAFS"
+    },
+    "uk": {
+      "with_year": "Заявки на модераторство · RAFS",
+      "without_year": "Заявки на модераторство · RAFS"
+    },
+    "kk": {
+      "with_year": "Модератор болуға өтінімдер · RAFS",
+      "without_year": "Модератор болуға өтінімдер · RAFS"
+    },
+    "es": {
+      "with_year": "Solicitudes para moderación · RAFS",
+      "without_year": "Solicitudes para moderación · RAFS"
+    },
+    "de": {
+      "with_year": "Moderationsbewerbungen · RAFS",
+      "without_year": "Moderationsbewerbungen · RAFS"
+    }
+  },
+  "accounts/profile.html": {
+    "en": {
+      "with_year": "seo-user · Profile · RAFS",
+      "without_year": "длинное_имя_пользователя · Profile · RAFS"
+    },
+    "ru": {
+      "with_year": "seo-user · Профиль · RAFS",
+      "without_year": "длинное_имя_пользователя · Профиль · RAFS"
+    },
+    "uk": {
+      "with_year": "seo-user · Профіль · RAFS",
+      "without_year": "длинное_имя_пользователя · Профіль · RAFS"
+    },
+    "kk": {
+      "with_year": "seo-user · Профиль · RAFS",
+      "without_year": "длинное_имя_пользователя · Профиль · RAFS"
+    },
+    "es": {
+      "with_year": "seo-user · Perfil · RAFS",
+      "without_year": "длинное_имя_пользователя · Perfil · RAFS"
+    },
+    "de": {
+      "with_year": "seo-user · Profil · RAFS",
+      "without_year": "длинное_имя_пользователя · Profil · RAFS"
+    }
+  },
+  "accounts/register.html": {
+    "en": {
+      "with_year": "Sign up",
+      "without_year": "Sign up"
+    },
+    "ru": {
+      "with_year": "Зарегистрироваться",
+      "without_year": "Зарегистрироваться"
+    },
+    "uk": {
+      "with_year": "Зареєструватися",
+      "without_year": "Зареєструватися"
+    },
+    "kk": {
+      "with_year": "Тіркелу",
+      "without_year": "Тіркелу"
+    },
+    "es": {
+      "with_year": "Registrarse",
+      "without_year": "Registrarse"
+    },
+    "de": {
+      "with_year": "Registrieren",
+      "without_year": "Registrieren"
+    }
+  }
+}

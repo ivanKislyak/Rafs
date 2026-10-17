@@ -1200,3 +1200,23 @@ msgstr "Elegir archivo"
 #: accounts/templates/accounts/profile.html
 msgid "No file selected"
 msgstr "Ningún archivo seleccionado"
+
+#: templates/base.html core/templates/core/home.html core/templates/core/about_site.html
+msgid "RAFS is a site for ratings and reviews of films, series and anime."
+msgstr "RAFS es un sitio para valorar y reseñar películas, series y anime."
+
+#: core/templates/core/home.html
+msgid "Explore films, series and anime on RAFS. Read viewer reviews, compare ratings and share your own impressions."
+msgstr "Explora películas, series y anime en RAFS. Lee reseñas de espectadores, compara valoraciones y comparte tus impresiones."
+
+#: core/templates/core/about_site.html
+msgid "Learn about RAFS, a community for honest ratings and reviews of films, series and anime, and the project's plans."
+msgstr "Conoce RAFS, una comunidad de valoraciones y reseñas honestas de películas, series y anime, y los planes del proyecto."
+
+#: movies/templates/movies/catalog.html
+msgid "Browse films, series and anime in the RAFS catalog. Compare viewer ratings and read reviews."
+msgstr "Explora películas, series y anime en el catálogo de RAFS. Compara valoraciones de espectadores y lee reseñas."
+
+#: movies/templates/movies/reviews.html
+msgid "Read viewer reviews of films, series and anime on RAFS. Explore ratings, replies and discussions."
+msgstr "Lee reseñas de espectadores sobre películas, series y anime en RAFS. Explora valoraciones, respuestas y debates."

@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% load static i18n %}
 {% block title %}{% translate "Reviews" %} · RAFS{% endblock %}
+{% block meta_description %}{% translate "Read viewer reviews of films, series and anime on RAFS. Explore ratings, replies and discussions." %}{% endblock %}
+{% block og_title %}{% translate "Reviews" %} · RAFS{% endblock %}
+{% block og_description %}{% translate "Read viewer reviews of films, series and anime on RAFS. Explore ratings, replies and discussions." %}{% endblock %}
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'movies/css/components/review-thread.css' %}">
     <link rel="stylesheet" href="{% static 'movies/css/reviews.css' %}">

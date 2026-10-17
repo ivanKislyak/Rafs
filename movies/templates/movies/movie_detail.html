@@ -2,6 +2,7 @@
 {% load static %}
 {% load humanize %}
 {% load i18n %}
+{% load seo %}
 {% block extra_css %}
     <link rel="stylesheet"
           href="{% static 'movies/css/components/movie-page-text.css' %}">
@@ -12,11 +13,11 @@
     <link rel="stylesheet" href="{% static 'movies/css/movie-detail.css' %}">
 {% endblock %}
 {% block title %}{{ movie.name }}{% if movie.year %} ({{ movie.year }}){% endif %} – {% translate "Ratings and reviews" %} · RAFS{% endblock %}
-{% block meta_description %}{% if movie.description %}{{ movie.description|striptags|truncatechars:155 }}{% else %}{{ movie.name }}{% if movie.year %} ({{ movie.year }}){% endif %} – {% translate "Viewer ratings and reviews on RAFS. Share your opinion" %}{% endif %}{% endblock %}
+{% block meta_description %}{{ movie.name }}{% if movie.year %} ({{ movie.year }}){% endif %} – {% if movie.description %}{{ movie.description|striptags|truncatechars:155 }}{% else %}{% translate "Viewer ratings and reviews on RAFS. Share your opinion" %}{% endif %}{% endblock %}
 {% block og_type %}video.movie{% endblock %}
 {% block og_title %}{{ movie.name }}{% if movie.year %} ({{ movie.year }}){% endif %} – RAFS{% endblock %}
-{% block og_description %}{% if movie.description %}{{ movie.description|striptags|truncatechars:200 }}{% else %}{{ movie.name }} – {% translate "Viewer ratings and reviews on RAFS. Share your opinion" %}{% endif %}{% endblock %}
-{% block og_image %}{% if movie.cover and movie.image_exists %}https://rafs.app{{ movie.cover.url }}{% elif movie.cover_url %}{{ movie.cover_url }}{% else %}https://rafs.app{% static 'images/rafs-preview-v3.png' %}{% endif %}{% endblock %}
+{% block og_description %}{{ movie.name }}{% if movie.year %} ({{ movie.year }}){% endif %} – {% if movie.description %}{{ movie.description|striptags|truncatechars:200 }}{% else %}{% translate "Viewer ratings and reviews on RAFS. Share your opinion" %}{% endif %}{% endblock %}
+{% block og_image %}{% if movie.cover and movie.image_exists %}{{ movie.cover.url|public_image_url }}{% else %}{{ movie.cover_url|public_image_url }}{% endif %}{% endblock %}
 {% block content %}
     <main class="page-shell movie-page">
     <a class="movie-back-link" href="{% url 'movies:catalog' %}">← {% translate "Back to catalog" %}</a>

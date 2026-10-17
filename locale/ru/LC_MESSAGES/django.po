@@ -1227,3 +1227,23 @@ msgstr "Выбрать файл"
 #: accounts/templates/accounts/profile.html
 msgid "No file selected"
 msgstr "Файл не выбран"
+
+#: templates/base.html core/templates/core/home.html core/templates/core/about_site.html
+msgid "RAFS is a site for ratings and reviews of films, series and anime."
+msgstr "RAFS (Рафс) – сайт для оценок и рецензий на фильмы, сериалы и аниме."
+
+#: core/templates/core/home.html
+msgid "Explore films, series and anime on RAFS. Read viewer reviews, compare ratings and share your own impressions."
+msgstr "Выбирайте фильмы, сериалы и аниме на RAFS. Читайте рецензии зрителей, сравнивайте оценки и делитесь впечатлениями."
+
+#: core/templates/core/about_site.html
+msgid "Learn about RAFS, a community for honest ratings and reviews of films, series and anime, and the project's plans."
+msgstr "Узнайте о RAFS (Рафс), сообществе честных оценок и рецензий на фильмы, сериалы и аниме, и о планах проекта."
+
+#: movies/templates/movies/catalog.html
+msgid "Browse films, series and anime in the RAFS catalog. Compare viewer ratings and read reviews."
+msgstr "Выбирайте фильмы, сериалы и аниме в каталоге RAFS. Сравнивайте оценки зрителей и читайте рецензии."
+
+#: movies/templates/movies/reviews.html
+msgid "Read viewer reviews of films, series and anime on RAFS. Explore ratings, replies and discussions."
+msgstr "Читайте рецензии зрителей на фильмы, сериалы и аниме на RAFS. Знакомьтесь с оценками, ответами и обсуждениями."
