@@ -78,19 +78,3 @@ class SearchHistory(models.Model):
 
     class Meta:
         ordering = ["-created_at"]
-
-
-class ModerationApplication(models.Model):
-    user = models.OneToOneField(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name="moderation_application",
-    )
-    email = models.EmailField(max_length=256)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        ordering = ["-created_at"]
-
-    def __str__(self):
-        return f"{self.user.username} — {self.email}"

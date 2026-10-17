@@ -8,7 +8,7 @@ from django.test.utils import CaptureQueriesContext
 from django.urls import resolve, reverse
 from PIL import Image
 
-from accounts.models import Achievement, ModerationApplication, User
+from accounts.models import Achievement, User
 from movies.models import Movie, Review, ReviewReply, WatchStatus
 
 class RegistrationEmailTests(TestCase):
@@ -266,66 +266,3 @@ class AvatarUpdateTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.user.refresh_from_db()
         self.assertFalse(self.user.avatar_image)
-
-
-class ModerationApplicationTests(TestCase):
-    def setUp(self):
-        self.user = User.objects.create_user(
-            username="applicant",
-            email="applicant@example.com",
-            password="password123",
-        )
-        self.superuser = User.objects.create_superuser(
-            username="main_admin",
-            email="admin@example.com",
-            password="password123",
-        )
-        self.apply_url = reverse("accounts:moderation-application")
-        self.admin_url = reverse("accounts:moderation-applications-admin")
-
-    def test_application_page_requires_login(self):
-        response = self.client.get(self.apply_url)
-
-        self.assertRedirects(
-            response,
-            f"{reverse('login')}?next={self.apply_url}",
-        )
-
-    def test_user_can_submit_only_one_application(self):
-        self.client.force_login(self.user)
-
-        response = self.client.post(
-            self.apply_url,
-            {"email": "real-contact@example.com"},
-            follow=True,
-        )
-
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(ModerationApplication.objects.filter(user=self.user).count(), 1)
-        self.assertContains(response, "Application already submitted")
-
-        self.client.post(
-            self.apply_url,
-            {"email": "different@example.com"},
-        )
-        application = ModerationApplication.objects.get(user=self.user)
-        self.assertEqual(application.email, "real-contact@example.com")
-        self.assertEqual(ModerationApplication.objects.filter(user=self.user).count(), 1)
-
-    def test_only_superuser_can_open_application_list(self):
-        ModerationApplication.objects.create(
-            user=self.user,
-            email="real-contact@example.com",
-        )
-        self.client.force_login(self.user)
-        response = self.client.get(self.admin_url)
-        self.assertEqual(response.status_code, 403)
-
-        self.client.force_login(self.superuser)
-        response = self.client.get(self.admin_url)
-
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.user.username)
-        self.assertContains(response, "real-contact@example.com")
-        self.assertContains(response, "Approve")
-        self.assertContains(response, "Reject")

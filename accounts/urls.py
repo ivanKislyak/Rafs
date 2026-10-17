@@ -14,11 +14,5 @@ urlpatterns = [
         RedirectView.as_view(pattern_name="profile", permanent=True),
         name="legacy-profile",
     ),
-    path("moderation/apply/", views.moderation_application, name="moderation-application"),
-    path(
-        "moderation/applications/",
-        views.moderation_applications_admin,
-        name="moderation-applications-admin",
-    ),
     path('api/v1/last-search-history', views.SearchHistoryListAPIView.as_view(), name='last_search_history')
 ]

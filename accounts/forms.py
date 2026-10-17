@@ -9,8 +9,6 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 from PIL import Image, ImageOps, UnidentifiedImageError
 
-from .models import ModerationApplication
-
 class RegisterUserForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -58,17 +56,3 @@ class AvatarUpdateForm(forms.ModelForm):
             name=f"avatar_{uuid4().hex}.png",
         )
 
-
-class ModerationApplicationForm(forms.ModelForm):
-    class Meta:
-        model = ModerationApplication
-        fields = ("email",)
-        labels = {"email": _("Contact email")}
-        widgets = {
-            "email": forms.EmailInput(
-                attrs={
-                    "autocomplete": "email",
-                    "placeholder": "name@example.com",
-                }
-            )
-        }

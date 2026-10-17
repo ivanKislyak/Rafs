@@ -285,58 +285,6 @@
       "without_year": "Wikidata durchsuchen – RAFS"
     }
   },
-  "accounts/moderation_application.html": {
-    "en": {
-      "with_year": "Moderation application · RAFS",
-      "without_year": "Moderation application · RAFS"
-    },
-    "ru": {
-      "with_year": "Заявка на модераторство · RAFS",
-      "without_year": "Заявка на модераторство · RAFS"
-    },
-    "uk": {
-      "with_year": "Заявка на модераторство · RAFS",
-      "without_year": "Заявка на модераторство · RAFS"
-    },
-    "kk": {
-      "with_year": "Модератор болуға өтінім · RAFS",
-      "without_year": "Модератор болуға өтінім · RAFS"
-    },
-    "es": {
-      "with_year": "Solicitud para moderación · RAFS",
-      "without_year": "Solicitud para moderación · RAFS"
-    },
-    "de": {
-      "with_year": "Bewerbung als Moderator · RAFS",
-      "without_year": "Bewerbung als Moderator · RAFS"
-    }
-  },
-  "accounts/moderation_applications_admin.html": {
-    "en": {
-      "with_year": "Moderation applications · RAFS",
-      "without_year": "Moderation applications · RAFS"
-    },
-    "ru": {
-      "with_year": "Заявки на модераторство · RAFS",
-      "without_year": "Заявки на модераторство · RAFS"
-    },
-    "uk": {
-      "with_year": "Заявки на модераторство · RAFS",
-      "without_year": "Заявки на модераторство · RAFS"
-    },
-    "kk": {
-      "with_year": "Модератор болуға өтінімдер · RAFS",
-      "without_year": "Модератор болуға өтінімдер · RAFS"
-    },
-    "es": {
-      "with_year": "Solicitudes para moderación · RAFS",
-      "without_year": "Solicitudes para moderación · RAFS"
-    },
-    "de": {
-      "with_year": "Moderationsbewerbungen · RAFS",
-      "without_year": "Moderationsbewerbungen · RAFS"
-    }
-  },
   "accounts/profile.html": {
     "en": {
       "with_year": "seo-user · Profile · RAFS",

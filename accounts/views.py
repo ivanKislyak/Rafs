@@ -14,8 +14,8 @@ from django.utils.translation import gettext as _
 
 from movies.models import Review, ReviewReply, WatchStatus
 
-from .forms import AvatarUpdateForm, ModerationApplicationForm, RegisterUserForm
-from .models import Achievement, ModerationApplication, User, SearchHistory
+from .forms import AvatarUpdateForm, RegisterUserForm
+from .models import Achievement, User, SearchHistory
 from .serializers import SearchHistorySerializer
 
 def register(request):
@@ -139,39 +139,6 @@ def update_avatar(request):
     return redirect("profile", username=request.user.username)
 
 
-@login_required
-def moderation_application(request):
-    application = ModerationApplication.objects.filter(user=request.user).first()
-
-    if request.method == "POST" and application is None:
-        form = ModerationApplicationForm(request.POST)
-        if form.is_valid():
-            application = form.save(commit=False)
-            application.user = request.user
-            application.save()
-            messages.success(request, _("Your application has been sent."))
-            return redirect("accounts:moderation-application")
-    else:
-        form = ModerationApplicationForm(initial={"email": request.user.email})
-
-    return render(
-        request,
-        "accounts/moderation_application.html",
-        {"application": application, "form": form},
-    )
-
-
-@login_required
-def moderation_applications_admin(request):
-    if not request.user.is_superuser:
-        raise PermissionDenied
-
-    applications = ModerationApplication.objects.select_related("user").all()
-    return render(
-        request,
-        "accounts/moderation_applications_admin.html",
-        {"applications": applications},
-    )
 
 
 class SearchHistoryListAPIView(APIView):
