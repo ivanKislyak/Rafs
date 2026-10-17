@@ -22,7 +22,7 @@ class MovieAdmin(TranslatableAdmin):
 class ReviewAdmin(TranslatableAdmin):
     list_display = ["user", 
                     "get_movie_name", "avg_rating", 
-                    "text", "contains_spoiler", "created_at", 
+                    "short_text", "contains_spoiler", "created_at", 
                     "updated_at"]
 
     list_filter = ["created_at", "updated_at"]
@@ -36,6 +36,12 @@ class ReviewAdmin(TranslatableAdmin):
         if obj.movie:
             return obj.movie.safe_translation_getter("wikidata_name", any_language=True)
         return "-"
+
+    @admin.display(description='Текст отзыва')
+    def short_text(self, obj):
+        if obj.text and len(obj.text) > 100:
+            return f"{obj.text[:100]}..."
+        return obj.text
 
 admin.site.site_header = "RAFS - управление сайтом"
 admin.site.site_title = "RAFS"

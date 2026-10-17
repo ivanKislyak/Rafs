@@ -78,3 +78,6 @@ class SearchHistory(models.Model):
 
     class Meta:
         ordering = ["-created_at"]
+        verbose_name = "Search History"
+        verbose_name_plural = "Search Histories"
+    

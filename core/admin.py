@@ -1,7 +1,6 @@
 from django.contrib import admin
-from movies.models import (
-    GlobalSearchIndex
-)
+from django.utils.translation import get_language
+from movies.models import GlobalSearchIndex
 from movies.movie_models import (
     TypeOfWork, Genre,
     Country, Studio,
@@ -9,25 +8,46 @@ from movies.movie_models import (
 )
 from parler.admin import TranslatableAdmin
 
-
-@admin.register(TypeOfWork)
-class GenreAdmin(TranslatableAdmin):
+@admin.register(Country)
+class CountryAdmin(TranslatableAdmin):
     list_display = ('name', 'wikidata_id')
+    
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.translated(get_language()).order_by('translations__name').distinct()
+
 
 @admin.register(Genre)
 class GenreAdmin(TranslatableAdmin):
     list_display = ('name', 'wikidata_id')
+    
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.translated(get_language()).order_by('translations__name').distinct()
 
-@admin.register(Country)
-class GenreAdmin(TranslatableAdmin):
-    list_display = ('name', 'wikidata_id')
 
 @admin.register(Studio)
-class GenreAdmin(TranslatableAdmin):
+class StudioAdmin(TranslatableAdmin):
     list_display = ('name', 'wikidata_id')
+    
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.translated(get_language()).order_by('translations__name').distinct()
+
 
 @admin.register(Person)
-class GenreAdmin(TranslatableAdmin):
+class PersonAdmin(TranslatableAdmin):
     list_display = ('name', 'wikidata_id')
+    
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.translated(get_language()).order_by('translations__name').distinct()
 
 
+@admin.register(TypeOfWork)
+class TypeOfWorkAdmin(TranslatableAdmin):
+    list_display = ('name', 'wikidata_id')
+    
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.translated(get_language()).order_by('translations__name').distinct()
