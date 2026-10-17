@@ -1,4 +1,7 @@
 from rest_framework import generics
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from django.forms import model_to_dict
 
 from django.contrib import messages
 from django.contrib.auth import login
@@ -171,6 +174,18 @@ def moderation_applications_admin(request):
     )
 
 
-class SearchHistoryListAPIView(generics.ListAPIView):
-    queryset = SearchHistory.objects.all()
-    serializer_class = SearchHistorySerializer
+class SearchHistoryListAPIView(APIView):
+    def get(self, request):
+        lst = SearchHistory.objects.all().values()
+        return Response({'history': list(lst)})
+    
+    def post(self, request):
+        sh_new = SearchHistory.objects.create(
+            user=request.user,
+            query=request.data['query']
+        )
+        return Response({'post': model_to_dict(sh_new)})
+
+# class SearchHistoryListAPIView(generics.ListAPIView):
+#     queryset = SearchHistory.objects.all()
+#     serializer_class = SearchHistorySerializer
