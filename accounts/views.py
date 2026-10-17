@@ -2,8 +2,9 @@ from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from django.forms import model_to_dict
+from rest_framework import status
 
+from django.forms import model_to_dict
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
@@ -162,7 +163,7 @@ class SearchHistoryListAPIView(APIView):
         )
 
     def put(self, request, *args, **kwargs):
-        pk = kwargs.get('pk')
+        pk = kwargs.get('pk', None)
         
         if pk is None:
             return Response(
@@ -174,7 +175,7 @@ class SearchHistoryListAPIView(APIView):
             instance = SearchHistory.objects.get(pk=pk, user=request.user,)
         except SearchHistory.DoesNotExist:
             return Response(
-                {'error': 'Запись не найдена'},
+                {'error': 'Record not found'},
                 status=status.HTTP_404_NOT_FOUND,
             )
 
@@ -185,5 +186,28 @@ class SearchHistoryListAPIView(APIView):
         )
         serializer.is_valid(raise_exception=True)
         serializer.save()
-
         return Response({'post': serializer.data})
+
+
+    def delete(self, request, *args, **kwargs):
+        pk = kwargs.get('pk', None)
+        
+        if pk is None:
+            return Response(
+                {'error': 'Specify the record ID in the URL'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        try:
+            instance = SearchHistory.objects.get(pk=pk, user=request.user,)
+        except SearchHistory.DoesNotExist:
+            return Response(
+                {'error': 'Record not found'},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        instance.delete()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+        
