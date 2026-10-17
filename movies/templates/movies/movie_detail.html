@@ -4,6 +4,7 @@
 {% load i18n %}
 {% load seo %}
 {% block extra_css %}
+    {% include "movies/_review_vote_preloads.html" %}
     <link rel="stylesheet"
           href="{% static 'movies/css/components/movie-page-text.css' %}">
     <link rel="stylesheet"
@@ -19,7 +20,11 @@
 {% block og_description %}{{ movie.name }}{% if movie.year %} ({{ movie.year }}){% endif %} – {% if movie.description %}{{ movie.description|striptags|truncatechars:200 }}{% else %}{% translate "Viewer ratings and reviews on RAFS. Share your opinion" %}{% endif %}{% endblock %}
 {% block og_image %}{% if movie.cover and movie.image_exists %}{{ movie.cover.url|public_image_url }}{% else %}{{ movie.cover_url|public_image_url }}{% endif %}{% endblock %}
 {% block content %}
-    <main class="page-shell movie-page">
+    <main class="page-shell movie-page" data-review-voting
+          data-vote-url="{% url 'movies:vote_review' %}"
+          data-login-url="{% url 'login' %}?next={{ request.path|urlencode }}"
+          data-authenticated="{{ user.is_authenticated|yesno:'true,false' }}"
+          data-error="{% translate 'Unable to save your reaction' %}">
     <a class="movie-back-link" href="{% url 'movies:catalog' %}">← {% translate "Back to catalog" %}</a>
     <article class="movie-detail-main-container">
         {% if movie.cover and movie.image_exists %}
@@ -86,78 +91,11 @@
     {% include "movies/_review_delete_dialog.html" %}
     </main>
     <script>
-        const reviewVoteUrl = "{% url 'movies:vote_review' %}";
         const reviewVoteLoginUrl = "{% url 'login' %}?next={{ request.path|urlencode }}";
         const reviewVoteCsrf = document.querySelector(
             "#review-vote-csrf [name=csrfmiddlewaretoken]"
         ).value;
         const reviewVoteUserIsAuthenticated = {{ user.is_authenticated|yesno:"true,false" }};
-
-        document.querySelectorAll(".review-votes").forEach((voteGroup) => {
-            const buttons = [...voteGroup.querySelectorAll(".review-vote-button")];
-            const status = voteGroup.closest(".review-action-bar").querySelector(
-                ".review-vote-status"
-            );
-
-            const showCount = (button, value) => {
-                const count = button.querySelector(".review-vote-count");
-
-                count.textContent = value > 0 ? value : "";
-            };
-
-            const showButtonState = (button, userVote) => {
-                const icon = button.querySelector(".review-vote-icon");
-                const isSelected = Number(button.dataset.voteValue) === userVote;
-
-                button.classList.toggle("is-selected", isSelected);
-                button.setAttribute("aria-pressed", String(isSelected));
-                icon.src = isSelected ? button.dataset.enabledSrc : button.dataset.disabledSrc;
-            };
-
-            buttons.forEach((clickedButton) => {
-                clickedButton.addEventListener("click", async () => {
-                    if (!reviewVoteUserIsAuthenticated) {
-                        window.location.href = reviewVoteLoginUrl;
-                        return;
-                    }
-
-                    status.textContent = "";
-                    buttons.forEach((button) => button.disabled = true);
-
-                    try {
-                        const response = await fetch(reviewVoteUrl, {
-                            method: "POST",
-                            credentials: "same-origin",
-                            headers: {
-                                "Content-Type": "application/json",
-                                "X-CSRFToken": reviewVoteCsrf,
-                            },
-                            body: JSON.stringify({
-                                review_id: voteGroup.dataset.reviewId,
-                                vote_value: clickedButton.dataset.voteValue,
-                            }),
-                        });
-                        const data = await response.json().catch(() => ({}));
-
-                        if (!response.ok) {
-                            throw new Error(data.error || "{% translate 'Unable to save your reaction' %}");
-                        }
-
-                        showCount(buttons[0], data.likes);
-                        showCount(buttons[1], data.dislikes);
-                        buttons.forEach((button) => showButtonState(button, data.user_vote));
-
-                        clickedButton.classList.remove("vote-pop");
-                        void clickedButton.offsetWidth;
-                        clickedButton.classList.add("vote-pop");
-                    } catch (error) {
-                        status.textContent = error.message;
-                    } finally {
-                        buttons.forEach((button) => button.disabled = false);
-                    }
-                });
-            });
-        });
     </script>
     <script>
         document.querySelectorAll("[data-replies-toggle]").forEach((toggle) => {
@@ -282,5 +220,6 @@
     </script>
 {% endblock %}
 {% block extra_js %}
+    <script src="{% static 'movies/js/review-votes.js' %}" defer></script>
     <script src="{% static 'movies/js/movie_watch_status.js' %}" defer></script>
 {% endblock %}

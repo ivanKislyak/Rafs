@@ -259,9 +259,10 @@ a.review-reply-author:hover {
   background-color: transparent;
   color: var(--color-text-muted);
   cursor: pointer;
-  transition:
-    background-color 160ms ease,
-    color 160ms ease;
+  transition: none;
+  animation: none;
+  transform: none;
+  opacity: 1;
 }
 
 .review-vote-button + .review-vote-button {
@@ -276,7 +277,7 @@ a.review-reply-author:hover {
 
 .review-vote-button:disabled {
   cursor: pointer;
-  opacity: 0.65;
+  opacity: 1;
 }
 
 .review-vote-button:focus-visible {
@@ -293,6 +294,10 @@ a.review-reply-author:hover {
   background-color: transparent;
   object-fit: contain;
   pointer-events: none;
+  transition: none;
+  animation: none;
+  transform: none;
+  opacity: 1;
 }
 
 .review-vote-count {
@@ -313,10 +318,6 @@ a.review-reply-author:hover {
   color: var(--color-accent);
   font-size: 0.82rem;
   text-overflow: ellipsis;
-}
-
-.review-vote-button.vote-pop .review-vote-icon {
-  animation: review-vote-pop 260ms ease-out;
 }
 
 .review-action-button {
@@ -765,18 +766,6 @@ a.review-reply-author:hover {
   color: var(--color-text);
 }
 
-@keyframes review-vote-pop {
-  0% {
-    transform: scale(1);
-  }
-  45% {
-    transform: scale(1.28) rotate(-7deg);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
 @keyframes review-reply-open {
   from {
     opacity: 0;
@@ -853,10 +842,8 @@ a.review-reply-author:hover {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .review-vote-button,
   .review-action-button,
   .review-reply,
-  .review-vote-button.vote-pop .review-vote-icon,
   .review-reply-container.is-open,
   .review-delete-dialog::backdrop,
   .review-delete-dialog-card {

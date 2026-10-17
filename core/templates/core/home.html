@@ -20,7 +20,6 @@
         <header class="page-heading">
             <div><p class="page-kicker">RAFS</p><h1>{% translate "Top movies" %}</h1></div>
         </header>
-        <p class="home-description">{% translate "RAFS is a site for ratings and reviews of films, series and anime." %}</p>
         <div class="movie-grid">
             {% for movie in top_movies %}
                 {% include 'movies/_movie_card.html' with movie=movie %}
