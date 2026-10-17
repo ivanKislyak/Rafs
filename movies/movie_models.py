@@ -8,8 +8,8 @@ class TypeOfWork(TranslatableModel):
     )
 
     class Meta:
-        verbose_name = "Watch Status"
-        verbose_name_plural = "Watch Statuses"
+        verbose_name = "Type of Work"
+        verbose_name_plural = "Types of Work"
 
     def __str__(self):
         return self.safe_translation_getter(
