@@ -139,20 +139,17 @@ def update_avatar(request):
     return redirect("profile", username=request.user.username)
 
 
-
-
 class SearchHistoryListAPIView(APIView):
     def get(self, request):
-        lst = SearchHistory.objects.all().values()
-        return Response({'history': list(lst)})
+        sh = SearchHistory.objects.select_related('user').all()
+        return Response({'history': SearchHistorySerializer(sh, many=True).data})
     
     def post(self, request):
+        serializer = SearchHistorySerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
         sh_new = SearchHistory.objects.create(
             user=request.user,
             query=request.data['query']
         )
-        return Response({'post': model_to_dict(sh_new)})
-
-# class SearchHistoryListAPIView(generics.ListAPIView):
-#     queryset = SearchHistory.objects.all()
-#     serializer_class = SearchHistorySerializer
+        return Response({'post': SearchHistorySerializer(sh_new).data})
