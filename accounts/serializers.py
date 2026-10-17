@@ -10,6 +10,16 @@ class SearchHistorySerializer(serializers.Serializer):
     query = serializers.CharField(max_length=200)
     created_at = serializers.DateTimeField(read_only=True)
 
+    def create(self, validated_data):
+        user = self.context['request'].user
+        return SearchHistory.objects.create(user=user, **validated_data)
+
+    def update(self, instance, validated_data):
+        instance.query = validated_data.get('query', instance.query)
+        instance.save()
+        
+        return instance
+
     class Meta:
         model = SearchHistory
         fields = ['user', 'query', 'created_at']

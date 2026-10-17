@@ -1,6 +1,7 @@
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from django.forms import model_to_dict
 
 from django.contrib import messages
@@ -140,16 +141,49 @@ def update_avatar(request):
 
 
 class SearchHistoryListAPIView(APIView):
-    def get(self, request):
-        sh = SearchHistory.objects.select_related('user').all()
-        return Response({'history': SearchHistorySerializer(sh, many=True).data})
-    
-    def post(self, request):
-        serializer = SearchHistorySerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
+    permission_classes = [IsAuthenticated]
 
-        sh_new = SearchHistory.objects.create(
-            user=request.user,
-            query=serializer.validated_data['query']
+    def get(self, request):
+        sh = SearchHistory.objects.select_related('user').filter(user=request.user)
+        serializer = SearchHistorySerializer(sh, many=True)
+        return Response({'history': serializer.data})
+
+    def post(self, request):
+        serializer = SearchHistorySerializer(
+            data=request.data,
+            context={'request': request},
         )
-        return Response({'post': SearchHistorySerializer(sh_new).data})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(
+            {'post': serializer.data},
+            status=status.HTTP_201_CREATED,
+        )
+
+    def put(self, request, *args, **kwargs):
+        pk = kwargs.get('pk')
+        
+        if pk is None:
+            return Response(
+                {'error': 'Specify the record ID in the URL'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        try:
+            instance = SearchHistory.objects.get(pk=pk, user=request.user,)
+        except SearchHistory.DoesNotExist:
+            return Response(
+                {'error': 'Запись не найдена'},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        serializer = SearchHistorySerializer(
+            instance=instance,
+            data=request.data,
+            context={'request': request},
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response({'post': serializer.data})
