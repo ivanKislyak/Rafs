@@ -1,3 +1,5 @@
+from rest_framework import generics
+
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
@@ -10,7 +12,8 @@ from django.utils.translation import gettext as _
 from movies.models import Review, ReviewReply, WatchStatus
 
 from .forms import AvatarUpdateForm, ModerationApplicationForm, RegisterUserForm
-from .models import Achievement, ModerationApplication, User
+from .models import Achievement, ModerationApplication, User, SearchHistory
+from .serializers import SearchHistorySerializer
 
 def register(request):
     if request.method == "POST":
@@ -166,3 +169,8 @@ def moderation_applications_admin(request):
         "accounts/moderation_applications_admin.html",
         {"applications": applications},
     )
+
+
+class SearchHistoryListAPIView(generics.ListAPIView):
+    queryset = SearchHistory.objects.all()
+    serializer_class = SearchHistorySerializer

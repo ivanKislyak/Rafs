@@ -15,4 +15,5 @@ urlpatterns = [
         views.moderation_applications_admin,
         name="moderation-applications-admin",
     ),
+    path('api/v1/last_search_history', views.SearchHistoryListAPIView.as_view(), name='last_search_history')
 ]

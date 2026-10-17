@@ -68,11 +68,11 @@ INSTALLED_APPS = [
     'django.contrib.humanize',  
     'django.contrib.postgres',
     'django.contrib.sitemaps',
+    'rest_framework',
     'accounts',
     'movies',
     'core',
     'taggit',
-    'rest_framework',
     'parler',
 ]
 

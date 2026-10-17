@@ -33,7 +33,6 @@ from .models import (
     GlobalSearchIndex,
     )
 from accounts.models import User
-
 from .services.wikidata import (
     search_wikidata_media, 
     fetch_movie_details_raw, 
