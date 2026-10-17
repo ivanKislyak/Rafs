@@ -32,7 +32,7 @@ def register(request):
 
 @login_required
 def own_profile(request):
-    return redirect("accounts:profile", username=request.user.username)
+    return redirect("profile", username=request.user.username)
 
 
 def profile(request, username):
@@ -109,7 +109,7 @@ def profile(request, username):
 @login_required
 def update_avatar(request):
     if request.method != "POST":
-        return redirect("accounts:profile", username=request.user.username)
+        return redirect("profile", username=request.user.username)
 
     if request.POST.get("avatar_action") == "delete":
         old_avatar = request.user.avatar_image
@@ -118,7 +118,7 @@ def update_avatar(request):
         if old_avatar:
             old_avatar.delete(save=False)
         messages.success(request, _("Avatar removed."))
-        return redirect("accounts:profile", username=request.user.username)
+        return redirect("profile", username=request.user.username)
 
     old_avatar_name = request.user.avatar_image.name if request.user.avatar_image else ""
     old_avatar_storage = request.user.avatar_image.storage
@@ -136,7 +136,7 @@ def update_avatar(request):
         )
         messages.error(request, error_text or _("Could not update the avatar."))
 
-    return redirect("accounts:profile", username=request.user.username)
+    return redirect("profile", username=request.user.username)
 
 
 @login_required

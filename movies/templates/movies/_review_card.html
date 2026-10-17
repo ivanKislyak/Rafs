@@ -11,7 +11,7 @@
                 <span class="review-comment-author">{% translate "Deleted user" %}</span>
             {% else %}
                 <a class="review-comment-avatar-link"
-                   href="{% url 'accounts:profile' review.user.username %}"
+                   href="{% url 'profile' review.user.username %}"
                    aria-label="{% translate 'Open user profile' %}: {{ review.user.username }}">
                     {% if review.user.avatar_image %}
                         <img loading="lazy" decoding="async" class="review-comment-avatar" data-fallback-src="{% static 'images/default_profile_img.png' %}" onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
@@ -24,7 +24,7 @@
                     {% endif %}
                 </a>
                 <a class="review-comment-author"
-                   href="{% url 'accounts:profile' review.user.username %}">{{ review.user.username }}</a>
+                   href="{% url 'profile' review.user.username %}">{{ review.user.username }}</a>
             {% endif %}
             <div class="review-comment-meta">
                 <span class="review-comment-rating">{{ review.avg_rating }}</span>
@@ -162,7 +162,7 @@
                                 <span class="review-reply-author">{% translate "Deleted user" %}</span>
                             {% else %}
                                 <a class="review-reply-avatar-link"
-                                   href="{% url 'accounts:profile' reply.user.username %}"
+                                   href="{% url 'profile' reply.user.username %}"
                                    aria-label="{% translate 'Open user profile' %}: {{ reply.user.username }}">
                                     {% if reply.user.avatar_image %}
                                         <img loading="lazy" decoding="async" class="review-reply-avatar" data-fallback-src="{% static 'images/default_profile_img.png' %}" onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
@@ -175,7 +175,7 @@
                                     {% endif %}
                                 </a>
                                 <a class="review-reply-author"
-                                   href="{% url 'accounts:profile' reply.user.username %}">{{ reply.user.username }}</a>
+                                   href="{% url 'profile' reply.user.username %}">{{ reply.user.username }}</a>
                             {% endif %}
                             <time class="review-reply-date" datetime="{{ reply.created_at|date:'c' }}">{{ reply.created_at|naturaltime }}</time>
                             {% if reply.user == request.user or request.user.is_superuser %}

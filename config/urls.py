@@ -5,6 +5,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.sitemaps.views import sitemap
 from core.sitemaps import StaticSitemap, MovieSitemap
+from accounts import views as accounts_views
 
 sitemaps = {
     "static": StaticSitemap,
@@ -20,6 +21,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/', include('accounts.urls')),
+    path("<str:username>/", accounts_views.profile, name="profile"),
 ]
 
 if settings.DEBUG:

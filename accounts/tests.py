@@ -5,7 +5,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.db import connection
 from django.test import TestCase, override_settings
 from django.test.utils import CaptureQueriesContext
-from django.urls import reverse
+from django.urls import resolve, reverse
 from PIL import Image
 
 from accounts.models import Achievement, ModerationApplication, User
@@ -46,9 +46,20 @@ class ProfilePageTests(TestCase):
             password="password123",
         )
         self.profile_url = reverse(
-            "accounts:profile",
+            "profile",
             kwargs={"username": self.owner.username},
         )
+
+    def test_profile_uses_root_url_and_header_links_to_it(self):
+        self.assertEqual(self.profile_url, f"/{self.owner.username}/")
+        self.assertEqual(resolve(self.profile_url).view_name, "profile")
+        self.client.force_login(self.owner)
+        response = self.client.get(reverse("core:home"))
+        self.assertContains(response, f'href="{self.profile_url}"')
+
+    def test_legacy_profile_url_permanently_redirects_to_root_url(self):
+        response = self.client.get(f"/accounts/profile/{self.owner.username}/")
+        self.assertRedirects(response, self.profile_url, status_code=301)
 
     def test_profile_is_public_but_private_controls_and_email_are_hidden(self):
         response = self.client.get(self.profile_url)
@@ -244,7 +255,7 @@ class AvatarUpdateTests(TestCase):
 
         self.assertRedirects(
             response,
-            reverse("accounts:profile", kwargs={"username": self.user.username}),
+            reverse("profile", kwargs={"username": self.user.username}),
         )
         self.user.refresh_from_db()
         self.assertTrue(self.user.avatar_image.name.endswith(".png"))

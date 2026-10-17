@@ -1,4 +1,5 @@
 from django.urls import path, include
+from django.views.generic import RedirectView
 
 from . import views
 
@@ -8,7 +9,11 @@ urlpatterns = [
     path("register/", views.register, name="register"),
     path("profile/", views.own_profile, name="own-profile"),
     path("profile/avatar/", views.update_avatar, name="update-avatar"),
-    path("profile/<str:username>/", views.profile, name="profile"),
+    path(
+        "profile/<str:username>/",
+        RedirectView.as_view(pattern_name="profile", permanent=True),
+        name="legacy-profile",
+    ),
     path("moderation/apply/", views.moderation_application, name="moderation-application"),
     path(
         "moderation/applications/",

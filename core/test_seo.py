@@ -161,7 +161,7 @@ class PublicSEOTests(TestCase):
             ("movies:catalog", "movies/catalog.html", {}),
             ("movies:show_reviews", "movies/reviews.html", {}),
             ("movies:detail", "movies/movie_detail.html", {"movie_id": self.movie.pk}),
-            ("accounts:profile", "accounts/profile.html", {"username": self.author.username}),
+            ("profile", "accounts/profile.html", {"username": self.author.username}),
         )
         for name, template, kwargs in pages:
             for language in LANGUAGES:

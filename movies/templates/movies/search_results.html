@@ -96,7 +96,7 @@
                                         </span>
                                     {% else %}
                                         <a class="search-result-avatar-link"
-                                           href="{% url 'accounts:profile' obj.user.username %}">
+                                           href="{% url 'profile' obj.user.username %}">
                                             {% if obj.user.avatar_image %}
                                                 <img class="search-result-avatar search-result-avatar--small"
                                                      src="{{ obj.user.avatar_image.url }}"
@@ -119,7 +119,7 @@
                                             {% if obj.user.is_deleted %}
                                                 <span>{% translate "Deleted user" %}</span>
                                             {% else %}
-                                                <a href="{% url 'accounts:profile' obj.user.username %}">{{ obj.user.username }}</a>
+                                                <a href="{% url 'profile' obj.user.username %}">{{ obj.user.username }}</a>
                                             {% endif %}
                                             <span>{{ obj.created_at|naturaltime }}</span>
                                         </span>
@@ -145,7 +145,7 @@
                                     </span>
                                 {% else %}
                                     <a class="search-result-entity-layout"
-                                       href="{% url 'accounts:profile' obj.username %}">
+                                       href="{% url 'profile' obj.username %}">
                                         {% if obj.avatar_image %}
                                             <img class="search-result-avatar"
                                                  src="{{ obj.avatar_image.url }}"

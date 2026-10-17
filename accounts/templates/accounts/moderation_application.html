@@ -45,7 +45,7 @@
                 </form>
             {% endif %}
             <a class="account-form-back"
-               href="{% url 'accounts:profile' user.username %}">← {% translate "Back to profile" %}</a>
+               href="{% url 'profile' user.username %}">← {% translate "Back to profile" %}</a>
         </section>
     </main>
 {% endblock %}

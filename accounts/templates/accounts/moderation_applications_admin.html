@@ -28,7 +28,7 @@
                                  alt="{% translate 'Avatar of user' %} {{ application.user.username }}">
                         {% endif %}
                         <div class="moderation-applicant-copy">
-                            <a href="{% url 'accounts:profile' application.user.username %}">{{ application.user.username }}</a>
+                            <a href="{% url 'profile' application.user.username %}">{{ application.user.username }}</a>
                             <span>{{ application.email }}</span>
                             <time datetime="{{ application.created_at|date:'c' }}">
                                 {{ application.created_at|date:"DATETIME_FORMAT" }}

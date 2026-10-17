@@ -210,11 +210,11 @@ class ReviewReplyDisplayTests(TestCase):
 
         self.assertContains(
             response,
-            f'href="{reverse("accounts:profile", kwargs={"username": self.first_author.username})}"',
+            f'href="{reverse("profile", kwargs={"username": self.first_author.username})}"',
         )
         self.assertContains(
             response,
-            f'href="{reverse("accounts:profile", kwargs={"username": self.reply_author.username})}"',
+            f'href="{reverse("profile", kwargs={"username": self.reply_author.username})}"',
         )
 
     def test_review_without_replies_has_no_reply_toggle(self):
