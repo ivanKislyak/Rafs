@@ -150,6 +150,6 @@ class SearchHistoryListAPIView(APIView):
 
         sh_new = SearchHistory.objects.create(
             user=request.user,
-            query=request.data['query']
+            query=serializer.validated_data['query']
         )
         return Response({'post': SearchHistorySerializer(sh_new).data})
