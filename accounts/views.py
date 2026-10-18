@@ -1,4 +1,4 @@
-from rest_framework import generics
+from rest_framework import generics, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -139,6 +139,17 @@ def update_avatar(request):
         messages.error(request, error_text or _("Could not update the avatar."))
 
     return redirect("profile", username=request.user.username)
+
+
+class SearchHistoryViewSet(viewsets.ModelViewSet):
+    serializer_class = SearchHistorySerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return SearchHistory.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 class SearchHistoryAPIList(generics.ListCreateAPIView):
     serializer_class = SearchHistorySerializer
