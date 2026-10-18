@@ -140,8 +140,18 @@ def update_avatar(request):
 
     return redirect("profile", username=request.user.username)
 
+class SearchHistoryAPIList(generics.ListCreateAPIView):
+    serializer_class = SearchHistorySerializer
+    permission_classes = [IsAuthenticated]
 
-class SearchHistoryListAPIView(APIView):
+    def get_queryset(self):
+        return SearchHistory.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class SearchHistoryAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
