@@ -3,6 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
+from rest_framework.decorators import action
 
 from django.forms import model_to_dict
 from django.contrib import messages
@@ -150,6 +151,9 @@ class SearchHistoryViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+    # @action(method=['get'], detail=False)
+    # def 
 
 class SearchHistoryAPIList(generics.ListCreateAPIView):
     serializer_class = SearchHistorySerializer
