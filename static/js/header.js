@@ -97,9 +97,32 @@
       form.requestSubmit();
     });
   });
+  function sendSearchHistory(searchQuery) {
+    fetch('/accounts/api/v1/search-history/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            "X-CSRFToken": form.dataset.csrf,
+        },
+        body: JSON.stringify({
+            query: searchQuery
+        }),
+        keepalive: true
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Successfully saved on the backend:', data);
+    })
+    .catch(error => {
+        console.error('Something went wrong:', error);
+    });
+  }
   form.addEventListener('submit', (event) => {
     input.value = input.value.trim();
-    if (!input.value) { event.preventDefault(); openSuggestions(); input.focus(); }
+    if (!input.value) { event.preventDefault(); openSuggestions(); input.focus(); 
+    } else {
+      sendSearchHistory(input.value);
+    }
   });
   updateClearButton();
 })();

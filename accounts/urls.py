@@ -7,7 +7,7 @@ from . import views
 app_name = "accounts"
 
 router = routers.DefaultRouter()
-router.register(r'last-search-history', views.SearchHistoryViewSet, basename='searchhistory')
+router.register(r'search-history', views.SearchHistoryViewSet, basename='searchhistory')
 
 urlpatterns = [
     path("register/", views.register, name="register"),

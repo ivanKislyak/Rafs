@@ -145,15 +145,14 @@ def update_avatar(request):
 class SearchHistoryViewSet(viewsets.ModelViewSet):
     serializer_class = SearchHistorySerializer
     permission_classes = [IsAuthenticated]
+    http_method_names = ["get", "post", "delete", "head", "options"]
 
     def get_queryset(self):
-        return SearchHistory.objects.filter(user=self.request.user)
+        return SearchHistory.objects.filter(user=self.request.user).order_by('-created_at')
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
-    # @action(method=['get'], detail=False)
-    # def 
 
 class SearchHistoryAPIList(generics.ListCreateAPIView):
     serializer_class = SearchHistorySerializer

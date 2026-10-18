@@ -23,11 +23,7 @@
             </div>
         </div>
         <div class="search-bar-wrapper" id="header-search" data-header-search>
-            <form class="search-bar-form"
-                  action="{% url 'movies:search_query' %}"
-                  method="get"
-                  data-header-search-form>
-                {% csrf_token %}
+            <form class="search-bar-form" action="{% url 'movies:search_query' %}" method="get" data-csrf="{{ csrf_token }}" data-header-search-form>
                 <div class="search-bar-container">
                     <span class="search-bar-leading-icon" aria-hidden="true">
                         <svg xmlns="http://www.w3.org/2000/svg"
