@@ -3,7 +3,7 @@ from .models import SearchHistory
 
 @admin.register(SearchHistory)
 class SearchHistoryAdmin(admin.ModelAdmin):
-    list_display = ["get_username", "query", "created_at"]
+    list_display = ["id", "get_username", "query", "created_at"]
     list_select_related = ('user',)
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):

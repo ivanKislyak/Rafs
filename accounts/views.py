@@ -151,70 +151,24 @@ class SearchHistoryAPIList(generics.ListCreateAPIView):
         serializer.save(user=self.request.user)
 
 
-class SearchHistoryAPIView(APIView):
+class SearchHistoryAPIUpdate(generics.UpdateAPIView):
+    serializer_class = SearchHistorySerializer
     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
-        sh = SearchHistory.objects.select_related('user').filter(user=request.user)
-        serializer = SearchHistorySerializer(sh, many=True)
-        return Response({'history': serializer.data})
+    def get_queryset(self):
+        return SearchHistory.objects.filter(user=self.request.user)
 
-    def post(self, request):
-        serializer = SearchHistorySerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save(user=request.user)
-
-        return Response(
-            {'post': serializer.data},
-            status=status.HTTP_201_CREATED,
-        )
-
-    def put(self, request, *args, **kwargs):
-        pk = kwargs.get('pk', None)
-        
-        if pk is None:
-            return Response(
-                {'error': 'Specify the record ID in the URL'},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        try:
-            instance = SearchHistory.objects.get(pk=pk, user=request.user,)
-        except SearchHistory.DoesNotExist:
-            return Response(
-                {'error': 'Record not found'},
-                status=status.HTTP_404_NOT_FOUND,
-            )
-
-        serializer = SearchHistorySerializer(
-            instance=instance,
-            data=request.data,
-            context={'request': request},
-        )
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response({'post': serializer.data})
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
-    def delete(self, request, *args, **kwargs):
-        pk = kwargs.get('pk', None)
-        
-        if pk is None:
-            return Response(
-                {'error': 'Specify the record ID in the URL'},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+class SearchHistoryAPIDetailView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = SearchHistorySerializer
+    permission_classes = [IsAuthenticated]
 
-        try:
-            instance = SearchHistory.objects.get(pk=pk, user=request.user,)
-        except SearchHistory.DoesNotExist:
-            return Response(
-                {'error': 'Record not found'},
-                status=status.HTTP_404_NOT_FOUND,
-            )
+    def get_queryset(self):
+        return SearchHistory.objects.filter(user=self.request.user)
 
-        instance.delete()
-
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)    
         

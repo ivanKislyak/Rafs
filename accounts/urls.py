@@ -9,5 +9,6 @@ urlpatterns = [
     path("register/", views.register, name="register"),
     path("profile/avatar/", views.update_avatar, name="update-avatartar"),
     path('api/v1/last-search-history/', views.SearchHistoryAPIList.as_view(), name='last-search-history'),
-    path('api/v1/last-search-history/<int:pk>/', views.SearchHistoryAPIList.as_view(), name='last-search-history'),
+    path('api/v1/last-search-history/<int:pk>/', views.SearchHistoryAPIUpdate.as_view(), name='last-search-history'),
+    path('api/v1/last-search-history-detail/<int:pk>/', views.SearchHistoryAPIDetailView.as_view(), name='last-search-history'),
 ]
