@@ -73,30 +73,133 @@
     else if (owner && mobile.matches) owner.trigger.focus();
   });
 
-  const form = search.querySelector('[data-header-search-form]');
-  const clearButton = search.querySelector('[data-header-search-clear]');
-  const openSuggestions = () => {
-    closeOthers(panels.find((item) => item.panel === search));
-    suggestions.hidden = false;
-    input.setAttribute('aria-expanded', 'true');
-  };
-  const updateClearButton = () => { clearButton.hidden = input.value.length === 0; };
-  input.addEventListener('focus', openSuggestions);
-  input.addEventListener('click', openSuggestions);
-  input.addEventListener('input', updateClearButton);
-  clearButton.addEventListener('click', () => {
+const form = search.querySelector('[data-header-search-form]');
+const clearButton = search.querySelector('[data-header-search-clear]');
+const isAuthenticated = form.dataset.isAuthenticated?.toLowerCase() === "true";
+
+const escapeHtml = (str) => {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+};
+
+const ICONS = {
+    history: `
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <circle cx="12" cy="12" r="8.5"></circle>
+            <path d="M12 7.5V12l3 2"></path>
+        </svg>
+    `,
+    popular: `
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M5 16.5 10 11l3 3 6-7"></path>
+            <path d="M14.5 7H19v4.5"></path>
+        </svg>
+    `
+};
+
+const renderSuggestions = async () => {
+    let searchHistory = [];
+
+    if (isAuthenticated) {
+        try {
+            const response = await fetch('/accounts/api/v1/search-history/', {
+                method: 'GET'
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                const items = Array.isArray(data) ? data : (data.results || []);
+                // API returns newest first; Set keeps the first occurrence.
+                searchHistory = [...new Set(items.map(item => item.query))].slice(0, 8);
+            }
+        } catch (error) {
+            console.error('Failed to load search history:', error);
+        }
+    }
+
+    const popularSearches = JSON.parse(suggestions.dataset.popularSearches || '[]');
+    
+    const textHistory = suggestions.dataset.textHistory || 'Search history';
+    const textPopular = suggestions.dataset.textPopular || 'Popular searches';
+    const textEmpty = suggestions.dataset.textEmpty || 'No search suggestions yet';
+
+    let html = '';
+
+    if (searchHistory.length > 0) {
+        html += `<p class="search-suggestions-title">${escapeHtml(textHistory)}</p>`;
+        html += `<div class="search-suggestions-list">`;
+        searchHistory.forEach(query => {
+            html += `
+                <button class="search-suggestion-card" type="button" role="option" data-search-value="${escapeHtml(query)}">
+                    ${ICONS.history}
+                    <span>${escapeHtml(query)}</span>
+                </button>
+            `;
+        });
+        html += `</div>`;
+    } 
+    else if (popularSearches.length > 0) {
+        html += `<p class="search-suggestions-title">${escapeHtml(textPopular)}</p>`;
+        html += `<div class="search-suggestions-list">`;
+        popularSearches.forEach(query => {
+            html += `
+                <button class="search-suggestion-card" type="button" role="option" data-search-value="${escapeHtml(query)}">
+                    ${ICONS.popular}
+                    <span>${escapeHtml(query)}</span>
+                </button>
+            `;
+        });
+        html += `</div>`;
+    } 
+    else {
+        html += `<p class="search-suggestions-empty">${escapeHtml(textEmpty)}</p>`;
+    }
+
+    suggestions.innerHTML = html;
+};
+
+const openSuggestions = async () => {
+  if (!suggestions.hidden) return;
+  closeOthers(panels.find((item) => item.panel === search));
+  
+  suggestions.hidden = false;
+  input.setAttribute('aria-expanded', 'true');
+  
+  await renderSuggestions(); 
+};
+
+const updateClearButton = () => { 
+    clearButton.hidden = input.value.length === 0; 
+};
+
+input.addEventListener('focus', openSuggestions);
+input.addEventListener('click', openSuggestions);
+input.addEventListener('input', updateClearButton);
+
+clearButton.addEventListener('click', () => {
     input.value = '';
     updateClearButton();
     input.focus();
     openSuggestions();
-  });
-  search.querySelectorAll('[data-search-value]').forEach((card) => {
-    card.addEventListener('click', () => {
-      input.value = card.dataset.searchValue;
-      updateClearButton();
-      form.requestSubmit();
-    });
-  });
+});
+
+suggestions.addEventListener('click', (event) => {
+    const card = event.target.closest('[data-search-value]');
+    if (!card) return;
+
+    input.value = card.dataset.searchValue;
+    updateClearButton();
+    suggestions.hidden = true;
+    input.setAttribute('aria-expanded', 'false');
+    
+    if (form) {
+        form.requestSubmit();
+    }
+});
   function sendSearchHistory(searchQuery) {
     fetch('/accounts/api/v1/search-history/', {
         method: 'POST',
@@ -109,7 +212,10 @@
         }),
         keepalive: true
     })
-    .then(response => response.json())
+    .then(response => {
+      if (!response.ok) throw new Error('HTTP ' + response.status);
+      return response.json();
+    })
     .then(data => {
         console.log('Successfully saved on the backend:', data);
     })
@@ -120,7 +226,7 @@
   form.addEventListener('submit', (event) => {
     input.value = input.value.trim();
     if (!input.value) { event.preventDefault(); openSuggestions(); input.focus(); 
-    } else if (form.dataset.isAuthenticated?.toLowerCase() === "true") {
+    } else if (isAuthenticated) {
       sendSearchHistory(input.value);
     }
   });
