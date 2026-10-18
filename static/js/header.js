@@ -120,7 +120,7 @@
   form.addEventListener('submit', (event) => {
     input.value = input.value.trim();
     if (!input.value) { event.preventDefault(); openSuggestions(); input.focus(); 
-    } else {
+    } else if (form.dataset.isAuthenticated?.toLowerCase() === "true") {
       sendSearchHistory(input.value);
     }
   });

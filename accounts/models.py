@@ -76,9 +76,10 @@ class SearchHistory(models.Model):
     )
     query = models.CharField(max_length=200)
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ["-created_at"]
+        ordering = ["-updated_at"]
         verbose_name = "Search History"
         verbose_name_plural = "Search Histories"
     

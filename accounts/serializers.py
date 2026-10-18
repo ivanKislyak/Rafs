@@ -9,4 +9,4 @@ class SearchHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = SearchHistory
         fields = "__all__"
-        read_only_fields = ('user', 'created_at')
+        read_only_fields = ('user', 'updated_at', 'created_at')

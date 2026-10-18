@@ -148,7 +148,7 @@ class SearchHistoryViewSet(viewsets.ModelViewSet):
     http_method_names = ["get", "post", "delete", "head", "options"]
 
     def get_queryset(self):
-        return SearchHistory.objects.filter(user=self.request.user).order_by('-created_at')
+        return SearchHistory.objects.filter(user=self.request.user).order_by('-updated_at')[:11]
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
