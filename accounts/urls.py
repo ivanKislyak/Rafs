@@ -7,8 +7,7 @@ app_name = "accounts"
 
 urlpatterns = [
     path("register/", views.register, name="register"),
-    path("profile/", views.own_profile, name="own-profile"),
-    path("profile/avatar/", views.update_avatar, name="update-avatar"),
-    path('api/v1/last-search-history', views.SearchHistoryListAPIView.as_view(), name='last_search_history'),
-    path('api/v1/last-search-history/<int:pk>/', views.SearchHistoryListAPIView.as_view(), name='last_search_history'),
+    path("profile/avatar/", views.update_avatar, name="update-avatartar"),
+    path('api/v1/last-search-history/', views.SearchHistoryListAPIView.as_view(), name='last-search-history'),
+    path('api/v1/last-search-history/<int:pk>/', views.SearchHistoryListAPIView.as_view(), name='last-search-history'),
 ]

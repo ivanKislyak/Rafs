@@ -150,12 +150,9 @@ class SearchHistoryListAPIView(APIView):
         return Response({'history': serializer.data})
 
     def post(self, request):
-        serializer = SearchHistorySerializer(
-            data=request.data,
-            context={'request': request},
-        )
+        serializer = SearchHistorySerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
+        serializer.save(user=request.user)
 
         return Response(
             {'post': serializer.data},
