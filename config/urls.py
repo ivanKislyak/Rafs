@@ -21,7 +21,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/', include('accounts.urls')),
-    path("<str:username>/", accounts_views.profile, name="profile"),
+    path("@<str:username>/", accounts_views.profile, name="profile"),
 ]
 
 if settings.DEBUG:
