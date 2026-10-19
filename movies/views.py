@@ -397,6 +397,7 @@ def show_reviews(request):
             like_count=Count("votes", filter=Q(votes__value=1)),
             dislike_count=Count("votes", filter=Q(votes__value=-1)),
         )
+        .exclude(text="")
         .order_by("-created_at", "-pk")
         .prefetch_related(Prefetch(
             "replies",
