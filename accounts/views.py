@@ -148,11 +148,23 @@ class SearchHistoryViewSet(viewsets.ModelViewSet):
     http_method_names = ["get", "post", "delete", "head", "options"]
 
     def get_queryset(self):
-        return SearchHistory.objects.filter(user=self.request.user).order_by('-updated_at')[:11]
+        return SearchHistory.objects.filter(user=self.request.user).order_by('-updated_at')
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+    def create(self, request, *args, **kwargs):
+        query_text = request.data.get('query')
+        
+        instance, created = SearchHistory.objects.update_or_create(
+            user=request.user,
+            query=query_text,
+            defaults={}
+        )
+        
+        serializer = self.get_serializer(instance)
+        status_code = status.HTTP_201_CREATED if created else status.HTTP_200_OK
+        return Response(serializer.data, status=status_code)
 
 class SearchHistoryAPIList(generics.ListCreateAPIView):
     serializer_class = SearchHistorySerializer

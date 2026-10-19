@@ -114,7 +114,7 @@ const renderSuggestions = async () => {
                 const data = await response.json();
                 const items = Array.isArray(data) ? data : (data.results || []);
                 // API returns newest first; Set keeps the first occurrence.
-                searchHistory = [...new Set(items.map(item => item.query))].slice(0, 8);
+                searchHistory = [...new Set(items.map(item => item))].slice(0, 11);
             }
         } catch (error) {
             console.error('Failed to load search history:', error);
@@ -130,26 +130,34 @@ const renderSuggestions = async () => {
     let html = '';
 
     if (searchHistory.length > 0) {
-        html += `<p class="search-suggestions-title">${escapeHtml(textHistory)}</p>`;
-        html += `<div class="search-suggestions-list">`;
-        searchHistory.forEach(query => {
-            html += `
-                <button class="search-suggestion-card" type="button" role="option" data-search-value="${escapeHtml(query)}">
-                    ${ICONS.history}
-                    <span>${escapeHtml(query)}</span>
-                </button>
-            `;
-        });
-        html += `</div>`;
-    } 
+      html += `<p class="search-suggestions-title">${escapeHtml(textHistory)}</p>`;
+      html += `<div class="search-suggestions-list">`;
+      searchHistory.forEach(item => {
+          html += `
+              <div class="search-suggestions-item">
+                  <button class="search-suggestion-card" type="submit" data-search-value="${escapeHtml(item.query)}">
+                      ${ICONS.history || ''}
+                      <span>${escapeHtml(item.query)}</span>
+                  </button>
+                  <button class="delete-search-result" type="button" data-delete-id="${escapeHtml(item.id)}" aria-label="Delete">
+                    <svg xmlns="http://w3.org" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="18" y1="6" x2="6" y2="18"></line>
+                      <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                  </button>
+              </div>
+          `;
+      });
+      html += `</div>`;
+    }
     else if (popularSearches.length > 0) {
         html += `<p class="search-suggestions-title">${escapeHtml(textPopular)}</p>`;
         html += `<div class="search-suggestions-list">`;
-        popularSearches.forEach(query => {
+        popularSearches.forEach(item => {
             html += `
-                <button class="search-suggestion-card" type="button" role="option" data-search-value="${escapeHtml(query)}">
+                <button class="search-suggestion-card" type="button" role="option" data-search-value="${escapeHtml(item.query)}">
                     ${ICONS.popular}
-                    <span>${escapeHtml(query)}</span>
+                    <span>${escapeHtml(item.query)}</span>
                 </button>
             `;
         });
@@ -200,35 +208,77 @@ suggestions.addEventListener('click', (event) => {
         form.requestSubmit();
     }
 });
-  function sendSearchHistory(searchQuery) {
-    fetch('/accounts/api/v1/search-history/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            "X-CSRFToken": form.dataset.csrf,
-        },
-        body: JSON.stringify({
-            query: searchQuery
-        }),
-        keepalive: true
-    })
-    .then(response => {
-      if (!response.ok) throw new Error('HTTP ' + response.status);
-      return response.json();
-    })
-    .then(data => {
-        console.log('Successfully saved on the backend:', data);
-    })
-    .catch(error => {
-        console.error('Something went wrong:', error);
-    });
-  }
-  form.addEventListener('submit', (event) => {
-    input.value = input.value.trim();
-    if (!input.value) { event.preventDefault(); openSuggestions(); input.focus(); 
-    } else if (isAuthenticated) {
-      sendSearchHistory(input.value);
-    }
+function sendSearchHistory(searchQuery) {
+  fetch(`/accounts/api/v1/search-history/`, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+          "X-CSRFToken": form.dataset.csrf,
+      },
+      body: JSON.stringify({
+          query: searchQuery
+      }),
+      keepalive: true
+  })
+  .then(response => {
+    if (!response.ok) throw new Error('HTTP ' + response.status);
+    return response.json();
+  })
+  .then(data => {
+      console.log('Successfully saved on the backend:', data);
+  })
+  .catch(error => {
+      console.error('Something went wrong:', error);
   });
-  updateClearButton();
+}
+function deleteSearchResult(pk) {
+  fetch(`/accounts/api/v1/search-history/${pk}/`, {
+      method: 'DELETE',
+      headers: {
+          "X-CSRFToken": form.dataset.csrf,
+      },
+      keepalive: true
+  })
+  .then(response => {
+    if (!response.ok) throw new Error('HTTP ' + response.status);
+    return response.status === 204 ? null: response.json();
+  })
+  .then(data => {
+      console.log('Successfully deleted on the backend:', data);
+  })
+  .catch(error => {
+      console.error('Something went wrong:', error);
+  });
+}
+
+form.addEventListener('submit', (event) => {
+  input.value = input.value.trim();
+  if (!input.value) { 
+    event.preventDefault(); 
+    openSuggestions(); 
+    input.focus(); 
+  } else if (isAuthenticated) {
+    sendSearchHistory(input.value);
+  }
+});
+
+suggestions.addEventListener('click', (event) => {
+  const deleteButton = event.target.closest('.delete-search-result');
+  
+  if (deleteButton) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const pkQuery = deleteButton.dataset.deleteId
+
+    if (isAuthenticated) {
+      deleteSearchResult(pkQuery);
+      
+      const listItem = deleteButton.closest('.search-suggestions-item');
+      if (listItem) listItem.remove();
+    }
+  }
+});
+
+updateClearButton();
 })();
