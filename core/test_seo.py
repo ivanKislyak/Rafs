@@ -34,7 +34,9 @@ class PageHTML(HTMLParser):
         super().__init__(convert_charrefs=True)
         self.meta, self.links, self.anchors, self.schemas = [], [], [], []
         self.title, self.language = "", ""
+        self.home_description = ""
         self.in_title, self.in_schema = False, False
+        self.in_home_description = False
         self.feed(source)
 
     def handle_starttag(self, tag, attrs):
@@ -52,18 +54,24 @@ class PageHTML(HTMLParser):
         elif tag == "script" and attrs.get("type") == "application/ld+json":
             self.in_schema = True
             self.schemas.append("")
+        elif tag == "p" and "home-description" in attrs.get("class", "").split():
+            self.in_home_description = True
 
     def handle_data(self, data):
         if self.in_title:
             self.title += data
         if self.in_schema:
             self.schemas[-1] += data
+        if self.in_home_description:
+            self.home_description += data
 
     def handle_endtag(self, tag):
         if tag == "title":
             self.in_title = False
         elif tag == "script":
             self.in_schema = False
+        elif tag == "p":
+            self.in_home_description = False
 
     def values(self, key, value):
         return [meta.get("content", "").strip() for meta in self.meta if meta.get(key) == value]
@@ -175,6 +183,7 @@ class PublicSEOTests(TestCase):
                         self.assertEqual(page.schemas, [])
 
     def test_home_has_one_website_in_initial_html_and_visible_russian_brand(self):
+        description = "RAFS is a site for ratings and reviews of films, series and anime"
         for language in LANGUAGES:
             with self.subTest(language=language):
                 response, page = self.get_page("core:home", language)
@@ -186,8 +195,12 @@ class PublicSEOTests(TestCase):
                 self.assertEqual(schema["url"], "https://rafs.app/")
                 self.assertEqual(schema["@id"], "https://rafs.app/#website")
                 self.assertNotIn("SearchAction", page.schemas[0])
+                with translation.override(language):
+                    self.assertEqual(page.home_description.strip(), translation.gettext(description))
+                if language != "en":
+                    self.assertNotEqual(page.home_description.strip(), description)
                 if language == "ru":
-                    self.assertContains(response, "RAFS (Рафс) – сайт")
+                    self.assertIn("RAFS (Рафс) – сайт", page.home_description)
 
     def test_new_descriptions_are_translated_and_specific_to_each_page(self):
         names = ("core:home", "core:about", "movies:catalog", "movies:show_reviews")

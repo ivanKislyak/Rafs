@@ -154,7 +154,9 @@ class SearchHistoryViewSet(viewsets.ModelViewSet):
         serializer.save(user=self.request.user)
 
     def create(self, request, *args, **kwargs):
-        query_text = request.data.get('query')
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        query_text = serializer.validated_data['query']
         
         instance, created = SearchHistory.objects.update_or_create(
             user=request.user,

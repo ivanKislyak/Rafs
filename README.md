@@ -83,9 +83,9 @@ The complete list of Python dependencies is available in `requirements.txt`.
 - **Global header search requires PostgreSQL and a populated search index.**
   SQLite is useful for lightweight local development but does not support the
   PostgreSQL full-text query used by the search-results page. Importing or editing
-  records does not automatically update `GlobalSearchIndex`. Index-building
-  helpers exist in `movies/services/search_index.py`; the
-  `rebuild_search_index` management-command file is currently a placeholder.
+  records does not automatically update `GlobalSearchIndex`. Run
+  `python manage.py rebuild_search_index` after the initial data setup and again
+  whenever the searchable data changes, as described below.
 - **Search suggestions are not live catalog autocomplete.** They show the signed-in
   user's history, or popular-query data when supplied to the template.
 - **Profile editing is partial.** Public profiles and avatar management work;
@@ -283,6 +283,30 @@ loaded.
 
 With `DJANGO_DEBUG=True`, Django serves media files during local development. Media storage and delivery must be configured separately for a production deployment. WhiteNoise serves static assets, not user-uploaded media files.
 
+## Building and rebuilding the search index
+
+Global search requires PostgreSQL. After applying migrations and adding the
+initial data, build the index with:
+
+```powershell
+python manage.py rebuild_search_index
+```
+
+Use the same command after importing, editing, or deleting searchable records.
+Index updates are manual: changing data does not automatically refresh search.
+For a running Docker environment, use:
+
+```powershell
+docker compose exec web python manage.py rebuild_search_index
+```
+
+The command replaces only `GlobalSearchIndex`, using the existing document
+builders for movies, non-empty reviews by active users, active users, persons,
+and studios. Deleted users and their reviews are excluded. It refreshes changed
+documents and removes stale entries without modifying the source records or
+calling external APIs. The rebuild runs in one transaction: an error preserves
+the previous index. SQLite is not supported by this command.
+
 ## Project checks
 
 Check the Django configuration:
@@ -291,9 +315,11 @@ Check the Django configuration:
 python manage.py check
 ```
 
-The repository includes automated checks for profiles, avatar uploads, review
-reactions and replies, watch statuses, SEO metadata, and importer behavior using
-API fixtures. Run the test suite with:
+The repository includes automated checks for profiles, avatar uploads, search
+history validation and ownership, review reactions and replies, watch statuses,
+SEO metadata, POST-only staff imports, and importer behavior using API fixtures.
+The full-text rebuild checks require a separate PostgreSQL test database; the
+database role must be allowed to create that test database. Run the test suite with:
 
 ```powershell
 python manage.py test

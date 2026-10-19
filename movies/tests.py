@@ -1,4 +1,5 @@
 import json
+from unittest.mock import patch
 
 from django.contrib.auth import get_user_model
 from django.db import connection
@@ -17,6 +18,66 @@ class ReviewFormTests(SimpleTestCase):
         self.assertIn("rating", form.fields)
         self.assertIn("text", form.fields)
         self.assertIn("contains_spoiler", form.fields)
+
+
+class WikidataImportPermissionTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.staff = get_user_model().objects.create_user(
+            username="import-staff", email="import-staff@example.com", is_staff=True,
+        )
+        cls.visitor = get_user_model().objects.create_user(
+            username="import-visitor", email="import-visitor@example.com",
+        )
+        cls.url = reverse("movies:wikidata_save_item", args=["Q123"])
+
+    @patch("movies.views.fetch_movie_details_raw")
+    def test_get_does_not_import_even_for_staff(self, fetch):
+        self.client.force_login(self.staff)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 405)
+        self.assertEqual(response.headers["Allow"], "POST")
+        fetch.assert_not_called()
+        self.assertEqual(Movie.objects.count(), 0)
+
+    @patch("movies.views.fetch_movie_details_raw")
+    def test_anonymous_and_non_staff_cannot_import(self, fetch):
+        self.assertEqual(self.client.post(self.url).status_code, 302)
+        self.client.force_login(self.visitor)
+        self.assertEqual(self.client.post(self.url).status_code, 302)
+        fetch.assert_not_called()
+        self.assertEqual(Movie.objects.count(), 0)
+
+    def test_search_result_posts_with_csrf_and_imports_only_after_submit(self):
+        client = Client(enforce_csrf_checks=True)
+        client.force_login(self.staff)
+        with patch("movies.views.search_wikidata_media", return_value=[{
+            "id": "Q123", "title": "Fixture movie", "description": "Fixture description",
+        }]), patch("movies.views.fetch_movie_details_raw") as fetch:
+            response = client.get(
+                reverse("movies:wikidata_search"), {"query": "Fixture", "lang": "en"},
+            )
+            self.assertEqual(response.status_code, 200)
+            self.assertContains(response, f'action="{self.url}"')
+            self.assertContains(response, 'method="post"')
+            self.assertContains(response, 'name="csrfmiddlewaretoken"')
+            self.assertNotContains(response, f'href="{self.url}"')
+            self.assertEqual(client.post(self.url).status_code, 403)
+            fetch.assert_not_called()
+
+            imported = Movie.objects.create(name="Fixture movie")
+            fetch.return_value = {"fixture": "raw"}
+            with patch("movies.views.parse_movie_details", return_value={"name": "Fixture movie"}) as parse, patch(
+                "movies.views.import_parsed_data_to_db", return_value=imported,
+            ) as save:
+                response = client.post(
+                    self.url, {"csrfmiddlewaretoken": client.cookies["csrftoken"].value},
+                )
+
+            self.assertRedirects(response, reverse("movies:detail", args=[imported.pk]))
+            fetch.assert_called_once_with("Q123")
+            parse.assert_called_once_with({"fixture": "raw"}, "Q123")
+            save.assert_called_once_with("Q123", {"name": "Fixture movie"})
 
 
 class CatalogRatingFilterTests(TestCase):

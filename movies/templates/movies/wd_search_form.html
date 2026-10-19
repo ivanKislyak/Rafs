@@ -122,10 +122,14 @@
                                                 <path d="M18 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"></path>
                                             </svg>
                                         </a>
-                                        <a class="wd-add-button"
-                                           href="{% url 'movies:wikidata_save_item' result.id %}"
-                                           target="_blank"
-                                           rel="noopener noreferrer">{% translate "Add" %}</a>
+                                        <form class="wd-add-form"
+                                              method="post"
+                                              action="{% url 'movies:wikidata_save_item' result.id %}"
+                                              target="_blank"
+                                              rel="noopener">
+                                            {% csrf_token %}
+                                            <button class="wd-add-button" type="submit">{% translate "Add" %}</button>
+                                        </form>
                                     </div>
                                 </div>
                             </li>

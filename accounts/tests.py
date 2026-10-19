@@ -1,14 +1,18 @@
+import json
 from io import BytesIO
 from tempfile import TemporaryDirectory
+from datetime import timedelta
 
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.db import connection
 from django.test import TestCase, override_settings
 from django.test.utils import CaptureQueriesContext
 from django.urls import resolve, reverse
+from django.utils import timezone
 from PIL import Image
+from rest_framework.test import APIClient
 
-from accounts.models import Achievement, User
+from accounts.models import Achievement, SearchHistory, User
 from movies.models import Movie, Review, ReviewReply, WatchStatus
 
 class RegistrationEmailTests(TestCase):
@@ -51,15 +55,20 @@ class ProfilePageTests(TestCase):
         )
 
     def test_profile_uses_root_url_and_header_links_to_it(self):
-        self.assertEqual(self.profile_url, f"/{self.owner.username}/")
+        self.assertEqual(self.profile_url, f"/@{self.owner.username}/")
         self.assertEqual(resolve(self.profile_url).view_name, "profile")
         self.client.force_login(self.owner)
         response = self.client.get(reverse("core:home"))
         self.assertContains(response, f'href="{self.profile_url}"')
 
-    def test_legacy_profile_url_permanently_redirects_to_root_url(self):
-        response = self.client.get(f"/accounts/profile/{self.owner.username}/")
-        self.assertRedirects(response, self.profile_url, status_code=301)
+    def test_removed_profile_urls_are_not_available(self):
+        for url in [
+            f"/{self.owner.username}/",
+            f"/accounts/profile/{self.owner.username}/",
+            "/accounts/profile/",
+        ]:
+            with self.subTest(url=url):
+                self.assertEqual(self.client.get(url).status_code, 404)
 
     def test_profile_is_public_but_private_controls_and_email_are_hidden(self):
         response = self.client.get(self.profile_url)
@@ -200,17 +209,9 @@ class ProfilePageTests(TestCase):
         self.assertEqual(populated_response.status_code, 200)
         self.assertLessEqual(len(populated_queries), len(initial_queries) + 1)
 
-    def test_own_profile_shortcut_requires_login_and_redirects_to_username(self):
-        shortcut_url = reverse("accounts:own-profile")
-        response = self.client.get(shortcut_url)
-        self.assertRedirects(
-            response,
-            f"{reverse('login')}?next={shortcut_url}",
-        )
-
-        self.client.force_login(self.owner)
-        response = self.client.get(shortcut_url)
-        self.assertRedirects(response, self.profile_url)
+    def test_deleted_users_profile_is_not_public(self):
+        self.owner.delete()
+        self.assertEqual(self.client.get(self.profile_url).status_code, 404)
 
 
 class AvatarUpdateTests(TestCase):
@@ -266,3 +267,108 @@ class AvatarUpdateTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.user.refresh_from_db()
         self.assertFalse(self.user.avatar_image)
+
+
+class SearchHistoryAPITests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.owner = User.objects.create_user(
+            username="history-owner", email="history-owner@example.com",
+        )
+        cls.other = User.objects.create_user(
+            username="history-other", email="history-other@example.com",
+        )
+
+    def setUp(self):
+        self.client = APIClient()
+        self.client.force_authenticate(self.owner)
+        self.url = reverse("accounts:searchhistory-list")
+
+    def test_invalid_queries_return_400_without_creating_history(self):
+        invalid_payloads = [
+            {}, {"query": ""}, {"query": " \t\n "}, {"query": "x" * 201},
+            {"query": None}, {"query": []}, {"query": {}},
+            {"query": True}, {"query": 123}, {"query": 1.5},
+            [], [{"query": "movie"}], "movie", None,
+        ]
+        for payload in invalid_payloads:
+            with self.subTest(payload=payload):
+                # Encode explicitly so JSON null and scalar bodies reach the API unchanged.
+                response = self.client.post(
+                    self.url, data=json.dumps(payload), content_type="application/json",
+                )
+                self.assertEqual(response.status_code, 400)
+                self.assertEqual(SearchHistory.objects.count(), 0)
+
+    def test_repeated_search_updates_existing_entry_and_orders_it_first(self):
+        first = self.client.post(self.url, {"query": "  first film  "}, format="json")
+        self.assertEqual(first.status_code, 201)
+        entry = SearchHistory.objects.get(pk=first.json()["id"])
+        self.assertEqual(entry.query, "first film")
+        old_time = timezone.now() - timedelta(days=1)
+        SearchHistory.objects.filter(pk=entry.pk).update(updated_at=old_time)
+        later = SearchHistory.objects.create(user=self.owner, query="second film")
+
+        repeated = self.client.post(self.url, {"query": "first film"}, format="json")
+
+        self.assertEqual(repeated.status_code, 200)
+        self.assertEqual(repeated.json()["id"], entry.pk)
+        self.assertEqual(SearchHistory.objects.filter(user=self.owner).count(), 2)
+        entry.refresh_from_db()
+        self.assertGreater(entry.updated_at, later.updated_at)
+        listing = self.client.get(self.url)
+        self.assertEqual([item["id"] for item in listing.json()], [entry.pk, later.pk])
+
+    def test_client_cannot_assign_another_owner(self):
+        other_entry = SearchHistory.objects.create(user=self.other, query="same film")
+        old_time = timezone.now() - timedelta(days=1)
+        SearchHistory.objects.filter(pk=other_entry.pk).update(updated_at=old_time)
+
+        response = self.client.post(
+            self.url, {"query": "same film", "user": self.other.pk}, format="json",
+        )
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.json()["user"], self.owner.pk)
+        self.assertTrue(SearchHistory.objects.filter(user=self.owner, query="same film").exists())
+        other_entry.refresh_from_db()
+        self.assertEqual(other_entry.user_id, self.other.pk)
+        self.assertEqual(other_entry.updated_at, old_time)
+
+    def test_list_retrieve_and_delete_are_limited_to_current_user(self):
+        own_entry = SearchHistory.objects.create(user=self.owner, query="own film")
+        other_entry = SearchHistory.objects.create(user=self.other, query="private film")
+        own_url = reverse("accounts:searchhistory-detail", args=[own_entry.pk])
+        other_url = reverse("accounts:searchhistory-detail", args=[other_entry.pk])
+
+        self.assertEqual([item["id"] for item in self.client.get(self.url).json()], [own_entry.pk])
+        self.assertEqual(self.client.get(own_url).status_code, 200)
+        self.assertEqual(self.client.get(other_url).status_code, 404)
+        self.assertEqual(self.client.delete(other_url).status_code, 404)
+        self.assertTrue(SearchHistory.objects.filter(pk=other_entry.pk).exists())
+        self.assertEqual(self.client.delete(own_url).status_code, 204)
+        self.assertFalse(SearchHistory.objects.filter(pk=own_entry.pk).exists())
+
+    def test_anonymous_requests_are_rejected(self):
+        self.client.force_authenticate(user=None)
+        entry = SearchHistory.objects.create(user=self.owner, query="private film")
+        detail_url = reverse("accounts:searchhistory-detail", args=[entry.pk])
+        for method, url, kwargs in [
+            ("get", self.url, {}),
+            ("get", detail_url, {}),
+            ("post", self.url, {"data": {"query": "film"}, "format": "json"}),
+            ("delete", detail_url, {}),
+        ]:
+            with self.subTest(method=method, url=url):
+                self.assertEqual(getattr(self.client, method)(url, **kwargs).status_code, 403)
+        self.assertEqual(SearchHistory.objects.count(), 1)
+
+    def test_session_authenticated_posts_require_csrf(self):
+        client = APIClient(enforce_csrf_checks=True)
+        client.force_login(self.owner)
+        self.assertEqual(client.post(self.url, {"query": "film"}).status_code, 403)
+        client.get(reverse("core:home"))
+        response = client.post(
+            self.url, {"query": "film"}, HTTP_X_CSRFTOKEN=client.cookies["csrftoken"].value,
+        )
+        self.assertEqual(response.status_code, 201)

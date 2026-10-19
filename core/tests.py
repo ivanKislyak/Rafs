@@ -1,7 +1,18 @@
 from django.contrib.auth import get_user_model
-from django.test import TestCase
+from django.contrib.staticfiles import finders
+from django.test import SimpleTestCase, TestCase
+from PIL import Image
 from movies.models import Movie, Review
 from django.urls import reverse
+
+
+class DefaultAvatarTests(SimpleTestCase):
+    def test_shared_default_avatar_has_one_valid_source(self):
+        sources = finders.find("images/default_profile_img.png", find_all=True)
+        self.assertEqual(len(sources), 1, sources)
+        with Image.open(sources[0]) as image:
+            image.verify()
+
 
 class TestHomePageView(TestCase):
     @classmethod

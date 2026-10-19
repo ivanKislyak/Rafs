@@ -336,6 +336,11 @@
   gap: 8px;
 }
 
+.wd-add-form {
+  display: flex;
+  margin: 0;
+}
+
 .wd-add-button,
 .wd-search-copy-button,
 .wd-search-external-link {
@@ -486,10 +491,14 @@
     gap: 5px;
   }
 
-  .wd-add-button,
+  .wd-add-form,
   .wd-search-copy-button,
   .wd-search-external-link {
     flex: 1 1 auto;
+  }
+
+  .wd-add-button {
+    flex: 1;
   }
 }
 

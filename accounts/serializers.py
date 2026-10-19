@@ -5,7 +5,16 @@ from accounts.models import SearchHistory
 from rest_framework.parsers import JSONParser
 
 
+class SearchQueryField(serializers.CharField):
+    def to_internal_value(self, data):
+        if not isinstance(data, str):
+            self.fail('invalid')
+        return super().to_internal_value(data)
+
+
 class SearchHistorySerializer(serializers.ModelSerializer):
+    query = SearchQueryField(max_length=SearchHistory._meta.get_field('query').max_length)
+
     class Meta:
         model = SearchHistory
         fields = "__all__"

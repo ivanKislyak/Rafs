@@ -372,6 +372,7 @@ def wikidata_search(request):
     return render(request, "movies/wd_search_form.html", context=context)
 
 @staff_member_required
+@require_POST
 def wikidata_save_item(request, qid):
     raw = fetch_movie_details_raw(qid)
     parsed = parse_movie_details(raw, qid)
