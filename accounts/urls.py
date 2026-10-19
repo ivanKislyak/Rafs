@@ -11,6 +11,6 @@ router.register(r'search-history', views.SearchHistoryViewSet, basename='searchh
 
 urlpatterns = [
     path("register/", views.register, name="register"),
-    path("profile/avatar/", views.update_avatar, name="update-avatartar"),
+    path("profile/avatar/", views.update_avatar, name="update-avatar"),
     path("api/v1/", include(router.urls))
 ]

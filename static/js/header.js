@@ -106,16 +106,22 @@ const renderSuggestions = async () => {
 
     if (isAuthenticated) {
         try {
-            const response = await fetch('/accounts/api/v1/search-history/', {
-                method: 'GET'
-            });
+          const response = await fetch('/accounts/api/v1/search-history/', {
+              method: 'GET'
+          });
 
-            if (response.ok) {
-                const data = await response.json();
-                const items = Array.isArray(data) ? data : (data.results || []);
-                // API returns newest first; Set keeps the first occurrence.
-                searchHistory = [...new Set(items.map(item => item))].slice(0, 11);
-            }
+          if (response.ok) {
+            const data = await response.json();
+            const items = Array.isArray(data) ? data : (data.results || []);
+            // API returns newest first: keep only the first (latest) item for each query.
+            const seen = new Set();
+            const uniqueItems = items.filter(item => {
+                if (seen.has(item.query)) return false;
+                seen.add(item.query);
+                return true;
+            });
+            searchHistory = uniqueItems.slice(0, 11);
+          }
         } catch (error) {
             console.error('Failed to load search history:', error);
         }
