@@ -29,6 +29,8 @@ ANIME_KEYWORD = 210024  # Verified /search/keyword + /keyword/210024: "anime".
 ANIMATION_GENRE = 16
 FORMAT_ROOTS = {"movie": {"Q11424"}, "tv": {"Q5398426", "Q526877"}}
 PART_TYPES = {"Q3464665", "Q21191270"}  # TV season / TV episode, never works to import.
+FORMAT_MAX_DEPTH = 64
+FORMAT_MAX_CLASSES = 2048
 
 
 def check_state_directory(directory):
@@ -110,33 +112,51 @@ def validate_candidate(item, media_type, tmdb_id, min_votes):
 
 
 def confirmed_format(entity, media_type, api):
-    """Choose a direct P31 supported by a bounded, cached P279 traversal.
+    """Confirm a direct P31 using the complete bounded P279 ancestry.
 
-    No genre or country/language guesses; unknown and conflicting types skip.
-    A web/ONA series can be a whole series even if it is not broadcast on TV.
+    Anime types can reach film/series quickly while another inheritance branch
+    goes through animation, art, works and abstract classes. Eight edges was
+    too small for that complete graph. Keep checking every branch for conflicting
+    formats and parts, but allow a deeper graph and reuse class data across the
+    sequential run. A missing or truncated graph still never counts as proof.
     """
     direct = set(claim_qids(entity, ("P31",)))
     if not direct:
         raise ImportIssue("Wikidata: нет P31 для подтверждения формата произведения.")
     roots = set().union(*FORMAT_ROOTS.values()) | PART_TYPES
-    graph, frontier = {}, direct.copy()
-    for _ in range(9):
-        if not frontier:
-            break
-        if len(graph) + len(frontier) > 256:
-            raise ImportIssue("Слишком большая иерархия P31/P279; нужен ручной разбор типа.")
-        data = api.entities(frontier - roots, claims=True) if frontier - roots else {}
-        for qid in frontier:
+    # Class relationships are public source data, not a per-title verdict.
+    # Reusing them avoids repeated API/cache decoding for shared ancestors.
+    cache = getattr(api, "_anime_format_graph", None)
+    if not isinstance(cache, dict):
+        cache = {}
+        api._anime_format_graph = cache
+
+    graph, frontier, depth = {}, direct.copy(), 0
+    while frontier:
+        if depth > FORMAT_MAX_DEPTH:
+            raise ImportIssue(
+                f"Иерархия P31/P279 глубже {FORMAT_MAX_DEPTH} переходов; "
+                "формат не подтверждён."
+            )
+        if len(graph) + len(frontier) > FORMAT_MAX_CLASSES:
+            raise ImportIssue(
+                f"Иерархия P31/P279 содержит больше {FORMAT_MAX_CLASSES} классов; "
+                "нужен ручной разбор типа."
+            )
+        missing = frontier - roots - cache.keys()
+        data = api.entities(sorted(missing), claims=True) if missing else {}
+        for qid in sorted(frontier):
             if qid in roots:
                 graph[qid] = set()
             else:
-                value = data.get(qid, {})
-                if not value or "missing" in value:
-                    raise ImportIssue(f"Wikidata: класс {qid} недоступен; формат не подтверждён.")
-                graph[qid] = set(claim_qids(value, ("P279",)))
+                if qid not in cache:
+                    value = data.get(qid, {})
+                    if not value or "missing" in value:
+                        raise ImportIssue(f"Wikidata: класс {qid} недоступен; формат не подтверждён.")
+                    cache[qid] = frozenset(claim_qids(value, ("P279",)))
+                graph[qid] = set(cache[qid])
         frontier = set().union(*(graph[qid] for qid in frontier)) - graph.keys()
-    if frontier:
-        raise ImportIssue("Иерархия P31/P279 глубже 8 переходов; формат не подтверждён.")
+        depth += 1
 
     def ancestors(qid):
         seen, pending = set(), {qid}
@@ -357,3 +377,4 @@ class Command(MovieCommand):
             cursor = rows[-1]["position"]
             state.report()
         self.stdout.write("За этот запуск: " + json.dumps(counts, ensure_ascii=False))
+
