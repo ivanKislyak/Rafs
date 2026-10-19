@@ -120,7 +120,7 @@ def update_avatar(request):
         request.user.save(update_fields=["avatar_image"])
         if old_avatar:
             old_avatar.delete(save=False)
-        messages.success(request, _("Avatar removed."))
+        messages.success(request, _("Avatar removed"))
         return redirect("profile", username=request.user.username)
 
     old_avatar_name = request.user.avatar_image.name if request.user.avatar_image else ""
@@ -130,14 +130,14 @@ def update_avatar(request):
         updated_user = form.save()
         if old_avatar_name and old_avatar_name != updated_user.avatar_image.name:
             old_avatar_storage.delete(old_avatar_name)
-        messages.success(request, _("Avatar updated."))
+        messages.success(request, _("Avatar updated"))
     else:
         error_text = " ".join(
             error
             for field_errors in form.errors.values()
             for error in field_errors
         )
-        messages.error(request, error_text or _("Could not update the avatar."))
+        messages.error(request, error_text or _("Could not update the avatar"))
 
     return redirect("profile", username=request.user.username)
 

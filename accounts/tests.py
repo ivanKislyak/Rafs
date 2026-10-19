@@ -172,7 +172,7 @@ class ProfilePageTests(TestCase):
         response = self.client.get(self.profile_url)
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "There are no movies in this section yet.")
+        self.assertContains(response, "There are no movies in this section yet")
         self.assertEqual(len(response.context["watch_statuses"]), 6)
 
     def test_library_query_count_does_not_grow_with_movie_count(self):

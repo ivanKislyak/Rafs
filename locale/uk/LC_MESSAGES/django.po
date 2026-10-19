@@ -18,12 +18,12 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
 
 #: .\accounts\forms.py:41
-msgid "The image must be smaller than 12 MB."
-msgstr "Зображення має бути меншим за 12 МБ."
+msgid "The image must be smaller than 12 MB"
+msgstr "Зображення має бути меншим за 12 МБ"
 
 #: .\accounts\forms.py:54
-msgid "Upload a valid image file."
-msgstr "Завантажте коректний файл зображення."
+msgid "Upload a valid image file"
+msgstr "Завантажте коректний файл зображення"
 
 #: .\accounts\forms.py:66
 #: .\accounts\templates\accounts\moderation_application.html:20
@@ -117,8 +117,8 @@ msgid "No applications yet"
 msgstr "Заявок поки немає"
 
 #: .\accounts\templates\accounts\moderation_applications_admin.html:48
-msgid "New moderation applications will appear on this page."
-msgstr "Нові заявки на модераторство з'являться на цій сторінці."
+msgid "New moderation applications will appear on this page"
+msgstr "Нові заявки на модераторство з'являться на цій сторінці"
 
 #: .\accounts\templates\accounts\profile.html:5 .\templates\_header.html:160
 msgid "Profile"
@@ -223,8 +223,8 @@ msgid "Undo"
 msgstr "Повернути"
 
 #: .\accounts\templates\accounts\profile.html:202
-msgid "There are no movies in this section yet."
-msgstr "У цьому розділі ще немає фільмів."
+msgid "There are no movies in this section yet"
+msgstr "У цьому розділі ще немає фільмів"
 
 #: .\accounts\templates\accounts\profile.html:217
 msgid "Remove this movie from the selected list?"
@@ -253,8 +253,8 @@ msgid "No achievements yet"
 msgstr "Досягнень поки немає"
 
 #: .\accounts\templates\accounts\profile.html:256
-msgid "They will appear here as the user participates in RAFS."
-msgstr "Вони з'являться тут у міру участі користувача в RAFS."
+msgid "They will appear here as the user participates in RAFS"
+msgstr "Вони з'являться тут у міру участі користувача в RAFS"
 
 #: .\accounts\templates\accounts\register.html:5
 #: .\accounts\templates\accounts\register.html:55 .\templates\_header.html:256
@@ -268,8 +268,8 @@ msgid "Create an account"
 msgstr "Створити обліковий запис"
 
 #: .\accounts\templates\accounts\register.html:16
-msgid "Rate movies, write reviews, and build your watch history."
-msgstr "Оцінюйте фільми, пишіть рецензії та створюйте свою історію переглядів."
+msgid "Rate movies, write reviews, and build your watch history"
+msgstr "Оцінюйте фільми, пишіть рецензії та створюйте свою історію переглядів"
 
 #: .\accounts\templates\accounts\register.html:25
 #: .\templates\registration\login.html:25
@@ -294,8 +294,8 @@ msgid "Use at least 8 characters. The password should not be too common or entir
 msgstr "Використовуйте принаймні 8 символів. Пароль не повинен бути занадто поширеним або повністю цифровим."
 
 #: .\accounts\templates\accounts\register.html:46
-msgid "Enter the same password again."
-msgstr "Введіть той самий пароль ще раз."
+msgid "Enter the same password again"
+msgstr "Введіть той самий пароль ще раз"
 
 #: .\accounts\templates\accounts\register.html:57
 msgid "Already have an account?"
@@ -311,16 +311,16 @@ msgid "Newcomer"
 msgstr "Новачок"
 
 #: .\accounts\views.py:114
-msgid "Avatar removed."
-msgstr "Аватар видалено."
+msgid "Avatar removed"
+msgstr "Аватар видалено"
 
 #: .\accounts\views.py:124
-msgid "Avatar updated."
-msgstr "Аватар оновлено."
+msgid "Avatar updated"
+msgstr "Аватар оновлено"
 
 #: .\accounts\views.py:131
-msgid "Could not update the avatar."
-msgstr "Не вдалося оновити аватар."
+msgid "Could not update the avatar"
+msgstr "Не вдалося оновити аватар"
 
 #: .\accounts\views.py:146
 msgid "Your application has been sent."
@@ -359,12 +359,12 @@ msgid "About the project"
 msgstr "Про проєкт"
 
 #: .\core\templates\core\about_site.html:16
-msgid "Not just choosing a movie."
-msgstr "Не просто вибрати фільм."
+msgid "Not just choosing a movie"
+msgstr "Не просто вибрати фільм"
 
 #: .\core\templates\core\about_site.html:17
-msgid "Understanding why it is right for you."
-msgstr "Зрозуміти, чому він підходить саме вам."
+msgid "Understanding why it is right for you"
+msgstr "Зрозуміти, чому він підходить саме вам"
 
 #: .\core\templates\core\about_site.html:20
 msgid "RAFS is a place for honest ratings, thoughtful reviews, and finding movies that truly match your taste."
@@ -451,8 +451,8 @@ msgid "Your next movie"
 msgstr "Ваш наступний фільм"
 
 #: .\core\templates\core\about_site.html:89
-msgid "It may already be waiting for you in the catalog."
-msgstr "Можливо, він уже чекає на вас у каталозі."
+msgid "It may already be waiting for you in the catalog"
+msgstr "Можливо, він уже чекає на вас у каталозі"
 
 #: .\core\templates\core\about_site.html:92
 #: .\movies\templates\movies\catalog.html:24
@@ -500,8 +500,8 @@ msgid "Year to"
 msgstr "Рік до"
 
 #: .\movies\forms.py:57
-msgid "Year to cannot be earlier than year from."
-msgstr "«Рік до» не може бути раніше за «Рік від»."
+msgid "Year to cannot be earlier than year from"
+msgstr "«Рік до» не може бути раніше за «Рік від»"
 
 #: .\movies\forms.py:73 .\movies\forms.py:83 .\movies\forms.py:93
 #: .\movies\forms.py:103
@@ -859,8 +859,8 @@ msgid "Search for movies on Wikidata"
 msgstr "Шукайте фільми у Wikidata"
 
 #: .\movies\templates\movies\wd_search_form.html:15
-msgid "Find a movie or series and copy its QID for further use."
-msgstr "Знайдіть фільм або серіал і скопіюйте його QID для подальшого використання."
+msgid "Find a movie or series and copy its QID for further use"
+msgstr "Знайдіть фільм або серіал і скопіюйте його QID для подальшого використання"
 
 #: .\movies\templates\movies\wd_search_form.html:21
 msgid "Searching"
@@ -896,24 +896,24 @@ msgid "Title and description"
 msgstr "Назва та опис"
 
 #: .\movies\templates\movies\wd_search_form.html:69
-msgid "Correct the highlighted fields and try again."
-msgstr "Виправте виділені поля та повторіть спробу."
+msgid "Correct the highlighted fields and try again"
+msgstr "Виправте виділені поля та повторіть спробу"
 
 #: .\movies\templates\movies\wd_search_form.html:76
 msgid "Wikidata is temporarily unavailable"
 msgstr "Вікідані тимчасово недоступні"
 
 #: .\movies\templates\movies\wd_search_form.html:77
-msgid "Wait a moment and try again – your search has been preserved."
-msgstr "Зачекайте трохи та повторіть спробу – ваш пошук збережено."
+msgid "Wait a moment and try again – your search has been preserved"
+msgstr "Зачекайте трохи та повторіть спробу – ваш пошук збережено"
 
 #: .\movies\templates\movies\wd_search_form.html:84
 msgid "Matching titles"
 msgstr "Відповідні твори"
 
 #: .\movies\templates\movies\wd_search_form.html:101
-msgid "This title does not have a description in the selected language yet."
-msgstr "Ця назва ще не має опису вибраною мовою."
+msgid "This title does not have a description in the selected language yet"
+msgstr "Ця назва ще не має опису вибраною мовою"
 
 #: .\movies\templates\movies\wd_search_form.html:118
 msgid "Open in Wikidata"
@@ -928,16 +928,16 @@ msgid "Nothing found"
 msgstr "Нічого не знайдено"
 
 #: .\movies\templates\movies\wd_search_form.html:139
-msgid "Try the original title or select another language."
-msgstr "Спробуйте оригінальну назву або виберіть іншу мову."
+msgid "Try the original title or select another language"
+msgstr "Спробуйте оригінальну назву або виберіть іншу мову"
 
 #: .\movies\templates\movies\wd_search_form.html:150
 msgid "Start with a title"
 msgstr "Почніть із назви"
 
 #: .\movies\templates\movies\wd_search_form.html:151
-msgid "For example: Fight Club, Dune, or The Matrix."
-msgstr "Наприклад: Бійцівський клуб, Дюна або Матриця."
+msgid "For example: Fight Club, Dune, or The Matrix"
+msgstr "Наприклад: Бійцівський клуб, Дюна або Матриця"
 
 #: .\movies\views.py:145
 msgid "+100 Frames"
@@ -1077,16 +1077,16 @@ msgid "Log in to your account"
 msgstr "Вхід до облікового запису"
 
 #: .\templates\registration\login.html:16
-msgid "Continue rating movies and sharing your impressions."
-msgstr "Продовжуйте оцінювати фільми та ділитися враженнями."
+msgid "Continue rating movies and sharing your impressions"
+msgstr "Продовжуйте оцінювати фільми та ділитися враженнями"
 
 #: .\templates\registration\login.html:19
 msgid "Unable to log in. Check your username and password."
 msgstr "Неможливо увійти. Перевірте своє ім'я користувача та пароль."
 
 #: .\templates\registration\login.html:34
-msgid "Fill in this field."
-msgstr "Заповніть це поле."
+msgid "Fill in this field"
+msgstr "Заповніть це поле"
 
 #: .\templates\registration\login.html:43
 msgid "Don't have an account yet?"
@@ -1220,3 +1220,54 @@ msgstr "Переглядайте фільми, серіали та аніме в
 #: movies/templates/movies/reviews.html
 msgid "Read viewer reviews of films, series and anime on RAFS. Explore ratings, replies and discussions."
 msgstr "Читайте рецензії глядачів на фільми, серіали та аніме на RAFS. Переглядайте оцінки, відповіді й обговорення."
+
+#: core/templates/core/about_site.html
+msgid "RAFS is a site for ratings and reviews of films, series and anime"
+msgstr "RAFS – сайт для оцінок і рецензій на фільми, серіали та аніме"
+
+#: accounts/models.py:66
+msgid "Users"
+msgstr "Користувачі"
+
+#: movies/templates/movies/catalog.html:34
+msgid "Load more"
+msgstr "Завантажити ще"
+
+#: movies/templates/movies/catalog.html:40
+#: movies/templates/movies/reviews.html:18
+msgid "Loading..."
+msgstr "Завантаження…"
+
+#: movies/templates/movies/catalog.html:41
+#: movies/templates/movies/reviews.html:17
+msgid "Something went wrong. Please try again."
+msgstr "Не вдалося виконати дію. Спробуйте ще раз."
+
+#: movies/templates/movies/reviews.html:19
+#: movies/templates/movies/reviews.html:32
+msgid "Load more reviews"
+msgstr "Завантажити ще рецензії"
+
+#: movies/templates/movies/reviews.html:20
+msgid "You have reached the end of the reviews"
+msgstr "Ви прочитали всі рецензії"
+
+#: movies/templates/movies/reviews.html:22
+msgid "Community"
+msgstr "Спільнота"
+
+#: movies/templates/movies/reviews.html:24
+msgid "What viewers think: reviews, ratings and conversations about movies"
+msgstr "Думки глядачів: рецензії, оцінки та обговорення фільмів"
+
+#: movies/templates/movies/reviews.html:30
+msgid "Review pages"
+msgstr "Сторінки рецензій"
+
+#: movies/templates/movies/reviews.html:31
+msgid "Previous"
+msgstr "Назад"
+
+#: movies/templates/movies/reviews.html:36
+msgid "Open a movie to reply to a review or vote"
+msgstr "Відкрийте сторінку фільму, щоб відповісти на рецензію або проголосувати"

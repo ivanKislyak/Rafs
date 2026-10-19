@@ -54,7 +54,7 @@ class MovieFilterForm(forms.Form):
         ):
             self.add_error(
                 "year_to",
-                _("Year to cannot be earlier than year from."),
+                _("Year to cannot be earlier than year from"),
             )
 
         return cleaned_data

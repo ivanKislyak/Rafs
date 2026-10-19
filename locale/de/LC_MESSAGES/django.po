@@ -18,12 +18,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: .\accounts\forms.py:41
-msgid "The image must be smaller than 12 MB."
-msgstr "Das Bild muss kleiner als 12 MB sein."
+msgid "The image must be smaller than 12 MB"
+msgstr "Das Bild muss kleiner als 12 MB sein"
 
 #: .\accounts\forms.py:54
-msgid "Upload a valid image file."
-msgstr "Lade eine gültige Bilddatei hoch."
+msgid "Upload a valid image file"
+msgstr "Lade eine gültige Bilddatei hoch"
 
 #: .\accounts\forms.py:66
 #: .\accounts\templates\accounts\moderation_application.html:20
@@ -117,8 +117,8 @@ msgid "No applications yet"
 msgstr "Noch keine Bewerbungen"
 
 #: .\accounts\templates\accounts\moderation_applications_admin.html:48
-msgid "New moderation applications will appear on this page."
-msgstr "Neue Moderationsbewerbungen werden auf dieser Seite angezeigt."
+msgid "New moderation applications will appear on this page"
+msgstr "Neue Moderationsbewerbungen werden auf dieser Seite angezeigt"
 
 #: .\accounts\templates\accounts\profile.html:5 .\templates\_header.html:160
 msgid "Profile"
@@ -223,8 +223,8 @@ msgid "Undo"
 msgstr "Rückgängig"
 
 #: .\accounts\templates\accounts\profile.html:202
-msgid "There are no movies in this section yet."
-msgstr "In diesem Bereich gibt es noch keine Filme."
+msgid "There are no movies in this section yet"
+msgstr "In diesem Bereich gibt es noch keine Filme"
 
 #: .\accounts\templates\accounts\profile.html:217
 msgid "Remove this movie from the selected list?"
@@ -253,8 +253,8 @@ msgid "No achievements yet"
 msgstr "Noch keine Erfolge"
 
 #: .\accounts\templates\accounts\profile.html:256
-msgid "They will appear here as the user participates in RAFS."
-msgstr "Sie erscheinen hier, wenn der Nutzer an RAFS teilnimmt."
+msgid "They will appear here as the user participates in RAFS"
+msgstr "Sie erscheinen hier, wenn der Nutzer an RAFS teilnimmt"
 
 #: .\accounts\templates\accounts\register.html:5
 #: .\accounts\templates\accounts\register.html:55 .\templates\_header.html:256
@@ -268,8 +268,8 @@ msgid "Create an account"
 msgstr "Konto erstellen"
 
 #: .\accounts\templates\accounts\register.html:16
-msgid "Rate movies, write reviews, and build your watch history."
-msgstr "Bewerte Filme, schreibe Rezensionen und baue deinen Wiedergabeverlauf auf."
+msgid "Rate movies, write reviews, and build your watch history"
+msgstr "Bewerte Filme, schreibe Rezensionen und baue deinen Wiedergabeverlauf auf"
 
 #: .\accounts\templates\accounts\register.html:25
 #: .\templates\registration\login.html:25
@@ -287,15 +287,15 @@ msgstr "Passwort bestätigen"
 
 #: .\accounts\templates\accounts\register.html:39
 msgid "You can use letters, numbers, and the characters @ . + - _"
-msgstr "Du kannst Buchstaben, Zahlen und die Zeichen @ . + - _ verwenden."
+msgstr "Du kannst Buchstaben, Zahlen und die Zeichen @ . + - _ verwenden"
 
 #: .\accounts\templates\accounts\register.html:43
 msgid "Use at least 8 characters. The password should not be too common or entirely numeric."
 msgstr "Verwende mindestens 8 Zeichen. Das Passwort sollte nicht zu häufig verwendet werden oder nur aus Zahlen bestehen."
 
 #: .\accounts\templates\accounts\register.html:46
-msgid "Enter the same password again."
-msgstr "Gib dasselbe Passwort noch einmal ein."
+msgid "Enter the same password again"
+msgstr "Gib dasselbe Passwort noch einmal ein"
 
 #: .\accounts\templates\accounts\register.html:57
 msgid "Already have an account?"
@@ -311,16 +311,16 @@ msgid "Newcomer"
 msgstr "Neuling"
 
 #: .\accounts\views.py:114
-msgid "Avatar removed."
-msgstr "Avatar entfernt."
+msgid "Avatar removed"
+msgstr "Avatar entfernt"
 
 #: .\accounts\views.py:124
-msgid "Avatar updated."
-msgstr "Avatar aktualisiert."
+msgid "Avatar updated"
+msgstr "Avatar aktualisiert"
 
 #: .\accounts\views.py:131
-msgid "Could not update the avatar."
-msgstr "Der Avatar konnte nicht aktualisiert werden."
+msgid "Could not update the avatar"
+msgstr "Der Avatar konnte nicht aktualisiert werden"
 
 #: .\accounts\views.py:146
 msgid "Your application has been sent."
@@ -359,12 +359,12 @@ msgid "About the project"
 msgstr "Über das Projekt"
 
 #: .\core\templates\core\about_site.html:16
-msgid "Not just choosing a movie."
-msgstr "Nicht nur einen Film auswählen."
+msgid "Not just choosing a movie"
+msgstr "Nicht nur einen Film auswählen"
 
 #: .\core\templates\core\about_site.html:17
-msgid "Understanding why it is right for you."
-msgstr "Verstehen, warum er zu dir passt."
+msgid "Understanding why it is right for you"
+msgstr "Verstehen, warum er zu dir passt"
 
 #: .\core\templates\core\about_site.html:20
 msgid "RAFS is a place for honest ratings, thoughtful reviews, and finding movies that truly match your taste."
@@ -451,8 +451,8 @@ msgid "Your next movie"
 msgstr "Dein nächster Film"
 
 #: .\core\templates\core\about_site.html:89
-msgid "It may already be waiting for you in the catalog."
-msgstr "Vielleicht wartet er bereits im Katalog auf dich."
+msgid "It may already be waiting for you in the catalog"
+msgstr "Vielleicht wartet er bereits im Katalog auf dich"
 
 #: .\core\templates\core\about_site.html:92
 #: .\movies\templates\movies\catalog.html:24
@@ -500,8 +500,8 @@ msgid "Year to"
 msgstr "Jahr bis"
 
 #: .\movies\forms.py:57
-msgid "Year to cannot be earlier than year from."
-msgstr "„Jahr bis“ darf nicht vor „Jahr von“ liegen."
+msgid "Year to cannot be earlier than year from"
+msgstr "„Jahr bis“ darf nicht vor „Jahr von“ liegen"
 
 #: .\movies\forms.py:73 .\movies\forms.py:83 .\movies\forms.py:93
 #: .\movies\forms.py:103
@@ -859,8 +859,8 @@ msgid "Search for movies on Wikidata"
 msgstr "Filme auf Wikidata suchen"
 
 #: .\movies\templates\movies\wd_search_form.html:15
-msgid "Find a movie or series and copy its QID for further use."
-msgstr "Suche einen Film oder eine Serie und kopiere die QID zur weiteren Verwendung."
+msgid "Find a movie or series and copy its QID for further use"
+msgstr "Suche einen Film oder eine Serie und kopiere die QID zur weiteren Verwendung"
 
 #: .\movies\templates\movies\wd_search_form.html:21
 msgid "Searching"
@@ -896,24 +896,24 @@ msgid "Title and description"
 msgstr "Titel und Beschreibung"
 
 #: .\movies\templates\movies\wd_search_form.html:69
-msgid "Correct the highlighted fields and try again."
-msgstr "Korrigiere die markierten Felder und versuche es erneut."
+msgid "Correct the highlighted fields and try again"
+msgstr "Korrigiere die markierten Felder und versuche es erneut"
 
 #: .\movies\templates\movies\wd_search_form.html:76
 msgid "Wikidata is temporarily unavailable"
 msgstr "Wikidata ist vorübergehend nicht verfügbar"
 
 #: .\movies\templates\movies\wd_search_form.html:77
-msgid "Wait a moment and try again – your search has been preserved."
-msgstr "Warte einen Moment und versuche es erneut – deine Suche wurde gespeichert."
+msgid "Wait a moment and try again – your search has been preserved"
+msgstr "Warte einen Moment und versuche es erneut – deine Suche wurde gespeichert"
 
 #: .\movies\templates\movies\wd_search_form.html:84
 msgid "Matching titles"
 msgstr "Passende Titel"
 
 #: .\movies\templates\movies\wd_search_form.html:101
-msgid "This title does not have a description in the selected language yet."
-msgstr "Für diesen Titel gibt es noch keine Beschreibung in der ausgewählten Sprache."
+msgid "This title does not have a description in the selected language yet"
+msgstr "Für diesen Titel gibt es noch keine Beschreibung in der ausgewählten Sprache"
 
 #: .\movies\templates\movies\wd_search_form.html:118
 msgid "Open in Wikidata"
@@ -928,16 +928,16 @@ msgid "Nothing found"
 msgstr "Nichts gefunden"
 
 #: .\movies\templates\movies\wd_search_form.html:139
-msgid "Try the original title or select another language."
-msgstr "Versuche es mit dem Originaltitel oder wähle eine andere Sprache."
+msgid "Try the original title or select another language"
+msgstr "Versuche es mit dem Originaltitel oder wähle eine andere Sprache"
 
 #: .\movies\templates\movies\wd_search_form.html:150
 msgid "Start with a title"
 msgstr "Mit einem Titel beginnen"
 
 #: .\movies\templates\movies\wd_search_form.html:151
-msgid "For example: Fight Club, Dune, or The Matrix."
-msgstr "Zum Beispiel: Fight Club, Dune oder The Matrix."
+msgid "For example: Fight Club, Dune, or The Matrix"
+msgstr "Zum Beispiel: Fight Club, Dune oder The Matrix"
 
 #: .\movies\views.py:145
 msgid "+100 Frames"
@@ -1077,16 +1077,16 @@ msgid "Log in to your account"
 msgstr "Bei deinem Konto anmelden"
 
 #: .\templates\registration\login.html:16
-msgid "Continue rating movies and sharing your impressions."
-msgstr "Bewerte weiterhin Filme und teile deine Eindrücke."
+msgid "Continue rating movies and sharing your impressions"
+msgstr "Bewerte weiterhin Filme und teile deine Eindrücke"
 
 #: .\templates\registration\login.html:19
 msgid "Unable to log in. Check your username and password."
 msgstr "Anmeldung nicht möglich. Überprüfe deinen Benutzernamen und dein Passwort."
 
 #: .\templates\registration\login.html:34
-msgid "Fill in this field."
-msgstr "Fülle dieses Feld aus."
+msgid "Fill in this field"
+msgstr "Fülle dieses Feld aus"
 
 #: .\templates\registration\login.html:43
 msgid "Don't have an account yet?"
@@ -1220,3 +1220,54 @@ msgstr "Stöbere im RAFS-Katalog nach Filmen, Serien und Anime. Vergleiche Zusch
 #: movies/templates/movies/reviews.html
 msgid "Read viewer reviews of films, series and anime on RAFS. Explore ratings, replies and discussions."
 msgstr "Lies auf RAFS Zuschauerrezensionen zu Filmen, Serien und Anime. Entdecke Bewertungen, Antworten und Diskussionen."
+
+#: core/templates/core/about_site.html
+msgid "RAFS is a site for ratings and reviews of films, series and anime"
+msgstr "RAFS ist eine Website für Bewertungen und Rezensionen zu Filmen, Serien und Anime"
+
+#: accounts/models.py:66
+msgid "Users"
+msgstr "Benutzer"
+
+#: movies/templates/movies/catalog.html:34
+msgid "Load more"
+msgstr "Mehr laden"
+
+#: movies/templates/movies/catalog.html:40
+#: movies/templates/movies/reviews.html:18
+msgid "Loading..."
+msgstr "Wird geladen…"
+
+#: movies/templates/movies/catalog.html:41
+#: movies/templates/movies/reviews.html:17
+msgid "Something went wrong. Please try again."
+msgstr "Etwas ist schiefgelaufen. Bitte versuche es erneut."
+
+#: movies/templates/movies/reviews.html:19
+#: movies/templates/movies/reviews.html:32
+msgid "Load more reviews"
+msgstr "Weitere Rezensionen laden"
+
+#: movies/templates/movies/reviews.html:20
+msgid "You have reached the end of the reviews"
+msgstr "Du hast das Ende der Rezensionen erreicht"
+
+#: movies/templates/movies/reviews.html:22
+msgid "Community"
+msgstr "Community"
+
+#: movies/templates/movies/reviews.html:24
+msgid "What viewers think: reviews, ratings and conversations about movies"
+msgstr "Was Zuschauer denken: Rezensionen, Bewertungen und Gespräche über Filme"
+
+#: movies/templates/movies/reviews.html:30
+msgid "Review pages"
+msgstr "Rezensionsseiten"
+
+#: movies/templates/movies/reviews.html:31
+msgid "Previous"
+msgstr "Zurück"
+
+#: movies/templates/movies/reviews.html:36
+msgid "Open a movie to reply to a review or vote"
+msgstr "Öffne die Filmseite, um auf eine Rezension zu antworten oder abzustimmen"

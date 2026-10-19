@@ -12,7 +12,7 @@
         <header class="wd-search-heading">
             <span class="wd-search-kicker">{% translate "Editor tools" %}</span>
             <h1>{% translate "Search for movies on Wikidata" %}</h1>
-            <p>{% translate "Find a movie or series and copy its QID for further use." %}</p>
+            <p>{% translate "Find a movie or series and copy its QID for further use" %}</p>
         </header>
         <form class="wd-search-form"
               method="get"
@@ -66,7 +66,7 @@
                         <span class="wd-search-state-mark" aria-hidden="true">!</span>
                         <div>
                             <h2>{% translate "Check your search" %}</h2>
-                            <p>{% translate "Correct the highlighted fields and try again." %}</p>
+                            <p>{% translate "Correct the highlighted fields and try again" %}</p>
                         </div>
                     </div>
                 {% elif search_error %}
@@ -74,7 +74,7 @@
                         <span class="wd-search-state-mark" aria-hidden="true">!</span>
                         <div>
                             <h2>{% translate "Wikidata is temporarily unavailable" %}</h2>
-                            <p>{% translate "Wait a moment and try again – your search has been preserved." %}</p>
+                            <p>{% translate "Wait a moment and try again – your search has been preserved" %}</p>
                         </div>
                     </div>
                 {% elif search_result %}
@@ -98,7 +98,7 @@
                                         {% if result.description %}
                                             {{ result.description }}
                                         {% else %}
-                                            {% translate "This title does not have a description in the selected language yet." %}
+                                            {% translate "This title does not have a description in the selected language yet" %}
                                         {% endif %}
                                     </p>
                                     <div class="wd-search-result-actions">
@@ -136,7 +136,7 @@
                         <span class="wd-search-state-mark" aria-hidden="true">0</span>
                         <div>
                             <h2>{% translate "Nothing found" %}</h2>
-                            <p>{% translate "Try the original title or select another language." %}</p>
+                            <p>{% translate "Try the original title or select another language" %}</p>
                         </div>
                     </div>
                 {% endif %}
@@ -148,7 +148,7 @@
                     </svg>
                     <div>
                         <h2>{% translate "Start with a title" %}</h2>
-                        <p>{% translate "For example: Fight Club, Dune, or The Matrix." %}</p>
+                        <p>{% translate "For example: Fight Club, Dune, or The Matrix" %}</p>
                     </div>
                 </div>
             {% endif %}

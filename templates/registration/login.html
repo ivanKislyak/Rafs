@@ -13,7 +13,7 @@
             {% csrf_token %}
             <div class="register-form-header">
                 <h1>{% translate "Log in to your account" %}</h1>
-                <p>{% translate "Continue rating movies and sharing your impressions." %}</p>
+                <p>{% translate "Continue rating movies and sharing your impressions" %}</p>
             </div>
             {% if form.non_field_errors %}
                 <div class="register-form-errors">{% translate "Unable to log in. Check your username and password." %}</div>
@@ -31,7 +31,7 @@
                     </label>
                     {{ field }}
                     {% if field.errors %}
-                        <div class="register-form-errors">{% translate "Fill in this field." %}</div>
+                        <div class="register-form-errors">{% translate "Fill in this field" %}</div>
                     {% endif %}
                 </div>
             {% endfor %}

@@ -131,6 +131,7 @@ const renderSuggestions = async () => {
     
     const textHistory = suggestions.dataset.textHistory || 'Search history';
     const textPopular = suggestions.dataset.textPopular || 'Popular searches';
+    const textDelete = suggestions.dataset.textDelete || 'Delete';
     const textEmpty = suggestions.dataset.textEmpty || 'No search suggestions yet';
 
     let html = '';
@@ -145,7 +146,7 @@ const renderSuggestions = async () => {
                       ${ICONS.history || ''}
                       <span>${escapeHtml(item.query)}</span>
                   </button>
-                  <button class="delete-search-result" type="button" data-delete-id="${escapeHtml(item.id)}" aria-label="Delete">
+                  <button class="delete-search-result" type="button" data-delete-id="${escapeHtml(item.id)}" aria-label="${escapeHtml(textDelete)}">
                     <svg xmlns="http://w3.org" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                       <line x1="18" y1="6" x2="6" y2="18"></line>
                       <line x1="6" y1="6" x2="18" y2="18"></line>

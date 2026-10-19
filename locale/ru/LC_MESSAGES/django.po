@@ -18,12 +18,12 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #: .\accounts\forms.py:41
-msgid "The image must be smaller than 12 MB."
-msgstr "Изображение должно быть меньше 12 МБ."
+msgid "The image must be smaller than 12 MB"
+msgstr "Изображение должно быть меньше 12 МБ"
 
 #: .\accounts\forms.py:54
-msgid "Upload a valid image file."
-msgstr "Загрузите корректный файл изображения."
+msgid "Upload a valid image file"
+msgstr "Загрузите корректный файл изображения"
 
 #: .\accounts\forms.py:66
 #: .\accounts\templates\accounts\moderation_application.html:20
@@ -117,8 +117,8 @@ msgid "No applications yet"
 msgstr "Заявок пока нет"
 
 #: .\accounts\templates\accounts\moderation_applications_admin.html:48
-msgid "New moderation applications will appear on this page."
-msgstr "Новые заявки на модераторство появятся на этой странице."
+msgid "New moderation applications will appear on this page"
+msgstr "Новые заявки на модераторство появятся на этой странице"
 
 #: .\accounts\templates\accounts\profile.html:5 .\templates\_header.html:160
 msgid "Profile"
@@ -223,8 +223,8 @@ msgid "Undo"
 msgstr "Вернуть"
 
 #: .\accounts\templates\accounts\profile.html:202
-msgid "There are no movies in this section yet."
-msgstr "В этом разделе пока нет фильмов."
+msgid "There are no movies in this section yet"
+msgstr "В этом разделе пока нет фильмов"
 
 #: .\accounts\templates\accounts\profile.html:217
 msgid "Remove this movie from the selected list?"
@@ -253,8 +253,8 @@ msgid "No achievements yet"
 msgstr "Достижений пока нет"
 
 #: .\accounts\templates\accounts\profile.html:256
-msgid "They will appear here as the user participates in RAFS."
-msgstr "Они появятся здесь по мере участия пользователя в RAFS."
+msgid "They will appear here as the user participates in RAFS"
+msgstr "Они появятся здесь по мере участия пользователя в RAFS"
 
 #: .\accounts\templates\accounts\register.html:5
 #: .\accounts\templates\accounts\register.html:55 .\templates\_header.html:256
@@ -268,8 +268,8 @@ msgid "Create an account"
 msgstr "Создать аккаунт"
 
 #: .\accounts\templates\accounts\register.html:16
-msgid "Rate movies, write reviews, and build your watch history."
-msgstr "Оценивайте фильмы, пишите рецензии и собирайте историю просмотров."
+msgid "Rate movies, write reviews, and build your watch history"
+msgstr "Оценивайте фильмы, пишите рецензии и собирайте историю просмотров"
 
 #: .\accounts\templates\accounts\register.html:25
 #: .\templates\registration\login.html:25
@@ -294,8 +294,8 @@ msgid "Use at least 8 characters. The password should not be too common or entir
 msgstr "Используйте не менее 8 символов. Пароль не должен быть слишком распространённым или состоять только из цифр."
 
 #: .\accounts\templates\accounts\register.html:46
-msgid "Enter the same password again."
-msgstr "Введите тот же пароль ещё раз."
+msgid "Enter the same password again"
+msgstr "Введите тот же пароль ещё раз"
 
 #: .\accounts\templates\accounts\register.html:57
 msgid "Already have an account?"
@@ -311,16 +311,16 @@ msgid "Newcomer"
 msgstr "Новичок"
 
 #: .\accounts\views.py:114
-msgid "Avatar removed."
-msgstr "Аватар удалён."
+msgid "Avatar removed"
+msgstr "Аватар удалён"
 
 #: .\accounts\views.py:124
-msgid "Avatar updated."
-msgstr "Аватар обновлён."
+msgid "Avatar updated"
+msgstr "Аватар обновлён"
 
 #: .\accounts\views.py:131
-msgid "Could not update the avatar."
-msgstr "Не удалось обновить аватар."
+msgid "Could not update the avatar"
+msgstr "Не удалось обновить аватар"
 
 #: .\accounts\views.py:146
 msgid "Your application has been sent."
@@ -359,12 +359,12 @@ msgid "About the project"
 msgstr "О проекте"
 
 #: .\core\templates\core\about_site.html:16
-msgid "Not just choosing a movie."
-msgstr "Это не просто выбор фильма."
+msgid "Not just choosing a movie"
+msgstr "Это не просто выбор фильма"
 
 #: .\core\templates\core\about_site.html:17
-msgid "Understanding why it is right for you."
-msgstr "Понять, почему он подходит именно вам."
+msgid "Understanding why it is right for you"
+msgstr "Понять, почему он подходит именно вам"
 
 #: .\core\templates\core\about_site.html:20
 msgid "RAFS is a place for honest ratings, thoughtful reviews, and finding movies that truly match your taste."
@@ -451,8 +451,8 @@ msgid "Your next movie"
 msgstr "Ваш следующий фильм"
 
 #: .\core\templates\core\about_site.html:89
-msgid "It may already be waiting for you in the catalog."
-msgstr "Возможно, он уже ждёт вас в каталоге."
+msgid "It may already be waiting for you in the catalog"
+msgstr "Возможно, он уже ждёт вас в каталоге"
 
 #: .\core\templates\core\about_site.html:92
 #: .\movies\templates\movies\catalog.html:24
@@ -500,8 +500,8 @@ msgid "Year to"
 msgstr "Год до"
 
 #: .\movies\forms.py:57
-msgid "Year to cannot be earlier than year from."
-msgstr "«Год до» не может быть меньше «Года от»."
+msgid "Year to cannot be earlier than year from"
+msgstr "«Год до» не может быть меньше «Года от»"
 
 #: .\movies\forms.py:73 .\movies\forms.py:83 .\movies\forms.py:93
 #: .\movies\forms.py:103
@@ -859,8 +859,8 @@ msgid "Search for movies on Wikidata"
 msgstr "Поиск фильмов в Wikidata"
 
 #: .\movies\templates\movies\wd_search_form.html:15
-msgid "Find a movie or series and copy its QID for further use."
-msgstr "Найдите фильм или сериал и скопируйте его QID для дальнейшего использования."
+msgid "Find a movie or series and copy its QID for further use"
+msgstr "Найдите фильм или сериал и скопируйте его QID для дальнейшего использования"
 
 #: .\movies\templates\movies\wd_search_form.html:21
 msgid "Searching"
@@ -896,24 +896,24 @@ msgid "Title and description"
 msgstr "Название и описание"
 
 #: .\movies\templates\movies\wd_search_form.html:69
-msgid "Correct the highlighted fields and try again."
-msgstr "Исправьте выделенные поля и повторите попытку."
+msgid "Correct the highlighted fields and try again"
+msgstr "Исправьте выделенные поля и повторите попытку"
 
 #: .\movies\templates\movies\wd_search_form.html:76
 msgid "Wikidata is temporarily unavailable"
 msgstr "Викиданные временно недоступны"
 
 #: .\movies\templates\movies\wd_search_form.html:77
-msgid "Wait a moment and try again – your search has been preserved."
-msgstr "Подождите немного и повторите попытку – ваш поиск сохранен."
+msgid "Wait a moment and try again – your search has been preserved"
+msgstr "Подождите немного и повторите попытку – ваш поиск сохранен"
 
 #: .\movies\templates\movies\wd_search_form.html:84
 msgid "Matching titles"
 msgstr "Подходящие произведения"
 
 #: .\movies\templates\movies\wd_search_form.html:101
-msgid "This title does not have a description in the selected language yet."
-msgstr "У этого произведения пока нет описания на выбранном языке."
+msgid "This title does not have a description in the selected language yet"
+msgstr "У этого произведения пока нет описания на выбранном языке"
 
 #: .\movies\templates\movies\wd_search_form.html:118
 msgid "Open in Wikidata"
@@ -928,16 +928,16 @@ msgid "Nothing found"
 msgstr "Ничего не найдено"
 
 #: .\movies\templates\movies\wd_search_form.html:139
-msgid "Try the original title or select another language."
-msgstr "Попробуйте оригинальное название или выберите другой язык."
+msgid "Try the original title or select another language"
+msgstr "Попробуйте оригинальное название или выберите другой язык"
 
 #: .\movies\templates\movies\wd_search_form.html:150
 msgid "Start with a title"
 msgstr "Начните с названия"
 
 #: .\movies\templates\movies\wd_search_form.html:151
-msgid "For example: Fight Club, Dune, or The Matrix."
-msgstr "Например: «Бойцовский клуб», «Дюна» или «Матрица»."
+msgid "For example: Fight Club, Dune, or The Matrix"
+msgstr "Например: «Бойцовский клуб», «Дюна» или «Матрица»"
 
 #: .\movies\views.py:145
 msgid "+100 Frames"
@@ -1077,16 +1077,16 @@ msgid "Log in to your account"
 msgstr "Вход в аккаунт"
 
 #: .\templates\registration\login.html:16
-msgid "Continue rating movies and sharing your impressions."
-msgstr "Продолжайте оценивать фильмы и делиться впечатлениями."
+msgid "Continue rating movies and sharing your impressions"
+msgstr "Продолжайте оценивать фильмы и делиться впечатлениями"
 
 #: .\templates\registration\login.html:19
 msgid "Unable to log in. Check your username and password."
 msgstr "Невозможно войти. Проверьте свое имя пользователя и пароль."
 
 #: .\templates\registration\login.html:34
-msgid "Fill in this field."
-msgstr "Заполните это поле."
+msgid "Fill in this field"
+msgstr "Заполните это поле"
 
 #: .\templates\registration\login.html:43
 msgid "Don't have an account yet?"
@@ -1108,20 +1108,20 @@ msgstr "Ещё нет аккаунта?"
 msgid "Community"
 msgstr "Сообщество"
 
-msgid "What viewers think: reviews, ratings and conversations about movies."
-msgstr "Мнения зрителей: рецензии, оценки и обсуждения фильмов."
+msgid "What viewers think: reviews, ratings and conversations about movies"
+msgstr "Мнения зрителей: рецензии, оценки и обсуждения фильмов"
 
 msgid "Load more reviews"
 msgstr "Загрузить ещё рецензии"
 
-msgid "You have reached the end of the reviews."
-msgstr "Вы прочитали все рецензии."
+msgid "You have reached the end of the reviews"
+msgstr "Вы прочитали все рецензии"
 
 msgid "Review pages"
 msgstr "Страницы рецензий"
 
-msgid "Open a movie to reply to a review or vote."
-msgstr "Откройте страницу фильма, чтобы ответить на рецензию или проголосовать."
+msgid "Open a movie to reply to a review or vote"
+msgstr "Откройте страницу фильма, чтобы ответить на рецензию или проголосовать"
 
 msgid "Something went wrong. Please try again."
 msgstr "Не удалось выполнить действие. Попробуйте ещё раз."
@@ -1247,3 +1247,15 @@ msgstr "Выбирайте фильмы, сериалы и аниме в кат�
 #: movies/templates/movies/reviews.html
 msgid "Read viewer reviews of films, series and anime on RAFS. Explore ratings, replies and discussions."
 msgstr "Читайте рецензии зрителей на фильмы, сериалы и аниме на RAFS. Знакомьтесь с оценками, ответами и обсуждениями."
+
+#: core/templates/core/about_site.html
+msgid "RAFS is a site for ratings and reviews of films, series and anime"
+msgstr "RAFS (Рафс) – сайт для оценок и рецензий на фильмы, сериалы и аниме"
+
+#: accounts/models.py:66
+msgid "Users"
+msgstr "Пользователи"
+
+#: movies/templates/movies/catalog.html:34
+msgid "Load more"
+msgstr "Загрузить ещё"

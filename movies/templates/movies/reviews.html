@@ -17,11 +17,11 @@
       data-error="{% translate 'Something went wrong. Please try again.' %}"
       data-loading="{% translate 'Loading...' %}"
       data-more="{% translate 'Load more reviews' %}"
-      data-end="{% translate 'You have reached the end of the reviews.' %}">
+      data-end="{% translate 'You have reached the end of the reviews' %}">
     <header class="reviews-feed-heading">
         <span class="reviews-feed-kicker">RAFS · {% translate "Community" %}</span>
         <h1>{% translate "Reviews" %}</h1>
-        <p>{% translate "What viewers think: reviews, ratings and conversations about movies." %}</p>
+        <p>{% translate "What viewers think: reviews, ratings and conversations about movies" %}</p>
     </header>
     <form id="review-vote-csrf" hidden>{% csrf_token %}</form>
     <div data-review-list>
@@ -33,7 +33,7 @@
     </nav>
     <p class="reviews-feed-status" data-feed-status role="status" aria-live="polite"></p>
     <div data-feed-sentinel aria-hidden="true"></div>
-    <noscript><p>{% translate "Open a movie to reply to a review or vote." %}</p></noscript>
+    <noscript><p>{% translate "Open a movie to reply to a review or vote" %}</p></noscript>
     {% include "movies/_review_delete_dialog.html" %}
 </main>
 {% endblock %}

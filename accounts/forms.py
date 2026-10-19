@@ -36,7 +36,7 @@ class AvatarUpdateForm(forms.ModelForm):
             return uploaded_file
 
         if uploaded_file.size > 12 * 1024 * 1024:
-            raise ValidationError(_("The image must be smaller than 12 MB."))
+            raise ValidationError(_("The image must be smaller than 12 MB"))
 
         try:
             uploaded_file.seek(0)
@@ -49,7 +49,7 @@ class AvatarUpdateForm(forms.ModelForm):
                 output = BytesIO()
                 image.save(output, format="PNG", optimize=True)
         except (UnidentifiedImageError, OSError, ValueError):
-            raise ValidationError(_("Upload a valid image file."))
+            raise ValidationError(_("Upload a valid image file"))
 
         return ContentFile(
             output.getvalue(),
