@@ -11,10 +11,11 @@ from movies.movie_models import Country, Genre, Person, Studio, TypeOfWork
 
 BATCH_SIZE = 1000
 ENGLISH_TRANSLATIONS_ATTR = "_search_english_translations"
+RUSSIAN_TRANSLATIONS_ATTR = "_search_russian_translations"
 
 logger = logging.getLogger(__name__)
 
-
+# Auxiliary functions
 def _clean_text(value):
     if value is None:
         return ""
@@ -37,38 +38,38 @@ def _join_unique(values):
     return " ".join(unique_values)
 
 
-def _english_translation_prefetch(lookup, model):
+def _translation_prefetch(lookup, model, trans_attr: str, lang_code: str):
     translation_model = model._parler_meta.root_model
-    translations = translation_model.objects.filter(language_code="en")
+    translations = translation_model.objects.filter(language_code=lang_code)
     return Prefetch(
         lookup,
         queryset=translations,
-        to_attr=ENGLISH_TRANSLATIONS_ATTR,
+        to_attr=trans_attr,
     )
 
 
-def _english_value(instance, field_name):
-    translations = getattr(instance, ENGLISH_TRANSLATIONS_ATTR, ())
+def _lang_value(instance, field_name, trans_attr: str):
+    translations = getattr(instance, trans_attr, ())
     if not translations:
         return ""
     return _clean_text(getattr(translations[0], field_name, ""))
 
 
-def _english_named_queryset(model):
+def _lang_named_queryset(model, trans_attr: str, lang_code: str):
     return model.objects.only("pk", "wikidata_id").prefetch_related(
-        _english_translation_prefetch("translations", model)
+        _translation_prefetch("translations", model, trans_attr, lang_code=lang_code)
     )
 
 
-def _build_search_vector(text_a="", text_b="", text_c="", text_d=""):
+def _build_search_vector(text_a="", text_b="", text_c="", text_d="", config_lang="english"):
     return (
-        SearchVector(Value(text_a), weight="A", config="english")
-        + SearchVector(Value(text_b), weight="B", config="english")
-        + SearchVector(Value(text_c), weight="C", config="english")
-        + SearchVector(Value(text_d), weight="D", config="english")
+        SearchVector(Value(text_a), weight="A", config=config_lang)
+        + SearchVector(Value(text_b), weight="B", config=config_lang)
+        + SearchVector(Value(text_c), weight="C", config=config_lang)
+        + SearchVector(Value(text_d), weight="D", config=config_lang)
     )
 
-
+# Main Functions
 def index_new_movies():
     content_type = ContentType.objects.get_for_model(Movie)
     indexed_object_ids = GlobalSearchIndex.objects.filter(
@@ -88,48 +89,48 @@ def index_new_movies():
             "description",
         )
         .prefetch_related(
-            _english_translation_prefetch("translations", Movie),
-            _english_translation_prefetch(
-                "type_of_work__translations", TypeOfWork
+            _translation_prefetch("translations", Movie, ENGLISH_TRANSLATIONS_ATTR, lang_code="en"),
+            _translation_prefetch(
+                "type_of_work__translations", TypeOfWork, ENGLISH_TRANSLATIONS_ATTR, lang_code="en"
             ),
             Prefetch(
                 "genres",
-                queryset=_english_named_queryset(Genre),
+                queryset=_lang_named_queryset(Genre, ENGLISH_TRANSLATIONS_ATTR, lang_code="en"),
                 to_attr="_search_genres",
             ),
             Prefetch(
                 "actors",
-                queryset=_english_named_queryset(Person),
+                queryset=_lang_named_queryset(Person, ENGLISH_TRANSLATIONS_ATTR, lang_code="en"),
                 to_attr="_search_actors",
             ),
             Prefetch(
                 "countries",
-                queryset=_english_named_queryset(Country),
+                queryset=_lang_named_queryset(Country, ENGLISH_TRANSLATIONS_ATTR, lang_code="en"),
                 to_attr="_search_countries",
             ),
             Prefetch(
                 "studio",
-                queryset=_english_named_queryset(Studio),
+                queryset=_lang_named_queryset(Studio, ENGLISH_TRANSLATIONS_ATTR, lang_code="en"),
                 to_attr="_search_studios",
             ),
             Prefetch(
                 "director",
-                queryset=_english_named_queryset(Person),
+                queryset=_lang_named_queryset(Person, ENGLISH_TRANSLATIONS_ATTR, lang_code="en"),
                 to_attr="_search_directors",
             ),
             Prefetch(
                 "screenwriter",
-                queryset=_english_named_queryset(Person),
+                queryset=_lang_named_queryset(Person, ENGLISH_TRANSLATIONS_ATTR, lang_code="en"),
                 to_attr="_search_screenwriters",
             ),
             Prefetch(
                 "producer",
-                queryset=_english_named_queryset(Person),
+                queryset=_lang_named_queryset(Person, ENGLISH_TRANSLATIONS_ATTR, lang_code="en"),
                 to_attr="_search_producers",
             ),
             Prefetch(
                 "composer",
-                queryset=_english_named_queryset(Person),
+                queryset=_lang_named_queryset(Person, ENGLISH_TRANSLATIONS_ATTR, lang_code="en"),
                 to_attr="_search_composers",
             ),
             "tags",
@@ -142,28 +143,28 @@ def index_new_movies():
     for movie in movies.iterator(chunk_size=BATCH_SIZE):
         type_of_work_name = ""
         if movie.type_of_work is not None:
-            type_of_work_name = _english_value(movie.type_of_work, "name")
+            type_of_work_name = _lang_value(movie.type_of_work, "name", trans_attr=ENGLISH_TRANSLATIONS_ATTR)
 
         names = _join_unique(
-            [_english_value(movie, "wikidata_name"), movie.name]
+            [_lang_value(movie, "wikidata_name", trans_attr=ENGLISH_TRANSLATIONS_ATTR), movie.name]
         )
         descriptions = _join_unique(
-            [_english_value(movie, "wikidata_description"), movie.description]
+            [_lang_value(movie, "wikidata_description", trans_attr=ENGLISH_TRANSLATIONS_ATTR), movie.description]
         )
         related_names = _join_unique(
             [
                 type_of_work_name,
-                *(_english_value(item, "name") for item in movie._search_genres),
-                *(_english_value(item, "name") for item in movie._search_actors),
-                *(_english_value(item, "name") for item in movie._search_countries),
-                *(_english_value(item, "name") for item in movie._search_studios),
-                *(_english_value(item, "name") for item in movie._search_directors),
+                *(_lang_value(item, "name", trans_attr=ENGLISH_TRANSLATIONS_ATTR) for item in movie._search_genres),
+                *(_lang_value(item, "name", trans_attr=ENGLISH_TRANSLATIONS_ATTR) for item in movie._search_actors),
+                *(_lang_value(item, "name", trans_attr=ENGLISH_TRANSLATIONS_ATTR) for item in movie._search_countries),
+                *(_lang_value(item, "name", trans_attr=ENGLISH_TRANSLATIONS_ATTR) for item in movie._search_studios),
+                *(_lang_value(item, "name", trans_attr=ENGLISH_TRANSLATIONS_ATTR) for item in movie._search_directors),
                 *(
-                    _english_value(item, "name")
+                    _lang_value(item, "name", trans_attr=ENGLISH_TRANSLATIONS_ATTR)
                     for item in movie._search_screenwriters
                 ),
-                *(_english_value(item, "name") for item in movie._search_producers),
-                *(_english_value(item, "name") for item in movie._search_composers),
+                *(_lang_value(item, "name", trans_attr=ENGLISH_TRANSLATIONS_ATTR) for item in movie._search_producers),
+                *(_lang_value(item, "name", trans_attr=ENGLISH_TRANSLATIONS_ATTR) for item in movie._search_composers),
                 *(tag.name for tag in movie.tags.all()),
             ]
         )
@@ -228,13 +229,13 @@ def index_new_reviews():
             "movie__type_of_work_id",
         )
         .prefetch_related(
-            _english_translation_prefetch("movie__translations", Movie),
-            _english_translation_prefetch(
-                "movie__type_of_work__translations", TypeOfWork
+            _translation_prefetch("movie__translations", Movie, ENGLISH_TRANSLATIONS_ATTR, lang_code="en"),
+            _translation_prefetch(
+                "movie__type_of_work__translations", TypeOfWork, ENGLISH_TRANSLATIONS_ATTR, lang_code="en"
             ),
             Prefetch(
                 "movie__genres",
-                queryset=_english_named_queryset(Genre),
+                queryset=_lang_named_queryset(Genre, ENGLISH_TRANSLATIONS_ATTR, lang_code="en"),
                 to_attr="_search_genres",
             ),
         )
@@ -246,20 +247,20 @@ def index_new_reviews():
     for review in reviews.iterator(chunk_size=BATCH_SIZE):
         type_of_work_name = ""
         if review.movie.type_of_work is not None:
-            type_of_work_name = _english_value(
+            type_of_work_name = _lang_value(
                 review.movie.type_of_work,
-                "name",
+                "name", trans_attr=ENGLISH_TRANSLATIONS_ATTR
             )
 
         movie_names = _join_unique(
-            [_english_value(review.movie, "wikidata_name"), review.movie.name]
+            [_lang_value(review.movie, "wikidata_name", trans_attr=ENGLISH_TRANSLATIONS_ATTR), review.movie.name]
         )
         review_context = _join_unique(
             [
                 review.user.username,
                 type_of_work_name,
                 *(
-                    _english_value(genre, "name")
+                    _lang_value(genre, "name", trans_attr=ENGLISH_TRANSLATIONS_ATTR)
                     for genre in review.movie._search_genres
                 ),
             ]
@@ -357,7 +358,7 @@ def index_new_persons():
         Person.objects.exclude(pk__in=indexed_object_ids)
         .only("pk", "wikidata_id")
         .prefetch_related(
-            _english_translation_prefetch("translations", Person)
+            _translation_prefetch("translations", Person, ENGLISH_TRANSLATIONS_ATTR, lang_code="en")
         )
     )
 
@@ -370,7 +371,7 @@ def index_new_persons():
                 content_type=content_type,
                 object_id=person.pk,
                 search_vector=_build_search_vector(
-                    text_a=_english_value(person, "name"),
+                    text_a=_lang_value(person, "name", trans_attr=ENGLISH_TRANSLATIONS_ATTR),
                     text_d=_clean_text(person.wikidata_id),
                 ),
             )
@@ -408,7 +409,7 @@ def index_new_studios():
         Studio.objects.exclude(pk__in=indexed_object_ids)
         .only("pk", "wikidata_id")
         .prefetch_related(
-            _english_translation_prefetch("translations", Studio)
+            _translation_prefetch("translations", Studio, ENGLISH_TRANSLATIONS_ATTR, lang_code="en")
         )
     )
 
@@ -421,7 +422,7 @@ def index_new_studios():
                 content_type=content_type,
                 object_id=studio.pk,
                 search_vector=_build_search_vector(
-                    text_a=_english_value(studio, "name"),
+                    text_a=_lang_value(studio, "name", trans_attr=ENGLISH_TRANSLATIONS_ATTR),
                     text_d=_clean_text(studio.wikidata_id),
                 ),
             )
