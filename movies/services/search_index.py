@@ -156,6 +156,8 @@ def index_new_movies():
     prepared_count = 0
 
     for movie in movies.iterator(chunk_size=BATCH_SIZE):
+        combined_vector = None
+        
         for attr, language, lang_code in zip(prefetch_trans_attr, prefetch_languages, prefetch_lang_code):
             type_of_work_name = ""
             if movie.type_of_work is not None:
@@ -170,14 +172,14 @@ def index_new_movies():
             related_names = _join_unique(
                 [
                     type_of_work_name,
-                    *(_lang_value(item, "name", trans_attr=attr) for item in getattr(movie, f"_search_genres{lang_code}")),
-                    *(_lang_value(item, "name", trans_attr=attr) for item in getattr(movie, f"_search_actors{lang_code}")),
-                    *(_lang_value(item, "name", trans_attr=attr) for item in getattr(movie, f"_search_countries{lang_code}")),
-                    *(_lang_value(item, "name", trans_attr=attr) for item in getattr(movie, f"_search_studios{lang_code}")),
-                    *(_lang_value(item, "name", trans_attr=attr) for item in getattr(movie, f"_search_directors{lang_code}")),
-                    *(_lang_value(item, "name", trans_attr=attr)for item in getattr(movie, f"_search_screenwriters{lang_code}")),
-                    *(_lang_value(item, "name", trans_attr=attr) for item in getattr(movie, f"_search_producers{lang_code}")),
-                    *(_lang_value(item, "name", trans_attr=attr) for item in getattr(movie, f"_search_composers{lang_code}")),
+                    *(_lang_value(item, "name", trans_attr=attr) for item in getattr(movie, f"_search_genres_{lang_code}")),
+                    *(_lang_value(item, "name", trans_attr=attr) for item in getattr(movie, f"_search_actors_{lang_code}")),
+                    *(_lang_value(item, "name", trans_attr=attr) for item in getattr(movie, f"_search_countries_{lang_code}")),
+                    *(_lang_value(item, "name", trans_attr=attr) for item in getattr(movie, f"_search_studios_{lang_code}")),
+                    *(_lang_value(item, "name", trans_attr=attr) for item in getattr(movie, f"_search_directors_{lang_code}")),
+                    *(_lang_value(item, "name", trans_attr=attr)for item in getattr(movie, f"_search_screenwriters_{lang_code}")),
+                    *(_lang_value(item, "name", trans_attr=attr) for item in getattr(movie, f"_search_producers_{lang_code}")),
+                    *(_lang_value(item, "name", trans_attr=attr) for item in getattr(movie, f"_search_composers_{lang_code}")),
                     *(tag.name for tag in movie.tags.all()),
                 ]
             )
@@ -185,28 +187,35 @@ def index_new_movies():
                 [movie.year, movie.imdb_id, movie.wikidata_id]
             )
 
-            documents.append(
-                GlobalSearchIndex(
-                    content_type=content_type,
-                    object_id=movie.pk,
-                    search_vector=_build_search_vector(
-                        text_a=names,
-                        text_b=descriptions,
-                        text_c=related_names,
-                        text_d=identifiers,
-                        config_lang=language
-                    ),
-                )
+            language_vector = _build_search_vector(
+                text_a=names,
+                text_b=descriptions,
+                text_c=related_names,
+                text_d=identifiers,
+                config_lang=language
             )
-            prepared_count += 1
 
-            if len(documents) >= BATCH_SIZE:
-                GlobalSearchIndex.objects.bulk_create(
-                    documents,
-                    batch_size=BATCH_SIZE,
-                    ignore_conflicts=True,
-                )
-                documents.clear()
+            if combined_vector is None:
+                combined_vector = language_vector
+            else:
+                combined_vector += language_vector
+
+        documents.append(
+            GlobalSearchIndex(
+                content_type=content_type,
+                object_id=movie.pk,
+                search_vector=combined_vector,
+            )
+        )
+        prepared_count += 1
+
+        if len(documents) >= BATCH_SIZE:
+            GlobalSearchIndex.objects.bulk_create(
+                documents,
+                batch_size=BATCH_SIZE,
+                ignore_conflicts=True,
+            )
+            documents.clear()
 
     if documents:
         GlobalSearchIndex.objects.bulk_create(
