@@ -15,6 +15,7 @@ RUSSIAN_TRANSLATIONS_ATTR = "_search_russian_translations"
 
 prefetch_trans_attr = [ENGLISH_TRANSLATIONS_ATTR, RUSSIAN_TRANSLATIONS_ATTR]
 prefetch_lang_code = ["en", "ru"]
+prefetch_languages = ["english", "russian"]
 
 logger = logging.getLogger(__name__)
 
@@ -86,42 +87,42 @@ for attr, lang_code in zip(prefetch_trans_attr, prefetch_lang_code):
             Prefetch(
                 "genres",
                 queryset=_lang_named_queryset(Genre, attr, lang_code=lang_code),
-                to_attr="_search_genres{sfx}",
+                to_attr=f"_search_genres{sfx}",
             ),
             Prefetch(
                 "actors",
                 queryset=_lang_named_queryset(Person, attr, lang_code=lang_code),
-                to_attr="_search_actors{sfx}",
+                to_attr=f"_search_actors{sfx}",
             ),
             Prefetch(
                 "countries",
                 queryset=_lang_named_queryset(Country, attr, lang_code=lang_code),
-                to_attr="_search_countries{sfx}",
+                to_attr=f"_search_countries{sfx}",
             ),
             Prefetch(
                 "studio",
                 queryset=_lang_named_queryset(Studio, attr, lang_code=lang_code),
-                to_attr="_search_studios{sfx}",
+                to_attr=f"_search_studios{sfx}",
             ),
             Prefetch(
                 "director",
                 queryset=_lang_named_queryset(Person, attr, lang_code=lang_code),
-                to_attr="_search_directors{sfx}",
+                to_attr=f"_search_directors{sfx}",
             ),
             Prefetch(
                 "screenwriter",
                 queryset=_lang_named_queryset(Person, attr, lang_code=lang_code),
-                to_attr="_search_screenwriters{sfx}",
+                to_attr=f"_search_screenwriters{sfx}",
             ),
             Prefetch(
                 "producer",
                 queryset=_lang_named_queryset(Person, attr, lang_code=lang_code),
-                to_attr="_search_producers{sfx}",
+                to_attr=f"_search_producers{sfx}",
             ),
             Prefetch(
                 "composer",
                 queryset=_lang_named_queryset(Person, attr, lang_code=lang_code),
-                to_attr="_search_composers{sfx}")
+                to_attr=f"_search_composers{sfx}")
         ]
     )
 
@@ -155,58 +156,57 @@ def index_new_movies():
     prepared_count = 0
 
     for movie in movies.iterator(chunk_size=BATCH_SIZE):
-        type_of_work_name = ""
-        if movie.type_of_work is not None:
-            type_of_work_name = _lang_value(movie.type_of_work, "name", trans_attr=ENGLISH_TRANSLATIONS_ATTR)
+        for attr, language, lang_code in zip(prefetch_trans_attr, prefetch_languages, prefetch_lang_code):
+            type_of_work_name = ""
+            if movie.type_of_work is not None:
+                type_of_work_name = _lang_value(movie.type_of_work, "name", trans_attr=attr)
 
-        names = _join_unique(
-            [_lang_value(movie, "wikidata_name", trans_attr=ENGLISH_TRANSLATIONS_ATTR), movie.name]
-        )
-        descriptions = _join_unique(
-            [_lang_value(movie, "wikidata_description", trans_attr=ENGLISH_TRANSLATIONS_ATTR), movie.description]
-        )
-        related_names = _join_unique(
-            [
-                type_of_work_name,
-                *(_lang_value(item, "name", trans_attr=ENGLISH_TRANSLATIONS_ATTR) for item in movie._search_genres),
-                *(_lang_value(item, "name", trans_attr=ENGLISH_TRANSLATIONS_ATTR) for item in movie._search_actors),
-                *(_lang_value(item, "name", trans_attr=ENGLISH_TRANSLATIONS_ATTR) for item in movie._search_countries),
-                *(_lang_value(item, "name", trans_attr=ENGLISH_TRANSLATIONS_ATTR) for item in movie._search_studios),
-                *(_lang_value(item, "name", trans_attr=ENGLISH_TRANSLATIONS_ATTR) for item in movie._search_directors),
-                *(
-                    _lang_value(item, "name", trans_attr=ENGLISH_TRANSLATIONS_ATTR)
-                    for item in movie._search_screenwriters
-                ),
-                *(_lang_value(item, "name", trans_attr=ENGLISH_TRANSLATIONS_ATTR) for item in movie._search_producers),
-                *(_lang_value(item, "name", trans_attr=ENGLISH_TRANSLATIONS_ATTR) for item in movie._search_composers),
-                *(tag.name for tag in movie.tags.all()),
-            ]
-        )
-        identifiers = _join_unique(
-            [movie.year, movie.imdb_id, movie.wikidata_id]
-        )
-
-        documents.append(
-            GlobalSearchIndex(
-                content_type=content_type,
-                object_id=movie.pk,
-                search_vector=_build_search_vector(
-                    text_a=names,
-                    text_b=descriptions,
-                    text_c=related_names,
-                    text_d=identifiers,
-                ),
+            names = _join_unique(
+                [_lang_value(movie, "wikidata_name", trans_attr=attr), movie.name]
             )
-        )
-        prepared_count += 1
-
-        if len(documents) >= BATCH_SIZE:
-            GlobalSearchIndex.objects.bulk_create(
-                documents,
-                batch_size=BATCH_SIZE,
-                ignore_conflicts=True,
+            descriptions = _join_unique(
+                [_lang_value(movie, "wikidata_description", trans_attr=attr), movie.description]
             )
-            documents.clear()
+            related_names = _join_unique(
+                [
+                    type_of_work_name,
+                    *(_lang_value(item, "name", trans_attr=attr) for item in getattr(movie, f"_search_genres{lang_code}")),
+                    *(_lang_value(item, "name", trans_attr=attr) for item in getattr(movie, f"_search_actors{lang_code}")),
+                    *(_lang_value(item, "name", trans_attr=attr) for item in getattr(movie, f"_search_countries{lang_code}")),
+                    *(_lang_value(item, "name", trans_attr=attr) for item in getattr(movie, f"_search_studios{lang_code}")),
+                    *(_lang_value(item, "name", trans_attr=attr) for item in getattr(movie, f"_search_directors{lang_code}")),
+                    *(_lang_value(item, "name", trans_attr=attr)for item in getattr(movie, f"_search_screenwriters{lang_code}")),
+                    *(_lang_value(item, "name", trans_attr=attr) for item in getattr(movie, f"_search_producers{lang_code}")),
+                    *(_lang_value(item, "name", trans_attr=attr) for item in getattr(movie, f"_search_composers{lang_code}")),
+                    *(tag.name for tag in movie.tags.all()),
+                ]
+            )
+            identifiers = _join_unique(
+                [movie.year, movie.imdb_id, movie.wikidata_id]
+            )
+
+            documents.append(
+                GlobalSearchIndex(
+                    content_type=content_type,
+                    object_id=movie.pk,
+                    search_vector=_build_search_vector(
+                        text_a=names,
+                        text_b=descriptions,
+                        text_c=related_names,
+                        text_d=identifiers,
+                        config_lang=language
+                    ),
+                )
+            )
+            prepared_count += 1
+
+            if len(documents) >= BATCH_SIZE:
+                GlobalSearchIndex.objects.bulk_create(
+                    documents,
+                    batch_size=BATCH_SIZE,
+                    ignore_conflicts=True,
+                )
+                documents.clear()
 
     if documents:
         GlobalSearchIndex.objects.bulk_create(
