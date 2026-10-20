@@ -230,7 +230,10 @@ def search_query(request):
     search_results = []
     
     if user_argument:
-        query = SearchQuery(user_argument, config='english')
+        query = (
+            SearchQuery(user_argument, config="english")
+            | SearchQuery(user_argument, config="russian")
+        )
         search_results = (
             GlobalSearchIndex.objects
             .filter(search_vector=query)
