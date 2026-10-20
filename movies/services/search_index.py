@@ -13,6 +13,9 @@ BATCH_SIZE = 1000
 ENGLISH_TRANSLATIONS_ATTR = "_search_english_translations"
 RUSSIAN_TRANSLATIONS_ATTR = "_search_russian_translations"
 
+prefetch_trans_attr = [ENGLISH_TRANSLATIONS_ATTR, RUSSIAN_TRANSLATIONS_ATTR]
+prefetch_lang_code = ["en", "ru"]
+
 logger = logging.getLogger(__name__)
 
 # Auxiliary functions
@@ -69,6 +72,59 @@ def _build_search_vector(text_a="", text_b="", text_c="", text_d="", config_lang
         + SearchVector(Value(text_d), weight="D", config=config_lang)
     )
 
+# Global Prefetch
+global_prefetch = []
+
+for attr, lang_code in zip(prefetch_trans_attr, prefetch_lang_code):
+    sfx = f"_{lang_code}"
+
+    global_prefetch.extend(
+        [
+            _translation_prefetch("translations", Movie, attr, lang_code=lang_code),
+            _translation_prefetch("type_of_work__translations", TypeOfWork, attr, lang_code=lang_code
+            ),
+            Prefetch(
+                "genres",
+                queryset=_lang_named_queryset(Genre, attr, lang_code=lang_code),
+                to_attr="_search_genres{sfx}",
+            ),
+            Prefetch(
+                "actors",
+                queryset=_lang_named_queryset(Person, attr, lang_code=lang_code),
+                to_attr="_search_actors{sfx}",
+            ),
+            Prefetch(
+                "countries",
+                queryset=_lang_named_queryset(Country, attr, lang_code=lang_code),
+                to_attr="_search_countries{sfx}",
+            ),
+            Prefetch(
+                "studio",
+                queryset=_lang_named_queryset(Studio, attr, lang_code=lang_code),
+                to_attr="_search_studios{sfx}",
+            ),
+            Prefetch(
+                "director",
+                queryset=_lang_named_queryset(Person, attr, lang_code=lang_code),
+                to_attr="_search_directors{sfx}",
+            ),
+            Prefetch(
+                "screenwriter",
+                queryset=_lang_named_queryset(Person, attr, lang_code=lang_code),
+                to_attr="_search_screenwriters{sfx}",
+            ),
+            Prefetch(
+                "producer",
+                queryset=_lang_named_queryset(Person, attr, lang_code=lang_code),
+                to_attr="_search_producers{sfx}",
+            ),
+            Prefetch(
+                "composer",
+                queryset=_lang_named_queryset(Person, attr, lang_code=lang_code),
+                to_attr="_search_composers{sfx}")
+        ]
+    )
+
 # Main Functions
 def index_new_movies():
     content_type = ContentType.objects.get_for_model(Movie)
@@ -89,51 +145,9 @@ def index_new_movies():
             "description",
         )
         .prefetch_related(
-            _translation_prefetch("translations", Movie, ENGLISH_TRANSLATIONS_ATTR, lang_code="en"),
-            _translation_prefetch(
-                "type_of_work__translations", TypeOfWork, ENGLISH_TRANSLATIONS_ATTR, lang_code="en"
-            ),
-            Prefetch(
-                "genres",
-                queryset=_lang_named_queryset(Genre, ENGLISH_TRANSLATIONS_ATTR, lang_code="en"),
-                to_attr="_search_genres",
-            ),
-            Prefetch(
-                "actors",
-                queryset=_lang_named_queryset(Person, ENGLISH_TRANSLATIONS_ATTR, lang_code="en"),
-                to_attr="_search_actors",
-            ),
-            Prefetch(
-                "countries",
-                queryset=_lang_named_queryset(Country, ENGLISH_TRANSLATIONS_ATTR, lang_code="en"),
-                to_attr="_search_countries",
-            ),
-            Prefetch(
-                "studio",
-                queryset=_lang_named_queryset(Studio, ENGLISH_TRANSLATIONS_ATTR, lang_code="en"),
-                to_attr="_search_studios",
-            ),
-            Prefetch(
-                "director",
-                queryset=_lang_named_queryset(Person, ENGLISH_TRANSLATIONS_ATTR, lang_code="en"),
-                to_attr="_search_directors",
-            ),
-            Prefetch(
-                "screenwriter",
-                queryset=_lang_named_queryset(Person, ENGLISH_TRANSLATIONS_ATTR, lang_code="en"),
-                to_attr="_search_screenwriters",
-            ),
-            Prefetch(
-                "producer",
-                queryset=_lang_named_queryset(Person, ENGLISH_TRANSLATIONS_ATTR, lang_code="en"),
-                to_attr="_search_producers",
-            ),
-            Prefetch(
-                "composer",
-                queryset=_lang_named_queryset(Person, ENGLISH_TRANSLATIONS_ATTR, lang_code="en"),
-                to_attr="_search_composers",
-            ),
-            "tags",
+            # prefetching on all languages
+            *global_prefetch,
+            "tags"
         )
     )
 
