@@ -2,8 +2,8 @@ Django==5.2.16
 python-dotenv==1.2.2
 pillow==12.3.0
 whitenoise==6.12.0
-django-taggit
-psycopg[binary]
-djangorestframework
-requests
-django-parler
+django-taggit==6.1.0
+psycopg[binary]==3.3.6
+djangorestframework==3.18.3
+requests==2.34.2
+django-parler==2.4
