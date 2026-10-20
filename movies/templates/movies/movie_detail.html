@@ -14,12 +14,13 @@
     <link rel="stylesheet" href="{% static 'movies/css/movie-detail.css' %}">
 {% endblock %}
 {% block title %}{{ movie.name }}{% if movie.year %} ({{ movie.year }}){% endif %} – {% translate "Ratings and reviews" %} · RAFS{% endblock %}
-{% block meta_description %}{{ movie.name }}{% if movie.year %} ({{ movie.year }}){% endif %} – {% if movie.description %}{{ movie.description|striptags|truncatechars:155 }}{% else %}{% translate "Viewer ratings and reviews on RAFS. Share your opinion" %}{% endif %}{% endblock %}
+{% block meta_description %}{% with movie_title=movie.wikidata_name|default:movie.name movie_description=movie.wikidata_description|default:movie.description %}{{ movie_title }}{% if movie.year %} ({{ movie.year }}){% endif %} – {% if movie_description %}{{ movie_description|striptags|truncatechars:155 }}{% else %}{% translate "Viewer ratings and reviews on RAFS. Share your opinion" %}{% endif %}{% endwith %}{% endblock %}
 {% block og_type %}video.movie{% endblock %}
-{% block og_title %}{{ movie.name }}{% if movie.year %} ({{ movie.year }}){% endif %} – RAFS{% endblock %}
-{% block og_description %}{{ movie.name }}{% if movie.year %} ({{ movie.year }}){% endif %} – {% if movie.description %}{{ movie.description|striptags|truncatechars:200 }}{% else %}{% translate "Viewer ratings and reviews on RAFS. Share your opinion" %}{% endif %}{% endblock %}
+{% block og_title %}{{ movie.wikidata_name|default:movie.name }}{% if movie.year %} ({{ movie.year }}){% endif %} – RAFS{% endblock %}
+{% block og_description %}{% with movie_title=movie.wikidata_name|default:movie.name movie_description=movie.wikidata_description|default:movie.description %}{{ movie_title }}{% if movie.year %} ({{ movie.year }}){% endif %} – {% if movie_description %}{{ movie_description|striptags|truncatechars:200 }}{% else %}{% translate "Viewer ratings and reviews on RAFS. Share your opinion" %}{% endif %}{% endwith %}{% endblock %}
 {% block og_image %}{% if movie.cover and movie.image_exists %}{{ movie.cover.url|public_image_url }}{% else %}{{ movie.cover_url|public_image_url }}{% endif %}{% endblock %}
 {% block content %}
+    {% with movie_title=movie.wikidata_name|default:movie.name movie_description=movie.wikidata_description|default:movie.description %}
     <main class="page-shell movie-page" data-review-voting
           data-vote-url="{% url 'movies:vote_review' %}"
           data-login-url="{% url 'login' %}?next={{ request.path|urlencode }}"
@@ -30,23 +31,23 @@
         {% if movie.cover and movie.image_exists %}
             <img class="movie-detail-cover"
                  src="{{ movie.cover.url }}"
-                 alt="{{ movie.name }}"
+                 alt="{{ movie_title }}"
                  data-fallback-src="{% static 'movies/images/nocover.png' %}"
                  onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;" />
         {% elif movie.cover_url %}
             <img class="movie-detail-cover"
                  src="{{ movie.cover_url }}"
-                 alt="{{ movie.name }}"
+                 alt="{{ movie_title }}"
                  data-fallback-src="{% static 'movies/images/nocover.png' %}"
                  onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;" />
         {% else %}
             <img class="movie-detail-cover"
                  src="{% static 'movies/images/nocover.png' %}"
-                 alt="{{ movie.name }}" />
+                 alt="{{ movie_title }}" />
         {% endif %}
         <div class="movie-detail-main-textinfo">
             <p class="page-kicker">RAFS · {% translate "Ratings and reviews" %}</p>
-            <h1>{{ movie.name }}</h1>
+            <h1>{{ movie_title }}</h1>
             <div class="movie-detail-meta">
                 {% if movie.year %}<span>{{ movie.year }}</span>{% endif %}
                 {% with movie_rating=movie.avg_rating %}
@@ -63,7 +64,7 @@
                 {% endif %}
             </div>
         </div>
-        {% if movie.description %}<p class="movie-detail-main-description">{{ movie.description }}</p>{% endif %}
+        {% if movie_description %}<p class="movie-detail-main-description">{{ movie_description }}</p>{% endif %}
     </article>
     <div class="movie-watch-status"
          data-movie-id="{{ movie.id }}"
@@ -218,6 +219,7 @@
             pendingReviewDeleteTrigger = null;
         });
     </script>
+    {% endwith %}
 {% endblock %}
 {% block extra_js %}
     <script src="{% static 'movies/js/review-votes.js' %}" defer></script>

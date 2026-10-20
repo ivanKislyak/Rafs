@@ -1,4 +1,5 @@
 import json
+from html import escape
 from unittest.mock import patch
 
 from django.contrib.auth import get_user_model
@@ -6,6 +7,7 @@ from django.db import connection
 from django.test import Client, SimpleTestCase, TestCase
 from django.test.utils import CaptureQueriesContext
 from django.urls import reverse
+from django.utils import translation
 
 from .forms import ReviewForm
 from .models import Movie, Review, ReviewReply, ReviewVote, WatchStatus
@@ -18,6 +20,84 @@ class ReviewFormTests(SimpleTestCase):
         self.assertIn("rating", form.fields)
         self.assertIn("text", form.fields)
         self.assertIn("contains_spoiler", form.fields)
+
+
+class MovieDetailTranslationTests(TestCase):
+    languages = ("en", "ru", "uk", "kk", "es", "de")
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.movie = Movie.objects.create(
+            name="Original title", description="Original description", year=2024,
+        )
+        for language in cls.languages:
+            cls.movie.set_current_language(language)
+            cls.movie.wikidata_name = f"Localized title {language}"
+            cls.movie.wikidata_description = f"Localized description {language}"
+            cls.movie.save()
+
+    def assert_displayed_movie(self, movie, language, title, description):
+        response = self.client.get(
+            reverse("movies:detail", args=[movie.pk]), HTTP_ACCEPT_LANGUAGE=language,
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, f"<h1>{escape(title)}</h1>", html=True)
+        self.assertContains(response, f'alt="{escape(title)}"')
+        self.assertContains(
+            response, f'<p class="movie-detail-main-description">{escape(description)}</p>', html=True,
+        )
+        return response
+
+    def test_available_translations_are_used_in_content_and_metadata_in_six_languages(self):
+        for language in self.languages:
+            with self.subTest(language=language):
+                title = f"Localized title {language}"
+                description = f"Localized description {language}"
+                response = self.assert_displayed_movie(self.movie, language, title, description)
+                for attributes, value in [
+                    ('name="description"', f"{title} (2024) – {description}"),
+                    ('property="og:description"', f"{title} (2024) – {description}"),
+                    ('property="og:title"', f"{title} (2024) – RAFS"),
+                ]:
+                    self.assertContains(response, f'<meta {attributes} content="{escape(value)}">', html=True)
+                # Browser titles retain the previously requested format and base name.
+                with translation.override(language):
+                    suffix = translation.gettext("Ratings and reviews")
+                self.assertContains(response, f"<title>Original title (2024) – {suffix} · RAFS</title>", html=True)
+
+    def test_translated_description_is_shown_even_when_base_description_is_empty(self):
+        self.movie.description = ""
+        self.movie.save(update_fields=["description"])
+        self.assert_displayed_movie(
+            self.movie, "ru", "Localized title ru", "Localized description ru",
+        )
+
+    def test_missing_or_empty_translations_fall_back_to_base_fields(self):
+        for has_empty_translation in [False, True]:
+            movie = Movie.objects.create(name="Fallback title", description="Fallback description")
+            if has_empty_translation:
+                movie.set_current_language("ru")
+                movie.wikidata_name = ""
+                movie.wikidata_description = ""
+                movie.save()
+            with self.subTest(has_empty_translation=has_empty_translation):
+                self.assert_displayed_movie(movie, "ru", "Fallback title", "Fallback description")
+
+    def test_translated_fields_remain_escaped_and_meta_description_strips_tags(self):
+        self.movie.set_current_language("ru")
+        title = 'Название "фильма" <img src=x onerror=alert(1)>'
+        description = '<p>Сюжет "с кавычками" & деталями</p>'
+        self.movie.wikidata_name = title
+        self.movie.wikidata_description = description
+        self.movie.save()
+
+        response = self.assert_displayed_movie(self.movie, "ru", title, description)
+
+        self.assertNotContains(response, "<img src=x onerror=alert(1)>")
+        expected_meta = f'{title} (2024) – Сюжет "с кавычками" & деталями'
+        self.assertContains(
+            response, f'<meta name="description" content="{escape(expected_meta)}">', html=True,
+        )
 
 
 class WikidataImportPermissionTests(TestCase):
