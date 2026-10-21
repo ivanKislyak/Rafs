@@ -233,6 +233,8 @@ def search_query(request):
         query = (
             SearchQuery(user_argument, config="english")
             | SearchQuery(user_argument, config="russian")
+            | SearchQuery(user_argument, config="spanish")
+            | SearchQuery(user_argument, config="german")
         )
         search_results = (
             GlobalSearchIndex.objects
