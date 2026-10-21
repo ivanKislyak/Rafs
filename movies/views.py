@@ -21,6 +21,8 @@ from django.views.decorators.http import require_POST
 from django.http import HttpResponse
 from requests import RequestException
 
+from rest_framework.pagination import PageNumberPagination
+from rest_framework import serializers
 from .forms import (
     MovieFilterForm, 
     ReviewForm, 
@@ -225,6 +227,18 @@ def vote_review(request):
 
     except (json.JSONDecodeError, TypeError, ValueError):
         return JsonResponse({"error": _("Invalid data format")}, status=400)
+
+class SearchResultSerializer(serializers.Serializer):
+    movie_id = serializers.IntegerField(source='object_id')
+    title = serializers.SerializerMethodField()
+    year = serializers.IntegerField(source='content_object.year')
+    rank = serializers.FloatField(min_value=0.000)
+    
+    def get_title(self, obj):
+        if not obj.content_object:
+            return None
+        return obj.content_object.wikidata_name
+
 
 def search_query(request):
     raw_query = request.GET.get('query', '').strip()
