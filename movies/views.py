@@ -228,17 +228,48 @@ def vote_review(request):
     except (json.JSONDecodeError, TypeError, ValueError):
         return JsonResponse({"error": _("Invalid data format")}, status=400)
 
-class SearchResultSerializer(serializers.Serializer):
-    movie_id = serializers.IntegerField(source='object_id')
-    title = serializers.SerializerMethodField()
-    year = serializers.IntegerField(source='content_object.year')
-    rank = serializers.FloatField(min_value=0.000)
-    
-    def get_title(self, obj):
-        if not obj.content_object:
-            return None
-        return obj.content_object.wikidata_name
+TITLE_FIELDS = {
+    'movie': ('wikidata_name', 'name'),
+    'person': ('name',),
+    'studio': ('name',),
+    'user': ('username',),
+}
 
+
+def _read(target, field):
+    if hasattr(target, 'safe_translation_getter'):
+        return target.safe_translation_getter(field, any_language=True)
+    return getattr(target, field, None)
+
+
+class SearchResultSerializer(serializers.Serializer):
+    id = serializers.IntegerField(source='object_id')
+    type = serializers.CharField(source='content_type.model')
+    title = serializers.SerializerMethodField()
+    year = serializers.SerializerMethodField()
+
+    def get_title(self, obj):
+        target = obj.content_object
+        if target is None:
+            return None
+
+        model = obj.content_type.model
+
+        if model == 'review':
+            target, model = target.movie, 'movie'
+        elif model == 'user' and target.is_deleted:
+            return None
+
+        for field in TITLE_FIELDS.get(model, ()):
+            value = _read(target, field)
+            if value:
+                return value
+
+        return getattr(target, 'wikidata_id', None) or None
+
+    def get_year(self, obj):
+        target = obj.content_object
+        return getattr(target, 'year', None) if target is not None else None
 
 def search_query(request):
     raw_query = request.GET.get('query', '').strip()
@@ -257,6 +288,7 @@ def search_query(request):
             GlobalSearchIndex.objects
             .filter(search_vector=query)
             .annotate(rank=SearchRank(F("search_vector"), query))
+            .select_related('content_type')
             .order_by('-rank', "pk")
         )
 
