@@ -15,7 +15,9 @@ RUSSIAN_TRANSLATIONS_ATTR = "_search_russian_translations"
 SPANISH_TRANSLATION_ATTR = "_search_spanish_translations"
 GERMAN_TRANSLATION_ATTR = "_search_german_translations"
 
-prefetch_trans_attr = [ENGLISH_TRANSLATIONS_ATTR, RUSSIAN_TRANSLATIONS_ATTR, SPANISH_TRANSLATION_ATTR]
+prefetch_trans_attr = [
+    ENGLISH_TRANSLATIONS_ATTR, RUSSIAN_TRANSLATIONS_ATTR, 
+    SPANISH_TRANSLATION_ATTR, GERMAN_TRANSLATION_ATTR]
 prefetch_lang_code = ["en", "ru", "es", "de", ]
 prefetch_languages = ["english", "russian", "spanish", "german"]
 

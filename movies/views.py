@@ -1,4 +1,5 @@
 import json
+import re
 from itertools import chain
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.translation import gettext as _
@@ -226,15 +227,17 @@ def vote_review(request):
         return JsonResponse({"error": _("Invalid data format")}, status=400)
 
 def search_query(request):
-    user_argument = request.GET.get('query', '').strip()
+    raw_query = request.GET.get('query', '').strip()
+    words = re.findall(r'[^\W_]+', raw_query)
     search_results = []
-    
-    if user_argument:
+
+    if words:
+        tsquery = " & ".join(f"{word}:*" for word in words)
         query = (
-            SearchQuery(user_argument, config="english")
-            | SearchQuery(user_argument, config="russian")
-            | SearchQuery(user_argument, config="spanish")
-            | SearchQuery(user_argument, config="german")
+            SearchQuery(tsquery, config="english", search_type="raw")
+            | SearchQuery(tsquery, config="russian", search_type="raw")
+            | SearchQuery(tsquery, config="spanish", search_type="raw")
+            | SearchQuery(tsquery, config="german", search_type="raw")
         )
         search_results = (
             GlobalSearchIndex.objects
@@ -242,10 +245,10 @@ def search_query(request):
             .annotate(rank=SearchRank(F("search_vector"), query))
             .order_by('-rank', "pk")
         )
-    
+
     return render(request, 'movies/search_results.html', {
-        'results': search_results, 
-        'query': user_argument
+        'results': search_results,
+        'query': raw_query,
     })
 
 def show_popular_results(request):
