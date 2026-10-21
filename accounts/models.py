@@ -10,6 +10,7 @@ class Achievement(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=500)
     avatar_image = models.ImageField(upload_to="achievements/", blank=True, null=True)
+    display_in_profile = models.BooleanField(default=True)
 
 class User(AbstractUser):
     about = models.TextField(blank=True, max_length=1000, verbose_name="About")
