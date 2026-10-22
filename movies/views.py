@@ -12,8 +12,8 @@ from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
 from django.contrib.postgres.aggregates import StringAgg
 from django.db.models import Avg, F, Count, Value, CharField, Prefetch, Q, OuterRef, Subquery
-from django.db.models.functions import Greatest
-from django.db.models.functions import Coalesce
+from django.db.models.functions import Greatest, Coalesce
+from django.db.models.query import EmptyQuerySet
 from django.template.loader import render_to_string
 from django.http import JsonResponse
 from django.urls import reverse
@@ -22,7 +22,7 @@ from django.http import HttpResponse
 from requests import RequestException
 
 from rest_framework.pagination import PageNumberPagination
-from rest_framework import serializers
+from rest_framework import serializers, generics
 from .forms import (
     MovieFilterForm, 
     ReviewForm, 
@@ -296,6 +296,37 @@ def search_query(request):
         'results': search_results,
         'query': raw_query,
     })
+
+
+class SearchResultsListAPIView(generics.ListAPIView):
+    def get_queryset(self):
+        raw_query = self.request.query_params.get('query', '').strip()
+        words = re.findall(r'[^\W_]+', raw_query)
+        query = None
+
+        if words:
+            tsquery = " & ".join(f"{word}:*" for word in words)
+            query = (
+                SearchQuery(tsquery, config="english", search_type="raw")
+                | SearchQuery(tsquery, config="russian", search_type="raw")
+                | SearchQuery(tsquery, config="spanish", search_type="raw")
+                | SearchQuery(tsquery, config="german", search_type="raw")
+            )
+
+        if not query:
+            return GlobalSearchIndex.objects.none()
+            
+        search_results = (GlobalSearchIndex.objects
+                .filter(search_vector=query)
+                .annotate(rank=SearchRank(F("search_vector"), query))
+                .select_related('content_type')
+                .order_by('-rank', "pk")
+                )
+
+        return search_results
+    
+    serializer_class = SearchResultSerializer
+    
 
 def show_popular_results(request):
     country_code = get_country_code(request)
