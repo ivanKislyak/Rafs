@@ -271,32 +271,6 @@ class SearchResultSerializer(serializers.Serializer):
         target = obj.content_object
         return getattr(target, 'year', None) if target is not None else None
 
-def search_query(request):
-    raw_query = request.GET.get('query', '').strip()
-    words = re.findall(r'[^\W_]+', raw_query)
-    search_results = []
-
-    if words:
-        tsquery = " & ".join(f"{word}:*" for word in words)
-        query = (
-            SearchQuery(tsquery, config="english", search_type="raw")
-            | SearchQuery(tsquery, config="russian", search_type="raw")
-            | SearchQuery(tsquery, config="spanish", search_type="raw")
-            | SearchQuery(tsquery, config="german", search_type="raw")
-        )
-        search_results = (
-            GlobalSearchIndex.objects
-            .filter(search_vector=query)
-            .annotate(rank=SearchRank(F("search_vector"), query))
-            .select_related('content_type')
-            .order_by('-rank', "pk")
-        )
-
-    return render(request, 'movies/search_results.html', {
-        'results': search_results,
-        'query': raw_query,
-    })
-
 
 class SearchResultsListAPIView(generics.ListAPIView):
     def get_queryset(self):
@@ -326,6 +300,33 @@ class SearchResultsListAPIView(generics.ListAPIView):
         return search_results
     
     serializer_class = SearchResultSerializer
+
+
+def search_query(request):
+    raw_query = request.GET.get('query', '').strip()
+    words = re.findall(r'[^\W_]+', raw_query)
+    search_results = []
+
+    if words:
+        tsquery = " & ".join(f"{word}:*" for word in words)
+        query = (
+            SearchQuery(tsquery, config="english", search_type="raw")
+            | SearchQuery(tsquery, config="russian", search_type="raw")
+            | SearchQuery(tsquery, config="spanish", search_type="raw")
+            | SearchQuery(tsquery, config="german", search_type="raw")
+        )
+        search_results = (
+            GlobalSearchIndex.objects
+            .filter(search_vector=query)
+            .annotate(rank=SearchRank(F("search_vector"), query))
+            .select_related('content_type')
+            .order_by('-rank', "pk")
+        )
+
+    return render(request, 'movies/search_results.html', {
+        'results': search_results,
+        'query': raw_query,
+    })
     
 
 def show_popular_results(request):

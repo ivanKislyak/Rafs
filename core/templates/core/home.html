@@ -13,8 +13,12 @@
 {% block meta_description %}
     {% translate "Explore films, series and anime on RAFS. Read viewer reviews, compare ratings and share your own impressions." %}
 {% endblock %}
-{% block og_description %}{% translate "Explore films, series and anime on RAFS. Read viewer reviews, compare ratings and share your own impressions." %}{% endblock %}
-{% block structured_data %}{% website_json_ld %}{% endblock %}
+{% block og_description %}
+    {% translate "Explore films, series and anime on RAFS. Read viewer reviews, compare ratings and share your own impressions." %}
+{% endblock %}
+{% block structured_data %}
+    {% website_json_ld %}
+{% endblock %}
 {% block content %}
     <main class="page-shell home-page">
         <header class="page-heading">
@@ -23,7 +27,7 @@
         <p class="home-description">{% translate "RAFS is a site for ratings and reviews of films, series and anime" %}</p>
         <div class="movie-grid">
             {% for movie in top_movies %}
-                {% include 'movies/_movie_card.html' with movie=movie %}
+                {% include "movies/_movie_card.html" with movie=movie %}
             {% empty %}
                 <p class="empty-msg">{% translate "There are no movies. You might want to refresh the catalog later." %}</p>
             {% endfor %}

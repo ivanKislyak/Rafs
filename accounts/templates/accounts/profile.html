@@ -11,35 +11,45 @@
         <section class="profile-hero" aria-labelledby="profile-name">
             <div class="profile-avatar-column">
                 {% if profile_user.avatar_image %}
-                    <img class="profile-avatar" data-fallback-src="{% static 'images/default_profile_img.png' %}" onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
+                    <img class="profile-avatar"
+                         data-fallback-src="{% static 'images/default_profile_img.png' %}"
+                         onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
                          src="{{ profile_user.avatar_image.url }}"
                          alt="{% translate 'Avatar of user' %} {{ profile_user.username }}">
                 {% else %}
-                    <img class="profile-avatar" data-fallback-src="{% static 'images/default_profile_img.png' %}" onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
+                    <img class="profile-avatar"
+                         data-fallback-src="{% static 'images/default_profile_img.png' %}"
+                         onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
                          src="{% static 'images/default_profile_img.png' %}"
                          alt="{% translate 'Avatar of user' %} {{ profile_user.username }}">
                 {% endif %}
                 {% if is_owner %}
                     <details class="profile-avatar-editor" data-avatar-editor>
-                        <summary aria-controls="profile-avatar-panel" aria-expanded="false">{% translate "Change avatar" %}</summary>
+                        <summary aria-controls="profile-avatar-panel"
+                                 aria-expanded="false">{% translate "Change avatar" %}</summary>
                         <form action="{% url 'accounts:update-avatar' %}"
                               id="profile-avatar-panel"
                               aria-labelledby="profile-avatar-editor-title"
                               method="post"
                               enctype="multipart/form-data">
                             {% csrf_token %}
-                            <p class="profile-file-label" id="profile-avatar-editor-title">
-                                {% translate "Choose an image" %}
-                            </p>
+                            <p class="profile-file-label" id="profile-avatar-editor-title">{% translate "Choose an image" %}</p>
                             <div hidden>{{ avatar_form.avatar_image }}</div>
-                            <button class="profile-button" type="button" data-avatar-choose
+                            <button class="profile-button"
+                                    type="button"
+                                    data-avatar-choose
                                     aria-describedby="profile-avatar-filename">{% translate "Choose file" %}</button>
-                            <p class="profile-avatar-filename" id="profile-avatar-filename"
-                               data-avatar-filename data-empty="{% translate 'No file selected' %}"
-                               role="status" aria-live="polite" aria-atomic="true">{% translate "No file selected" %}</p>
+                            <p class="profile-avatar-filename"
+                               id="profile-avatar-filename"
+                               data-avatar-filename
+                               data-empty="{% translate 'No file selected' %}"
+                               role="status"
+                               aria-live="polite"
+                               aria-atomic="true">{% translate "No file selected" %}</p>
                             <p class="profile-form-hint">{% translate "The image will be resized and converted to PNG. Maximum size: 12 MB." %}</p>
                             <div class="profile-avatar-actions">
-                                <button class="profile-button profile-button--primary" type="submit">{% translate "Upload" %}</button>
+                                <button class="profile-button profile-button--primary"
+                                        type="submit">{% translate "Upload" %}</button>
                                 {% if profile_user.avatar_image %}
                                     <button class="profile-button profile-button--quiet"
                                             type="submit"
@@ -47,7 +57,8 @@
                                             value="delete"
                                             formnovalidate>{% translate "Remove" %}</button>
                                 {% endif %}
-                                <button class="profile-button profile-button--quiet" type="button"
+                                <button class="profile-button profile-button--quiet"
+                                        type="button"
                                         data-avatar-cancel>{% translate "Cancel" %}</button>
                             </div>
                         </form>
@@ -134,7 +145,8 @@
                             aria-expanded="false"
                             aria-controls="profile-watch-panel-{{ forloop.counter }}">
                         <span>{{ status.label }}</span>
-                        <strong data-profile-watch-count data-count="{{ status.count }}">{{ status.count|intcomma }}</strong>
+                        <strong data-profile-watch-count
+                                data-count="{{ status.count }}">{{ status.count|intcomma }}</strong>
                     </button>
                 {% endfor %}
             </div>
@@ -180,9 +192,16 @@
                                     </div>
                                     {% if is_owner %}
                                         <div class="profile-watch-movie-actions">
-                                            <button class="profile-watch-remove" type="button" data-library-remove>{% translate "Remove from list" %}</button>
-                                            <span class="profile-watch-removed-message" data-library-removed hidden>{% translate "Removed from list" %}</span>
-                                            <button class="profile-watch-undo" type="button" data-library-undo hidden>{% translate "Undo" %}</button>
+                                            <button class="profile-watch-remove"
+                                                    type="button"
+                                                    data-library-remove>{% translate "Remove from list" %}</button>
+                                            <span class="profile-watch-removed-message"
+                                                  data-library-removed
+                                                  hidden>{% translate "Removed from list" %}</span>
+                                            <button class="profile-watch-undo"
+                                                    type="button"
+                                                    data-library-undo
+                                                    hidden>{% translate "Undo" %}</button>
                                         </div>
                                         <span class="profile-watch-movie-feedback"
                                               data-library-feedback

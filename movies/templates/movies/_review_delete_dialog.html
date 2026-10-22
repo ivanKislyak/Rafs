@@ -1,40 +1,42 @@
 {% load i18n %}
-    <dialog class="review-delete-dialog"
-            id="review-delete-dialog"
-            aria-labelledby="review-delete-dialog-title"
-            aria-describedby="review-delete-dialog-description">
-        <div class="review-delete-dialog-card">
-            <div class="review-delete-dialog-heading">
-                <span class="review-delete-dialog-icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" focusable="false">
-                        <path d="M4 7h16"></path>
-                        <path d="m9 7 1-2h4l1 2"></path>
-                        <path d="m7 7 1 13h8l1-13"></path>
-                        <path d="M10 11v5M14 11v5"></path>
-                    </svg>
-                </span>
-                <div>
-                    <span class="review-delete-dialog-kicker" data-delete-dialog-kicker>{% translate "Delete review" %}</span>
-                    <h3 id="review-delete-dialog-title" data-delete-dialog-title>{% translate "Are you sure you want to delete it?" %}</h3>
-                </div>
-            </div>
-            <p id="review-delete-dialog-description" data-delete-dialog-description>
-                {% translate "The review will be removed from the site. This action cannot be undone after confirmation." %}
-            </p>
-            <div class="review-delete-dialog-actions">
-                <button class="review-delete-dialog-cancel"
-                        type="button"
-                        data-delete-review-cancel>{% translate "Cancel" %}</button>
-                <button class="review-delete-dialog-confirm"
-                        type="button"
-                        data-delete-review-confirm>
-                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                        <path d="M4 7h16"></path>
-                        <path d="m9 7 1-2h4l1 2"></path>
-                        <path d="m7 7 1 13h8l1-13"></path>
-                    </svg>
-                    <span>{% translate "Delete" %}</span>
-                </button>
+<dialog class="review-delete-dialog"
+        id="review-delete-dialog"
+        aria-labelledby="review-delete-dialog-title"
+        aria-describedby="review-delete-dialog-description">
+    <div class="review-delete-dialog-card">
+        <div class="review-delete-dialog-heading">
+            <span class="review-delete-dialog-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                    <path d="M4 7h16"></path>
+                    <path d="m9 7 1-2h4l1 2"></path>
+                    <path d="m7 7 1 13h8l1-13"></path>
+                    <path d="M10 11v5M14 11v5"></path>
+                </svg>
+            </span>
+            <div>
+                <span class="review-delete-dialog-kicker"
+                      data-delete-dialog-kicker>{% translate "Delete review" %}</span>
+                <h3 id="review-delete-dialog-title"
+                    data-delete-dialog-title>{% translate "Are you sure you want to delete it?" %}</h3>
             </div>
         </div>
-    </dialog>
+        <p id="review-delete-dialog-description" data-delete-dialog-description>
+            {% translate "The review will be removed from the site. This action cannot be undone after confirmation." %}
+        </p>
+        <div class="review-delete-dialog-actions">
+            <button class="review-delete-dialog-cancel"
+                    type="button"
+                    data-delete-review-cancel>{% translate "Cancel" %}</button>
+            <button class="review-delete-dialog-confirm"
+                    type="button"
+                    data-delete-review-confirm>
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M4 7h16"></path>
+                    <path d="m9 7 1-2h4l1 2"></path>
+                    <path d="m7 7 1 13h8l1-13"></path>
+                </svg>
+                <span>{% translate "Delete" %}</span>
+            </button>
+        </div>
+    </div>
+</dialog>

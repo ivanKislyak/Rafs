@@ -21,50 +21,53 @@
 {% block og_image %}{% if movie.cover and movie.image_exists %}{{ movie.cover.url|public_image_url }}{% else %}{{ movie.cover_url|public_image_url }}{% endif %}{% endblock %}
 {% block content %}
     {% with movie_title=movie.wikidata_name|default:movie.name movie_description=movie.wikidata_description|default:movie.description %}
-    <main class="page-shell movie-page" data-review-voting
-          data-vote-url="{% url 'movies:vote_review' %}"
-          data-login-url="{% url 'login' %}?next={{ request.path|urlencode }}"
-          data-authenticated="{{ user.is_authenticated|yesno:'true,false' }}"
-          data-error="{% translate 'Unable to save your reaction' %}">
-    <a class="movie-back-link" href="{% url 'movies:catalog' %}">← {% translate "Back to catalog" %}</a>
-    <article class="movie-detail-main-container">
-        {% if movie.cover and movie.image_exists %}
-            <img class="movie-detail-cover"
-                 src="{{ movie.cover.url }}"
-                 alt="{{ movie_title }}"
-                 data-fallback-src="{% static 'movies/images/nocover.png' %}"
-                 onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;" />
-        {% elif movie.cover_url %}
-            <img class="movie-detail-cover"
-                 src="{{ movie.cover_url }}"
-                 alt="{{ movie_title }}"
-                 data-fallback-src="{% static 'movies/images/nocover.png' %}"
-                 onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;" />
-        {% else %}
-            <img class="movie-detail-cover"
-                 src="{% static 'movies/images/nocover.png' %}"
-                 alt="{{ movie_title }}" />
-        {% endif %}
-        <div class="movie-detail-main-textinfo">
-            <p class="page-kicker">RAFS · {% translate "Ratings and reviews" %}</p>
-            <h1>{{ movie_title }}</h1>
-            <div class="movie-detail-meta">
-                {% if movie.year %}<span>{{ movie.year }}</span>{% endif %}
-                {% with movie_rating=movie.avg_rating %}
-                    {% if movie_rating %}<span class="movie-detail-rating">{% translate "RAFS rating:" %} <strong>{{ movie_rating }}</strong> / 10</span>
-                    {% else %}<span>{% translate "Not rated yet" %}</span>{% endif %}
-                {% endwith %}
-            </div>
-            <div class="movie-detail-actions">
-                {% if user_already_rated_this %}
-                    <span>{% translate "Your rating:" %} <strong>{{ user_already_rated_this.avg_rating }}</strong></span>
-                    <a class="btn" href="{% url 'movies:review_form' movie.id %}">{% translate "Edit" %}</a>
+        <main class="page-shell movie-page"
+              data-review-voting
+              data-vote-url="{% url 'movies:vote_review' %}"
+              data-login-url="{% url 'login' %}?next={{ request.path|urlencode }}"
+              data-authenticated="{{ user.is_authenticated|yesno:'true,false' }}"
+              data-error="{% translate 'Unable to save your reaction' %}">
+            <a class="movie-back-link" href="{% url 'movies:catalog' %}">← {% translate "Back to catalog" %}</a>
+            <article class="movie-detail-main-container">
+                {% if movie.cover and movie.image_exists %}
+                    <img class="movie-detail-cover"
+                         src="{{ movie.cover.url }}"
+                         alt="{{ movie_title }}"
+                         data-fallback-src="{% static 'movies/images/nocover.png' %}"
+                         onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;" />
+                {% elif movie.cover_url %}
+                    <img class="movie-detail-cover"
+                         src="{{ movie.cover_url }}"
+                         alt="{{ movie_title }}"
+                         data-fallback-src="{% static 'movies/images/nocover.png' %}"
+                         onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;" />
                 {% else %}
-                    <a class="btn" href="{% url 'movies:review_form' movie.id %}">{% translate "Rate" %}</a>
+                    <img class="movie-detail-cover"
+                         src="{% static 'movies/images/nocover.png' %}"
+                         alt="{{ movie_title }}" />
                 {% endif %}
-            </div>
-        </div>
-        {% if movie_description %}<p class="movie-detail-main-description">{{ movie_description }}</p>{% endif %}
+                <div class="movie-detail-main-textinfo">
+                    <p class="page-kicker">RAFS · {% translate "Ratings and reviews" %}</p>
+                    <h1>{{ movie_title }}</h1>
+                    <div class="movie-detail-meta">
+                        {% if movie.year %}<span>{{ movie.year }}</span>{% endif %}
+                        {% with movie_rating=movie.avg_rating %}
+                            {% if movie_rating %}<span class="movie-detail-rating">{% translate "RAFS rating:" %} <strong>{{ movie_rating }}</strong> / 10</span>
+                        {% else %}
+                            <span>{% translate "Not rated yet" %}</span>
+                        {% endif %}
+    {% endwith %}
+    </div>
+    <div class="movie-detail-actions">
+        {% if user_already_rated_this %}
+            <span>{% translate "Your rating:" %} <strong>{{ user_already_rated_this.avg_rating }}</strong></span>
+            <a class="btn" href="{% url 'movies:review_form' movie.id %}">{% translate "Edit" %}</a>
+        {% else %}
+            <a class="btn" href="{% url 'movies:review_form' movie.id %}">{% translate "Rate" %}</a>
+        {% endif %}
+    </div>
+    </div>
+    {% if movie_description %}<p class="movie-detail-main-description">{{ movie_description }}</p>{% endif %}
     </article>
     <div class="movie-watch-status"
          data-movie-id="{{ movie.id }}"
@@ -73,7 +76,9 @@
          data-error-message="{% translate 'Unable to update the movie status' %}">
         {% for choice in watch_status_model.StatusChoice.choices %}
             <button class="movie-watch-status-btn {% if watch_status.status == choice.0 %}is-active{% endif %}"
-                    type="button" aria-pressed="{% if watch_status.status == choice.0 %}true{% else %}false{% endif %}" data-value="{{ choice.0 }}">{{ choice.1 }}</button>
+                    type="button"
+                    aria-pressed="{% if watch_status.status == choice.0 %}true{% else %}false{% endif %}"
+                    data-value="{{ choice.0 }}">{{ choice.1 }}</button>
         {% endfor %}
     </div>
     <section class="review-comments">
@@ -219,7 +224,7 @@
             pendingReviewDeleteTrigger = null;
         });
     </script>
-    {% endwith %}
+{% endwith %}
 {% endblock %}
 {% block extra_js %}
     <script src="{% static 'movies/js/review-votes.js' %}" defer></script>

@@ -2,27 +2,21 @@
 {% load static %}
 {% load humanize %}
 {% load i18n %}
-
 {% block title %}
     {% translate "Search" %}{% if query %}: {{ query }}{% endif %} · RAFS
 {% endblock %}
-
 {% block meta_description %}
     {% translate "Search" %}{% if query %}: {{ query }}{% endif %}
 {% endblock %}
-
 {% block og_title %}
     {% translate "Search" %}{% if query %}: {{ query }}{% endif %} · RAFS
 {% endblock %}
-
 {% block og_description %}
     {% translate "Search" %}{% if query %}: {{ query }}{% endif %}
 {% endblock %}
-
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'movies/css/search-results.css' %}">
 {% endblock %}
-
 {% block content %}
     <main class="search-results-page">
         <header class="search-results-header">
@@ -32,7 +26,6 @@
                 <p class="search-results-query">“{{ query }}”</p>
             {% endif %}
         </header>
-
         <section class="search-results-list" aria-label="{% translate 'Results' %}">
             {% for result in results %}
                 {% with obj=result.content_object %}
@@ -68,9 +61,7 @@
                                     <span class="search-result-content">
                                         <span class="search-result-topline">
                                             <span class="search-result-kind">{% translate "Movie" %}</span>
-                                            <span class="search-result-rank">
-                                                {% translate "Relevance:" %} {{ result.rank|floatformat:3 }}
-                                            </span>
+                                            <span class="search-result-rank">{% translate "Relevance:" %} {{ result.rank|floatformat:3 }}</span>
                                         </span>
                                         <strong class="search-result-title">{{ movie_title|default:obj.wikidata_id }}</strong>
                                         <span class="search-result-meta">
@@ -83,7 +74,6 @@
                                     </span>
                                 </a>
                             </article>
-
                         {% elif result.content_type.model == "review" %}
                             {% firstof obj.movie.wikidata_name obj.movie.name as reviewed_movie_title %}
                             <article class="search-result-card search-result-card--review">
@@ -124,13 +114,10 @@
                                             <span>{{ obj.created_at|naturaltime }}</span>
                                         </span>
                                     </div>
-                                    <span class="search-result-rank">
-                                        {% translate "Relevance:" %} {{ result.rank|floatformat:3 }}
-                                    </span>
+                                    <span class="search-result-rank">{% translate "Relevance:" %} {{ result.rank|floatformat:3 }}</span>
                                 </div>
                                 <p class="search-result-review-text">{{ obj.text|truncatewords:42|linebreaksbr }}</p>
                             </article>
-
                         {% elif result.content_type.model == "user" %}
                             <article class="search-result-card search-result-card--entity">
                                 {% if obj.is_deleted %}
@@ -158,9 +145,7 @@
                                         <span class="search-result-content">
                                             <span class="search-result-topline">
                                                 <span class="search-result-kind">{% translate "User" %}</span>
-                                                <span class="search-result-rank">
-                                                    {% translate "Relevance:" %} {{ result.rank|floatformat:3 }}
-                                                </span>
+                                                <span class="search-result-rank">{% translate "Relevance:" %} {{ result.rank|floatformat:3 }}</span>
                                             </span>
                                             <strong class="search-result-title">{{ obj.username }}</strong>
                                             <span class="search-result-meta">
@@ -170,7 +155,6 @@
                                     </a>
                                 {% endif %}
                             </article>
-
                         {% elif result.content_type.model == "person" %}
                             <article class="search-result-card search-result-card--entity">
                                 <div class="search-result-entity-layout">
@@ -183,16 +167,13 @@
                                     <div class="search-result-content">
                                         <span class="search-result-topline">
                                             <span class="search-result-kind">{% translate "Person" %}</span>
-                                            <span class="search-result-rank">
-                                                {% translate "Relevance:" %} {{ result.rank|floatformat:3 }}
-                                            </span>
+                                            <span class="search-result-rank">{% translate "Relevance:" %} {{ result.rank|floatformat:3 }}</span>
                                         </span>
                                         <strong class="search-result-title">{{ obj.name|default:obj.wikidata_id }}</strong>
                                         <span class="search-result-meta"><span>{{ obj.wikidata_id }}</span></span>
                                     </div>
                                 </div>
                             </article>
-
                         {% elif result.content_type.model == "studio" %}
                             <article class="search-result-card search-result-card--entity">
                                 <div class="search-result-entity-layout">
@@ -205,9 +186,7 @@
                                     <div class="search-result-content">
                                         <span class="search-result-topline">
                                             <span class="search-result-kind">{% translate "Studio" %}</span>
-                                            <span class="search-result-rank">
-                                                {% translate "Relevance:" %} {{ result.rank|floatformat:3 }}
-                                            </span>
+                                            <span class="search-result-rank">{% translate "Relevance:" %} {{ result.rank|floatformat:3 }}</span>
                                         </span>
                                         <strong class="search-result-title">{{ obj.name|default:obj.wikidata_id }}</strong>
                                         <span class="search-result-meta"><span>{{ obj.wikidata_id }}</span></span>
@@ -227,9 +206,13 @@
                     </span>
                     <h2>{% translate "Nothing was found" %}</h2>
                     <p>{% translate "Check your search" %}</p>
-                    <a class="search-results-back" href="{% url 'movies:catalog' %}">{% translate "Back to catalog" %}</a>
+                    <a class="search-results-back"
+                       href="{% url 'movies:catalog' %}">{% translate "Back to catalog" %}</a>
                 </div>
             {% endfor %}
         </section>
     </main>
 {% endblock %}
+{% comment %} {% block extra_js %}
+    <script src="{% static 'movies/js/search_results.js' %}" defer></script>
+{% endblock %} {% endcomment %}

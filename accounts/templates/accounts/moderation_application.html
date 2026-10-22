@@ -41,7 +41,8 @@
                         {{ form.email }}
                         {% for error in form.email.errors %}<p class="account-form-error">{{ error }}</p>{% endfor %}
                     </div>
-                    <button class="profile-button profile-button--primary" type="submit">{% translate "Submit application" %}</button>
+                    <button class="profile-button profile-button--primary"
+                            type="submit">{% translate "Submit application" %}</button>
                 </form>
             {% endif %}
             <a class="account-form-back"

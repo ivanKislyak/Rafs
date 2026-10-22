@@ -4,9 +4,13 @@
 {% block title %}
     {% translate "About RAFS" %}
 {% endblock %}
-{% block meta_description %}{% translate "Learn about RAFS, a community for honest ratings and reviews of films, series and anime, and the project's plans." %}{% endblock %}
+{% block meta_description %}
+    {% translate "Learn about RAFS, a community for honest ratings and reviews of films, series and anime, and the project's plans." %}
+{% endblock %}
 {% block og_title %}{% translate "About RAFS" %} · RAFS{% endblock %}
-{% block og_description %}{% translate "Learn about RAFS, a community for honest ratings and reviews of films, series and anime, and the project's plans." %}{% endblock %}
+{% block og_description %}
+    {% translate "Learn about RAFS, a community for honest ratings and reviews of films, series and anime, and the project's plans." %}
+{% endblock %}
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'core/css/about.css' %}">
 {% endblock %}
@@ -19,9 +23,7 @@
                     {% translate "Not just choosing a movie" %}
                     <span>{% translate "Understanding why it is right for you" %}</span>
                 </h1>
-                <p class="about-lead">
-                    {% translate "RAFS is a site for ratings and reviews of films, series and anime" %}
-                </p>
+                <p class="about-lead">{% translate "RAFS is a site for ratings and reviews of films, series and anime" %}</p>
                 <div class="about-actions">
                     <a class="about-button about-button--primary"
                        href="{% url 'movies:catalog' %}">{% translate "Browse catalog" %}</a>

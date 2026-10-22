@@ -85,7 +85,8 @@
             </div>
         </section>
         <div class="review-form-field">
-            <label class="review-form-label" for="{{ review_form.text.id_for_label }}">{{ review_form.text.label }}</label>
+            <label class="review-form-label"
+                   for="{{ review_form.text.id_for_label }}">{{ review_form.text.label }}</label>
             {{ review_form.text }}
             {% if review_form.text.help_text %}
                 <p class="review-form-help">{{ review_form.text.help_text }}</p>

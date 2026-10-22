@@ -18,30 +18,22 @@
 {% endblock %}
 {% block content %}
     <main class="page-shell catalog-page">
-    <header class="page-heading">
-        <div><p class="page-kicker">RAFS</p><h1>{% translate "Catalog" %}</h1></div>
-        <p class="catalog-results-count">{% translate "Found:" %} <strong>{{ page_obj.paginator.count }}</strong></p>
-    </header>
-    <div class="main-catalog-page-with-movie-cards movie-grid"
-        data-catalog-list>
-        {% include "movies/_catalog_page.html" %}
-    </div>
-
-    <button type="button"
-            data-catalog-more
-            data-next-page="{{ next_page|default_if_none:'' }}"
-            {% if not next_page %}hidden{% endif %}>
-        {% translate "Load more" %}
-    </button>
-
-    <p data-catalog-status
-        role="status"
-        aria-live="polite"
-        data-loading="{% translate 'Loading...' %}"
-        data-error="{% translate 'Something went wrong. Please try again.' %}">
-    </p>
-
-    <div data-catalog-sentinel aria-hidden="true" style="height: 1px;"></div>
+        <header class="page-heading">
+            <div><p class="page-kicker">RAFS</p><h1>{% translate "Catalog" %}</h1></div>
+            <p class="catalog-results-count">{% translate "Found:" %} <strong>{{ page_obj.paginator.count }}</strong></p>
+        </header>
+        <div class="main-catalog-page-with-movie-cards movie-grid"
+             data-catalog-list>{% include "movies/_catalog_page.html" %}</div>
+        <button type="button"
+                data-catalog-more
+                data-next-page="{{ next_page|default_if_none:'' }}"
+                {% if not next_page %}hidden{% endif %}>{% translate "Load more" %}</button>
+        <p data-catalog-status
+           role="status"
+           aria-live="polite"
+           data-loading="{% translate 'Loading...' %}"
+           data-error="{% translate 'Something went wrong. Please try again.' %}"></p>
+        <div data-catalog-sentinel aria-hidden="true" style="height: 1px;"></div>
     </main>
     <script defer>
         const reviewsTab = document.querySelector(".catalog-container");
