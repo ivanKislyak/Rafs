@@ -13,7 +13,7 @@
           href="{% static 'movies/css/components/buttons.css' %}">
     <link rel="stylesheet" href="{% static 'movies/css/movie-detail.css' %}">
 {% endblock %}
-{% block title %}{{ movie.name }}{% if movie.year %} ({{ movie.year }}){% endif %} – {% translate "Ratings and reviews" %} · RAFS{% endblock %}
+{% block title %}{% firstof movie.wikidata_name movie.name %}{% if movie.year %} ({{ movie.year }}){% endif %} – {% translate "Ratings and reviews" %} · RAFS{% endblock %}
 {% block meta_description %}{% with movie_title=movie.wikidata_name|default:movie.name movie_description=movie.wikidata_description|default:movie.description %}{{ movie_title }}{% if movie.year %} ({{ movie.year }}){% endif %} – {% if movie_description %}{{ movie_description|striptags|truncatechars:155 }}{% else %}{% translate "Viewer ratings and reviews on RAFS. Share your opinion" %}{% endif %}{% endwith %}{% endblock %}
 {% block og_type %}video.movie{% endblock %}
 {% block og_title %}{{ movie.wikidata_name|default:movie.name }}{% if movie.year %} ({{ movie.year }}){% endif %} – RAFS{% endblock %}
