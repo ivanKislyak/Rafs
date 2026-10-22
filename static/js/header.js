@@ -120,7 +120,7 @@ const renderSuggestions = async () => {
                 seen.add(item.query);
                 return true;
             });
-            searchHistory = uniqueItems.slice(0, 11);
+            searchHistory = uniqueItems.slice(0, 6);
           }
         } catch (error) {
             console.error('Failed to load search history:', error);
