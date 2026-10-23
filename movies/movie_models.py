@@ -6,6 +6,8 @@ class TypeOfWork(TranslatableModel):
     translations = TranslatedFields(
         name = models.CharField(max_length=200, blank=True)
     )
+    banner_url = models.URLField(blank=True) 
+    banner = models.ImageField(upload_to="typeofwork_covers/", blank=True, null=True)
 
     class Meta:
         verbose_name = "Type of Work"
@@ -24,6 +26,8 @@ class Genre(TranslatableModel):
     translations = TranslatedFields(
         name = models.CharField(max_length=200, blank=True)
     )
+    banner_url = models.URLField(blank=True) 
+    banner = models.ImageField(upload_to="genre_covers/", blank=True, null=True)
 
     class Meta:
         verbose_name = "Genre"
@@ -41,6 +45,8 @@ class Country(TranslatableModel):
     translations = TranslatedFields(
         name = models.CharField(max_length=200, blank=True)
     )
+    banner_url = models.URLField(blank=True) 
+    banner = models.ImageField(upload_to="country_covers/", blank=True, null=True)
 
     class Meta: 
         verbose_name = "Country"
@@ -59,6 +65,8 @@ class Studio(TranslatableModel):
     translations = TranslatedFields(
         name = models.CharField(max_length=200, blank=True)
     )
+    logo_url = models.URLField(blank=True) 
+    logo = models.ImageField(upload_to="studio_covers/", blank=True, null=True)
 
     class Meta:
         verbose_name = "Studio"
@@ -77,6 +85,8 @@ class Person(TranslatableModel):
     translations = TranslatedFields(
         name = models.CharField(max_length=200, blank=True)
     )
+    photo_url = models.URLField(blank=True) 
+    photo = models.ImageField(upload_to="person_covers/", blank=True, null=True)
 
     class Meta:
         verbose_name = "Person"

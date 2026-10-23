@@ -15,6 +15,7 @@ from django.db.models import Avg, F, Count, Value, CharField, Prefetch, Q, Outer
 from django.db.models.functions import Greatest, Coalesce
 from django.db.models.query import EmptyQuerySet
 from django.template.loader import render_to_string
+from django.templatetags.static import static
 from django.http import JsonResponse
 from django.urls import reverse
 from django.views.decorators.http import require_POST
@@ -233,8 +234,20 @@ TITLE_FIELDS = {
     'person': ('name',),
     'studio': ('name',),
     'user': ('username',),
+    'country': ('name',),
+    'genre': ('name',),
+    'typeofwork': ('name',)
 }
 
+IMAGE_FIELDS = {
+    'movie': ('cover_url', 'cover'),
+    'person': ('photo_url', 'photo'),
+    'studio': ('logo_url', 'logo'),
+    'user': ('avatar_image',),
+    'country': ('banner_url', 'banner'), 
+    'genre': ('banner_url', 'banner'),
+    'typeofwork': ('banner_url', 'banner'),
+}
 
 def _read(target, field):
     if hasattr(target, 'safe_translation_getter'):
@@ -246,6 +259,7 @@ class SearchResultSerializer(serializers.Serializer):
     id = serializers.IntegerField(source='object_id')
     type = serializers.CharField(source='content_type.model')
     title = serializers.SerializerMethodField()
+    image = serializers.SerializerMethodField() 
     year = serializers.SerializerMethodField()
 
     def get_title(self, obj):
@@ -270,6 +284,34 @@ class SearchResultSerializer(serializers.Serializer):
     def get_year(self, obj):
         target = obj.content_object
         return getattr(target, 'year', None) if target is not None else None
+
+    def get_image(self, obj):
+        target = obj.content_object
+        if target is None:
+            return None
+
+        model = obj.content_type.model
+
+        if model == 'review':
+            target, model = target.movie, 'movie'
+        elif model == 'user' and target.is_deleted:
+            return None
+
+        for field in IMAGE_FIELDS.get(model, ()):
+            value = getattr(target, field, None)
+            if not value:
+                continue
+            if isinstance(value, str):
+                return value
+            if value.storage.exists(value.name):
+                return value.url
+
+        if model == 'movie':
+            return static('movies/images/nocover.png')
+        elif model == 'user':
+            return static('images/default_profile_img.png')
+        else:
+            return None
 
 
 class SearchResultsListAPIView(generics.ListAPIView):
