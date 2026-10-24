@@ -239,6 +239,13 @@ TITLE_FIELDS = {
     'typeofwork': ('name',)
 }
 
+DESCRIPTION_FIELDS = {
+    'movie': ('description',),
+    'review': ('text',), 
+    'person': ('description',),
+    'user': ('about',),
+}
+
 IMAGE_FIELDS = {
     'movie': ('cover_url', 'cover'),
     'person': ('photo_url', 'photo'),
@@ -258,7 +265,10 @@ def _read(target, field):
 class SearchResultSerializer(serializers.Serializer):
     id = serializers.IntegerField(source='object_id')
     type = serializers.CharField(source='content_type.model')
+    wikidata_id = serializers.CharField()
     title = serializers.SerializerMethodField()
+    description = serializers.SerializerMethodField()
+    rank = serializers.FloatField(read_only=True)
     image = serializers.SerializerMethodField() 
     year = serializers.SerializerMethodField()
 
@@ -280,6 +290,22 @@ class SearchResultSerializer(serializers.Serializer):
                 return value
 
         return getattr(target, 'wikidata_id', None) or None
+    
+    def get_description(self, obj):
+        target = obj.content_object
+        if target is None:
+            return None
+
+        model = obj.content_type.model
+        if model == 'user' and target.is_deleted:
+                    return None
+                    
+        for field in DESCRIPTION_FIELDS.get(model, ()):
+            value = _read(target, field)
+            if value:
+                return value
+
+        return None
 
     def get_year(self, obj):
         target = obj.content_object

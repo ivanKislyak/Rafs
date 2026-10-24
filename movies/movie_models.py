@@ -83,7 +83,8 @@ class Studio(TranslatableModel):
 class Person(TranslatableModel):
     wikidata_id = models.CharField(max_length=20, unique=True)
     translations = TranslatedFields(
-        name = models.CharField(max_length=200, blank=True)
+        name = models.CharField(max_length=200, blank=True),
+        bio = models.TextField(verbose_name="Person Bio", blank=True)
     )
     photo_url = models.URLField(blank=True) 
     photo = models.ImageField(upload_to="person_covers/", blank=True, null=True)
