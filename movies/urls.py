@@ -18,5 +18,6 @@ urlpatterns = [
     path('reviews/', views.show_reviews, name='show_reviews'),
     # path('search/', views.search_query, name='search_query'),
     path('search/', views.search_page, name='search_query'),
-    path('api/v1/search/', views.SearchResultsListAPIView.as_view(), name='search_results_api')
+    path('api/v1/search/', views.SearchResultsListAPIView.as_view(), name='search_results_api'),
+    path('api/v1/watch-status/<int:movie_id>/', views.WatchStatusAPIView.as_view())
 ]

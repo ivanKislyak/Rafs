@@ -22,8 +22,10 @@ from django.views.decorators.http import require_POST
 from django.http import HttpResponse
 from requests import RequestException
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
-from rest_framework import serializers, generics
+from rest_framework import serializers, generics, authentication, permissions
 from .forms import (
     MovieFilterForm, 
     ReviewForm, 
@@ -36,7 +38,7 @@ from .models import (
     Person, WatchStatus,
     GlobalSearchIndex,
     )
-from .serializers import SearchResultSerializer
+from .serializers import SearchResultSerializer, WatchStatusSerializer
 from accounts.models import User
 from .services.wikidata import (
     search_wikidata_media, 
@@ -266,6 +268,19 @@ def search_page(request):
     return render(request, 'movies/search_results.html', {
         'query': request.GET.get('query', '').strip(),
     })
+
+
+class WatchStatusAPIView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get(self, request, *args, **kwargs):
+        pass
+
+    def put(self, request, *args, **kwargs):
+        pass
+    
+    def delete(self, request, *args, **kwargs):
+        pass
 
 
 def search_query(request):

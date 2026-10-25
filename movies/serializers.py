@@ -6,6 +6,7 @@ from rest_framework import serializers
 
 from .search_config import TITLE_FIELDS, DESCRIPTION_FIELDS, IMAGE_FIELDS
 
+# Search Result Block
 def _read(target, field):
     if hasattr(target, 'safe_translation_getter') and field in target._parler_meta.get_all_fields():
         return target.safe_translation_getter(field, any_language=True)
@@ -138,3 +139,8 @@ class SearchResultSerializer(serializers.Serializer):
             return static('images/default_profile_img.png')
         else:
             return None
+
+# Watch Status Block
+class WatchStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        pass
