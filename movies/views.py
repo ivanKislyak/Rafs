@@ -240,9 +240,9 @@ TITLE_FIELDS = {
 }
 
 DESCRIPTION_FIELDS = {
-    'movie': ('description',),
+    'movie': ('wikidata_description', 'description',),
     'review': ('text',), 
-    'person': ('description',),
+    'person': ('bio',),
     'user': ('about',),
 }
 
@@ -265,12 +265,18 @@ def _read(target, field):
 class SearchResultSerializer(serializers.Serializer):
     id = serializers.IntegerField(source='object_id')
     type = serializers.CharField(source='content_type.model')
-    wikidata_id = serializers.CharField()
+    wikidata_id = serializers.SerializerMethodField()
     title = serializers.SerializerMethodField()
     description = serializers.SerializerMethodField()
     rank = serializers.FloatField(read_only=True)
     image = serializers.SerializerMethodField() 
     year = serializers.SerializerMethodField()
+
+    def get_wikidata_id(self, obj):
+        target = obj.content_object
+        if target is None:
+            return None
+        return getattr(target, 'wikidata_id', None)
 
     def get_title(self, obj):
         target = obj.content_object
@@ -278,7 +284,6 @@ class SearchResultSerializer(serializers.Serializer):
             return None
 
         model = obj.content_type.model
-
         if model == 'review':
             target, model = target.movie, 'movie'
         elif model == 'user' and target.is_deleted:
@@ -298,8 +303,8 @@ class SearchResultSerializer(serializers.Serializer):
 
         model = obj.content_type.model
         if model == 'user' and target.is_deleted:
-                    return None
-                    
+            return None
+
         for field in DESCRIPTION_FIELDS.get(model, ()):
             value = _read(target, field)
             if value:
@@ -317,7 +322,6 @@ class SearchResultSerializer(serializers.Serializer):
             return None
 
         model = obj.content_type.model
-
         if model == 'review':
             target, model = target.movie, 'movie'
         elif model == 'user' and target.is_deleted:
