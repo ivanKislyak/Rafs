@@ -5,6 +5,7 @@ from django.utils.translation import gettext as _
 from rest_framework import serializers
 
 from .search_config import TITLE_FIELDS, DESCRIPTION_FIELDS, IMAGE_FIELDS
+from .models import WatchStatus
 
 # Search Result Block
 def _read(target, field):
@@ -143,4 +144,5 @@ class SearchResultSerializer(serializers.Serializer):
 # Watch Status Block
 class WatchStatusSerializer(serializers.ModelSerializer):
     class Meta:
-        pass
+        model = WatchStatus
+        fields = ['id', 'user', 'movie', 'status']

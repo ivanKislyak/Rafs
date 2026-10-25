@@ -274,12 +274,12 @@ class WatchStatusAPIView(APIView):
     permission_classes = [permissions.IsAuthenticated]
     
     def get(self, request, *args, **kwargs):
+        return Response()
+
+    def put(self, request, movie_id: int):
         pass
 
-    def put(self, request, *args, **kwargs):
-        pass
-    
-    def delete(self, request, *args, **kwargs):
+    def delete(self, request, movie_id: int):
         pass
 
 
