@@ -5,9 +5,6 @@
     return;
   }
 
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-  const removalTimers = new WeakMap();
-
   const controlledPanel = (control) => (
     document.getElementById(control.getAttribute("aria-controls"))
   );
@@ -45,17 +42,41 @@
   const confirmButton = dialog.querySelector("[data-profile-watch-confirm]");
   let pendingCard = null;
   let pendingTrigger = null;
+  let returnFocus = null;
 
-  const closeDialog = () => {
+  const focusControl = (control) => {
+    if (!control?.isConnected) return;
+    const panel = control.closest("[data-profile-watch-panel]");
+    const target = panel?.hidden
+      ? library.querySelector(`[data-profile-watch-toggle][aria-controls="${panel.id}"]`)
+      : control;
+    target?.focus({ preventScroll: true });
+  };
+
+  const finishDialog = () => {
+    const target = returnFocus || pendingTrigger;
+    pendingCard = null;
+    pendingTrigger = null;
+    returnFocus = null;
+    confirmButton.disabled = false;
+    cancelButton.disabled = false;
+    focusControl(target);
+  };
+
+  const closeDialog = (focusTarget = pendingTrigger) => {
+    if (pendingCard?.dataset.pending === "true") return;
+    returnFocus = focusTarget;
     if (typeof dialog.close === "function" && dialog.open) {
       dialog.close();
     } else {
       dialog.removeAttribute("open");
+      finishDialog();
     }
   };
 
   const setCount = (card, difference) => {
     const panel = card.closest("[data-profile-watch-panel]");
+    if (!panel) return;
     const toggle = document.querySelector(
       `[aria-controls="${panel.id}"][data-profile-watch-toggle]`
     );
@@ -65,15 +86,6 @@
       const nextCount = Math.max(0, Number(count.dataset.count) + difference);
       count.dataset.count = String(nextCount);
       count.textContent = String(nextCount);
-    }
-  };
-
-  const updateEmptyState = (panel) => {
-    const emptyState = panel.querySelector("[data-profile-watch-empty]");
-    const hasMovies = Boolean(panel.querySelector("[data-library-movie]"));
-
-    if (emptyState) {
-      emptyState.hidden = hasMovies;
     }
   };
 
@@ -99,27 +111,6 @@
     return data;
   };
 
-  const removeCardAfterUndoWindow = (card) => {
-    const previousTimer = removalTimers.get(card);
-    if (previousTimer) {
-      window.clearTimeout(previousTimer);
-    }
-
-    const undoTimer = window.setTimeout(() => {
-      card.classList.add("is-leaving");
-      const animationDelay = reducedMotion.matches ? 0 : 220;
-      const removeTimer = window.setTimeout(() => {
-        const panel = card.closest("[data-profile-watch-panel]");
-        card.remove();
-        updateEmptyState(panel);
-      }, animationDelay);
-
-      removalTimers.set(card, removeTimer);
-    }, 8000);
-
-    removalTimers.set(card, undoTimer);
-  };
-
   const showError = (card) => {
     const feedback = card.querySelector("[data-library-feedback]");
     if (feedback) {
@@ -127,10 +118,18 @@
     }
   };
 
-  document.querySelectorAll("[data-library-remove]").forEach((trigger) => {
-    trigger.addEventListener("click", () => {
-      pendingCard = trigger.closest("[data-library-movie]");
+  // Delegation also covers cards inserted into a status panel after page load.
+  library.addEventListener("click", async (event) => {
+    if (!(event.target instanceof Element)) return;
+    const trigger = event.target.closest("[data-library-remove]");
+    if (trigger) {
+      const card = trigger.closest("[data-library-movie]");
+      if (!card || trigger.disabled || card.dataset.pending === "true"
+          || card.classList.contains("is-removed") || dialog.hasAttribute("open")) return;
+      event.preventDefault();
+      pendingCard = card;
       pendingTrigger = trigger;
+      returnFocus = null;
       dialogName.textContent = pendingCard.dataset.movieName;
 
       if (typeof dialog.showModal === "function") {
@@ -140,13 +139,51 @@
       }
 
       cancelButton.focus();
-    });
+      return;
+    }
+
+    const undoButton = event.target.closest("[data-library-undo]");
+    if (!undoButton) return;
+    const card = undoButton.closest("[data-library-movie]");
+    if (!card || undoButton.disabled || card.dataset.pending === "true"
+        || !card.classList.contains("is-removed")) return;
+    event.preventDefault();
+    const removeButton = card.querySelector("[data-library-remove]");
+    const removedMessage = card.querySelector("[data-library-removed]");
+    const feedback = card.querySelector("[data-library-feedback]");
+    card.dataset.pending = "true";
+    card.setAttribute("aria-busy", "true");
+    undoButton.disabled = true;
+    feedback.textContent = "";
+
+    try {
+      const data = await updateStatus(card);
+      if (data.status !== card.dataset.status) {
+        throw new Error(library.dataset.updateError);
+      }
+
+      card.classList.remove("is-removed");
+      removedMessage.hidden = true;
+      undoButton.hidden = true;
+      removeButton.hidden = false;
+      removeButton.disabled = false;
+      setCount(card, 1);
+    } catch (error) {
+      showError(card);
+    } finally {
+      delete card.dataset.pending;
+      card.setAttribute("aria-busy", "false");
+      undoButton.disabled = false;
+      if (document.activeElement === document.body || document.activeElement === undoButton) {
+        focusControl(card.classList.contains("is-removed") ? undoButton : removeButton);
+      }
+    }
   });
 
-  cancelButton.addEventListener("click", closeDialog);
+  cancelButton.addEventListener("click", () => closeDialog());
 
   confirmButton.addEventListener("click", async () => {
-    if (!pendingCard || !pendingTrigger) {
+    if (!pendingCard || !pendingTrigger || pendingCard.dataset.pending === "true") {
       return;
     }
 
@@ -156,7 +193,10 @@
     const removedMessage = card.querySelector("[data-library-removed]");
     const undoButton = card.querySelector("[data-library-undo]");
 
+    card.dataset.pending = "true";
+    card.setAttribute("aria-busy", "true");
     confirmButton.disabled = true;
+    cancelButton.disabled = true;
     trigger.disabled = true;
     feedback.textContent = "";
 
@@ -171,46 +211,20 @@
       trigger.hidden = true;
       removedMessage.hidden = false;
       undoButton.hidden = false;
-      removeCardAfterUndoWindow(card);
     } catch (error) {
-      trigger.disabled = false;
       showError(card);
     } finally {
+      delete card.dataset.pending;
+      card.setAttribute("aria-busy", "false");
       confirmButton.disabled = false;
-      closeDialog();
+      cancelButton.disabled = false;
+      trigger.disabled = false;
+      closeDialog(card.classList.contains("is-removed") ? undoButton : trigger);
     }
   });
 
-  document.querySelectorAll("[data-library-undo]").forEach((undoButton) => {
-    undoButton.addEventListener("click", async () => {
-      const card = undoButton.closest("[data-library-movie]");
-      const removeButton = card.querySelector("[data-library-remove]");
-      const removedMessage = card.querySelector("[data-library-removed]");
-      const feedback = card.querySelector("[data-library-feedback]");
-      const timer = removalTimers.get(card);
-
-      window.clearTimeout(timer);
-      undoButton.disabled = true;
-      feedback.textContent = "";
-
-      try {
-        const data = await updateStatus(card);
-        if (data.status !== card.dataset.status) {
-          throw new Error(library.dataset.updateError);
-        }
-
-        card.classList.remove("is-removed", "is-leaving");
-        removedMessage.hidden = true;
-        undoButton.hidden = true;
-        removeButton.hidden = false;
-        removeButton.disabled = false;
-        setCount(card, 1);
-      } catch (error) {
-        undoButton.disabled = false;
-        showError(card);
-        removeCardAfterUndoWindow(card);
-      }
-    });
+  dialog.addEventListener("cancel", (event) => {
+    if (pendingCard?.dataset.pending === "true") event.preventDefault();
   });
 
   dialog.addEventListener("click", (event) => {
@@ -219,9 +233,6 @@
     }
   });
   dialog.addEventListener("close", () => {
-    confirmButton.disabled = false;
-    pendingTrigger?.focus();
-    pendingCard = null;
-    pendingTrigger = null;
+    if (!dialog.open) finishDialog();
   });
 })();

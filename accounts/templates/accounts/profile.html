@@ -158,7 +158,7 @@
                          hidden>
                         <div class="profile-watch-movies">
                             {% for watch_entry in status.movies %}
-                                <article class="profile-watch-movie"
+                                <article class="profile-watch-movie{% if is_owner %} profile-watch-movie--editable{% endif %}"
                                          data-library-movie
                                          data-movie-id="{{ watch_entry.movie_id }}"
                                          data-status="{{ status.value }}"
@@ -169,6 +169,8 @@
                                         {% if watch_entry.movie.cover and watch_entry.movie.image_exists %}
                                             <img class="profile-watch-movie-cover"
                                                  src="{{ watch_entry.movie.cover.url }}"
+                                                 data-fallback-src="{% static 'movies/images/nocover.png' %}"
+                                                 onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
                                                  alt="{{ watch_entry.movie.name }}">
                                         {% elif watch_entry.movie.cover_url %}
                                             <img class="profile-watch-movie-cover"
@@ -184,19 +186,26 @@
                                     </a>
                                     <div class="profile-watch-movie-copy">
                                         <a class="profile-watch-movie-title"
+                                           title="{{ watch_entry.movie.name }}"
                                            href="{% url 'movies:detail' watch_entry.movie_id %}">{{ watch_entry.movie.name }}</a>
                                         {% if watch_entry.movie.year %}
                                             <span class="profile-watch-movie-year">{{ watch_entry.movie.year }}</span>
                                         {% endif %}
-                                        <span class="profile-watch-movie-status">{{ status.label }}</span>
                                     </div>
                                     {% if is_owner %}
                                         <div class="profile-watch-movie-actions">
                                             <button class="profile-watch-remove"
                                                     type="button"
-                                                    data-library-remove>{% translate "Remove from list" %}</button>
+                                                    data-library-remove
+                                                    aria-label="{% translate 'Remove from list' %}"
+                                                    title="{% translate 'Remove from list' %}">
+                                                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+                                                    <path d="m6 6 12 12M18 6 6 18"></path>
+                                                </svg>
+                                            </button>
                                             <span class="profile-watch-removed-message"
                                                   data-library-removed
+                                                  role="status"
                                                   hidden>{% translate "Removed from list" %}</span>
                                             <button class="profile-watch-undo"
                                                     type="button"
