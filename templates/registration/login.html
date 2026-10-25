@@ -4,6 +4,9 @@
 {% block title %}
     {% translate "Log in to RAFS" %}
 {% endblock %}
+{% block robots_meta %}
+    <meta name="robots" content="noindex">
+{% endblock %}
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'accounts/css/auth.css' %}">
 {% endblock %}
