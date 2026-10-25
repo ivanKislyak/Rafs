@@ -273,8 +273,12 @@ def search_page(request):
 class WatchStatusAPIView(APIView):
     permission_classes = [permissions.IsAuthenticated]
     
-    def get(self, request, *args, **kwargs):
-        return Response()
+    def get(self, request, movie_id, *args, **kwargs):
+        user = request.user
+        movie = get_object_or_404(Movie, pk=movie_id)
+        status_obj = WatchStatus.objects.filter(user=user, movie=movie).first()
+        status = getattr(status_obj, "status", None)
+        return Response({"movie_id": movie_id, "status": status})
 
     def put(self, request, movie_id: int):
         pass
