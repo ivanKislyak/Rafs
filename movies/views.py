@@ -22,6 +22,7 @@ from django.views.decorators.http import require_POST
 from django.http import HttpResponse
 from requests import RequestException
 
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
@@ -271,6 +272,7 @@ def search_page(request):
 
 
 class WatchStatusAPIView(APIView):
+    serializer_class = WatchStatusSerializer
     permission_classes = [permissions.IsAuthenticated]
     
     def get(self, request, movie_id, *args, **kwargs):
@@ -281,7 +283,22 @@ class WatchStatusAPIView(APIView):
         return Response({"movie_id": movie_id, "status": status})
 
     def put(self, request, movie_id: int):
-        pass
+        movie = get_object_or_404(Movie, pk=movie_id)
+        serializer = WatchStatusSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        new_status = serializer.validated_data["status"]
+
+        instance, created = WatchStatus.objects.update_or_create(
+            user=request.user,
+            movie=movie,
+            defaults={'status':new_status}
+        )
+        
+        status_code = status.HTTP_201_CREATED if created else status.HTTP_200_OK
+
+        return Response(
+            {"movie_id": movie_id, "status": instance.status}, 
+            status=status_code)
 
     def delete(self, request, movie_id: int):
         pass
