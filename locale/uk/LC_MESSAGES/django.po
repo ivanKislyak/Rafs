@@ -1271,3 +1271,28 @@ msgstr "Назад"
 #: movies/templates/movies/reviews.html:36
 msgid "Open a movie to reply to a review or vote"
 msgstr "Відкрийте сторінку фільму, щоб відповісти на рецензію або проголосувати"
+
+
+#: movies/templates/movies/search_results.html
+msgid "Country"
+msgstr "Країна"
+
+#: movies/templates/movies/search_results.html
+msgid "Genre"
+msgstr "Жанр"
+
+#: movies/templates/movies/search_results.html
+msgid "Type of Work"
+msgstr "Тип твору"
+
+#: movies/templates/movies/search_results.html
+msgid "Try again"
+msgstr "Спробувати ще раз"
+
+#: movies/templates/movies/search_results.html
+msgid "Enter a search query"
+msgstr "Введіть пошуковий запит"
+
+#: movies/templates/movies/search_results.html
+msgid "Enable JavaScript to view search results"
+msgstr "Увімкніть JavaScript, щоб побачити результати пошуку"

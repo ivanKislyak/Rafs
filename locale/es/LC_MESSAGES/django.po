@@ -1271,3 +1271,28 @@ msgstr "Anterior"
 #: movies/templates/movies/reviews.html:36
 msgid "Open a movie to reply to a review or vote"
 msgstr "Abre la página de una película para responder a una reseña o votar"
+
+
+#: movies/templates/movies/search_results.html
+msgid "Country"
+msgstr "País"
+
+#: movies/templates/movies/search_results.html
+msgid "Genre"
+msgstr "Género"
+
+#: movies/templates/movies/search_results.html
+msgid "Type of Work"
+msgstr "Tipo de obra"
+
+#: movies/templates/movies/search_results.html
+msgid "Try again"
+msgstr "Reintentar"
+
+#: movies/templates/movies/search_results.html
+msgid "Enter a search query"
+msgstr "Introduce una consulta de búsqueda"
+
+#: movies/templates/movies/search_results.html
+msgid "Enable JavaScript to view search results"
+msgstr "Activa JavaScript para ver los resultados de la búsqueda"

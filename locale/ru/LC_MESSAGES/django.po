@@ -1259,3 +1259,28 @@ msgstr "Пользователи"
 #: movies/templates/movies/catalog.html:34
 msgid "Load more"
 msgstr "Загрузить ещё"
+
+
+#: movies/templates/movies/search_results.html
+msgid "Country"
+msgstr "Страна"
+
+#: movies/templates/movies/search_results.html
+msgid "Genre"
+msgstr "Жанр"
+
+#: movies/templates/movies/search_results.html
+msgid "Type of Work"
+msgstr "Тип произведения"
+
+#: movies/templates/movies/search_results.html
+msgid "Try again"
+msgstr "Повторить попытку"
+
+#: movies/templates/movies/search_results.html
+msgid "Enter a search query"
+msgstr "Введите поисковый запрос"
+
+#: movies/templates/movies/search_results.html
+msgid "Enable JavaScript to view search results"
+msgstr "Включите JavaScript, чтобы увидеть результаты поиска"

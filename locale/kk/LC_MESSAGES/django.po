@@ -1271,3 +1271,28 @@ msgstr "Алдыңғы"
 #: movies/templates/movies/reviews.html:36
 msgid "Open a movie to reply to a review or vote"
 msgstr "Рецензияға жауап беру немесе дауыс беру үшін фильм бетін ашыңыз"
+
+
+#: movies/templates/movies/search_results.html
+msgid "Country"
+msgstr "Ел"
+
+#: movies/templates/movies/search_results.html
+msgid "Genre"
+msgstr "Жанр"
+
+#: movies/templates/movies/search_results.html
+msgid "Type of Work"
+msgstr "Туынды түрі"
+
+#: movies/templates/movies/search_results.html
+msgid "Try again"
+msgstr "Қайта көру"
+
+#: movies/templates/movies/search_results.html
+msgid "Enter a search query"
+msgstr "Іздеу сұрауын енгізіңіз"
+
+#: movies/templates/movies/search_results.html
+msgid "Enable JavaScript to view search results"
+msgstr "Іздеу нәтижелерін көру үшін JavaScript қосыңыз"

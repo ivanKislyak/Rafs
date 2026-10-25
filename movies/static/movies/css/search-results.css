@@ -38,6 +38,23 @@
   gap: 12px;
 }
 
+[data-search-status] {
+  margin: 16px 0;
+  color: var(--color-text-muted);
+}
+
+[data-search-status]:empty {
+  margin: 0;
+}
+
+[data-search-retry] {
+  font: inherit;
+}
+
+[data-search-sentinel] {
+  height: 1px;
+}
+
 .search-result-card {
   position: relative;
   overflow: hidden;

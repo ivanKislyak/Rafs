@@ -8,7 +8,7 @@ from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.core.paginator import Paginator
 from django.contrib.postgres.aggregates import StringAgg
 from django.db.models import Avg, F, Count, Value, CharField, Prefetch, Q, OuterRef, Subquery
@@ -257,7 +257,7 @@ IMAGE_FIELDS = {
 }
 
 def _read(target, field):
-    if hasattr(target, 'safe_translation_getter'):
+    if hasattr(target, 'safe_translation_getter') and field in target._parler_meta.get_all_fields():
         return target.safe_translation_getter(field, any_language=True)
     return getattr(target, field, None)
 
@@ -271,6 +271,52 @@ class SearchResultSerializer(serializers.Serializer):
     rank = serializers.FloatField(read_only=True)
     image = serializers.SerializerMethodField() 
     year = serializers.SerializerMethodField()
+    url = serializers.SerializerMethodField()
+    author = serializers.SerializerMethodField()
+    created_at = serializers.DateTimeField(source='content_object.created_at', default=None, read_only=True)
+    date_joined = serializers.SerializerMethodField()
+    is_deleted = serializers.SerializerMethodField()
+
+    def to_representation(self, instance):
+        if instance.content_object is None:
+            return None
+        try:
+            return super().to_representation(instance)
+        except ObjectDoesNotExist:
+            # A stale index entry or a related object removed during this request.
+            return None
+
+    def get_url(self, obj):
+        target = obj.content_object
+        model = obj.content_type.model
+        if model == 'movie':
+            return reverse('movies:detail', args=[target.pk])
+        if model == 'review':
+            return f"{reverse('movies:detail', args=[target.movie.pk])}#review-{target.pk}"
+        if model == 'user' and not target.is_deleted:
+            return reverse('profile', kwargs={'username': target.username})
+        return None
+
+    def get_author(self, obj):
+        if obj.content_type.model != 'review':
+            return None
+        user = obj.content_object.user
+        if user.is_deleted:
+            return {'name': _('Deleted user'), 'url': None,
+                    'image': static('images/default_profile_img.png'), 'is_deleted': True}
+        avatar = user.avatar_image
+        image = avatar.url if avatar and avatar.storage.exists(avatar.name) else static('images/default_profile_img.png')
+        return {'name': user.username, 'url': reverse('profile', kwargs={'username': user.username}),
+                'image': image, 'is_deleted': False}
+
+    def get_date_joined(self, obj):
+        user = obj.content_object
+        if obj.content_type.model == 'user' and not user.is_deleted:
+            return user.date_joined.isoformat()
+        return None
+
+    def get_is_deleted(self, obj):
+        return obj.content_type.model == 'user' and obj.content_object.is_deleted
 
     def get_wikidata_id(self, obj):
         target = obj.content_object
@@ -366,12 +412,19 @@ class SearchResultsListAPIView(generics.ListAPIView):
                 .filter(search_vector=query)
                 .annotate(rank=SearchRank(F("search_vector"), query))
                 .select_related('content_type')
+                .prefetch_related('content_object')
                 .order_by('-rank', "pk")
                 )
 
         return search_results
     
     serializer_class = SearchResultSerializer
+
+
+def search_page(request):
+    return render(request, 'movies/search_results.html', {
+        'query': request.GET.get('query', '').strip(),
+    })
 
 
 def search_query(request):

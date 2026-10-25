@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% load static %}
-{% load humanize %}
 {% load i18n %}
 {% block title %}
     {% translate "Search" %}{% if query %}: {{ query }}{% endif %} · RAFS
@@ -26,193 +25,42 @@
                 <p class="search-results-query">“{{ query }}”</p>
             {% endif %}
         </header>
-        <section class="search-results-list" aria-label="{% translate 'Results' %}">
-            {% for result in results %}
-                {% with obj=result.content_object %}
-                    {% if obj %}
-                        {% if result.content_type.model == "movie" %}
-                            {% firstof obj.wikidata_name obj.name as movie_title %}
-                            {% firstof obj.wikidata_description obj.description as movie_description %}
-                            <article class="search-result-card search-result-card--movie">
-                                <a class="search-result-movie-link"
-                                   href="{% url 'movies:detail' obj.pk %}">
-                                    <span class="search-result-cover-wrap">
-                                        {% if obj.cover and obj.image_exists %}
-                                            <img class="search-result-cover"
-                                                 src="{{ obj.cover.url }}"
-                                                 data-fallback-src="{% static 'movies/images/nocover.png' %}"
-                                                 onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
-                                                 alt="{{ movie_title }}"
-                                                 loading="lazy">
-                                        {% elif obj.cover_url %}
-                                            <img class="search-result-cover"
-                                                 src="{{ obj.cover_url }}"
-                                                 data-fallback-src="{% static 'movies/images/nocover.png' %}"
-                                                 onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
-                                                 alt="{{ movie_title }}"
-                                                 loading="lazy">
-                                        {% else %}
-                                            <img class="search-result-cover"
-                                                 src="{% static 'movies/images/nocover.png' %}"
-                                                 alt="{{ movie_title }}"
-                                                 loading="lazy">
-                                        {% endif %}
-                                    </span>
-                                    <span class="search-result-content">
-                                        <span class="search-result-topline">
-                                            <span class="search-result-kind">{% translate "Movie" %}</span>
-                                            <span class="search-result-rank">{% translate "Relevance:" %} {{ result.rank|floatformat:3 }}</span>
-                                        </span>
-                                        <strong class="search-result-title">{{ movie_title|default:obj.wikidata_id }}</strong>
-                                        <span class="search-result-meta">
-                                            {% if obj.year %}<span>{{ obj.year }}</span>{% endif %}
-                                            {% if obj.wikidata_id %}<span>{{ obj.wikidata_id }}</span>{% endif %}
-                                        </span>
-                                        {% if movie_description %}
-                                            <span class="search-result-description">{{ movie_description|truncatewords:34 }}</span>
-                                        {% endif %}
-                                    </span>
-                                </a>
-                            </article>
-                        {% elif result.content_type.model == "review" %}
-                            {% firstof obj.movie.wikidata_name obj.movie.name as reviewed_movie_title %}
-                            <article class="search-result-card search-result-card--review">
-                                <div class="search-result-review-head">
-                                    {% if obj.user.is_deleted %}
-                                        <span class="search-result-avatar-link">
-                                            <img class="search-result-avatar search-result-avatar--small"
-                                                 src="{% static 'images/default_profile_img.png' %}"
-                                                 alt="{% translate 'Deleted user' %}">
-                                        </span>
-                                    {% else %}
-                                        <a class="search-result-avatar-link"
-                                           href="{% url 'profile' obj.user.username %}">
-                                            {% if obj.user.avatar_image %}
-                                                <img class="search-result-avatar search-result-avatar--small"
-                                                     src="{{ obj.user.avatar_image.url }}"
-                                                     alt="{% translate 'Avatar of user' %} {{ obj.user.username }}">
-                                            {% else %}
-                                                <img class="search-result-avatar search-result-avatar--small"
-                                                     src="{% static 'images/default_profile_img.png' %}"
-                                                     alt="{% translate 'Avatar of user' %} {{ obj.user.username }}">
-                                            {% endif %}
-                                        </a>
-                                    {% endif %}
-                                    <div class="search-result-review-heading">
-                                        <span class="search-result-kind">{% translate "Review" %}</span>
-                                        <h2 class="search-result-title">
-                                            <a href="{% url 'movies:detail' obj.movie_id %}#review-{{ obj.pk }}">
-                                                {{ reviewed_movie_title|default:obj.movie.name }}
-                                            </a>
-                                        </h2>
-                                        <span class="search-result-meta">
-                                            {% if obj.user.is_deleted %}
-                                                <span>{% translate "Deleted user" %}</span>
-                                            {% else %}
-                                                <a href="{% url 'profile' obj.user.username %}">{{ obj.user.username }}</a>
-                                            {% endif %}
-                                            <span>{{ obj.created_at|naturaltime }}</span>
-                                        </span>
-                                    </div>
-                                    <span class="search-result-rank">{% translate "Relevance:" %} {{ result.rank|floatformat:3 }}</span>
-                                </div>
-                                <p class="search-result-review-text">{{ obj.text|truncatewords:42|linebreaksbr }}</p>
-                            </article>
-                        {% elif result.content_type.model == "user" %}
-                            <article class="search-result-card search-result-card--entity">
-                                {% if obj.is_deleted %}
-                                    <span class="search-result-entity-layout">
-                                        <img class="search-result-avatar"
-                                             src="{% static 'images/default_profile_img.png' %}"
-                                             alt="{% translate 'Deleted user' %}">
-                                        <span class="search-result-content">
-                                            <span class="search-result-kind">{% translate "User" %}</span>
-                                            <strong class="search-result-title">{% translate "Deleted user" %}</strong>
-                                        </span>
-                                    </span>
-                                {% else %}
-                                    <a class="search-result-entity-layout"
-                                       href="{% url 'profile' obj.username %}">
-                                        {% if obj.avatar_image %}
-                                            <img class="search-result-avatar"
-                                                 src="{{ obj.avatar_image.url }}"
-                                                 alt="{% translate 'Avatar of user' %} {{ obj.username }}">
-                                        {% else %}
-                                            <img class="search-result-avatar"
-                                                 src="{% static 'images/default_profile_img.png' %}"
-                                                 alt="{% translate 'Avatar of user' %} {{ obj.username }}">
-                                        {% endif %}
-                                        <span class="search-result-content">
-                                            <span class="search-result-topline">
-                                                <span class="search-result-kind">{% translate "User" %}</span>
-                                                <span class="search-result-rank">{% translate "Relevance:" %} {{ result.rank|floatformat:3 }}</span>
-                                            </span>
-                                            <strong class="search-result-title">{{ obj.username }}</strong>
-                                            <span class="search-result-meta">
-                                                <span>{% translate "Joined" %} {{ obj.date_joined|date:"DATE_FORMAT" }}</span>
-                                            </span>
-                                        </span>
-                                    </a>
-                                {% endif %}
-                            </article>
-                        {% elif result.content_type.model == "person" %}
-                            <article class="search-result-card search-result-card--entity">
-                                <div class="search-result-entity-layout">
-                                    <span class="search-result-symbol" aria-hidden="true">
-                                        <svg viewBox="0 0 24 24" focusable="false">
-                                            <circle cx="12" cy="8" r="4"></circle>
-                                            <path d="M5 20c.8-4 3.2-6 7-6s6.2 2 7 6"></path>
-                                        </svg>
-                                    </span>
-                                    <div class="search-result-content">
-                                        <span class="search-result-topline">
-                                            <span class="search-result-kind">{% translate "Person" %}</span>
-                                            <span class="search-result-rank">{% translate "Relevance:" %} {{ result.rank|floatformat:3 }}</span>
-                                        </span>
-                                        <strong class="search-result-title">{{ obj.name|default:obj.wikidata_id }}</strong>
-                                        <span class="search-result-meta"><span>{{ obj.wikidata_id }}</span></span>
-                                    </div>
-                                </div>
-                            </article>
-                        {% elif result.content_type.model == "studio" %}
-                            <article class="search-result-card search-result-card--entity">
-                                <div class="search-result-entity-layout">
-                                    <span class="search-result-symbol" aria-hidden="true">
-                                        <svg viewBox="0 0 24 24" focusable="false">
-                                            <path d="M4 20V7l8-4 8 4v13"></path>
-                                            <path d="M8 20v-5h8v5M8 9h1M12 9h1M16 9h1"></path>
-                                        </svg>
-                                    </span>
-                                    <div class="search-result-content">
-                                        <span class="search-result-topline">
-                                            <span class="search-result-kind">{% translate "Studio" %}</span>
-                                            <span class="search-result-rank">{% translate "Relevance:" %} {{ result.rank|floatformat:3 }}</span>
-                                        </span>
-                                        <strong class="search-result-title">{{ obj.name|default:obj.wikidata_id }}</strong>
-                                        <span class="search-result-meta"><span>{{ obj.wikidata_id }}</span></span>
-                                    </div>
-                                </div>
-                            </article>
-                        {% endif %}
-                    {% endif %}
-                {% endwith %}
-            {% empty %}
-                <div class="search-results-empty">
-                    <span class="search-results-empty-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" focusable="false">
-                            <circle cx="11" cy="11" r="6.5"></circle>
-                            <path d="m16 16 4 4"></path>
-                        </svg>
-                    </span>
-                    <h2>{% translate "Nothing was found" %}</h2>
-                    <p>{% translate "Check your search" %}</p>
-                    <a class="search-results-back"
-                       href="{% url 'movies:catalog' %}">{% translate "Back to catalog" %}</a>
-                </div>
-            {% endfor %}
-        </section>
+        <section class="search-results-list" aria-label="{% translate 'Results' %}"
+                 data-search-results
+                 data-api-url="{% url 'movies:search_results_api' %}"
+                 data-query="{{ query }}"
+                 data-fallback-src="{% static 'movies/images/nocover.png' %}"
+                 data-avatar-fallback-src="{% static 'images/default_profile_img.png' %}"
+                 data-movie-label="{% translate 'Movie' %}"
+                 data-review-label="{% translate 'Review' %}"
+                 data-user-label="{% translate 'User' %}"
+                 data-person-label="{% translate 'Person' %}"
+                 data-studio-label="{% translate 'Studio' %}"
+                 data-country-label="{% translate 'Country' %}"
+                 data-genre-label="{% translate 'Genre' %}"
+                 data-typeofwork-label="{% translate 'Type of Work' %}"
+                 data-relevance-label="{% translate 'Relevance:' %}"
+                 data-deleted-user-label="{% translate 'Deleted user' %}"
+                 data-joined-label="{% translate 'Joined' %}"></section>
+        <div class="search-results-empty" data-search-empty {% if query %}hidden{% endif %}>
+            <span class="search-results-empty-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                    <circle cx="11" cy="11" r="6.5"></circle>
+                    <path d="m16 16 4 4"></path>
+                </svg>
+            </span>
+            <h2>{% if query %}{% translate "Nothing was found" %}{% else %}{% translate "Search" %}{% endif %}</h2>
+            <p>{% if query %}{% translate "Check your search" %}{% else %}{% translate "Enter a search query" %}{% endif %}</p>
+            <a class="search-results-back" href="{% url 'movies:catalog' %}">{% translate "Back to catalog" %}</a>
+        </div>
+        <p data-search-status role="status" aria-live="polite"
+           data-loading="{% translate 'Loading...' %}"
+           data-error="{% translate 'Something went wrong. Please try again.' %}"></p>
+        <button type="button" class="search-results-back" data-search-retry hidden>{% translate "Try again" %}</button>
+        <div data-search-sentinel aria-hidden="true"></div>
+        <noscript><p>{% translate "Enable JavaScript to view search results" %}</p></noscript>
     </main>
 {% endblock %}
-{% comment %} {% block extra_js %}
+{% block extra_js %}
     <script src="{% static 'movies/js/search_results.js' %}" defer></script>
-{% endblock %} {% endcomment %}
+{% endblock %}

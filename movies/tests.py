@@ -1,16 +1,180 @@
 import json
 from html import escape
 from unittest.mock import patch
+from unittest import skipUnless
 
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.postgres.search import SearchVector
 from django.contrib.auth import get_user_model
 from django.db import connection
+from django.db.models import Value
 from django.test import Client, SimpleTestCase, TestCase
 from django.test.utils import CaptureQueriesContext
 from django.urls import reverse
 from django.utils import translation
 
 from .forms import ReviewForm
-from .models import Movie, Review, ReviewReply, ReviewVote, WatchStatus
+from .models import GlobalSearchIndex, Movie, Review, ReviewReply, ReviewVote, WatchStatus
+from .movie_models import Country, Genre, Person, Studio, TypeOfWork
+from .views import SearchResultSerializer, search_page
+
+
+class SearchResultsPageTests(SimpleTestCase):
+    def test_html_page_does_not_access_search_database(self):
+        response = self.client.get(reverse("movies:search_query"), {"query": '<script>rafs</script>'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.resolver_match.func, search_page)
+        self.assertContains(response, 'data-search-results')
+        self.assertContains(response, 'data-api-url="/movies/api/v1/search/"')
+        self.assertContains(response, 'data-query="&lt;script&gt;rafs&lt;/script&gt;"')
+        self.assertContains(response, 'movies/js/search_results.js')
+        self.assertNotContains(response, '<article class="search-result-card')
+        self.assertNotIn("results", response.context)
+
+    def test_empty_query_has_visible_prompt(self):
+        response = self.client.get(reverse("movies:search_query"), {"query": '   '})
+        self.assertContains(response, "Enter a search query")
+        self.assertContains(response, 'data-query=""')
+
+    def test_search_labels_are_translated_in_all_languages(self):
+        for language in ["ru", "uk", "kk", "es", "de"]:
+            with self.subTest(language=language):
+                response = self.client.get(reverse("movies:search_query"), HTTP_ACCEPT_LANGUAGE=language)
+                self.assertEqual(response.status_code, 200)
+                self.assertNotContains(response, 'data-country-label="Country"')
+                self.assertNotContains(response, "Enter a search query")
+                self.assertNotContains(response, ">Try again</button>")
+
+
+@skipUnless(connection.vendor == "postgresql", "Search API uses PostgreSQL full-text queries")
+class SearchResultsAPITests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.author = get_user_model().objects.create_user(
+            username="search-author", email="search-author@example.com", about="Public profile description",
+        )
+        cls.deleted = get_user_model().objects.create_user(
+            username="hidden-search-user", email="hidden-search@example.com", is_deleted=True,
+        )
+        cls.movies = [Movie.objects.create(name=f"Base movie {i}", description="Base plot", year=2024) for i in range(27)]
+        translated = cls.movies[1]
+        for language, name in [("en", "English title"), ("ru", "Русское название")]:
+            translated.set_current_language(language)
+            translated.wikidata_name = name
+            translated.wikidata_description = name + " plot"
+            translated.save()
+        cls.review = Review.objects.create(
+            id=101, user=cls.author, movie=cls.movies[0], rating=8, text='<script>alert(1)</script> Review text',
+        )
+        cls.entities = [
+            Person.objects.create(wikidata_id="CHECK_PERSON", _current_language="en", name="Person", bio="Person biography"),
+            Studio.objects.create(wikidata_id="CHECK_STUDIO", _current_language="en", name="Studio"),
+            Country.objects.create(wikidata_id="CHECK_COUNTRY", _current_language="en", name="Country"),
+            Genre.objects.create(wikidata_id="CHECK_GENRE", _current_language="en", name="Genre"),
+            TypeOfWork.objects.create(wikidata_id="CHECK_TYPE", _current_language="en", name="Type"),
+        ]
+        targets = [*cls.movies, cls.review, cls.author, cls.deleted, *cls.entities]
+        for target in targets:
+            GlobalSearchIndex.objects.create(
+                content_type=ContentType.objects.get_for_model(target), object_id=target.pk,
+                search_vector=SearchVector(Value("rafsfixture"), config="english"),
+            )
+        cls.url = reverse("movies:search_results_api")
+
+    def all_results(self, **headers):
+        first = self.client.get(self.url, {"query": "rafsfixture"}, **headers).json()
+        last = self.client.get(first["next"], **headers).json()
+        return first["results"] + last["results"]
+
+    def test_pagination_uses_25_results_and_stable_order_without_duplicates(self):
+        with CaptureQueriesContext(connection) as queries:
+            response = self.client.get(self.url, {"query": "rafsfixture"})
+        self.assertEqual(response.status_code, 200)
+        first = response.json()
+        self.assertEqual(first["count"], 35)
+        self.assertEqual(len(first["results"]), 25)
+        self.assertIsNone(first["previous"])
+        self.assertIn("page=2", first["next"])
+        self.assertTrue(any('movies_globalsearchindex' in q['sql'] and 'LIMIT 25' in q['sql'] for q in queries))
+        last = self.client.get(first["next"]).json()
+        self.assertEqual(len(last["results"]), 10)
+        self.assertIsNone(last["next"])
+        actual = [(r["type"], r["id"]) for r in first["results"] + last["results"]]
+        expected = list(GlobalSearchIndex.objects.order_by("pk").values_list("content_type__model", "object_id"))
+        self.assertEqual(actual, expected)
+        self.assertEqual(len(set(actual)), 35)
+
+    def test_all_types_have_correct_links_authors_and_public_metadata(self):
+        results = self.all_results()
+        self.assertEqual({r["type"] for r in results}, {"movie", "review", "user", "person", "studio", "country", "genre", "typeofwork"})
+        review = next(r for r in results if r["type"] == "review")
+        self.assertEqual(review["id"], 101)
+        self.assertEqual(review["url"], f"/movies/{self.movies[0].pk}/#review-101")
+        self.assertEqual(review["title"], self.movies[0].name)
+        self.assertEqual(review["description"], self.review.text)
+        self.assertEqual(review["author"]["url"], "/@search-author/")
+        self.assertEqual(review["author"]["image"], "/static/images/default_profile_img.png")
+        self.assertTrue(review["created_at"])
+        user = next(r for r in results if r["type"] == "user" and not r["is_deleted"])
+        self.assertEqual(user["url"], "/@search-author/")
+        self.assertEqual(user["description"], "Public profile description")
+        self.assertTrue(user["date_joined"])
+        self.assertNotIn("email", user)
+        for result in results:
+            if result["type"] in {"person", "studio", "country", "genre", "typeofwork"}:
+                self.assertIsNone(result["url"])
+                self.assertTrue(result["wikidata_id"])
+
+    def test_deleted_user_and_review_author_do_not_expose_profile(self):
+        self.review.user = self.deleted
+        self.review.save()
+        results = self.all_results()
+        deleted = next(r for r in results if r["type"] == "user" and r["is_deleted"])
+        for field in ["title", "description", "image", "url", "date_joined"]:
+            self.assertIsNone(deleted[field])
+        author = next(r for r in results if r["type"] == "review")["author"]
+        self.assertTrue(author["is_deleted"])
+        self.assertIsNone(author["url"])
+        self.assertEqual(author["name"], "Deleted user")
+        self.assertNotIn(self.deleted.username, json.dumps(author))
+
+    def test_translated_fields_and_plain_field_fallback_work(self):
+        results = self.all_results(HTTP_ACCEPT_LANGUAGE="ru")
+        movie = next(r for r in results if r["type"] == "movie" and r["id"] == self.movies[1].pk)
+        self.assertEqual(movie["title"], "Русское название")
+        self.assertEqual(movie["description"], "Русское название plot")
+        base = next(r for r in results if r["type"] == "movie" and r["id"] == self.movies[0].pk)
+        self.assertEqual(base["title"], "Base movie 0")
+        self.assertEqual(base["description"], "Base plot")
+
+    def test_stale_index_entry_does_not_break_api(self):
+        GlobalSearchIndex.objects.create(
+            content_type=ContentType.objects.get_for_model(Movie), object_id=999999,
+            search_vector=SearchVector(Value("rafsfixture"), config="english"),
+        )
+        results = self.all_results()
+        self.assertEqual(len(results), 36)
+        self.assertIsNone(results[-1])
+
+    def test_empty_search_does_not_query_search_index(self):
+        with self.assertNumQueries(0):
+            response = self.client.get(self.url, {"query": "   "})
+        self.assertEqual(response.json(), {"count": 0, "next": None, "previous": None, "results": []})
+
+    def test_external_image_priority_and_missing_file_fallback(self):
+        movie = self.movies[0]
+        movie.cover_url = "https://example.invalid/poster.jpg"
+        movie.cover.name = "missing.jpg"
+        entry = GlobalSearchIndex.objects.get(content_type=ContentType.objects.get_for_model(Movie), object_id=movie.pk)
+        entry.content_object = movie
+        serializer = SearchResultSerializer()
+        with patch.object(movie.cover.storage, "exists", side_effect=AssertionError("URL takes priority")):
+            self.assertEqual(serializer.get_image(entry), movie.cover_url)
+        movie.cover_url = ""
+        with patch.object(movie.cover.storage, "exists", return_value=False):
+            self.assertEqual(serializer.get_image(entry), "/static/movies/images/nocover.png")
+        with patch.object(movie.cover.storage, "exists", return_value=True):
+            self.assertEqual(serializer.get_image(entry), movie.cover.url)
 
 
 class ReviewFormTests(SimpleTestCase):
