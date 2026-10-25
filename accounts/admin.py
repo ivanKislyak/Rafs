@@ -1,5 +1,10 @@
 from django.contrib import admin
-from .models import SearchHistory
+from .models import SearchHistory, User
+
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    list_display = ["id", "username", 'email', 'date_joined', "user_lvl", "user_frames", 'is_deleted'] 
+    
 
 @admin.register(SearchHistory)
 class SearchHistoryAdmin(admin.ModelAdmin):
