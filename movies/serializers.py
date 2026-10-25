@@ -145,4 +145,5 @@ class SearchResultSerializer(serializers.Serializer):
 class WatchStatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = WatchStatus
-        fields = ['id', 'user', 'movie', 'status']
+        fields = ['status']
+        extra_kwargs = {'status': {'required': True}}
