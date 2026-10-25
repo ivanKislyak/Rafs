@@ -15,6 +15,24 @@ def _read(target, field):
 
 
 class SearchResultSerializer(serializers.Serializer):
+    """
+    Serializes a GlobalSearchIndex entry into a uniform search result.
+
+    The index points to different models (movie, review, person, studio,
+    user, country, genre, typeofwork) through a generic relation, so every
+    result is flattened into the same set of fields: id, type, title,
+    description, image, url, etc.
+
+    Rules:
+    - Titles, descriptions and images are looked up through the
+      TITLE_FIELDS / DESCRIPTION_FIELDS / IMAGE_FIELDS maps, using the
+      first non-empty field of the target model.
+    - A review is shown with the title and image of its movie and gets an
+      extra `author` block.
+    - Deleted users expose no personal data (title, description, image).
+    - Stale entries, where the indexed object no longer exists, are
+      serialized as None.
+    """
     id = serializers.IntegerField(source='object_id')
     type = serializers.CharField(source='content_type.model')
     wikidata_id = serializers.SerializerMethodField()
