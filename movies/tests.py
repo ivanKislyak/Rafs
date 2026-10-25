@@ -16,7 +16,8 @@ from django.utils import translation
 from .forms import ReviewForm
 from .models import GlobalSearchIndex, Movie, Review, ReviewReply, ReviewVote, WatchStatus
 from .movie_models import Country, Genre, Person, Studio, TypeOfWork
-from .views import SearchResultSerializer, search_page
+from .serializers import SearchResultSerializer
+from .views import search_page
 
 
 class SearchResultsPageTests(SimpleTestCase):
