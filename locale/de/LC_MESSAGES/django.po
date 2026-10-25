@@ -1296,3 +1296,12 @@ msgstr "Gib einen Suchbegriff ein"
 #: movies/templates/movies/search_results.html
 msgid "Enable JavaScript to view search results"
 msgstr "Aktiviere JavaScript, um die Suchergebnisse zu sehen"
+
+
+#: accounts/templates/accounts/profile.html accounts/views.py
+msgid "Restored to list"
+msgstr "Wieder zur Liste hinzugefügt"
+
+#: accounts/templates/accounts/profile.html accounts/views.py
+msgid "Untitled"
+msgstr "Ohne Titel"

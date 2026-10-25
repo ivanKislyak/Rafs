@@ -125,6 +125,10 @@
                  aria-labelledby="profile-watch-title"
                  data-profile-library
                  data-update-url="{% url 'movies:set_movie_status' %}"
+                 data-update-loading="{% translate 'Loading...' %}"
+                 data-update-restored="{% translate 'Restored to list' %}"
+                 data-number-grouping="{{ library_number_grouping }}"
+                 data-thousand-separator="{{ library_thousand_separator }}"
                  data-update-error="{% translate 'Unable to update the list' %}">
             <div class="profile-section-heading">
                 <div>
@@ -132,6 +136,7 @@
                     <h2 id="profile-watch-title">{% translate "Watch statuses" %}</h2>
                 </div>
             </div>
+            <span class="visually-hidden" data-library-status role="status" aria-live="polite" aria-atomic="true"></span>
             {% if is_owner %}
                 <form data-profile-library-csrf hidden>
                     {% csrf_token %}
@@ -162,32 +167,32 @@
                                          data-library-movie
                                          data-movie-id="{{ watch_entry.movie_id }}"
                                          data-status="{{ status.value }}"
-                                         data-movie-name="{{ watch_entry.movie.name }}">
+                                         data-movie-name="{{ watch_entry.movie_title }}">
                                     <a class="profile-watch-movie-cover-link"
                                        href="{% url 'movies:detail' watch_entry.movie_id %}"
-                                       aria-label="{{ watch_entry.movie.name }}">
+                                       aria-label="{{ watch_entry.movie_title }}">
                                         {% if watch_entry.movie.cover and watch_entry.movie.image_exists %}
                                             <img class="profile-watch-movie-cover"
                                                  src="{{ watch_entry.movie.cover.url }}"
                                                  data-fallback-src="{% static 'movies/images/nocover.png' %}"
                                                  onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
-                                                 alt="{{ watch_entry.movie.name }}">
+                                                 alt="{{ watch_entry.movie_title }}">
                                         {% elif watch_entry.movie.cover_url %}
                                             <img class="profile-watch-movie-cover"
                                                  src="{{ watch_entry.movie.cover_url }}"
                                                  data-fallback-src="{% static 'movies/images/nocover.png' %}"
                                                  onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
-                                                 alt="{{ watch_entry.movie.name }}">
+                                                 alt="{{ watch_entry.movie_title }}">
                                         {% else %}
                                             <img class="profile-watch-movie-cover"
                                                  src="{% static 'movies/images/nocover.png' %}"
-                                                 alt="{{ watch_entry.movie.name }}">
+                                                 alt="{{ watch_entry.movie_title }}">
                                         {% endif %}
                                     </a>
                                     <div class="profile-watch-movie-copy">
                                         <a class="profile-watch-movie-title"
-                                           title="{{ watch_entry.movie.name }}"
-                                           href="{% url 'movies:detail' watch_entry.movie_id %}">{{ watch_entry.movie.name }}</a>
+                                           title="{{ watch_entry.movie_title }}"
+                                           href="{% url 'movies:detail' watch_entry.movie_id %}">{{ watch_entry.movie_title }}</a>
                                         {% if watch_entry.movie.year %}
                                             <span class="profile-watch-movie-year">{{ watch_entry.movie.year }}</span>
                                         {% endif %}

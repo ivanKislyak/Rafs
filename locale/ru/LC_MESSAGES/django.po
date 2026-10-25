@@ -1284,3 +1284,12 @@ msgstr "Введите поисковый запрос"
 #: movies/templates/movies/search_results.html
 msgid "Enable JavaScript to view search results"
 msgstr "Включите JavaScript, чтобы увидеть результаты поиска"
+
+
+#: accounts/templates/accounts/profile.html accounts/views.py
+msgid "Restored to list"
+msgstr "Возвращено в список"
+
+#: accounts/templates/accounts/profile.html accounts/views.py
+msgid "Untitled"
+msgstr "Без названия"

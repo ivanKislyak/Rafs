@@ -1296,3 +1296,12 @@ msgstr "Іздеу сұрауын енгізіңіз"
 #: movies/templates/movies/search_results.html
 msgid "Enable JavaScript to view search results"
 msgstr "Іздеу нәтижелерін көру үшін JavaScript қосыңыз"
+
+
+#: accounts/templates/accounts/profile.html accounts/views.py
+msgid "Restored to list"
+msgstr "Тізімге қайтарылды"
+
+#: accounts/templates/accounts/profile.html accounts/views.py
+msgid "Untitled"
+msgstr "Атауы жоқ"

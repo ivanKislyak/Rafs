@@ -1296,3 +1296,12 @@ msgstr "Введіть пошуковий запит"
 #: movies/templates/movies/search_results.html
 msgid "Enable JavaScript to view search results"
 msgstr "Увімкніть JavaScript, щоб побачити результати пошуку"
+
+
+#: accounts/templates/accounts/profile.html accounts/views.py
+msgid "Restored to list"
+msgstr "Повернуто до списку"
+
+#: accounts/templates/accounts/profile.html accounts/views.py
+msgid "Untitled"
+msgstr "Без назви"

@@ -1,4 +1,5 @@
 import json
+from html import escape
 from io import BytesIO
 from tempfile import TemporaryDirectory
 from datetime import timedelta
@@ -9,6 +10,9 @@ from django.test import TestCase, override_settings
 from django.test.utils import CaptureQueriesContext
 from django.urls import resolve, reverse
 from django.utils import timezone
+from django.utils import translation
+from django.utils.formats import get_format
+from django.conf import settings
 from PIL import Image
 from rest_framework.test import APIClient
 
@@ -212,6 +216,111 @@ class ProfilePageTests(TestCase):
     def test_deleted_users_profile_is_not_public(self):
         self.owner.delete()
         self.assertEqual(self.client.get(self.profile_url).status_code, 404)
+
+
+class ProfileLibraryLocalizationTests(TestCase):
+    titles = {
+        "en": 'English "title" & <work>',
+        "ru": 'Очень длинное русское название "произведения" & <детали> ' * 5,
+        "uk": "Українська назва твору",
+        "kk": "Туындының қазақша атауы",
+        "es": "Título de la obra",
+        "de": "Deutscher Werktitel",
+    }
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.owner = User.objects.create_user(username="localized-library", email="library@example.com")
+        cls.movie = Movie.objects.create(name="Base English name", year=2024)
+        for language, title in cls.titles.items():
+            cls.movie.set_current_language(language)
+            cls.movie.wikidata_name = title
+            cls.movie.save()
+        WatchStatus.objects.create(user=cls.owner, movie=cls.movie, status=WatchStatus.StatusChoice.VIEWED)
+
+    def profile(self, language):
+        return self.client.get(
+            reverse("profile", args=[self.owner.username]), HTTP_ACCEPT_LANGUAGE=language,
+        )
+
+    def assert_title(self, response, title):
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, f'data-movie-name="{escape(title)}"')
+        self.assertContains(response, f'aria-label="{escape(title)}"')
+        self.assertContains(response, f'alt="{escape(title)}"')
+        self.assertContains(response, f'title="{escape(title)}"')
+        self.assertContains(response, f'>{escape(title)}</a>')
+
+    def test_active_language_localizes_titles_attributes_and_all_ui_states(self):
+        self.client.force_login(self.owner)
+        for language, _ in settings.LANGUAGES:
+            with self.subTest(language=language), translation.override(language):
+                response = self.profile(language)
+                self.assert_title(response, self.titles[language].strip())
+                for attribute, message in [
+                    ("data-update-loading", "Loading..."),
+                    ("data-update-restored", "Restored to list"),
+                    ("data-update-error", "Unable to update the list"),
+                    ("aria-label", "Remove from list"),
+                ]:
+                    self.assertContains(response, f'{attribute}="{escape(translation.gettext(message))}"')
+                for message in [
+                    "Library", "Watch statuses", "Undo", "Removed from list",
+                    "There are no movies in this section yet", "Cancel", "Confirm",
+                ]:
+                    self.assertContains(response, translation.gettext(message))
+                for _, label in WatchStatus.StatusChoice.choices:
+                    self.assertContains(response, escape(str(label)))
+                self.assertContains(response, f'data-number-grouping="{get_format("NUMBER_GROUPING")}"')
+                self.assertContains(response, f'data-thousand-separator="{escape(get_format("THOUSAND_SEPARATOR"))}"')
+
+    def test_cookie_language_takes_precedence_over_accept_language(self):
+        self.client.cookies[settings.LANGUAGE_COOKIE_NAME] = "ru"
+        self.assert_title(self.profile("en"), self.titles["ru"].strip())
+
+    def test_missing_or_empty_translation_uses_configured_fallback_then_base_name(self):
+        english_only = Movie.objects.create(name="", wikidata_id="CHECK_EN")
+        english_only.set_current_language("en")
+        english_only.wikidata_name = "English fallback"
+        english_only.save()
+        english_only.set_current_language("ru")
+        english_only.wikidata_name = ""
+        english_only.wikidata_description = "Описание без переведённого названия"
+        english_only.save()
+        russian_only = Movie.objects.create(name="", wikidata_id="CHECK_RU")
+        russian_only.set_current_language("ru")
+        russian_only.wikidata_name = "Русский fallback"
+        russian_only.save()
+        legacy = Movie.objects.create(name="Legacy base title")
+        for movie in [english_only, russian_only, legacy]:
+            WatchStatus.objects.create(user=self.owner, movie=movie, status=WatchStatus.StatusChoice.VIEWED)
+        response = self.profile("es")
+        for title in ["English fallback", "Русский fallback", "Legacy base title"]:
+            self.assert_title(response, title)
+        self.assert_title(self.profile("ru"), "English fallback")
+
+    def test_missing_all_title_data_has_localized_placeholder(self):
+        unnamed = Movie.objects.create(name="")
+        WatchStatus.objects.create(user=self.owner, movie=unnamed, status=WatchStatus.StatusChoice.VIEWED)
+        for language, _ in settings.LANGUAGES:
+            with self.subTest(language=language), translation.override(language):
+                self.assert_title(self.profile(language), translation.gettext("Untitled"))
+
+    def test_translation_query_count_does_not_grow_with_library(self):
+        with CaptureQueriesContext(connection) as initial:
+            self.assertEqual(self.profile("ru").status_code, 200)
+        for i in range(15):
+            movie = Movie.objects.create(name=f"Base movie {i}")
+            for language in ["en", "ru"]:
+                movie.set_current_language(language)
+                movie.wikidata_name = f"Translation {language} {i}"
+                movie.save()
+            WatchStatus.objects.create(user=self.owner, movie=movie, status=WatchStatus.StatusChoice.VIEWED)
+        with CaptureQueriesContext(connection) as populated:
+            self.assertEqual(self.profile("ru").status_code, 200)
+        self.assertEqual(len(populated), len(initial))
+        table = Movie._parler_meta.root_model._meta.db_table
+        self.assertEqual(sum(f'"{table}"' in q["sql"] for q in populated), 1)
 
 
 class AvatarUpdateTests(TestCase):

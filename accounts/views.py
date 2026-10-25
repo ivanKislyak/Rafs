@@ -14,6 +14,7 @@ from django.db.models import Count, IntegerField, OuterRef, Prefetch, Subquery, 
 from django.db.models.functions import Coalesce
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext as _
+from django.utils.formats import get_format
 
 from movies.models import Review, ReviewReply, WatchStatus
 
@@ -80,9 +81,20 @@ def profile(request, username):
     watch_status_objects = (
         WatchStatus.objects.filter(user=profile_user)
         .select_related("movie")
+        .prefetch_related("movie__translations")
         .order_by("movie__name", "movie_id")
     )
     for watch_status in watch_status_objects:
+        movie = watch_status.movie
+        titles = {
+            row.language_code: row.wikidata_name.strip()
+            for row in movie.translations.all()
+        }
+        languages = [movie.get_current_language(), *movie.get_fallback_languages()]
+        watch_status.movie_title = (
+            next((titles[code] for code in languages if titles.get(code)), None)
+            or movie.name.strip() or movie.wikidata_id or _("Untitled")
+        )
         grouped_statuses[watch_status.status].append(watch_status)
 
     watch_statuses = [
@@ -104,6 +116,8 @@ def profile(request, username):
             "is_owner": is_owner,
             "profile_role": _("Newcomer"),
             "watch_statuses": watch_statuses,
+            "library_number_grouping": get_format("NUMBER_GROUPING"),
+            "library_thousand_separator": get_format("THOUSAND_SEPARATOR"),
             "avatar_form": AvatarUpdateForm(instance=profile_user) if is_owner else None,
         },
     )

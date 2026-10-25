@@ -5,6 +5,21 @@
     return;
   }
 
+  const formatCount = (count) => {
+    const size = Number(library.dataset.numberGrouping);
+    const value = String(count);
+    if (!Number.isInteger(size) || size <= 0) return value;
+    const groups = [];
+    for (let end = value.length; end > 0; end -= size) {
+      groups.unshift(value.slice(Math.max(0, end - size), end));
+    }
+    return groups.join(library.dataset.thousandSeparator || "");
+  };
+  const libraryStatus = library.querySelector("[data-library-status]");
+  const announce = (message) => {
+    if (libraryStatus) libraryStatus.textContent = message;
+  };
+
   const controlledPanel = (control) => (
     document.getElementById(control.getAttribute("aria-controls"))
   );
@@ -85,7 +100,7 @@
     if (count) {
       const nextCount = Math.max(0, Number(count.dataset.count) + difference);
       count.dataset.count = String(nextCount);
-      count.textContent = String(nextCount);
+      count.textContent = formatCount(nextCount);
     }
   };
 
@@ -155,6 +170,7 @@
     card.setAttribute("aria-busy", "true");
     undoButton.disabled = true;
     feedback.textContent = "";
+    announce(library.dataset.updateLoading);
 
     try {
       const data = await updateStatus(card);
@@ -168,7 +184,9 @@
       removeButton.hidden = false;
       removeButton.disabled = false;
       setCount(card, 1);
+      announce(library.dataset.updateRestored);
     } catch (error) {
+      announce("");
       showError(card);
     } finally {
       delete card.dataset.pending;
@@ -199,6 +217,7 @@
     cancelButton.disabled = true;
     trigger.disabled = true;
     feedback.textContent = "";
+    announce(library.dataset.updateLoading);
 
     try {
       const data = await updateStatus(card);
@@ -214,6 +233,7 @@
     } catch (error) {
       showError(card);
     } finally {
+      announce("");
       delete card.dataset.pending;
       card.setAttribute("aria-busy", "false");
       confirmButton.disabled = false;
