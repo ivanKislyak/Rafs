@@ -5,7 +5,7 @@ from django.utils.translation import get_language, gettext as _
 from rest_framework import serializers
 
 from .search_config import TITLE_FIELDS, DESCRIPTION_FIELDS, IMAGE_FIELDS
-from .models import WatchStatus
+from .models import WatchStatus, ReviewReply
 
 # Search Result Block
 def _read(target, field):
@@ -33,7 +33,7 @@ class SearchResultSerializer(serializers.Serializer):
     - Stale entries, where the indexed object no longer exists, are
       serialized as None.
     """
-    
+
     id = serializers.IntegerField(source='object_id')
     type = serializers.CharField(source='content_type.model')
     type_of_work = serializers.SerializerMethodField()
@@ -187,4 +187,9 @@ class WatchStatusSerializer(serializers.ModelSerializer):
         extra_kwargs = {'status': {'required': True}}
 
 
+class ReviewReplySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ReviewReply
+        fields = ['id', 'review', 'user', 'text', 'created_at']
+        read_only_fields = ['id', 'user', 'created_at', 'review']
 

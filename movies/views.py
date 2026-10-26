@@ -33,7 +33,10 @@ from .models import (
     ReviewVote, WatchStatus,
     GlobalSearchIndex,
     )
-from .serializers import SearchResultSerializer, WatchStatusSerializer
+from .serializers import (
+    SearchResultSerializer, WatchStatusSerializer, 
+    ReviewReplySerializer,
+    )
 from .services.wikidata import (
     search_wikidata_media, 
     fetch_movie_details_raw, 
@@ -405,6 +408,16 @@ def reply_review(request, review_id):
         return redirect(_review_feed_return_url(request, review.id))
     detail_url = reverse("movies:detail", kwargs={"movie_id": review.movie_id})
     return redirect(f"{detail_url}?replies={review.id}#review-{review.id}")
+
+class ReviewReplyListCreateAPIView(generics.ListCreateAPIView):
+    serializer_class = ReviewReplySerializer
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get(self, request, review_id: int, *args, **kwargs):
+        pass
+
+    def post(self, request, review_id: int, *args, **kwargs):
+        pass
 
 @staff_member_required
 def wikidata_search(request):
