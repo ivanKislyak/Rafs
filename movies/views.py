@@ -415,11 +415,12 @@ class ReviewReplyListCreateAPIView(generics.ListCreateAPIView):
 
     def get_queryset(self):
         review = get_object_or_404(Review, id=self.kwargs['review_id'])
-        results = ReviewReply.objects.filter(review=review)
+        results = ReviewReply.objects.filter(review=review).order_by('created_at', 'id')
         return results
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        review = get_object_or_404(Review, id=self.kwargs['review_id'])
+        serializer.save(user=self.request.user, review=review)
 
 @staff_member_required
 def wikidata_search(request):
