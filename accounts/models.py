@@ -11,6 +11,10 @@ class Achievement(models.Model):
     description = models.CharField(max_length=500)
     avatar_image = models.ImageField(upload_to="achievements/", blank=True, null=True)
     display_in_profile = models.BooleanField(default=True)
+    
+    class Meta:
+        verbose_name = _("Achievement")
+        verbose_name_plural = _("Achievements")
 
 class User(AbstractUser):
     about = models.TextField(blank=True, max_length=1000, verbose_name="About")
@@ -81,6 +85,6 @@ class SearchHistory(models.Model):
 
     class Meta:
         ordering = ["-updated_at"]
-        verbose_name = "Search History"
-        verbose_name_plural = "Search Histories"
+        verbose_name = _("Search History")
+        verbose_name_plural = _("Search Histories")
     

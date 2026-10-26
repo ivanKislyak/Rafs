@@ -1305,3 +1305,11 @@ msgstr "Тізімге қайтарылды"
 #: accounts/templates/accounts/profile.html accounts/views.py
 msgid "Untitled"
 msgstr "Атауы жоқ"
+
+#: accounts/models.py:88
+msgid "Search History"
+msgstr "Іздеу тарихы"
+
+#: accounts/models.py:89
+msgid "Search Histories"
+msgstr "Іздеу тарихтары"

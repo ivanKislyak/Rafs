@@ -1305,3 +1305,11 @@ msgstr "Wieder zur Liste hinzugefügt"
 #: accounts/templates/accounts/profile.html accounts/views.py
 msgid "Untitled"
 msgstr "Ohne Titel"
+
+#: accounts/models.py:88
+msgid "Search History"
+msgstr "Suchverlauf"
+
+#: accounts/models.py:89
+msgid "Search Histories"
+msgstr "Suchverläufe"

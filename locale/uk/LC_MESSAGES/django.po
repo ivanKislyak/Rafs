@@ -1305,3 +1305,11 @@ msgstr "Повернуто до списку"
 #: accounts/templates/accounts/profile.html accounts/views.py
 msgid "Untitled"
 msgstr "Без назви"
+
+#: accounts/models.py:88
+msgid "Search History"
+msgstr "Історія пошуку"
+
+#: accounts/models.py:89
+msgid "Search Histories"
+msgstr "Історії пошуку"

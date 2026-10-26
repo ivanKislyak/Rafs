@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import SearchHistory, User
+from .models import SearchHistory, User, Achievement
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
@@ -20,3 +20,8 @@ class SearchHistoryAdmin(admin.ModelAdmin):
     @admin.display(description='User', ordering='user__username')
     def get_username(self, obj):
         return obj.user.username
+
+@admin.register(Achievement)
+class AchievementAdmin(admin.ModelAdmin):
+    list_display = ['id', 'name', 'avatar_image', 'display_in_profile']
+    list_editable = ['display_in_profile']
