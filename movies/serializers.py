@@ -1,7 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.templatetags.static import static
 from django.urls import reverse
-from django.utils.translation import gettext as _
+from django.utils.translation import get_language, gettext as _
 from rest_framework import serializers
 
 from .search_config import TITLE_FIELDS, DESCRIPTION_FIELDS, IMAGE_FIELDS
@@ -35,6 +35,7 @@ class SearchResultSerializer(serializers.Serializer):
     """
     id = serializers.IntegerField(source='object_id')
     type = serializers.CharField(source='content_type.model')
+    type_of_work = serializers.SerializerMethodField()
     wikidata_id = serializers.SerializerMethodField()
     title = serializers.SerializerMethodField()
     description = serializers.SerializerMethodField()
@@ -66,6 +67,16 @@ class SearchResultSerializer(serializers.Serializer):
         if model == 'user' and not target.is_deleted:
             return reverse('profile', kwargs={'username': target.username})
         return None
+
+    def get_type_of_work(self, obj):
+        if obj.content_type.model != 'movie':
+            return None
+        work_type = obj.content_object.type_of_work
+        if work_type is None:
+            return None
+        return work_type.safe_translation_getter(
+            'name', language_code=get_language(), any_language=True,
+        ) or None
 
     def get_author(self, obj):
         if obj.content_type.model != 'review':

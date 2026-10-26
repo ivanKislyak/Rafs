@@ -5,6 +5,7 @@ from django.utils.translation import gettext as _
 
 from django.contrib.postgres.search import SearchQuery, SearchRank
 from django.contrib import messages
+from django.contrib.contenttypes.prefetch import GenericPrefetch
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.exceptions import PermissionDenied
@@ -248,7 +249,11 @@ class SearchResultsListAPIView(generics.ListAPIView):
                 .filter(search_vector=query)
                 .annotate(rank=SearchRank(F("search_vector"), query))
                 .select_related('content_type')
-                .prefetch_related('content_object')
+                .prefetch_related(GenericPrefetch('content_object', [
+                    Movie.objects.select_related('type_of_work').prefetch_related(
+                        'type_of_work__translations',
+                    ),
+                ]))
                 .order_by('-rank', "pk")
                 )
 

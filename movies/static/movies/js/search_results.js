@@ -70,12 +70,6 @@
     return Number.isNaN(parsed.getTime()) ? '' : parsed.toLocaleDateString(locale, { dateStyle: 'medium' });
   }
 
-  function rank(result) {
-    if (result.rank == null || !Number.isFinite(Number(result.rank))) return '';
-    const value = Number(result.rank).toLocaleString(locale, { minimumFractionDigits: 3, maximumFractionDigits: 3 });
-    return `<span class="search-result-rank">${escapeHTML(labels.relevanceLabel)} ${escapeHTML(value)}</span>`;
-  }
-
   function symbol(type) {
     const paths = {
       person: '<circle cx="12" cy="8" r="4"></circle><path d="M5 20c.8-4 3.2-6 7-6s6.2 2 7 6"></path>',
@@ -91,7 +85,7 @@
     const title = escapeHTML(result.title || result.wikidata_id || '');
     const description = escapeHTML(truncate(result.description, 34));
     const url = localURL(result.url);
-    const kind = escapeHTML(labels[`${result.type}Label`]);
+    const kind = escapeHTML(result.type === 'movie' ? result.type_of_work : labels[`${result.type}Label`]);
 
     if (result.type === 'movie') {
       const tag = url ? 'a' : 'div';
@@ -99,7 +93,7 @@
         <${tag} class="search-result-movie-link" ${url ? `href="${escapeHTML(url)}"` : ''}>
           <span class="search-result-cover-wrap">${image(result.image, 'search-result-cover', result.title, labels.fallbackSrc)}</span>
           <span class="search-result-content">
-            <span class="search-result-topline"><span class="search-result-kind">${kind}</span>${rank(result)}</span>
+            ${kind ? `<span class="search-result-topline"><span class="search-result-kind">${kind}</span></span>` : ''}
             <strong class="search-result-title">${title}</strong>
             <span class="search-result-meta">
               ${result.year ? `<span>${escapeHTML(result.year)}</span>` : ''}
@@ -131,7 +125,6 @@
               ${created ? `<time datetime="${escapeHTML(result.created_at)}">${escapeHTML(created)}</time>` : ''}
             </span>
           </div>
-          ${rank(result)}
         </div>
         <p class="search-result-review-text">${escapeHTML(truncate(result.description, 42)).replace(/\r?\n/g, '<br>')}</p>
       </article>`;
@@ -149,7 +142,7 @@
       <${tag} class="search-result-entity-layout" ${destination ? `href="${escapeHTML(destination)}"` : ''}>
         <span class="search-result-image">${visual}</span>
         <span class="search-result-content">
-          <span class="search-result-topline"><span class="search-result-kind">${kind}</span>${deleted ? '' : rank(result)}</span>
+          <span class="search-result-topline"><span class="search-result-kind">${kind}</span></span>
           <strong class="search-result-title">${displayedTitle}</strong>
           ${!deleted && (joined || result.wikidata_id) ? `<span class="search-result-meta">
             ${joined ? `<span>${escapeHTML(labels.joinedLabel)} ${escapeHTML(joined)}</span>` : ''}
