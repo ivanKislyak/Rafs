@@ -12,6 +12,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.postgres.search import SearchVectorField
 from django.utils.translation import gettext_lazy as _
 
+
 class Movie(TranslatableModel):
     # Main data
     wikidata_id = models.CharField(verbose_name="ID on wikidata.org", max_length=20, unique=True, null=True, blank=True)

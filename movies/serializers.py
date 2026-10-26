@@ -190,6 +190,6 @@ class WatchStatusSerializer(serializers.ModelSerializer):
 class ReviewReplySerializer(serializers.ModelSerializer):
     class Meta:
         model = ReviewReply
-        fields = ['id', 'review', 'user', 'text', 'created_at']
+        fields = ['id', 'user', 'review', 'text', 'created_at']
         read_only_fields = ['id', 'user', 'created_at', 'review']
 

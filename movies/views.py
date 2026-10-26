@@ -231,6 +231,8 @@ def vote_review(request):
 
 
 class SearchResultsListAPIView(generics.ListAPIView):
+    serializer_class = SearchResultSerializer
+    
     def get_queryset(self):
         raw_query = self.request.query_params.get('query', '').strip()
         words = re.findall(r'[^\W_]+', raw_query)
@@ -261,8 +263,6 @@ class SearchResultsListAPIView(generics.ListAPIView):
                 )
 
         return search_results
-    
-    serializer_class = SearchResultSerializer
 
 
 def search_page(request):
@@ -411,10 +411,11 @@ def reply_review(request, review_id):
 
 class ReviewReplyListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = ReviewReplySerializer
-    permission_classes = [permissions.IsAuthenticated]
-    
-    def get(self, request, review_id: int, *args, **kwargs):
-        pass
+
+    def get_queryset(self):
+        review = get_object_or_404(Review, id=self.kwargs['review_id'])
+        results = ReviewReply.objects.filter(review=review)
+        return results
 
     def post(self, request, review_id: int, *args, **kwargs):
         pass
