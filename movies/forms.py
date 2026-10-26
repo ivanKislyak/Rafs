@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
-from .models import Review as ReviewModel, ReviewReply
+from .models import Review as ReviewModel
 
 
 class RatingRangeInput(forms.NumberInput):
@@ -174,11 +174,6 @@ class ReviewForm(forms.ModelForm):
 
         return cleaned_data
 
-
-class ReviewReplyForm(forms.ModelForm):
-    class Meta:
-        model = ReviewReply
-        fields = ["text"]
 
 class WikidataSearchForm(forms.Form):
     query = forms.CharField(required=True, min_length=2, max_length=200)

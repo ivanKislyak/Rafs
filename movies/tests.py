@@ -10,7 +10,7 @@ from django.db import connection
 from django.db.models import Value
 from django.test import Client, SimpleTestCase, TestCase
 from django.test.utils import CaptureQueriesContext
-from django.urls import reverse
+from django.urls import NoReverseMatch, reverse
 from django.utils import translation
 
 from .forms import ReviewForm
@@ -431,6 +431,119 @@ class ReviewVoteTests(TestCase):
         self.assertEqual(displayed_review.user_vote, ReviewVote.VoteChoice.DISLIKE)
 
 
+class ReviewReplyAPITests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.author = get_user_model().objects.create_user(
+            username="api-reply-author", email="api-reply-author@example.com",
+        )
+        cls.other = get_user_model().objects.create_user(
+            username="api-reply-other", email="api-reply-other@example.com",
+        )
+        cls.movie = Movie.objects.create(name="Reply API movie", year=2025)
+        cls.review = Review.objects.create(
+            user=cls.other, movie=cls.movie, rating=8, text="Review for replies",
+        )
+        cls.other_review = Review.objects.create(
+            user=cls.author, movie=cls.movie, rating=7, text="Another review",
+        )
+
+    def setUp(self):
+        self.url = reverse("movies:review_reply_api", args=[self.review.pk])
+        self.client = Client(enforce_csrf_checks=True)
+        self.client.force_login(self.author)
+        self.client.get(reverse("movies:detail", args=[self.movie.pk]))
+        self.csrf = self.client.cookies["csrftoken"].value
+
+    def post_reply(self, data, url=None):
+        return self.client.post(
+            url or self.url, json.dumps(data), content_type="application/json",
+            HTTP_X_CSRFTOKEN=self.csrf,
+        )
+
+    def test_authenticated_post_creates_reply_and_returns_201(self):
+        response = self.post_reply({"text": "A reply from the API"})
+
+        self.assertEqual(response.status_code, 201)
+        reply = ReviewReply.objects.get()
+        self.assertEqual(reply.text, "A reply from the API")
+        self.assertEqual(reply.user_id, self.author.pk)
+        self.assertEqual(reply.review_id, self.review.pk)
+        self.assertEqual(response.json()["id"], reply.pk)
+
+    def test_payload_cannot_override_author_or_review(self):
+        response = self.post_reply({
+            "text": "Server owns these relations",
+            "user": self.other.pk,
+            "review": self.other_review.pk,
+        })
+
+        self.assertEqual(response.status_code, 201)
+        reply = ReviewReply.objects.get()
+        self.assertEqual(reply.user_id, self.author.pk)
+        self.assertEqual(reply.review_id, self.review.pk)
+
+    def test_empty_and_whitespace_text_are_rejected(self):
+        for text in ("", " \n\t "):
+            with self.subTest(text=text):
+                response = self.post_reply({"text": text})
+                self.assertEqual(response.status_code, 400)
+                self.assertIn("text", response.json())
+                self.assertFalse(ReviewReply.objects.exists())
+
+    def test_guest_cannot_create_reply(self):
+        response = Client().post(
+            self.url, {"text": "Anonymous reply"}, content_type="application/json",
+        )
+
+        self.assertEqual(response.status_code, 403)
+        self.assertFalse(ReviewReply.objects.exists())
+
+    def test_missing_review_returns_404(self):
+        missing_id = max(self.review.pk, self.other_review.pk) + 1000
+        response = self.post_reply(
+            {"text": "Valid reply"},
+            reverse("movies:review_reply_api", args=[missing_id]),
+        )
+
+        self.assertEqual(response.status_code, 404)
+        self.assertFalse(ReviewReply.objects.exists())
+
+    def test_session_post_requires_csrf(self):
+        response = self.client.post(
+            self.url, {"text": "No CSRF token"}, content_type="application/json",
+        )
+
+        self.assertEqual(response.status_code, 403)
+        self.assertFalse(ReviewReply.objects.exists())
+
+    def test_get_is_public_paginated_and_scoped_to_review(self):
+        ReviewReply.objects.bulk_create([
+            ReviewReply(user=self.author, review=self.review, text=f"Reply {index}")
+            for index in range(26)
+        ])
+        ReviewReply.objects.create(user=self.other, review=self.other_review, text="Not in this thread")
+        guest = Client()
+
+        response = guest.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data["count"], 26)
+        self.assertEqual(len(data["results"]), 25)
+        self.assertTrue(all(reply["review"] == self.review.pk for reply in data["results"]))
+        following = guest.get(data["next"])
+        self.assertEqual(following.status_code, 200)
+        self.assertEqual(len(following.json()["results"]), 1)
+        self.assertIsNone(following.json()["next"])
+
+    def test_legacy_creation_route_is_removed(self):
+        with self.assertRaises(NoReverseMatch):
+            reverse("movies:reply_review", args=[self.review.pk])
+        response = self.client.post(f"/movies/review/{self.review.pk}/reply/", {"text": "Old endpoint"})
+        self.assertEqual(response.status_code, 404)
+        self.assertFalse(ReviewReply.objects.exists())
+
+
 class ReviewReplyDisplayTests(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -525,19 +638,16 @@ class ReviewReplyDisplayTests(TestCase):
         self.assertEqual(populated_response.status_code, 200)
         self.assertLessEqual(len(populated_queries), len(initial_queries) + 1)
 
-    def test_reply_post_returns_to_open_reply_thread(self):
+    def test_api_reply_is_displayed_in_open_thread_after_reload(self):
         self.client.force_login(self.reply_author)
 
         response = self.client.post(
-            reverse("movies:reply_review", args=[self.first_review.id]),
+            reverse("movies:review_reply_api", args=[self.first_review.id]),
             {"text": "A newly posted reply"},
+            content_type="application/json",
         )
 
-        expected_url = (
-            f"{self.detail_url}?replies={self.first_review.id}"
-            f"#review-{self.first_review.id}"
-        )
-        self.assertRedirects(response, expected_url)
+        self.assertEqual(response.status_code, 201)
 
         detail_response = self.client.get(
             self.detail_url,
@@ -546,6 +656,60 @@ class ReviewReplyDisplayTests(TestCase):
         self.assertContains(detail_response, 'aria-expanded="true"')
         self.assertContains(detail_response, f'id="review-replies-{self.first_review.id}"')
         self.assertContains(detail_response, "A newly posted reply")
+
+    def test_both_pages_use_api_form_and_movie_return_url(self):
+        self.client.force_login(self.reply_author)
+        expected_url = (
+            f"{self.detail_url}?replies={self.first_review.pk}"
+            f"#review-{self.first_review.pk}"
+        )
+        detail = self.client.get(self.detail_url)
+        feed = self.client.get(reverse("movies:show_reviews"))
+
+        for response in (detail, feed):
+            self.assertContains(response, 'data-review-reply-form')
+            self.assertContains(response, f'action="{reverse("movies:review_reply_api", args=[self.first_review.pk])}"')
+            self.assertContains(response, 'movies/js/review-replies.js')
+            self.assertNotContains(response, f'/movies/review/{self.first_review.pk}/reply/')
+        self.assertContains(detail, f'data-success-url="{expected_url}"')
+
+    def test_guest_has_no_reply_form_on_either_page(self):
+        for url in (self.detail_url, reverse("movies:show_reviews")):
+            response = self.client.get(url)
+            self.assertEqual(response.status_code, 200)
+            self.assertNotContains(response, 'data-review-reply-form')
+            self.assertNotContains(response, 'class="review-action-button review-reply-button"')
+
+    def test_loaded_feed_cards_return_to_their_page_and_open_thread(self):
+        self.client.force_login(self.reply_author)
+        for index in range(10):
+            movie = Movie.objects.create(name=f"Newer review movie {index}")
+            Review.objects.create(user=self.first_author, movie=movie, rating=8, text=f"Newer review {index}")
+        feed_url = reverse("movies:show_reviews")
+        page = self.client.get(feed_url, {"page": 2, "format": "json"})
+        self.assertEqual(page.status_code, 200)
+        html = page.json()["html"]
+        expected_url = f"{feed_url}?page=2&replies={self.first_review.pk}#review-{self.first_review.pk}"
+        self.assertIn(f'data-success-url="{escape(expected_url)}"', html)
+        self.assertIn(f'action="{reverse("movies:review_reply_api", args=[self.first_review.pk])}"', html)
+
+        posted = self.client.post(
+            reverse("movies:review_reply_api", args=[self.first_review.pk]),
+            {"text": "Reply from loaded page"}, content_type="application/json",
+        )
+        self.assertEqual(posted.status_code, 201)
+        reloaded = self.client.get(expected_url)
+        self.assertEqual(reloaded.context["page_obj"].number, 2)
+        self.assertContains(reloaded, 'aria-expanded="true"')
+        self.assertContains(reloaded, "Reply from loaded page")
+
+    def test_reply_text_is_escaped_on_both_pages(self):
+        self.first_reply.text = '<script>alert("reply")</script>'
+        self.first_reply.save()
+        for url in (self.detail_url, reverse("movies:show_reviews")):
+            response = self.client.get(url, {"replies": self.first_review.pk})
+            self.assertContains(response, escape(self.first_reply.text))
+            self.assertNotContains(response, self.first_reply.text)
 
 
 class WatchStatusEndpointTests(TestCase):

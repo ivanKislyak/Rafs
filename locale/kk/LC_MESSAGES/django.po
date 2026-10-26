@@ -1377,3 +1377,15 @@ msgstr "Студиялар"
 #: movies/movie_models.py:95
 msgid "Persons"
 msgstr "Тұлғалар"
+
+#: movies/templates/movies/_review_reply_form.html
+msgid "Your session may have expired. Refresh the page and sign in again."
+msgstr "Сессияның мерзімі аяқталған болуы мүмкін. Бетті жаңартып, қайта кіріңіз."
+
+#: movies/templates/movies/_review_reply_form.html
+msgid "Could not connect. Check your connection and try again."
+msgstr "Қосылу мүмкін болмады. Байланысты тексеріп, қайталап көріңіз."
+
+#: movies/templates/movies/_review_reply_form.html
+msgid "This review is no longer available."
+msgstr "Бұл рецензия енді қолжетімді емес."

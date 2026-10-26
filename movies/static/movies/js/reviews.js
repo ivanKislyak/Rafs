@@ -167,6 +167,7 @@
       const container = card.querySelector('.review-reply-container');
       const trigger = card.querySelector('[data-reply-for]');
 
+      if (container.querySelector('form[aria-busy="true"]')) return;
       const open = !button.matches('[data-reply-cancel]') &&
         !container.classList.contains('is-open');
 

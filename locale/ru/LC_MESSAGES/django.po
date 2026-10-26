@@ -1365,3 +1365,15 @@ msgstr "Студии"
 #: movies/movie_models.py:95
 msgid "Persons"
 msgstr "Персоны"
+
+#: movies/templates/movies/_review_reply_form.html
+msgid "Your session may have expired. Refresh the page and sign in again."
+msgstr "Возможно, срок действия сессии истёк. Обновите страницу и войдите снова."
+
+#: movies/templates/movies/_review_reply_form.html
+msgid "Could not connect. Check your connection and try again."
+msgstr "Не удалось подключиться. Проверьте соединение и попробуйте ещё раз."
+
+#: movies/templates/movies/_review_reply_form.html
+msgid "This review is no longer available."
+msgstr "Эта рецензия больше недоступна."

@@ -99,13 +99,6 @@
     {% include "movies/_review_delete_dialog.html" %}
     </main>
     <script>
-        const reviewVoteLoginUrl = "{% url 'login' %}?next={{ request.path|urlencode }}";
-        const reviewVoteCsrf = document.querySelector(
-            "#review-vote-csrf [name=csrfmiddlewaretoken]"
-        ).value;
-        const reviewVoteUserIsAuthenticated = {{ user.is_authenticated|yesno:"true,false" }};
-    </script>
-    <script>
         document.querySelectorAll("[data-replies-toggle]").forEach((toggle) => {
             toggle.addEventListener("click", () => {
                 const replies = document.getElementById(toggle.getAttribute("aria-controls"));
@@ -122,15 +115,18 @@
             const container = document.getElementById(`review-action-${reviewId}`);
             const trigger = document.querySelector(`[data-reply-for="${reviewId}"]`);
 
+            if (container.querySelector('form[aria-busy="true"]')) return;
             container.classList.remove("is-open");
-            container.innerHTML = "";
+            container.replaceChildren();
             trigger?.classList.remove("is-active");
             trigger?.setAttribute("aria-expanded", "false");
+            trigger?.focus();
         }
 
         function showReplyForm(reviewId, trigger) {
             const container = document.getElementById(`review-action-${reviewId}`);
 
+            if (document.querySelector('.review-reply-form[aria-busy="true"]')) return;
             if (container.classList.contains("is-open")) {
                 hideReplyForm(reviewId);
                 return;
@@ -140,17 +136,8 @@
                 hideReplyForm(openContainer.dataset.reviewId);
             });
 
-            container.innerHTML = `
-                <form class="review-reply-form" action="${trigger.dataset.replyUrl}" method="POST">
-                    <input type="hidden" name="csrfmiddlewaretoken" value="${reviewVoteCsrf}">
-                    <label class="review-reply-label" for="review-reply-text-${reviewId}">{% translate "Your reply" %}</label>
-                    <textarea class="review-reply-textarea" id="review-reply-text-${reviewId}" name="text" rows="3" placeholder="{% translate 'Write a reply to the review...' %}" required></textarea>
-                    <div class="review-reply-form-actions">
-                        <button class="review-reply-submit" type="submit">{% translate "Send" %}</button>
-                        <button class="review-reply-cancel" type="button" onclick="hideReplyForm(${reviewId})">{% translate "Cancel" %}</button>
-                    </div>
-                </form>
-            `;
+            const template = document.getElementById(`review-reply-template-${reviewId}`);
+            container.replaceChildren(template.content.cloneNode(true));
             container.classList.add("is-open");
             trigger.classList.add("is-active");
             trigger.setAttribute("aria-expanded", "true");
@@ -230,5 +217,6 @@
 {% endblock %}
 {% block extra_js %}
     <script src="{% static 'movies/js/review-votes.js' %}" defer></script>
+    <script src="{% static 'movies/js/review-replies.js' %}" defer></script>
     <script src="{% static 'movies/js/movie_watch_status.js' %}" defer></script>
 {% endblock %}

@@ -134,7 +134,6 @@
             <button class="review-action-button review-reply-button"
                     type="button"
                     data-reply-for="{{ review.id }}"
-                    data-reply-url="{% url 'movies:reply_review' review.id %}"
                     aria-controls="review-action-{{ review.id }}"
                     aria-expanded="false"
                     {% if not feed %}onclick="showReplyForm({{ review.id }}, this)"{% endif %}>
@@ -276,26 +275,12 @@
          id="review-action-{{ review.id }}"
          data-review-id="{{ review.id }}">
         {% if feed and user.is_authenticated %}
-            <form class="review-reply-form"
-                  action="{% url 'movies:reply_review' review.id %}"
-                  method="post">
-                {% csrf_token %}
-                <input type="hidden" name="source" value="reviews">
-                <input type="hidden" name="page" value="{{ page_obj.number }}">
-                <label class="review-reply-label"
-                       for="review-reply-text-{{ review.id }}">{% translate "Your reply" %}</label>
-                <textarea class="review-reply-textarea"
-                          id="review-reply-text-{{ review.id }}"
-                          name="text"
-                          rows="3"
-                          required></textarea>
-                <div class="review-reply-form-actions">
-                    <button class="review-reply-submit" type="submit">{% translate "Send" %}</button>
-                    <button class="review-reply-cancel"
-                            type="button"
-                            data-reply-cancel>{% translate "Cancel" %}</button>
-                </div>
-            </form>
+            {% include "movies/_review_reply_form.html" %}
         {% endif %}
     </div>
+    {% if not feed and user.is_authenticated %}
+        <template id="review-reply-template-{{ review.id }}">
+            {% include "movies/_review_reply_form.html" %}
+        </template>
+    {% endif %}
 </article>

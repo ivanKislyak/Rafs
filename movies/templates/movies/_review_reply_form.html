@@ -1,0 +1,33 @@
+{% load i18n %}
+<form class="review-reply-form"
+      data-review-reply-form
+      action="{% url 'movies:review_reply_api' review.id %}"
+      method="post"
+      data-success-url="{% if feed %}{% url 'movies:show_reviews' %}?page={{ page_obj.number }}&amp;replies={{ review.id }}#review-{{ review.id }}{% else %}{% url 'movies:detail' review.movie_id %}?replies={{ review.id }}#review-{{ review.id }}{% endif %}"
+      data-error="{% translate 'Something went wrong. Please try again.' %}"
+      data-empty-error="{% translate 'The reply cannot be empty' %}"
+      data-auth-error="{% translate 'Your session may have expired. Refresh the page and sign in again.' %}"
+      data-network-error="{% translate 'Could not connect. Check your connection and try again.' %}"
+      data-missing-error="{% translate 'This review is no longer available.' %}">
+    {% csrf_token %}
+    <label class="review-reply-label"
+           for="review-reply-text-{{ review.id }}">{% translate "Your reply" %}</label>
+    <textarea class="review-reply-textarea"
+              id="review-reply-text-{{ review.id }}"
+              name="text"
+              rows="3"
+              aria-describedby="review-reply-feedback-{{ review.id }}"
+              {% if not feed %}placeholder="{% translate 'Write a reply to the review...' %}"{% endif %}
+              required></textarea>
+    <p class="review-reply-feedback"
+       id="review-reply-feedback-{{ review.id }}"
+       data-reply-feedback
+       role="alert"
+       hidden></p>
+    <div class="review-reply-form-actions">
+        <button class="review-reply-submit" type="submit">{% translate "Send" %}</button>
+        <button class="review-reply-cancel"
+                type="button"
+                {% if feed %}data-reply-cancel{% else %}onclick="hideReplyForm({{ review.id }})"{% endif %}>{% translate "Cancel" %}</button>
+    </div>
+</form>

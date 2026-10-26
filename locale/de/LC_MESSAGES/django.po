@@ -1377,3 +1377,15 @@ msgstr "Studios"
 #: movies/movie_models.py:95
 msgid "Persons"
 msgstr "Personen"
+
+#: movies/templates/movies/_review_reply_form.html
+msgid "Your session may have expired. Refresh the page and sign in again."
+msgstr "Deine Sitzung ist möglicherweise abgelaufen. Lade die Seite neu und melde dich erneut an."
+
+#: movies/templates/movies/_review_reply_form.html
+msgid "Could not connect. Check your connection and try again."
+msgstr "Verbindung fehlgeschlagen. Prüfe deine Verbindung und versuche es erneut."
+
+#: movies/templates/movies/_review_reply_form.html
+msgid "This review is no longer available."
+msgstr "Diese Rezension ist nicht mehr verfügbar."

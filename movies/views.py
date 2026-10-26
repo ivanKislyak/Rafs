@@ -25,7 +25,6 @@ from rest_framework import generics, permissions
 from .forms import (
     MovieFilterForm, 
     ReviewForm, 
-    ReviewReplyForm, 
     WikidataSearchForm
     )
 from .models import (
@@ -388,26 +387,6 @@ def delete_reply(request, reply_id):
 
     detail_url = reverse("movies:detail", kwargs={"movie_id": movie_id})
     return redirect(f"{detail_url}?replies={review_id}#review-{review_id}")
-
-@login_required
-@require_POST
-def reply_review(request, review_id):
-    review = get_object_or_404(Review, pk=review_id)
-    form = ReviewReplyForm(request.POST)
-
-    if form.is_valid():
-        reply = form.save(commit=False)
-        reply.review = review
-        reply.user = request.user
-        reply.save()
-
-    else:
-        messages.error(request, _("The reply cannot be empty"))
-
-    if request.POST.get("source") == "reviews":
-        return redirect(_review_feed_return_url(request, review.id))
-    detail_url = reverse("movies:detail", kwargs={"movie_id": review.movie_id})
-    return redirect(f"{detail_url}?replies={review.id}#review-{review.id}")
 
 class ReviewReplyListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = ReviewReplySerializer
