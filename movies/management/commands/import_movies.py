@@ -29,7 +29,7 @@ class Command(BaseCommand):
             self.stdout.write("\n")
             movie, created = Movie.objects.update_or_create(name=movie_data["name"], year=movie_data["year"],
                                                             defaults={"rate": movie_data["rate"], "description": movie_data["description"],
-                                                                      "path": movie_data.get("path") or ""}
+                                                                      "cover": movie_data.get("cover") or ""}
                                                             )
             if created:
                 created_count += 1

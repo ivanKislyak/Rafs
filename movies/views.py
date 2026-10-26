@@ -1,32 +1,26 @@
 import json
 import re
-from itertools import chain
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.translation import gettext as _
 
-from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, TrigramSimilarity
+from django.contrib.postgres.search import SearchQuery, SearchRank
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
-from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
+from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
-from django.contrib.postgres.aggregates import StringAgg
-from django.db.models import Avg, F, Count, Value, CharField, Prefetch, Q, OuterRef, Subquery
-from django.db.models.functions import Greatest, Coalesce
-from django.db.models.query import EmptyQuerySet
+from django.db.models import Avg, F, Count, Value, Prefetch, Q, OuterRef, Subquery
+from django.db.models.functions import Coalesce
 from django.template.loader import render_to_string
-from django.templatetags.static import static
 from django.http import JsonResponse
 from django.urls import reverse
 from django.views.decorators.http import require_POST
-from django.http import HttpResponse
 from requests import RequestException
 
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.pagination import PageNumberPagination
-from rest_framework import serializers, generics, authentication, permissions
+from rest_framework import generics, permissions
 from .forms import (
     MovieFilterForm, 
     ReviewForm, 
@@ -35,12 +29,10 @@ from .forms import (
     )
 from .models import (
     Movie, Review, ReviewReply,
-    ReviewVote, Genre, 
-    Person, WatchStatus,
+    ReviewVote, WatchStatus,
     GlobalSearchIndex,
     )
 from .serializers import SearchResultSerializer, WatchStatusSerializer
-from accounts.models import User
 from .services.wikidata import (
     search_wikidata_media, 
     fetch_movie_details_raw, 
