@@ -232,7 +232,7 @@ def vote_review(request):
 
 class SearchResultsListAPIView(generics.ListAPIView):
     serializer_class = SearchResultSerializer
-    
+
     def get_queryset(self):
         raw_query = self.request.query_params.get('query', '').strip()
         words = re.findall(r'[^\W_]+', raw_query)
@@ -411,14 +411,15 @@ def reply_review(request, review_id):
 
 class ReviewReplyListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = ReviewReplySerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
         review = get_object_or_404(Review, id=self.kwargs['review_id'])
         results = ReviewReply.objects.filter(review=review)
         return results
 
-    def post(self, request, review_id: int, *args, **kwargs):
-        pass
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 @staff_member_required
 def wikidata_search(request):
