@@ -11,6 +11,12 @@ class MovieAdmin(TranslatableAdmin):
                     "get_studio"]
     raw_id_fields = ("type_of_work", "genres", "countries", "studio",
                      "director", "screenwriter", "producer", "composer", "actors")
+    search_fields = [
+        "translations__wikidata_name",
+        "name",
+        "wikidata_id",
+    ]
+    list_filter = ['year']
 
     def get_queryset(self, request):
         return super().get_queryset(request).prefetch_related(
