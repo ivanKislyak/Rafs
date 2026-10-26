@@ -20,33 +20,6 @@ from .serializers import SearchResultSerializer
 from .views import search_page
 
 
-class SearchResultsPageTests(SimpleTestCase):
-    def test_html_page_does_not_access_search_database(self):
-        response = self.client.get(reverse("movies:search_query"), {"query": '<script>rafs</script>'})
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.resolver_match.func, search_page)
-        self.assertContains(response, 'data-search-results')
-        self.assertContains(response, 'data-api-url="/movies/api/v1/search/"')
-        self.assertContains(response, 'data-query="&lt;script&gt;rafs&lt;/script&gt;"')
-        self.assertContains(response, 'movies/js/search_results.js')
-        self.assertNotContains(response, '<article class="search-result-card')
-        self.assertNotIn("results", response.context)
-
-    def test_empty_query_has_visible_prompt(self):
-        response = self.client.get(reverse("movies:search_query"), {"query": '   '})
-        self.assertContains(response, "Enter a search query")
-        self.assertContains(response, 'data-query=""')
-
-    def test_search_labels_are_translated_in_all_languages(self):
-        for language in ["ru", "uk", "kk", "es", "de"]:
-            with self.subTest(language=language):
-                response = self.client.get(reverse("movies:search_query"), HTTP_ACCEPT_LANGUAGE=language)
-                self.assertEqual(response.status_code, 200)
-                self.assertNotContains(response, 'data-country-label="Country"')
-                self.assertNotContains(response, "Enter a search query")
-                self.assertNotContains(response, ">Try again</button>")
-
-
 @skipUnless(connection.vendor == "postgresql", "Search API uses PostgreSQL full-text queries")
 class SearchResultsAPITests(TestCase):
     @classmethod

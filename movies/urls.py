@@ -16,7 +16,6 @@ urlpatterns = [
     path('wikidata/items/<str:qid>/save/', views.wikidata_save_item, name='wikidata_save_item'),
     path('save/status/', views.set_movie_status, name='set_movie_status'),
     path('reviews/', views.show_reviews, name='show_reviews'),
-    # path('search/', views.search_query, name='search_query'),
     path('search/', views.search_page, name='search_query'),
     path('api/v1/search/', views.SearchResultsListAPIView.as_view(), name='search_results_api'),
     path('api/v1/watch-status/<int:movie_id>/', views.WatchStatusAPIView.as_view())

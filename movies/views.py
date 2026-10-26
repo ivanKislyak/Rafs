@@ -302,33 +302,6 @@ class WatchStatusAPIView(APIView):
 
     def delete(self, request, movie_id: int):
         pass
-
-
-def search_query(request):
-    raw_query = request.GET.get('query', '').strip()
-    words = re.findall(r'[^\W_]+', raw_query)
-    search_results = []
-
-    if words:
-        tsquery = " & ".join(f"{word}:*" for word in words)
-        query = (
-            SearchQuery(tsquery, config="english", search_type="raw")
-            | SearchQuery(tsquery, config="russian", search_type="raw")
-            | SearchQuery(tsquery, config="spanish", search_type="raw")
-            | SearchQuery(tsquery, config="german", search_type="raw")
-        )
-        search_results = (
-            GlobalSearchIndex.objects
-            .filter(search_vector=query)
-            .annotate(rank=SearchRank(F("search_vector"), query))
-            .select_related('content_type')
-            .order_by('-rank', "pk")
-        )
-
-    return render(request, 'movies/search_results.html', {
-        'results': search_results,
-        'query': raw_query,
-    })
     
 
 def show_popular_results(request):
@@ -336,9 +309,6 @@ def show_popular_results(request):
     if country_code and not request.user.country_code:
         request.user.country_code = country_code
         request.user.save(update_fields=["country_code"])
-
-def show_last_search_history(request):
-    return None
 
 
 @login_required

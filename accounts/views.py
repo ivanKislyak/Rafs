@@ -34,10 +34,6 @@ def register(request):
 
     return render(request, "accounts/register.html", {"register_form": register_form})
 
-@login_required
-def own_profile(request):
-    return redirect("profile", username=request.user.username)
-
 
 def profile(request, username):
     review_count = (
