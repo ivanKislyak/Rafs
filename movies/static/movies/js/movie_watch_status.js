@@ -1,55 +1,82 @@
-const watchStatusButtons = document.querySelectorAll(".movie-watch-status-btn");
-
-watchStatusButtons.forEach((btn) => {
-  btn.addEventListener("click", async () => {
-    if (!reviewVoteUserIsAuthenticated) {
-      window.location.href = reviewVoteLoginUrl;
-      return;
-    }
-
-    const container = btn.closest(".movie-watch-status");
-    if (!container || container.dataset.pending === "true") {
-      return;
-    }
-
+(() => {
+  document.querySelectorAll(".movie-watch-status").forEach((container) => {
     const buttons = container.querySelectorAll(".movie-watch-status-btn");
+    let savedStatus = container.querySelector(".is-active")?.dataset.value ?? null;
+    let selectedStatus = savedStatus;
+    let saving = false;
+    let selectionVersion = 0;
 
-    container.dataset.pending = "true";
-    buttons.forEach((button) => {
-      button.disabled = true;
-    });
-
-    try {
-      const response = await fetch(container.dataset.url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": container.dataset.csrf,
-        },
-        body: JSON.stringify({
-          movie_id: container.dataset.movieId,
-          status: btn.dataset.value,
-        }),
+    const render = () => {
+      buttons.forEach((button) => {
+        const active = button.dataset.value === selectedStatus;
+        button.classList.toggle("is-active", active);
+        button.setAttribute("aria-pressed", String(active));
       });
+    };
 
-      const data = await response.json();
+    const save = async () => {
+      if (saving) return;
+      saving = true;
 
-      if (!response.ok) {
-        throw new Error(data.error || container.dataset.errorMessage);
+      // Send requests in order while keeping the latest choice visible and clickable.
+      while (selectedStatus !== savedStatus) {
+        const requestedStatus = selectedStatus;
+        const requestedVersion = selectionVersion;
+        const removing = requestedStatus === null;
+        try {
+          const response = await fetch(container.dataset.url, {
+            method: removing ? "DELETE" : "PUT",
+            credentials: "same-origin",
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRFToken": container.dataset.csrf,
+              Accept: "application/json",
+            },
+            body: removing ? undefined : JSON.stringify({ status: requestedStatus }),
+          });
+
+          if (!response.ok) {
+            throw new Error(container.dataset.errorMessage);
+          }
+
+          if (removing) {
+            if (response.status !== 204) {
+              throw new Error(container.dataset.errorMessage);
+            }
+          } else {
+            const data = await response.json();
+            if (data.status !== requestedStatus) {
+              throw new Error(container.dataset.errorMessage);
+            }
+          }
+
+          savedStatus = requestedStatus;
+        } catch (error) {
+          console.error(error);
+          // A failed older request must not discard a more recent click.
+          if (selectionVersion === requestedVersion) {
+            selectedStatus = savedStatus;
+            render();
+            window.alert(container.dataset.errorMessage);
+          }
+        }
       }
 
-      buttons.forEach((button) => {
-        button.classList.toggle("is-active", button.dataset.value === data.status);
-        button.setAttribute("aria-pressed", String(button.dataset.value === data.status));
+      saving = false;
+    };
+
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        if (container.dataset.authenticated !== "true") {
+          window.location.href = container.dataset.loginUrl;
+          return;
+        }
+
+        selectedStatus = selectedStatus === btn.dataset.value ? null : btn.dataset.value;
+        selectionVersion += 1;
+        render();
+        void save();
       });
-    } catch (error) {
-      console.error(error);
-      window.alert(container.dataset.errorMessage);
-    } finally {
-      delete container.dataset.pending;
-      buttons.forEach((button) => {
-        button.disabled = false;
-      });
-    }
+    });
   });
-});
+})();

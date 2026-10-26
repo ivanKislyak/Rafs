@@ -110,11 +110,6 @@
   color: var(--color-text);
 }
 
-.movie-watch-status-btn:disabled {
-  opacity: .6;
-  cursor: wait;
-}
-
 .movie-page .review-comments {
   margin: 0;
 }

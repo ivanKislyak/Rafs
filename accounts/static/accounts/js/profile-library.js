@@ -104,26 +104,32 @@
     }
   };
 
-  const updateStatus = async (card) => {
-    const response = await fetch(library.dataset.updateUrl, {
-      method: "POST",
+  const updateStatus = async (card, method) => {
+    const response = await fetch(card.dataset.updateUrl, {
+      method,
       credentials: "same-origin",
       headers: {
         "Content-Type": "application/json",
         "X-CSRFToken": csrfInput.value,
+        Accept: "application/json",
       },
-      body: JSON.stringify({
-        movie_id: card.dataset.movieId,
+      body: method === "PUT" ? JSON.stringify({
         status: card.dataset.status,
-      }),
+      }) : undefined,
     });
-    const data = await response.json().catch(() => ({}));
 
     if (!response.ok) {
       throw new Error(library.dataset.updateError);
     }
 
-    return data;
+    if (method === "DELETE") {
+      if (response.status !== 204) {
+        throw new Error(library.dataset.updateError);
+      }
+      return null;
+    }
+
+    return response.json();
   };
 
   const showError = (card) => {
@@ -173,7 +179,7 @@
     announce(library.dataset.updateLoading);
 
     try {
-      const data = await updateStatus(card);
+      const data = await updateStatus(card, "PUT");
       if (data.status !== card.dataset.status) {
         throw new Error(library.dataset.updateError);
       }
@@ -220,10 +226,7 @@
     announce(library.dataset.updateLoading);
 
     try {
-      const data = await updateStatus(card);
-      if (data.status !== null) {
-        throw new Error(library.dataset.updateError);
-      }
+      await updateStatus(card, "DELETE");
 
       setCount(card, -1);
       card.classList.add("is-removed");

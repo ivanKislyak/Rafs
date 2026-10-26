@@ -124,7 +124,6 @@
         <section class="profile-section profile-library"
                  aria-labelledby="profile-watch-title"
                  data-profile-library
-                 data-update-url="{% url 'movies:set_movie_status' %}"
                  data-update-loading="{% translate 'Loading...' %}"
                  data-update-restored="{% translate 'Restored to list' %}"
                  data-number-grouping="{{ library_number_grouping }}"
@@ -166,6 +165,7 @@
                                 <article class="profile-watch-movie{% if is_owner %} profile-watch-movie--editable{% endif %}"
                                          data-library-movie
                                          data-movie-id="{{ watch_entry.movie_id }}"
+                                         data-update-url="{% url 'movies:watch_status_api' watch_entry.movie_id %}"
                                          data-status="{{ status.value }}"
                                          data-movie-name="{{ watch_entry.movie_title }}">
                                     <a class="profile-watch-movie-cover-link"

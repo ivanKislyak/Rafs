@@ -71,7 +71,9 @@
     </article>
     <div class="movie-watch-status"
          data-movie-id="{{ movie.id }}"
-         data-url="{% url 'movies:set_movie_status' %}"
+         data-url="{% url 'movies:watch_status_api' movie.id %}"
+         data-authenticated="{{ user.is_authenticated|yesno:'true,false' }}"
+         data-login-url="{% url 'login' %}?next={{ request.path|urlencode }}"
          data-csrf="{{ csrf_token }}"
          data-error-message="{% translate 'Unable to update the movie status' %}">
         {% for choice in watch_status_model.StatusChoice.choices %}
