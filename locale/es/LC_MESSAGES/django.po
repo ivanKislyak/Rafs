@@ -1313,3 +1313,67 @@ msgstr "Historial de búsqueda"
 #: accounts/models.py:89
 msgid "Search Histories"
 msgstr "Historiales de búsqueda"
+
+#: movies/models.py:69
+msgid "Movies"
+msgstr "Películas"
+
+#: movies/models.py:146
+msgid "Review Reply"
+msgstr "Respuesta a una reseña"
+
+#: movies/models.py:147
+msgid "Review Replies"
+msgstr "Respuestas a reseñas"
+
+#: movies/models.py:172
+msgid "Review Vote"
+msgstr "Voto de una reseña"
+
+#: movies/models.py:173
+msgid "Review Votes"
+msgstr "Votos de reseñas"
+
+#: movies/models.py:183
+msgid "Reply Vote"
+msgstr "Voto de una respuesta"
+
+#: movies/models.py:184
+msgid "Reply Votes"
+msgstr "Votos de respuestas"
+
+#: movies/models.py:199
+msgid "Global Search Index"
+msgstr "Índice de búsqueda global"
+
+#: movies/models.py:200
+msgid "Global Search Indexes"
+msgstr "Índices de búsqueda global"
+
+#: movies/models.py:226
+msgid "Watch Status"
+msgstr "Estado de visualización"
+
+#: movies/models.py:227
+msgid "Watch Statuses"
+msgstr "Estados de visualización"
+
+#: movies/movie_models.py:15
+msgid "Types of Work"
+msgstr "Tipos de obra"
+
+#: movies/movie_models.py:35
+msgid "Genres"
+msgstr "Géneros"
+
+#: movies/movie_models.py:54
+msgid "Countries"
+msgstr "Países"
+
+#: movies/movie_models.py:74
+msgid "Studios"
+msgstr "Estudios"
+
+#: movies/movie_models.py:95
+msgid "Persons"
+msgstr "Personas"

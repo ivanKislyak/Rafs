@@ -1313,3 +1313,67 @@ msgstr "Іздеу тарихы"
 #: accounts/models.py:89
 msgid "Search Histories"
 msgstr "Іздеу тарихтары"
+
+#: movies/models.py:69
+msgid "Movies"
+msgstr "Фильмдер"
+
+#: movies/models.py:146
+msgid "Review Reply"
+msgstr "Рецензияға жауап"
+
+#: movies/models.py:147
+msgid "Review Replies"
+msgstr "Рецензияға жауаптар"
+
+#: movies/models.py:172
+msgid "Review Vote"
+msgstr "Рецензияға берілген дауыс"
+
+#: movies/models.py:173
+msgid "Review Votes"
+msgstr "Рецензияларға берілген дауыстар"
+
+#: movies/models.py:183
+msgid "Reply Vote"
+msgstr "Жауапқа берілген дауыс"
+
+#: movies/models.py:184
+msgid "Reply Votes"
+msgstr "Жауаптарға берілген дауыстар"
+
+#: movies/models.py:199
+msgid "Global Search Index"
+msgstr "Жаһандық іздеу индексі"
+
+#: movies/models.py:200
+msgid "Global Search Indexes"
+msgstr "Жаһандық іздеу индекстері"
+
+#: movies/models.py:226
+msgid "Watch Status"
+msgstr "Көру мәртебесі"
+
+#: movies/models.py:227
+msgid "Watch Statuses"
+msgstr "Көру мәртебелері"
+
+#: movies/movie_models.py:15
+msgid "Types of Work"
+msgstr "Туынды түрлері"
+
+#: movies/movie_models.py:35
+msgid "Genres"
+msgstr "Жанрлар"
+
+#: movies/movie_models.py:54
+msgid "Countries"
+msgstr "Елдер"
+
+#: movies/movie_models.py:74
+msgid "Studios"
+msgstr "Студиялар"
+
+#: movies/movie_models.py:95
+msgid "Persons"
+msgstr "Тұлғалар"

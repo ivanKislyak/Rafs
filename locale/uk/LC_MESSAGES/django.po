@@ -1313,3 +1313,67 @@ msgstr "Історія пошуку"
 #: accounts/models.py:89
 msgid "Search Histories"
 msgstr "Історії пошуку"
+
+#: movies/models.py:69
+msgid "Movies"
+msgstr "Фільми"
+
+#: movies/models.py:146
+msgid "Review Reply"
+msgstr "Відповідь на рецензію"
+
+#: movies/models.py:147
+msgid "Review Replies"
+msgstr "Відповіді на рецензії"
+
+#: movies/models.py:172
+msgid "Review Vote"
+msgstr "Голос за рецензію"
+
+#: movies/models.py:173
+msgid "Review Votes"
+msgstr "Голоси за рецензії"
+
+#: movies/models.py:183
+msgid "Reply Vote"
+msgstr "Голос за відповідь"
+
+#: movies/models.py:184
+msgid "Reply Votes"
+msgstr "Голоси за відповіді"
+
+#: movies/models.py:199
+msgid "Global Search Index"
+msgstr "Індекс глобального пошуку"
+
+#: movies/models.py:200
+msgid "Global Search Indexes"
+msgstr "Індекси глобального пошуку"
+
+#: movies/models.py:226
+msgid "Watch Status"
+msgstr "Статус перегляду"
+
+#: movies/models.py:227
+msgid "Watch Statuses"
+msgstr "Статуси перегляду"
+
+#: movies/movie_models.py:15
+msgid "Types of Work"
+msgstr "Типи творів"
+
+#: movies/movie_models.py:35
+msgid "Genres"
+msgstr "Жанри"
+
+#: movies/movie_models.py:54
+msgid "Countries"
+msgstr "Країни"
+
+#: movies/movie_models.py:74
+msgid "Studios"
+msgstr "Студії"
+
+#: movies/movie_models.py:95
+msgid "Persons"
+msgstr "Персони"

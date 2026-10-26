@@ -65,8 +65,8 @@ class Movie(TranslatableModel):
 
     class Meta:
         ordering = ['-rate', 'name']
-        verbose_name = "Movie"
-        verbose_name_plural = "Movies"
+        verbose_name = _("Movie")
+        verbose_name_plural = _("Movies")
 
     def __str__(self):
         if self.year:
@@ -109,8 +109,8 @@ class Review(models.Model):
 
 
     class Meta:
-        verbose_name = "Review"
-        verbose_name_plural = "Reviews"
+        verbose_name = _("Review")
+        verbose_name_plural = _("Reviews")
         ordering = ['-created_at']
         constraints = [
             models.UniqueConstraint(fields=['user', 'movie'], 
@@ -125,7 +125,7 @@ class Review(models.Model):
 
     def __str__(self):
         if self.text:
-            return f"{self.user.username} оставил отзыв к фильму {self.movie.name} ({self.avg_rating}): {self.text}"
+            return f"{self.user.username} left a review for the movie {self.movie.name} ({self.avg_rating}): {self.text}"
         return f"{self.movie.name} was review ({self.avg_rating}) by {self.user.username}"
 
 class ReviewReply(models.Model):
@@ -143,15 +143,15 @@ class ReviewReply(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        verbose_name = "Review Reply"
-        verbose_name_plural = "Review Replies"
+        verbose_name = _("Review Reply")
+        verbose_name_plural = _("Review Replies")
         ordering = ['created_at']
 
     def __str__(self):
-        return f"Ответ от {self.user.username} к отзыву #{self.review.id}"
+        return f"Reply from {self.user.username} to review #{self.review.id}"
 
 class BaseVote(models.Model):
-    """Абстрактный класс для лайков/дизлайков"""
+    """An abstract class for likes and dislikes"""
     class VoteChoice(models.IntegerChoices):
         LIKE = 1, "Like"
         DISLIKE = -1, "Dislike"
@@ -169,8 +169,8 @@ class ReviewVote(BaseVote):
     review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name="votes")
 
     class Meta:
-        verbose_name = "Review Vote"
-        verbose_name_plural = "Review Votes"
+        verbose_name = _("Review Vote")
+        verbose_name_plural = _("Review Votes")
         constraints = [models.UniqueConstraint(fields=["user", "review"], name="unique_user_review_vote")]
 
 
@@ -180,8 +180,8 @@ class ReplyVote(BaseVote):
     reply = models.ForeignKey(ReviewReply, on_delete=models.CASCADE, related_name="votes")
 
     class Meta:
-        verbose_name = "Reply Vote"
-        verbose_name_plural = "Reply Votes"
+        verbose_name = _("Reply Vote")
+        verbose_name_plural = _("Reply Votes")
         constraints = [models.UniqueConstraint(fields=["user", "reply"], name="unique_user_reply_vote")]
 
 
@@ -196,8 +196,8 @@ class GlobalSearchIndex(models.Model):
         return f"{self.content_type.model} #{self.object_id} and query - {self.content_object}"
     
     class Meta:
-        verbose_name = "Global Search Index"
-        verbose_name_plural = "Global Search Indexes"
+        verbose_name = _("Global Search Index")
+        verbose_name_plural = _("Global Search Indexes")
         indexes = [
             GinIndex(fields=['search_vector']),
         ]
@@ -223,6 +223,6 @@ class WatchStatus(models.Model):
         return self.status
 
     class Meta:
-        verbose_name = "Watch Status"
-        verbose_name_plural = "Watch Statuses"
+        verbose_name = _("Watch Status")
+        verbose_name_plural = _("Watch Statuses")
         constraints = [models.UniqueConstraint(fields=["user", "movie"], name="unique_movie_status")]

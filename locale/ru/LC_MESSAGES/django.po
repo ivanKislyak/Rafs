@@ -1301,3 +1301,67 @@ msgstr "История поиска"
 #: accounts/models.py:89
 msgid "Search Histories"
 msgstr "Истории поиска"
+
+#: movies/models.py:69
+msgid "Movies"
+msgstr "Фильмы"
+
+#: movies/models.py:146
+msgid "Review Reply"
+msgstr "Ответ на рецензию"
+
+#: movies/models.py:147
+msgid "Review Replies"
+msgstr "Ответы на рецензии"
+
+#: movies/models.py:172
+msgid "Review Vote"
+msgstr "Голос за рецензию"
+
+#: movies/models.py:173
+msgid "Review Votes"
+msgstr "Голоса за рецензии"
+
+#: movies/models.py:183
+msgid "Reply Vote"
+msgstr "Голос за ответ"
+
+#: movies/models.py:184
+msgid "Reply Votes"
+msgstr "Голоса за ответы"
+
+#: movies/models.py:199
+msgid "Global Search Index"
+msgstr "Индекс глобального поиска"
+
+#: movies/models.py:200
+msgid "Global Search Indexes"
+msgstr "Индексы глобального поиска"
+
+#: movies/models.py:226
+msgid "Watch Status"
+msgstr "Статус просмотра"
+
+#: movies/models.py:227
+msgid "Watch Statuses"
+msgstr "Статусы просмотра"
+
+#: movies/movie_models.py:15
+msgid "Types of Work"
+msgstr "Типы произведений"
+
+#: movies/movie_models.py:35
+msgid "Genres"
+msgstr "Жанры"
+
+#: movies/movie_models.py:54
+msgid "Countries"
+msgstr "Страны"
+
+#: movies/movie_models.py:74
+msgid "Studios"
+msgstr "Студии"
+
+#: movies/movie_models.py:95
+msgid "Persons"
+msgstr "Персоны"
