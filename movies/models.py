@@ -49,7 +49,7 @@ class Movie(TranslatableModel):
     name = models.CharField(max_length=200, blank=True) # Night of the Day of the Dawn of the Son of the Bride...
     rate = models.DecimalField(decimal_places=1, max_digits=3, null=True, blank=True)
     description = models.TextField(blank=True)
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True)
     cover = models.ImageField(upload_to="movie_covers/", blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
