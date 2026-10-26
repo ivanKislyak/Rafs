@@ -33,6 +33,7 @@ class SearchResultSerializer(serializers.Serializer):
     - Stale entries, where the indexed object no longer exists, are
       serialized as None.
     """
+    
     id = serializers.IntegerField(source='object_id')
     type = serializers.CharField(source='content_type.model')
     type_of_work = serializers.SerializerMethodField()
@@ -172,7 +173,18 @@ class SearchResultSerializer(serializers.Serializer):
 
 # Watch Status Block
 class WatchStatusSerializer(serializers.ModelSerializer):
+    """
+    Serializer for the WatchStatus model.
+
+    Exposes only the `status` field, which is required on input.
+    Used to validate and represent a watch status value (e.g. when
+    creating or updating a user's status for a film).
+    """
+
     class Meta:
         model = WatchStatus
         fields = ['status']
         extra_kwargs = {'status': {'required': True}}
+
+
+
