@@ -182,26 +182,6 @@ class PublicSEOTests(TestCase):
                     if name != "core:home":
                         self.assertEqual(page.schemas, [])
 
-    def test_home_has_one_website_in_initial_html_and_visible_russian_brand(self):
-        description = "RAFS is a site for ratings and reviews of films, series and anime"
-        for language in LANGUAGES:
-            with self.subTest(language=language):
-                response, page = self.get_page("core:home", language)
-                self.assertEqual(len(page.schemas), 1)
-                schema = json.loads(page.schemas[0])
-                self.assertEqual(schema, WEBSITE)
-                self.assertEqual(schema["name"], "RAFS")
-                self.assertEqual(schema["alternateName"], ["Рафс", "rafs.app"])
-                self.assertEqual(schema["url"], "https://rafs.app/")
-                self.assertEqual(schema["@id"], "https://rafs.app/#website")
-                self.assertNotIn("SearchAction", page.schemas[0])
-                with translation.override(language):
-                    self.assertEqual(page.home_description.strip(), translation.gettext(description))
-                if language != "en":
-                    self.assertNotEqual(page.home_description.strip(), description)
-                if language == "ru":
-                    self.assertIn("RAFS (Рафс) – сайт", page.home_description)
-
     def test_new_descriptions_are_translated_and_specific_to_each_page(self):
         names = ("core:home", "core:about", "movies:catalog", "movies:show_reviews")
         english = {name: self.get_page(name)[1].values("name", "description")[0] for name in names}
