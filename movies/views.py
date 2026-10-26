@@ -271,8 +271,8 @@ class WatchStatusAPIView(APIView):
         user = request.user
         movie = get_object_or_404(Movie, pk=movie_id)
         status_obj = WatchStatus.objects.filter(user=user, movie=movie).first()
-        status = getattr(status_obj, "status", None)
-        return Response({"movie_id": movie_id, "status": status})
+        movie_status = getattr(status_obj, "status", None)
+        return Response({"movie_id": movie_id, "status": movie_status})
 
     def put(self, request, movie_id: int):
         movie = get_object_or_404(Movie, pk=movie_id)
@@ -293,7 +293,10 @@ class WatchStatusAPIView(APIView):
             status=status_code)
 
     def delete(self, request, movie_id: int):
-        pass
+        user = request.user
+        movie = get_object_or_404(Movie, pk=movie_id)
+        WatchStatus.objects.filter(user=user, movie=movie).delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
     
 
 def show_popular_results(request):
