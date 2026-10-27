@@ -1377,3 +1377,47 @@ msgstr "Не удалось подключиться. Проверьте сое�
 #: movies/templates/movies/_review_reply_form.html
 msgid "This review is no longer available."
 msgstr "Эта рецензия больше недоступна."
+
+#: accounts/templates/accounts/profile.html
+msgid "Edit profile"
+msgstr "Редактировать профиль"
+
+#: accounts/templates/accounts/profile.html
+msgid "About me"
+msgstr "О себе"
+
+#: accounts/templates/accounts/profile.html
+msgid "Sex"
+msgstr "Пол"
+
+#: accounts/templates/accounts/profile.html
+msgid "Not specified"
+msgstr "Не указан"
+
+#: accounts/templates/accounts/profile.html
+msgid "Date of birth"
+msgstr "Дата рождения"
+
+#: accounts/templates/accounts/profile.html
+msgid "Save"
+msgstr "Сохранить"
+
+#: accounts/templates/accounts/profile.html
+msgid "Saving..."
+msgstr "Сохранение..."
+
+#: accounts/templates/accounts/profile.html
+msgid "Unable to load your profile"
+msgstr "Не удалось загрузить профиль"
+
+#: accounts/templates/accounts/profile.html
+msgid "Unable to save your profile"
+msgstr "Не удалось сохранить профиль"
+
+#: accounts/templates/accounts/profile.html
+msgid "Access denied. Sign in again and reload the page"
+msgstr "Доступ запрещён. Войдите снова и обновите страницу"
+
+#: accounts/templates/accounts/profile.html
+msgid "Profile saved"
+msgstr "Профиль сохранён"

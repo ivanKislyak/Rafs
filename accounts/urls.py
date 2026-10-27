@@ -13,5 +13,5 @@ urlpatterns = [
     path("register/", views.register, name="register"),
     path("profile/avatar/", views.update_avatar, name="update-avatar"),
     path("api/v1/", include(router.urls)),
-    path('api/v1/me/', views.MeAPIView.as_view()),
+    path('api/v1/me/', views.MeAPIView.as_view(), name='me'),
 ]

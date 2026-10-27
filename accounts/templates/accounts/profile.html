@@ -101,8 +101,55 @@
                         </div>
                     {% endif %}
                 </dl>
+                <p class="profile-about" data-profile-about{% if not profile_user.about %} hidden{% endif %}>{{ profile_user.about }}</p>
+                {% if is_owner %}
+                    <button class="profile-button" type="button" data-profile-edit-open
+                            aria-haspopup="dialog" aria-controls="profile-edit-dialog">{% translate "Edit profile" %}</button>
+                    <p class="profile-edit-status" data-profile-edit-result role="status" aria-live="polite"></p>
+                {% endif %}
             </div>
         </section>
+        {% if is_owner %}
+            <dialog class="profile-edit-dialog" id="profile-edit-dialog" aria-labelledby="profile-edit-title"
+                    data-profile-editor data-api-url="{% url 'accounts:me' %}"
+                    data-loading="{% translate 'Loading...' %}"
+                    data-saving="{% translate 'Saving...' %}"
+                    data-load-error="{% translate 'Unable to load your profile' %}"
+                    data-save-error="{% translate 'Unable to save your profile' %}"
+                    data-access-error="{% translate 'Access denied. Sign in again and reload the page' %}"
+                    data-saved="{% translate 'Profile saved' %}">
+                <form class="profile-edit-form" method="dialog" data-profile-edit-form>
+                    {% csrf_token %}
+                    <h2 id="profile-edit-title">{% translate "Edit profile" %}</h2>
+                    <p class="profile-edit-status" data-profile-edit-status role="status" aria-live="polite" aria-atomic="true"></p>
+                    <button class="profile-button" type="button" data-profile-edit-retry hidden>{% translate "Try again" %}</button>
+                    <fieldset data-profile-edit-fields disabled>
+                        <div class="profile-edit-field">
+                            <label for="profile-edit-about">{% translate "About me" %}</label>
+                            <textarea id="profile-edit-about" name="about" maxlength="1000" rows="5" aria-describedby="profile-edit-about-error"></textarea>
+                            <p class="profile-edit-error" id="profile-edit-about-error" data-profile-edit-error="about" aria-live="polite"></p>
+                        </div>
+                        <div class="profile-edit-field">
+                            <label for="profile-edit-sex">{% translate "Sex" %}</label>
+                            <select id="profile-edit-sex" name="sex" aria-describedby="profile-edit-sex-error">
+                                <option value="">{% translate "Not specified" %}</option>
+                                {% for value, label in profile_sex_choices %}<option value="{{ value }}">{{ label }}</option>{% endfor %}
+                            </select>
+                            <p class="profile-edit-error" id="profile-edit-sex-error" data-profile-edit-error="sex" aria-live="polite"></p>
+                        </div>
+                        <div class="profile-edit-field">
+                            <label for="profile-edit-bd-date">{% translate "Date of birth" %}</label>
+                            <input id="profile-edit-bd-date" type="date" name="bd_date" aria-describedby="profile-edit-bd-date-error">
+                            <p class="profile-edit-error" id="profile-edit-bd-date-error" data-profile-edit-error="bd_date" aria-live="polite"></p>
+                        </div>
+                    </fieldset>
+                    <div class="profile-avatar-actions">
+                        <button class="profile-button profile-button--primary" type="submit" data-profile-edit-save disabled>{% translate "Save" %}</button>
+                        <button class="profile-button profile-button--quiet" type="button" data-profile-edit-cancel>{% translate "Cancel" %}</button>
+                    </div>
+                </form>
+            </dialog>
+        {% endif %}
         <section class="profile-section" aria-labelledby="profile-activity-title">
             <div class="profile-section-heading">
                 <div>
@@ -285,6 +332,7 @@
     </main>
 {% endblock %}
 {% block extra_js %}
+    {% if is_owner %}<script src="{% static 'accounts/js/profile-edit.js' %}" defer></script>{% endif %}
     <script src="{% static 'accounts/js/profile-avatar.js' %}" defer></script>
     <script src="{% static 'accounts/js/profile-library.js' %}" defer></script>
 {% endblock %}

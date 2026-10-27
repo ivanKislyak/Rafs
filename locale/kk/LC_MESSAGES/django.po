@@ -1389,3 +1389,47 @@ msgstr "Қосылу мүмкін болмады. Байланысты текс�
 #: movies/templates/movies/_review_reply_form.html
 msgid "This review is no longer available."
 msgstr "Бұл рецензия енді қолжетімді емес."
+
+#: accounts/templates/accounts/profile.html
+msgid "Edit profile"
+msgstr "Профильді өңдеу"
+
+#: accounts/templates/accounts/profile.html
+msgid "About me"
+msgstr "Өзім туралы"
+
+#: accounts/templates/accounts/profile.html
+msgid "Sex"
+msgstr "Жынысы"
+
+#: accounts/templates/accounts/profile.html
+msgid "Not specified"
+msgstr "Көрсетілмеген"
+
+#: accounts/templates/accounts/profile.html
+msgid "Date of birth"
+msgstr "Туған күні"
+
+#: accounts/templates/accounts/profile.html
+msgid "Save"
+msgstr "Сақтау"
+
+#: accounts/templates/accounts/profile.html
+msgid "Saving..."
+msgstr "Сақталуда..."
+
+#: accounts/templates/accounts/profile.html
+msgid "Unable to load your profile"
+msgstr "Профильді жүктеу мүмкін болмады"
+
+#: accounts/templates/accounts/profile.html
+msgid "Unable to save your profile"
+msgstr "Профильді сақтау мүмкін болмады"
+
+#: accounts/templates/accounts/profile.html
+msgid "Access denied. Sign in again and reload the page"
+msgstr "Қол жеткізуге тыйым салынған. Қайта кіріп, бетті жаңартыңыз"
+
+#: accounts/templates/accounts/profile.html
+msgid "Profile saved"
+msgstr "Профиль сақталды"

@@ -378,6 +378,133 @@ class AvatarUpdateTests(TestCase):
         self.assertFalse(self.user.avatar_image)
 
 
+class MeProfileTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.owner = User.objects.create_user(
+            username="profile-editor", email="editor@example.com",
+            about='Hello <script>alert("x")</script> & friends\nSecond line',
+            sex="M", bd_date="2000-02-29",
+        )
+        cls.other = User.objects.create_user(username="another-profile", email="other@example.com")
+
+    def setUp(self):
+        self.client = APIClient()
+        self.client.force_login(self.owner)
+        self.url = reverse("accounts:me")
+        self.profile_url = reverse("profile", args=[self.owner.username])
+
+    def test_get_returns_only_current_users_profile_and_contract(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {
+            "id": self.owner.pk, "username": self.owner.username,
+            "about": self.owner.about, "sex": "M", "bd_date": "2000-02-29",
+        })
+
+    def test_partial_updates_preserve_fields_not_sent(self):
+        expected = self.client.get(self.url).json()
+        for field, value in [("about", "New biography\n<not HTML>"), ("sex", "O"), ("bd_date", "1999-12-31")]:
+            with self.subTest(field=field):
+                response = self.client.patch(self.url, {field: value}, format="json")
+                expected[field] = value
+                self.assertEqual(response.status_code, 200)
+                self.assertEqual(response.json(), expected)
+                self.owner.refresh_from_db()
+                self.assertEqual(str(getattr(self.owner, field)), value)
+
+    def test_fields_can_be_cleared(self):
+        response = self.client.patch(self.url, {"about": "", "sex": "", "bd_date": None}, format="json")
+        self.assertEqual(response.status_code, 200)
+        for field, value in [("about", ""), ("sex", ""), ("bd_date", None)]:
+            self.assertEqual(response.json()[field], value)
+        self.owner.refresh_from_db()
+        self.assertEqual((self.owner.about, self.owner.sex, self.owner.bd_date), ("", "", None))
+
+    def test_invalid_input_returns_field_errors_and_preserves_profile(self):
+        original = self.client.get(self.url).json()
+        for field, value in [("about", "x" * 1001), ("sex", "invalid"), ("bd_date", "2000-02-30")]:
+            with self.subTest(field=field):
+                response = self.client.patch(self.url, {field: value}, format="json")
+                self.assertEqual(response.status_code, 400)
+                self.assertIn(field, response.json())
+                self.assertEqual(self.client.get(self.url).json(), original)
+
+    def test_identity_is_read_only_and_other_user_is_unchanged(self):
+        response = self.client.patch(self.url, {
+            "id": self.other.pk, "username": self.other.username, "about": "Updated",
+        }, format="json")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["id"], self.owner.pk)
+        self.assertEqual(response.json()["username"], self.owner.username)
+        self.other.refresh_from_db()
+        self.assertEqual(self.other.about, "")
+
+    def test_anonymous_cannot_read_or_patch_me(self):
+        self.client.logout()
+        self.assertEqual(self.client.get(self.url).status_code, 403)
+        self.assertEqual(self.client.patch(self.url, {"about": "No"}, format="json").status_code, 403)
+
+    def test_session_patch_requires_csrf_from_profile_form(self):
+        client = APIClient(enforce_csrf_checks=True)
+        client.force_login(self.owner)
+        self.assertEqual(client.patch(self.url, {"about": "No"}, format="json").status_code, 403)
+        response = client.get(self.profile_url)
+        from html.parser import HTMLParser
+
+        class Tokens(HTMLParser):
+            token = None
+
+            def handle_starttag(self, tag, attrs):
+                attrs = dict(attrs)
+                if tag == "input" and attrs.get("name") == "csrfmiddlewaretoken":
+                    self.token = attrs["value"]
+
+        parser = Tokens()
+        parser.feed(response.content.decode())
+        self.assertTrue(parser.token)
+        response = client.patch(self.url, {"about": "CSRF checked"}, format="json", HTTP_X_CSRFTOKEN=parser.token)
+        self.assertEqual(response.status_code, 200)
+
+    def test_owner_editor_choices_and_escaped_public_about_without_private_fields(self):
+        response = self.client.get(self.profile_url)
+        self.assertContains(response, f'data-api-url="{self.url}"')
+        self.assertContains(response, 'accounts/js/profile-edit.js')
+        self.assertContains(response, 'data-avatar-editor')
+        self.assertContains(response, 'data-profile-library')
+        for value, label in User.SexChoice.choices:
+            self.assertContains(response, f'<option value="{value}">{label}</option>')
+        for authenticated in [True, False]:
+            if authenticated:
+                self.client.force_login(self.other)
+            else:
+                self.client.logout()
+            response = self.client.get(self.profile_url)
+            self.assertContains(response, escape(self.owner.about))
+            self.assertNotContains(response, self.owner.about)
+            for private in ['data-profile-editor', 'data-profile-edit-open', 'accounts/js/profile-edit.js',
+                            'name="sex"', 'name="bd_date"', self.owner.email, self.url]:
+                self.assertNotContains(response, private)
+
+    def test_editor_strings_are_localized_on_all_supported_languages(self):
+        messages = [
+            "Edit profile", "About me", "Sex", "Not specified", "Date of birth", "Save", "Cancel",
+            "Loading...", "Saving...", "Try again", "Unable to load your profile",
+            "Unable to save your profile", "Access denied. Sign in again and reload the page", "Profile saved",
+        ]
+        for language, _ in settings.LANGUAGES:
+            with self.subTest(language=language), translation.override(language):
+                response = self.client.get(self.profile_url, HTTP_ACCEPT_LANGUAGE=language)
+                self.assertEqual(response.status_code, 200)
+                for message in messages:
+                    translated = translation.gettext(message)
+                    self.assertContains(response, escape(translated))
+                    if language != "en":
+                        self.assertNotEqual(translated, message)
+                for _, label in User.SexChoice.choices:
+                    self.assertContains(response, escape(str(label)))
+
+
 class SearchHistoryAPITests(TestCase):
     @classmethod
     def setUpTestData(cls):

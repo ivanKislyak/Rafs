@@ -115,6 +115,7 @@ def profile(request, username):
             "library_number_grouping": get_format("NUMBER_GROUPING"),
             "library_thousand_separator": get_format("THOUSAND_SEPARATOR"),
             "avatar_form": AvatarUpdateForm(instance=profile_user) if is_owner else None,
+            "profile_sex_choices": User.SexChoice.choices if is_owner else (),
         },
     )
 

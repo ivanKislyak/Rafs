@@ -1389,3 +1389,47 @@ msgstr "Verbindung fehlgeschlagen. Prüfe deine Verbindung und versuche es erneu
 #: movies/templates/movies/_review_reply_form.html
 msgid "This review is no longer available."
 msgstr "Diese Rezension ist nicht mehr verfügbar."
+
+#: accounts/templates/accounts/profile.html
+msgid "Edit profile"
+msgstr "Profil bearbeiten"
+
+#: accounts/templates/accounts/profile.html
+msgid "About me"
+msgstr "Über mich"
+
+#: accounts/templates/accounts/profile.html
+msgid "Sex"
+msgstr "Geschlecht"
+
+#: accounts/templates/accounts/profile.html
+msgid "Not specified"
+msgstr "Keine Angabe"
+
+#: accounts/templates/accounts/profile.html
+msgid "Date of birth"
+msgstr "Geburtsdatum"
+
+#: accounts/templates/accounts/profile.html
+msgid "Save"
+msgstr "Speichern"
+
+#: accounts/templates/accounts/profile.html
+msgid "Saving..."
+msgstr "Wird gespeichert..."
+
+#: accounts/templates/accounts/profile.html
+msgid "Unable to load your profile"
+msgstr "Dein Profil konnte nicht geladen werden"
+
+#: accounts/templates/accounts/profile.html
+msgid "Unable to save your profile"
+msgstr "Dein Profil konnte nicht gespeichert werden"
+
+#: accounts/templates/accounts/profile.html
+msgid "Access denied. Sign in again and reload the page"
+msgstr "Zugriff verweigert. Melde dich erneut an und lade die Seite neu"
+
+#: accounts/templates/accounts/profile.html
+msgid "Profile saved"
+msgstr "Profil gespeichert"

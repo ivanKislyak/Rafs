@@ -1389,3 +1389,47 @@ msgstr "No se pudo conectar. Comprueba tu conexión e inténtalo de nuevo."
 #: movies/templates/movies/_review_reply_form.html
 msgid "This review is no longer available."
 msgstr "Esta reseña ya no está disponible."
+
+#: accounts/templates/accounts/profile.html
+msgid "Edit profile"
+msgstr "Editar perfil"
+
+#: accounts/templates/accounts/profile.html
+msgid "About me"
+msgstr "Sobre mí"
+
+#: accounts/templates/accounts/profile.html
+msgid "Sex"
+msgstr "Sexo"
+
+#: accounts/templates/accounts/profile.html
+msgid "Not specified"
+msgstr "Sin especificar"
+
+#: accounts/templates/accounts/profile.html
+msgid "Date of birth"
+msgstr "Fecha de nacimiento"
+
+#: accounts/templates/accounts/profile.html
+msgid "Save"
+msgstr "Guardar"
+
+#: accounts/templates/accounts/profile.html
+msgid "Saving..."
+msgstr "Guardando..."
+
+#: accounts/templates/accounts/profile.html
+msgid "Unable to load your profile"
+msgstr "No se pudo cargar tu perfil"
+
+#: accounts/templates/accounts/profile.html
+msgid "Unable to save your profile"
+msgstr "No se pudo guardar tu perfil"
+
+#: accounts/templates/accounts/profile.html
+msgid "Access denied. Sign in again and reload the page"
+msgstr "Acceso denegado. Vuelve a iniciar sesión y recarga la página"
+
+#: accounts/templates/accounts/profile.html
+msgid "Profile saved"
+msgstr "Perfil guardado"

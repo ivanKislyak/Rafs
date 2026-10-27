@@ -1389,3 +1389,47 @@ msgstr "Не вдалося підключитися. Перевірте з’є
 #: movies/templates/movies/_review_reply_form.html
 msgid "This review is no longer available."
 msgstr "Ця рецензія більше недоступна."
+
+#: accounts/templates/accounts/profile.html
+msgid "Edit profile"
+msgstr "Редагувати профіль"
+
+#: accounts/templates/accounts/profile.html
+msgid "About me"
+msgstr "Про себе"
+
+#: accounts/templates/accounts/profile.html
+msgid "Sex"
+msgstr "Стать"
+
+#: accounts/templates/accounts/profile.html
+msgid "Not specified"
+msgstr "Не вказано"
+
+#: accounts/templates/accounts/profile.html
+msgid "Date of birth"
+msgstr "Дата народження"
+
+#: accounts/templates/accounts/profile.html
+msgid "Save"
+msgstr "Зберегти"
+
+#: accounts/templates/accounts/profile.html
+msgid "Saving..."
+msgstr "Збереження..."
+
+#: accounts/templates/accounts/profile.html
+msgid "Unable to load your profile"
+msgstr "Не вдалося завантажити профіль"
+
+#: accounts/templates/accounts/profile.html
+msgid "Unable to save your profile"
+msgstr "Не вдалося зберегти профіль"
+
+#: accounts/templates/accounts/profile.html
+msgid "Access denied. Sign in again and reload the page"
+msgstr "Доступ заборонено. Увійдіть знову й оновіть сторінку"
+
+#: accounts/templates/accounts/profile.html
+msgid "Profile saved"
+msgstr "Профіль збережено"
