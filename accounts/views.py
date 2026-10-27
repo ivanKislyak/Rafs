@@ -20,7 +20,7 @@ from movies.models import Review, ReviewReply, WatchStatus
 
 from .forms import AvatarUpdateForm, RegisterUserForm
 from .models import Achievement, User, SearchHistory
-from .serializers import SearchHistorySerializer, UserSerializer
+from .serializers import SearchHistorySerializer, MeSerializer
 
 def register(request):
     if request.method == "POST":
@@ -212,12 +212,8 @@ class SearchHistoryAPIDetailView(generics.RetrieveUpdateDestroyAPIView):
         
 
 class MeAPIView(generics.RetrieveUpdateAPIView):
-    serializer_class = UserSerializer
+    serializer_class = MeSerializer
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
         return self.request.user
-
-    def patch(self):
-        user = self.request.user
-        
