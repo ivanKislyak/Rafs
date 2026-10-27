@@ -112,7 +112,7 @@ class Review(models.Model):
     class Meta:
         verbose_name = _("Review")
         verbose_name_plural = _("Reviews")
-        ordering = ['-created_at']
+        ordering = ['-created_at', '-pk']
         constraints = [
             models.UniqueConstraint(fields=['user', 'movie'], 
                                     name="unique_user_moview_review"),
