@@ -22,6 +22,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics, permissions
+from .permissions import IsReplyAuthorOrReadOnly
 from .forms import (
     MovieFilterForm, 
     ReviewForm, 
@@ -306,7 +307,10 @@ class WatchStatusAPIView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
     
 class EditReplyAPIView(generics.RetrieveUpdateAPIView):
-    pass
+    serializer_class = ReviewReplySerializer
+    permission_classes = [IsReplyAuthorOrReadOnly, IsAuthenticatedOrReadOnly]
+    queryset = ReviewReply.objects.all()
+    lookup_field = 'reply_id'
 
 def show_popular_results(request):
     country_code = get_country_code(request)
