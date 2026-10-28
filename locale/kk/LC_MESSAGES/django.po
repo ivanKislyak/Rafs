@@ -1433,3 +1433,15 @@ msgstr "Қол жеткізуге тыйым салынған. Қайта кір
 #: accounts/templates/accounts/profile.html
 msgid "Profile saved"
 msgstr "Профиль сақталды"
+
+#: movies/templates/movies/_review_card.html
+msgid "Edit reply"
+msgstr "Жауапты өңдеу"
+
+#: movies/templates/movies/_review_card.html
+msgid "Reply updated"
+msgstr "Жауап жаңартылды"
+
+#: movies/templates/movies/_review_card.html
+msgid "This reply is no longer available."
+msgstr "Бұл жауап енді қолжетімсіз."

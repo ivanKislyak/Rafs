@@ -1,9 +1,11 @@
 import json
 from html import escape
+from html.parser import HTMLParser
 from unittest.mock import patch
 from unittest import skipUnless
 
 from django.contrib.contenttypes.models import ContentType
+from django.conf import settings
 from django.contrib.postgres.search import SearchVector
 from django.contrib.auth import get_user_model
 from django.db import connection
@@ -710,6 +712,126 @@ class ReviewReplyDisplayTests(TestCase):
             response = self.client.get(url, {"replies": self.first_review.pk})
             self.assertContains(response, escape(self.first_reply.text))
             self.assertNotContains(response, self.first_reply.text)
+
+
+class ReplyEditIntegrationTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        User = get_user_model()
+        cls.author = User.objects.create_user(username="edit-reply-author", email="edit-reply@example.com")
+        cls.reviewer = User.objects.create_user(username="edit-review-author", email="edit-review@example.com")
+        cls.other = User.objects.create_user(username="edit-other", email="edit-other@example.com")
+        cls.admin = User.objects.create_superuser(username="edit-admin", email="edit-admin@example.com", password="test")
+        cls.movie = Movie.objects.create(name="Reply editing movie", year=2025)
+        cls.review = Review.objects.create(user=cls.reviewer, movie=cls.movie, rating=8, text="Review")
+        cls.reply = ReviewReply.objects.create(user=cls.author, review=cls.review, text='First <b>line</b> & details\nSecond line')
+        cls.api_url = reverse("movies:edit_reply_api", args=[cls.reply.pk])
+        cls.pages = [reverse("movies:detail", args=[cls.movie.pk]), reverse("movies:show_reviews")]
+
+    def test_only_reply_author_sees_editor_on_both_pages(self):
+        for viewer in [self.author, self.reviewer, self.other, self.admin, None]:
+            self.client.logout()
+            if viewer:
+                self.client.force_login(viewer)
+            for url in self.pages:
+                with self.subTest(viewer=viewer and viewer.username, url=url):
+                    response = self.client.get(url)
+                    self.assertEqual(response.status_code, 200)
+                    if viewer == self.author:
+                        self.assertContains(response, 'data-reply-edit-open', count=1)
+                        self.assertContains(response, f'data-edit-url="{self.api_url}"')
+                    else:
+                        self.assertNotContains(response, 'data-reply-edit-open')
+                        self.assertNotContains(response, 'data-reply-edit-form')
+                    if viewer == self.admin or viewer == self.author:
+                        self.assertContains(response, f'action="{reverse("movies:delete_reply", args=[self.reply.pk])}"')
+
+    def test_form_is_separate_from_delete_and_text_is_escaped(self):
+        self.client.force_login(self.author)
+
+        class Forms(HTMLParser):
+            depth = 0
+            maximum_depth = 0
+            editor_has_csrf = False
+            in_editor = False
+
+            def handle_starttag(self, tag, attrs):
+                attrs = dict(attrs)
+                if tag == "form":
+                    self.depth += 1
+                    self.maximum_depth = max(self.maximum_depth, self.depth)
+                    self.in_editor = "data-reply-edit-form" in attrs
+                if tag == "input" and self.in_editor and attrs.get("name") == "csrfmiddlewaretoken":
+                    self.editor_has_csrf = bool(attrs.get("value"))
+
+            def handle_endtag(self, tag):
+                if tag == "form":
+                    self.depth -= 1
+                    self.in_editor = False
+
+        for url in self.pages:
+            response = self.client.get(url)
+            self.assertContains(response, escape(self.reply.text))
+            self.assertNotContains(response, self.reply.text)
+            self.assertContains(response, 'movies/js/reply-edit.js', count=1)
+            parser = Forms()
+            parser.feed(response.content.decode())
+            self.assertEqual(parser.maximum_depth, 1)
+            self.assertTrue(parser.editor_has_csrf)
+
+    def test_next_feed_page_contains_correct_editor(self):
+        for index in range(10):
+            movie = Movie.objects.create(name=f"Newer movie {index}")
+            Review.objects.create(user=self.reviewer, movie=movie, rating=7, text=f"Newer review {index}")
+        self.client.force_login(self.author)
+        response = self.client.get(reverse("movies:show_reviews"), {"page": 2, "format": "json"})
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(f'data-edit-url="{self.api_url}"', response.json()["html"])
+        self.assertIn(escape(self.reply.text), response.json()["html"])
+
+    def test_editor_messages_are_translated_on_supported_languages(self):
+        self.client.force_login(self.author)
+        for language, _ in settings.LANGUAGES:
+            with self.subTest(language=language), translation.override(language):
+                response = self.client.get(self.pages[0], HTTP_ACCEPT_LANGUAGE=language)
+                for message in ["Edit reply", "Save", "Cancel", "Saving...", "Reply updated", "This reply is no longer available."]:
+                    translated = translation.gettext(message)
+                    self.assertContains(response, escape(translated))
+                    if language != "en":
+                        self.assertNotEqual(translated, message)
+
+    def test_patch_uses_session_csrf_and_only_changes_text(self):
+        created_at = self.reply.created_at
+        client = Client(enforce_csrf_checks=True)
+        client.force_login(self.author)
+        payload = {"text": "Updated\n<not HTML>", "id": 99999, "user": self.other.pk,
+                   "review": 99999, "created_at": "2000-01-01T00:00:00Z"}
+        self.assertEqual(client.patch(self.api_url, json.dumps(payload), content_type="application/json").status_code, 403)
+        client.get(self.pages[0])
+        response = client.patch(self.api_url, json.dumps(payload), content_type="application/json",
+                                HTTP_X_CSRFTOKEN=client.cookies["csrftoken"].value)
+        self.assertEqual(response.status_code, 200)
+        self.reply.refresh_from_db()
+        self.assertEqual(response.json()["text"], payload["text"])
+        self.assertEqual(self.reply.user_id, self.author.pk)
+        self.assertEqual(self.reply.review_id, self.review.pk)
+        self.assertEqual(self.reply.created_at, created_at)
+
+    def test_api_rejects_other_authors_bad_text_missing_reply_and_other_methods(self):
+        for viewer in [self.reviewer, self.other, self.admin]:
+            self.client.force_login(viewer)
+            self.assertEqual(self.client.patch(self.api_url, json.dumps({"text": "Forbidden"}), content_type="application/json").status_code, 403)
+        self.client.force_login(self.author)
+        for text in ["", " \n\t ", None]:
+            response = self.client.patch(self.api_url, json.dumps({"text": text}), content_type="application/json")
+            self.assertEqual(response.status_code, 400)
+            self.assertIn("text", response.json())
+        missing = reverse("movies:edit_reply_api", args=[self.reply.pk + 10000])
+        self.assertEqual(self.client.patch(missing, '{"text":"Missing"}', content_type="application/json").status_code, 404)
+        for method in ["put", "post", "delete"]:
+            self.assertEqual(getattr(self.client, method)(self.api_url, data='{}', content_type="application/json").status_code, 405)
+        self.reply.refresh_from_db()
+        self.assertEqual(self.reply.text, type(self).reply.text)
 
 
 class WatchStatusEndpointTests(TestCase):

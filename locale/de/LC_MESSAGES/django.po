@@ -1433,3 +1433,15 @@ msgstr "Zugriff verweigert. Melde dich erneut an und lade die Seite neu"
 #: accounts/templates/accounts/profile.html
 msgid "Profile saved"
 msgstr "Profil gespeichert"
+
+#: movies/templates/movies/_review_card.html
+msgid "Edit reply"
+msgstr "Antwort bearbeiten"
+
+#: movies/templates/movies/_review_card.html
+msgid "Reply updated"
+msgstr "Antwort aktualisiert"
+
+#: movies/templates/movies/_review_card.html
+msgid "This reply is no longer available."
+msgstr "Diese Antwort ist nicht mehr verfügbar."

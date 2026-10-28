@@ -1433,3 +1433,15 @@ msgstr "Acceso denegado. Vuelve a iniciar sesión y recarga la página"
 #: accounts/templates/accounts/profile.html
 msgid "Profile saved"
 msgstr "Perfil guardado"
+
+#: movies/templates/movies/_review_card.html
+msgid "Edit reply"
+msgstr "Editar respuesta"
+
+#: movies/templates/movies/_review_card.html
+msgid "Reply updated"
+msgstr "Respuesta actualizada"
+
+#: movies/templates/movies/_review_card.html
+msgid "This reply is no longer available."
+msgstr "Esta respuesta ya no está disponible."

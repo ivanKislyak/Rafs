@@ -1421,3 +1421,15 @@ msgstr "Доступ запрещён. Войдите снова и обнови
 #: accounts/templates/accounts/profile.html
 msgid "Profile saved"
 msgstr "Профиль сохранён"
+
+#: movies/templates/movies/_review_card.html
+msgid "Edit reply"
+msgstr "Редактировать ответ"
+
+#: movies/templates/movies/_review_card.html
+msgid "Reply updated"
+msgstr "Ответ обновлён"
+
+#: movies/templates/movies/_review_card.html
+msgid "This reply is no longer available."
+msgstr "Этот ответ больше недоступен."

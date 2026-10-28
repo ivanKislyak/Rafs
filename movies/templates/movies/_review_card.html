@@ -197,7 +197,7 @@
                  id="review-replies-{{ review.id }}"
                  {% if open_replies_id != review.id %}hidden{% endif %}>
                 {% for reply in review.loaded_replies %}
-                    <article class="review-reply">
+                    <article class="review-reply" id="reply-{{ reply.id }}" data-review-reply>
                         <div class="review-reply-header">
                             {% if reply.user.is_deleted %}
                                 <span class="review-reply-avatar-link" aria-hidden="true">
@@ -237,6 +237,15 @@
                             {% endif %}
                             <time class="review-reply-date"
                                   datetime="{{ reply.created_at|date:'c' }}">{{ reply.created_at|naturaltime }}</time>
+                            {% if request.user.is_authenticated and reply.user_id == request.user.pk %}
+                                <button class="review-reply-edit" type="button" data-reply-edit-open
+                                        aria-label="{% translate 'Edit reply' %}" title="{% translate 'Edit reply' %}"
+                                        aria-controls="reply-edit-{{ reply.id }}" aria-expanded="false">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                        <path d="m16 3 5 5-12 12H4v-5L16 3ZM13 6l5 5"></path>
+                                    </svg>
+                                </button>
+                            {% endif %}
                             {% if reply.user == request.user or request.user.is_superuser %}
                                 <form class="review-delete-form review-reply-delete-form"
                                       method="post"
@@ -265,7 +274,28 @@
                                 </form>
                             {% endif %}
                         </div>
-                        <p class="review-reply-text">{{ reply.text }}</p>
+                        <p class="review-reply-text" data-reply-text>{{ reply.text }}</p>
+                        {% if request.user.is_authenticated and reply.user_id == request.user.pk %}
+                            <form class="review-reply-edit-form" id="reply-edit-{{ reply.id }}" data-reply-edit-form
+                                  action="{% url 'movies:edit_reply_api' reply.id %}"
+                                  data-edit-url="{% url 'movies:edit_reply_api' reply.id %}" method="post" hidden
+                                  data-error="{% translate 'Something went wrong. Please try again.' %}"
+                                  data-auth-error="{% translate 'Your session may have expired. Refresh the page and sign in again.' %}"
+                                  data-network-error="{% translate 'Could not connect. Check your connection and try again.' %}"
+                                  data-missing-error="{% translate 'This reply is no longer available.' %}"
+                                  data-saving="{% translate 'Saving...' %}" data-saved="{% translate 'Reply updated' %}">
+                                {% csrf_token %}
+                                <label class="review-reply-label" for="reply-edit-text-{{ reply.id }}">{% translate "Edit reply" %}</label>
+                                <textarea class="review-reply-textarea" id="reply-edit-text-{{ reply.id }}" name="text" rows="3"
+                                          aria-describedby="reply-edit-error-{{ reply.id }}" required></textarea>
+                                <p class="review-reply-feedback" id="reply-edit-error-{{ reply.id }}" data-reply-edit-error role="alert" hidden></p>
+                                <div class="review-reply-form-actions">
+                                    <button class="review-reply-submit" type="submit">{% translate "Save" %}</button>
+                                    <button class="review-reply-cancel" type="button" data-reply-edit-cancel>{% translate "Cancel" %}</button>
+                                </div>
+                            </form>
+                            <p class="review-reply-edit-status" data-reply-edit-status role="status" aria-live="polite"></p>
+                        {% endif %}
                     </article>
                 {% endfor %}
             </div>

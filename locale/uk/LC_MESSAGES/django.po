@@ -1433,3 +1433,15 @@ msgstr "Доступ заборонено. Увійдіть знову й оно
 #: accounts/templates/accounts/profile.html
 msgid "Profile saved"
 msgstr "Профіль збережено"
+
+#: movies/templates/movies/_review_card.html
+msgid "Edit reply"
+msgstr "Редагувати відповідь"
+
+#: movies/templates/movies/_review_card.html
+msgid "Reply updated"
+msgstr "Відповідь оновлено"
+
+#: movies/templates/movies/_review_card.html
+msgid "This reply is no longer available."
+msgstr "Ця відповідь більше недоступна."

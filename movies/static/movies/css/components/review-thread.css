@@ -644,7 +644,8 @@ a.review-reply-author:hover {
   flex: 0 0 auto;
 }
 
-.review-reply-delete {
+.review-reply-delete,
+.review-reply-edit {
   display: grid;
   width: 44px;
   height: 44px;
@@ -657,18 +658,21 @@ a.review-reply-author:hover {
   place-items: center;
 }
 
-.review-reply-delete:hover {
+.review-reply-delete:hover,
+.review-reply-edit:hover {
   border-color: color-mix(in srgb, var(--color-accent) 45%, var(--color-border));
   background-color: var(--color-surface-hover);
   color: var(--color-accent);
 }
 
-.review-reply-delete:focus-visible {
+.review-reply-delete:focus-visible,
+.review-reply-edit:focus-visible {
   outline: 2px solid var(--color-focus-visible-outline);
   outline-offset: 2px;
 }
 
-.review-reply-delete svg {
+.review-reply-delete svg,
+.review-reply-edit svg {
   width: 15px;
   height: 15px;
   fill: none;
@@ -685,6 +689,27 @@ a.review-reply-author:hover {
   font-size: 0.88rem;
   line-height: 1.55;
   white-space: pre-wrap;
+}
+
+.review-reply-edit-form {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+
+.review-reply-edit-status {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: .84rem;
+}
+
+.review-reply-edit-status:empty {
+  display: none;
+}
+
+.review-reply-edit-form button:disabled,
+.review-reply-header button:disabled {
+  cursor: wait;
 }
 
 .review-reply-form {
