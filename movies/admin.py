@@ -52,7 +52,7 @@ class ReviewAdmin(admin.ModelAdmin):
         return obj.safe_translation_getter("wikidata_name", any_language=True)
 
     def get_movie_name(self, obj):
-        """Получает переведённое имя фильма из связанной модели Movie"""
+        """Return the translated movie title from the related Movie instance."""
         if obj.movie:
             return obj.movie.safe_translation_getter("wikidata_name", any_language=True) or obj.movie.name or obj.movie.wikidata_id
         return "-"

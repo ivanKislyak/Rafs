@@ -1,4 +1,4 @@
-"""RAFS catalogue importer. Написан с помощью ИИ (OpenAI Codex).
+"""RAFS catalogue importer. Written with AI assistance (OpenAI Codex).
 
 Place in movies/management/commands/import_popular_movies.py.
 No model changes. TMDB supplies discovery, translations and poster URLs;

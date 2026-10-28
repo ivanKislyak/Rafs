@@ -27,10 +27,10 @@ def chunks(iterable, size):
 
 def format_label(value: str) -> str:
     """
-    Wikidata часто отдаёт жанры со строчной буквы:
-    'пригодницький фільм' -> 'Пригодницький фільм'.
+    Wikidata often returns genre names in lowercase:
+    'adventure film' -> 'Adventure film'.
 
-    Не используй .capitalize(), иначе она испортит остальные буквы:
+    Do not use .capitalize(), as it lowercases the remaining characters:
     'Marvel Studios' -> 'Marvel studios'.
     """
     value = value.strip()
@@ -235,7 +235,7 @@ class Command(BaseCommand):
     @staticmethod
     def has_value(obj, field_name, language):
         """
-        Поддерживает django-parler и JSONField вида:
+        Support django-parler and JSONField values in the following form:
         {"en": "...", "ru": "..."}.
         """
         if callable(getattr(obj, "safe_translation_getter", None)):

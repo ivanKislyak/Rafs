@@ -1,4 +1,4 @@
-"""Conservative, resumable anime import. Написан с помощью ИИ (OpenAI Codex).
+"""Conservative, resumable anime import. Written with AI assistance (OpenAI Codex).
 
 TMDB's exact anime keyword AND Animation genre are discovery evidence, not a
 claim of completeness. Wikidata P31/P279 must independently confirm the format.

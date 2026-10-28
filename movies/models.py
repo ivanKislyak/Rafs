@@ -165,7 +165,7 @@ class BaseVote(models.Model):
 
 
 class ReviewVote(BaseVote):
-    """Лайки/Дизлайки к отзывам"""
+    """Likes and dislikes on reviews."""
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="review_votes")
     review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name="votes")
 
@@ -176,7 +176,7 @@ class ReviewVote(BaseVote):
 
 
 class ReplyVote(BaseVote):
-    """Лайки/Дизлайки к ответам на отзывы"""
+    """Likes and dislikes on review replies."""
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="reply_votes")
     reply = models.ForeignKey(ReviewReply, on_delete=models.CASCADE, related_name="votes")
 
