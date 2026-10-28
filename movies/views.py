@@ -305,6 +305,8 @@ class WatchStatusAPIView(APIView):
         WatchStatus.objects.filter(user=user, movie=movie).delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
+class EditReplyAPIView(generics.RetrieveUpdateAPIView):
+    pass
 
 def show_popular_results(request):
     country_code = get_country_code(request)

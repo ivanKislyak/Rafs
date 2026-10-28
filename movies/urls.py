@@ -18,5 +18,6 @@ urlpatterns = [
     path('search/', views.search_page, name='search_query'),
     path('api/v1/search/', views.SearchResultsListAPIView.as_view(), name='search_results_api'),
     path('api/v1/watch-status/<int:movie_id>/', views.WatchStatusAPIView.as_view(), name='watch_status_api'),
-    path('api/v1/reviews/<int:review_id>/replies/', views.ReviewReplyListCreateAPIView.as_view(), name='review_reply_api')
+    path('api/v1/reviews/<int:review_id>/replies/', views.ReviewReplyListCreateAPIView.as_view(), name='review_reply_api'),
+    path('api/v1/replies/<int:reply_id>/', views.EditReplyAPIView.as_view()),
 ]
