@@ -1445,3 +1445,223 @@ msgstr "Жауап жаңартылды"
 #: movies/templates/movies/_review_card.html
 msgid "This reply is no longer available."
 msgstr "Бұл жауап енді қолжетімсіз."
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+#, python-format
+msgid "%(username)s (%(email)s): Frames: %(frames)s, level: %(level)s"
+msgstr "%(username)s (%(email)s): Кадрлар: %(frames)s, деңгей: %(level)s"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Accounts"
+msgstr "Тіркелгілер"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Achievement"
+msgstr "Жетістік"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Actors"
+msgstr "Актерлер"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Avatar"
+msgstr "Аватар"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Average rating"
+msgstr "Орташа баға"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Banner"
+msgstr "Баннер"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Banner URL"
+msgstr "Баннер сілтемесі"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Characters rating"
+msgstr "Кейіпкерлер бағасы"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Code"
+msgstr "Код"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Composers"
+msgstr "Композиторлар"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Country code"
+msgstr "Ел коды"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Cover"
+msgstr "Мұқаба"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Cover URL"
+msgstr "Мұқаба сілтемесі"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Created at"
+msgstr "Жасалған күні"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Deleted"
+msgstr "Жойылған"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Description"
+msgstr "Сипаттама"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Directors"
+msgstr "Режиссерлер"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Display in profile"
+msgstr "Профильде көрсету"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Earned at"
+msgstr "Алынған күні"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Ends at"
+msgstr "Аяқталу күні"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Execution rating"
+msgstr "Іске асырылу бағасы"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "ID on imdb.com"
+msgstr "imdb.com сайтындағы ID"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "ID on wikidata.org"
+msgstr "wikidata.org сайтындағы ID"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Idea rating"
+msgstr "Идея бағасы"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Last synced at"
+msgstr "Соңғы синхрондау"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Logo"
+msgstr "Логотип"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Logo URL"
+msgstr "Логотип сілтемесі"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Movie Description"
+msgstr "Туындының сипаттамасы"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Movie Name"
+msgstr "Туындының атауы"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Movies, reviews and profiles"
+msgstr "Фильмдер, рецензиялар және профильдер"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Name"
+msgstr "Атауы"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Person Bio"
+msgstr "Өмірбаян"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Photo"
+msgstr "Фотосурет"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Photo URL"
+msgstr "Фотосурет сілтемесі"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Producers"
+msgstr "Продюсерлер"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Query"
+msgstr "Іздеу сұрауы"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "RAFS site administration"
+msgstr "RAFS сайтын басқару"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Rating"
+msgstr "Баға"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+#, python-format
+msgid "Rating for %(movie)s by %(username)s: %(rating)s"
+msgstr "%(username)s пайдаланушысының %(movie)s туындысына бағасы: %(rating)s"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+#, python-format
+msgid "Reply from %(username)s to review #%(review_id)s"
+msgstr "%(username)s пайдаланушысының №%(review_id)s рецензияға жауабы"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Reply text"
+msgstr "Жауап мәтіні"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Review ID"
+msgstr "Рецензия ID-і"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+#, python-format
+msgid "Review by %(username)s for %(movie)s (%(rating)s): %(text)s"
+msgstr "%(username)s пайдаланушысының %(movie)s туындысына рецензиясы (%(rating)s): %(text)s"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Screenwriters"
+msgstr "Сценаристер"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Sound rating"
+msgstr "Дыбыс бағасы"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Source review"
+msgstr "Негіз болған рецензия"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Starts at"
+msgstr "Басталу күні"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Status"
+msgstr "Күйі"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Updated at"
+msgstr "Жаңартылған күні"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "User achievement"
+msgstr "Пайдаланушының жетістігі"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "User achievements"
+msgstr "Пайдаланушылардың жетістіктері"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Year of Release"
+msgstr "Шыққан жылы"
+
+#: movies/movie_models.py
+msgid "Person name"
+msgstr "Аты-жөні"

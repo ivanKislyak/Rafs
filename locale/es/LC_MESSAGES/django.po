@@ -1445,3 +1445,223 @@ msgstr "Respuesta actualizada"
 #: movies/templates/movies/_review_card.html
 msgid "This reply is no longer available."
 msgstr "Esta respuesta ya no está disponible."
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+#, python-format
+msgid "%(username)s (%(email)s): Frames: %(frames)s, level: %(level)s"
+msgstr "%(username)s (%(email)s): Fotogramas: %(frames)s, nivel: %(level)s"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Accounts"
+msgstr "Cuentas"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Achievement"
+msgstr "Logro"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Actors"
+msgstr "Reparto"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Avatar"
+msgstr "Avatar"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Average rating"
+msgstr "Valoración media"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Banner"
+msgstr "Banner"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Banner URL"
+msgstr "URL del banner"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Characters rating"
+msgstr "Valoración de los personajes"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Code"
+msgstr "Código"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Composers"
+msgstr "Compositores"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Country code"
+msgstr "Código de país"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Cover"
+msgstr "Portada"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Cover URL"
+msgstr "URL de la portada"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Created at"
+msgstr "Fecha de creación"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Deleted"
+msgstr "Eliminado"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Description"
+msgstr "Descripción"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Directors"
+msgstr "Directores"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Display in profile"
+msgstr "Mostrar en el perfil"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Earned at"
+msgstr "Fecha de obtención"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Ends at"
+msgstr "Fecha de finalización"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Execution rating"
+msgstr "Valoración de la ejecución"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "ID on imdb.com"
+msgstr "ID en imdb.com"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "ID on wikidata.org"
+msgstr "ID en wikidata.org"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Idea rating"
+msgstr "Valoración de la idea"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Last synced at"
+msgstr "Última sincronización"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Logo"
+msgstr "Logotipo"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Logo URL"
+msgstr "URL del logotipo"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Movie Description"
+msgstr "Descripción de la obra"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Movie Name"
+msgstr "Título de la obra"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Movies, reviews and profiles"
+msgstr "Películas, reseñas y perfiles"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Name"
+msgstr "Nombre"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Person Bio"
+msgstr "Biografía"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Photo"
+msgstr "Foto"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Photo URL"
+msgstr "URL de la foto"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Producers"
+msgstr "Productores"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Query"
+msgstr "Consulta de búsqueda"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "RAFS site administration"
+msgstr "Administración del sitio RAFS"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Rating"
+msgstr "Valoración"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+#, python-format
+msgid "Rating for %(movie)s by %(username)s: %(rating)s"
+msgstr "Valoración de %(movie)s por %(username)s: %(rating)s"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+#, python-format
+msgid "Reply from %(username)s to review #%(review_id)s"
+msgstr "Respuesta de %(username)s a la reseña n.º %(review_id)s"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Reply text"
+msgstr "Texto de la respuesta"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Review ID"
+msgstr "ID de la reseña"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+#, python-format
+msgid "Review by %(username)s for %(movie)s (%(rating)s): %(text)s"
+msgstr "Reseña de %(username)s sobre %(movie)s (%(rating)s): %(text)s"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Screenwriters"
+msgstr "Guionistas"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Sound rating"
+msgstr "Valoración del sonido"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Source review"
+msgstr "Reseña de origen"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Starts at"
+msgstr "Fecha de inicio"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Status"
+msgstr "Estado"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Updated at"
+msgstr "Fecha de actualización"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "User achievement"
+msgstr "Logro del usuario"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "User achievements"
+msgstr "Logros de los usuarios"
+
+#: accounts/admin.py accounts/models.py movies/admin.py movies/models.py movies/movie_models.py
+msgid "Year of Release"
+msgstr "Año de estreno"
+
+#: movies/movie_models.py
+msgid "Person name"
+msgstr "Nombre de la persona"

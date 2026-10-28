@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.db.models import Prefetch
+from django.utils.translation import gettext_lazy as _
 from .models import Movie, Review, ReviewReply, WatchStatus
 from .movie_models import Studio
 from parler.admin import TranslatableAdmin
@@ -24,10 +25,12 @@ class MovieAdmin(TranslatableAdmin):
             Prefetch("studio", queryset=Studio.objects.order_by("pk").prefetch_related("translations")),
         )
 
+    @admin.display(description=_("Movie Name"))
     def get_wikidata_name(self, obj):
         return obj.safe_translation_getter("wikidata_name", any_language=True) or obj.name or obj.wikidata_id
 
 
+    @admin.display(description=_("Studio"))
     def get_studio(self, obj):
         first_studio = obj.studio.first()
         if first_studio:
@@ -51,13 +54,14 @@ class ReviewAdmin(admin.ModelAdmin):
     def get_wikidata_name(self, obj):
         return obj.safe_translation_getter("wikidata_name", any_language=True)
 
+    @admin.display(description=_("Movie"))
     def get_movie_name(self, obj):
         """Return the translated movie title from the related Movie instance."""
         if obj.movie:
             return obj.movie.safe_translation_getter("wikidata_name", any_language=True) or obj.movie.name or obj.movie.wikidata_id
         return "-"
 
-    @admin.display(description='Текст отзыва')
+    @admin.display(description=_("Review text"))
     def short_text(self, obj):
         if obj.text and len(obj.text) > 100:
             return f"{obj.text[:100]}..."
@@ -65,14 +69,18 @@ class ReviewAdmin(admin.ModelAdmin):
 
 @admin.register(ReviewReply)
 class ReviewReplyAdmin(admin.ModelAdmin):
-    list_display = ['id', 'user', 'review_id', 'short_text', 'created_at']
+    list_display = ['id', 'user', 'get_review_id', 'short_text', 'created_at']
     search_fields = ['user__username', 'text']
     list_filter = ['created_at']
     list_select_related = ('user',)
     raw_id_fields = ('user', 'review')
     readonly_fields = ('created_at',)
 
-    @admin.display(description='Текст ответа')
+    @admin.display(description=_("Review ID"), ordering='review_id')
+    def get_review_id(self, obj):
+        return obj.review_id
+
+    @admin.display(description=_("Reply text"))
     def short_text(self, obj):
         if len(obj.text) > 100:
             return f"{obj.text[:100]}..."
@@ -88,6 +96,6 @@ class WatchStatusAdmin(admin.ModelAdmin):
     raw_id_fields = ('user', 'movie')
 
 
-admin.site.site_header = "RAFS - управление сайтом"
+admin.site.site_header = _("RAFS site administration")
 admin.site.site_title = "RAFS"
-admin.site.index_title = "Фильмы, рецензии, профили"
+admin.site.index_title = _("Movies, reviews and profiles")

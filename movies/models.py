@@ -15,43 +15,43 @@ from django.utils.translation import gettext_lazy as _
 
 class Movie(TranslatableModel):
     # Main data
-    wikidata_id = models.CharField(verbose_name="ID on wikidata.org", max_length=20, unique=True, null=True, blank=True)
-    imdb_id = models.CharField(verbose_name="ID on imdb.com", max_length=20, null=True, blank=True, db_index=True)
+    wikidata_id = models.CharField(verbose_name=_("ID on wikidata.org"), max_length=20, unique=True, null=True, blank=True)
+    imdb_id = models.CharField(verbose_name=_("ID on imdb.com"), max_length=20, null=True, blank=True, db_index=True)
 
     translations = TranslatedFields(
-        wikidata_name = models.CharField(verbose_name="Movie Name", max_length=500, blank=True),
-        wikidata_description = models.TextField(verbose_name="Movie Description", blank=True)
+        wikidata_name = models.CharField(verbose_name=_("Movie Name"), max_length=500, blank=True),
+        wikidata_description = models.TextField(verbose_name=_("Movie Description"), blank=True)
     )
 
-    year = models.PositiveSmallIntegerField(verbose_name="Year of Release", null=True, blank=True)
+    year = models.PositiveSmallIntegerField(verbose_name=_("Year of Release"), null=True, blank=True)
     type_of_work = models.ForeignKey(
         TypeOfWork, 
         on_delete=models.SET_NULL, 
         blank=True,
         null=True, 
         related_name="movies",
-        verbose_name="Type of Work")
+        verbose_name=_("Type of Work"))
 
-    genres = models.ManyToManyField(Genre, blank=True, related_name="movies", verbose_name="Genres")
-    countries = models.ManyToManyField(Country, blank=True, related_name="movies", verbose_name="Countries")
-    studio = models.ManyToManyField(Studio, blank=True, related_name="movies", verbose_name="Studios")
+    genres = models.ManyToManyField(Genre, blank=True, related_name="movies", verbose_name=_("Genres"))
+    countries = models.ManyToManyField(Country, blank=True, related_name="movies", verbose_name=_("Countries"))
+    studio = models.ManyToManyField(Studio, blank=True, related_name="movies", verbose_name=_("Studios"))
 
     # Persons
-    director = models.ManyToManyField(Person, blank=True, related_name="directed_movies", verbose_name="Directors")
-    screenwriter = models.ManyToManyField(Person, blank=True, related_name="written_movies", verbose_name="Screenwriters")
-    producer = models.ManyToManyField(Person, blank=True, related_name="produced_movies", verbose_name="Producers")
-    composer = models.ManyToManyField(Person, blank=True, related_name="composed_movies", verbose_name="Composers")
-    actors = models.ManyToManyField(Person, blank=True, related_name="acted_in_movies", verbose_name="Actors")
+    director = models.ManyToManyField(Person, blank=True, related_name="directed_movies", verbose_name=_("Directors"))
+    screenwriter = models.ManyToManyField(Person, blank=True, related_name="written_movies", verbose_name=_("Screenwriters"))
+    producer = models.ManyToManyField(Person, blank=True, related_name="produced_movies", verbose_name=_("Producers"))
+    composer = models.ManyToManyField(Person, blank=True, related_name="composed_movies", verbose_name=_("Composers"))
+    actors = models.ManyToManyField(Person, blank=True, related_name="acted_in_movies", verbose_name=_("Actors"))
 
-    cover_url = models.URLField(blank=True)
-    last_synced_at = models.DateTimeField(null=True, blank=True)
+    cover_url = models.URLField(blank=True, verbose_name=_("Cover URL"))
+    last_synced_at = models.DateTimeField(null=True, blank=True, verbose_name=_("Last synced at"))
 
-    name = models.CharField(max_length=200, blank=True) # Night of the Day of the Dawn of the Son of the Bride...
-    rate = models.DecimalField(decimal_places=1, max_digits=3, null=True, blank=True)
-    description = models.TextField(blank=True)
+    name = models.CharField(max_length=200, blank=True, verbose_name=_("Name")) # Night of the Day of the Dawn of the Son of the Bride...
+    rate = models.DecimalField(decimal_places=1, max_digits=3, null=True, blank=True, verbose_name=_("Rating"))
+    description = models.TextField(blank=True, verbose_name=_("Description"))
     tags = TaggableManager(blank=True)
-    cover = models.ImageField(upload_to="movie_covers/", blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    cover = models.ImageField(upload_to="movie_covers/", blank=True, null=True, verbose_name=_("Cover"))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
 
     @property
     def avg_rating(self):
@@ -80,22 +80,22 @@ class Review(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,                       
-        related_name="reviews")
+        related_name="reviews", verbose_name=_("User"))
 
     movie = models.ForeignKey(
         Movie,
         on_delete=models.CASCADE, 
-        related_name="reviews")
-    rating = models.DecimalField(max_digits=3, decimal_places=1, default=5.0, validators=[MinValueValidator(0), MaxValueValidator(10)])
-    avg_rating = models.DecimalField(max_digits=3, decimal_places=1, default=5.0, validators=[MinValueValidator(0), MaxValueValidator(10)], blank=True, null=True)
-    idea_rating = models.DecimalField(max_digits=3, decimal_places=1, validators=[MinValueValidator(0), MaxValueValidator(10)], blank=True, null=True)
-    execution_rating = models.DecimalField(max_digits=3, decimal_places=1, validators=[MinValueValidator(0), MaxValueValidator(10)], blank=True, null=True)
-    characters_rating = models.DecimalField(max_digits=3, decimal_places=1, validators=[MinValueValidator(0), MaxValueValidator(10)], blank=True, null=True)
-    sound_rating = models.DecimalField(max_digits=3, decimal_places=1, validators=[MinValueValidator(0), MaxValueValidator(10)], blank=True, null=True)
-    text = models.TextField(blank=True)
-    contains_spoiler = models.BooleanField(blank=True, default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+        related_name="reviews", verbose_name=_("Movie"))
+    rating = models.DecimalField(max_digits=3, decimal_places=1, default=5.0, validators=[MinValueValidator(0), MaxValueValidator(10)], verbose_name=_("Rating"))
+    avg_rating = models.DecimalField(max_digits=3, decimal_places=1, default=5.0, validators=[MinValueValidator(0), MaxValueValidator(10)], blank=True, null=True, verbose_name=_("Average rating"))
+    idea_rating = models.DecimalField(max_digits=3, decimal_places=1, validators=[MinValueValidator(0), MaxValueValidator(10)], blank=True, null=True, verbose_name=_("Idea rating"))
+    execution_rating = models.DecimalField(max_digits=3, decimal_places=1, validators=[MinValueValidator(0), MaxValueValidator(10)], blank=True, null=True, verbose_name=_("Execution rating"))
+    characters_rating = models.DecimalField(max_digits=3, decimal_places=1, validators=[MinValueValidator(0), MaxValueValidator(10)], blank=True, null=True, verbose_name=_("Characters rating"))
+    sound_rating = models.DecimalField(max_digits=3, decimal_places=1, validators=[MinValueValidator(0), MaxValueValidator(10)], blank=True, null=True, verbose_name=_("Sound rating"))
+    text = models.TextField(blank=True, verbose_name=_("Review text"))
+    contains_spoiler = models.BooleanField(blank=True, default=False, verbose_name=_("Contains spoilers"))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
+    updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
 
     def save(self, *args, **kwargs):
         rating_sides = [self.rating]
@@ -126,22 +126,27 @@ class Review(models.Model):
 
     def __str__(self):
         if self.text:
-            return f"{self.user.username} left a review for the movie {self.movie.name} ({self.avg_rating}): {self.text}"
-        return f"{self.movie.name} was review ({self.avg_rating}) by {self.user.username}"
+            return _("Review by %(username)s for %(movie)s (%(rating)s): %(text)s") % {
+                "username": self.user.username, "movie": self.movie.name,
+                "rating": self.avg_rating, "text": self.text,
+            }
+        return _("Rating for %(movie)s by %(username)s: %(rating)s") % {
+            "movie": self.movie.name, "username": self.user.username, "rating": self.avg_rating,
+        }
 
 class ReviewReply(models.Model):
     review = models.ForeignKey(
         Review,
         on_delete=models.CASCADE,
-        related_name="replies" # For review.replies.count()
+        related_name="replies", verbose_name=_("Review") # For review.replies.count()
     )
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name="review_replies"
+        related_name="review_replies", verbose_name=_("User")
     )
-    text = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
+    text = models.TextField(verbose_name=_("Reply text"))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
 
     class Meta:
         verbose_name = _("Review Reply")
@@ -149,7 +154,9 @@ class ReviewReply(models.Model):
         ordering = ['created_at']
 
     def __str__(self):
-        return f"Reply from {self.user.username} to review #{self.review.id}"
+        return _("Reply from %(username)s to review #%(review_id)s") % {
+            "username": self.user.username, "review_id": self.review.id,
+        }
 
 class BaseVote(models.Model):
     """An abstract class for likes and dislikes"""
@@ -216,12 +223,12 @@ class WatchStatus(models.Model):
         DROPPED = "DROPPED", _("I dropped watching it")
         REWATCHING = "REWATCHING", _("Rewatching")
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="watch_statuses")
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="watch_statuses")
-    status = models.CharField(max_length=20, choices=StatusChoice.choices, default=StatusChoice.VIEWED)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="watch_statuses", verbose_name=_("User"))
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="watch_statuses", verbose_name=_("Movie"))
+    status = models.CharField(max_length=20, choices=StatusChoice.choices, default=StatusChoice.VIEWED, verbose_name=_("Status"))
 
     def __str__(self):
-        return self.status
+        return self.get_status_display()
 
     class Meta:
         verbose_name = _("Watch Status")

@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.translation import gettext_lazy as _
 from .models import SearchHistory, User, Achievement, UserAchievement
 
 @admin.register(User)
@@ -17,7 +18,7 @@ class SearchHistoryAdmin(admin.ModelAdmin):
             formfield.label_from_instance = lambda obj: obj.username
         return formfield
 
-    @admin.display(description='User', ordering='user__username')
+    @admin.display(description=_("User"), ordering='user__username')
     def get_username(self, obj):
         return obj.user.username
 
