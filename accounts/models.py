@@ -5,12 +5,18 @@ from django.core.validators import MinValueValidator
 from django.utils.translation import gettext_lazy as _
 from movies.models import Movie
 from django.conf import settings
+from django.utils import timezone
+from django.conf import settings
 
 class Achievement(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=500)
     avatar_image = models.ImageField(upload_to="achievements/", blank=True, null=True)
     display_in_profile = models.BooleanField(default=True)
+    code = models.SlugField(max_length=80, unique=True, blank=True, null=True)
+    starts_at = models.DateTimeField(blank=True, null=True)
+    ends_at = models.DateTimeField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     
     class Meta:
         verbose_name = _("Achievement")
@@ -72,6 +78,44 @@ class User(AbstractUser):
 
     def __str__(self):
         return f"{self.username} with email - {self.email} has {self.user_frames} frames and {self.user_lvl} lvl"
+
+class UserAchievement(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="achievement_awards",
+    )
+    achievement = models.ForeignKey(
+        Achievement,
+        on_delete=models.CASCADE,
+        related_name="awards",
+    )
+    earned_at = models.DateTimeField(
+        default=timezone.now,
+        blank=True,
+        null=True,
+        editable=False,
+    )
+    source_review = models.ForeignKey(
+        "movies.Review",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name="achievement_awards",
+    )
+
+    class Meta:
+        verbose_name = _("User achievement")
+        verbose_name_plural = _("User achievements")
+        constraints = [
+            models.UniqueConstraint(
+                fields=["user", "achievement"],
+                name="unique_user_achievement",
+            ),
+        ]
+
+    def __str__(self):
+        return f"{self.user_id}: {self.achievement.name}"
 
 class SearchHistory(models.Model):
     user = models.ForeignKey(
