@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.db.models import Prefetch
-from .models import Movie, Review
+from .models import Movie, Review, ReviewReply, WatchStatus
 from .movie_models import Studio
 from parler.admin import TranslatableAdmin
 
@@ -62,6 +62,31 @@ class ReviewAdmin(admin.ModelAdmin):
         if obj.text and len(obj.text) > 100:
             return f"{obj.text[:100]}..."
         return obj.text
+
+@admin.register(ReviewReply)
+class ReviewReplyAdmin(admin.ModelAdmin):
+    list_display = ['id', 'user', 'review_id', 'short_text', 'created_at']
+    search_fields = ['user__username', 'text']
+    list_filter = ['created_at']
+    list_select_related = ('user',)
+    raw_id_fields = ('user', 'review')
+    readonly_fields = ('created_at',)
+
+    @admin.display(description='Текст ответа')
+    def short_text(self, obj):
+        if len(obj.text) > 100:
+            return f"{obj.text[:100]}..."
+        return obj.text
+
+
+@admin.register(WatchStatus)
+class WatchStatusAdmin(admin.ModelAdmin):
+    list_display = ['id', 'user', 'movie', 'status']
+    search_fields = ['user__username', 'movie__name', 'movie__translations__wikidata_name', 'movie__wikidata_id']
+    list_filter = ['status']
+    list_select_related = ('user', 'movie')
+    raw_id_fields = ('user', 'movie')
+
 
 admin.site.site_header = "RAFS - управление сайтом"
 admin.site.site_title = "RAFS"
