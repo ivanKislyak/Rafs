@@ -310,7 +310,7 @@ class EditReplyAPIView(generics.RetrieveUpdateAPIView):
     serializer_class = ReviewReplySerializer
     permission_classes = [IsReplyAuthorOrReadOnly, IsAuthenticatedOrReadOnly]
     queryset = ReviewReply.objects.all()
-    lookup_field = 'reply_id'
+    lookup_url_kwarg = 'reply_id'
 
 def show_popular_results(request):
     country_code = get_country_code(request)
