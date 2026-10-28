@@ -1,8 +1,9 @@
 from rest_framework import permissions
 
 class IsReplyAuthorOrReadOnly(permissions.BasePermission):
-    def has_permission(self, request, view):
-        pass
+    message = "Only the author can edit this reply"
+    if request.method in permissions.SAFE_METHODS:
+        return True
 
     def has_object_permission(self, request, view, obj):
-        pass
+        return request.user == obj.user
