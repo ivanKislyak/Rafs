@@ -1,3 +1,8 @@
 from django.db import models
+from parler.models import TranslatableModel, TranslatedFields
 
-# Create your models here.
+class HomepageCollection(TranslatableModel):
+    pass
+
+class HomepageCollectionItem(TranslatableModel):
+    pass
