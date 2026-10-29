@@ -4,5 +4,5 @@ from parler.models import TranslatableModel, TranslatedFields
 class HomepageCollection(TranslatableModel):
     pass
 
-class HomepageCollectionItem(TranslatableModel):
+class HomepageCollectionItem(models.Model):
     pass
