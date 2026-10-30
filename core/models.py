@@ -27,6 +27,10 @@ class HomepageCollection(TranslatableModel):
     
 
 class HomepageCollectionItem(models.Model):
+    collection = models.ManyToManyField(
+        HomepageCollection,
+        related_name='items'
+    )
     movie = models.ForeignKey(
         Movie,
         on_delete=models.CASCADE,
