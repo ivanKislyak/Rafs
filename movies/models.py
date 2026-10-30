@@ -199,10 +199,7 @@ class GlobalSearchIndex(models.Model):
     content_object = GenericForeignKey('content_type', 'object_id')
     
     search_vector = SearchVectorField(null=True)
-
-    def __str__(self):
-        return f"{self.content_type.model} #{self.object_id} and query - {self.content_object}"
-    
+   
     class Meta:
         verbose_name = _("Global Search Index")
         verbose_name_plural = _("Global Search Indexes")
@@ -213,6 +210,9 @@ class GlobalSearchIndex(models.Model):
             models.UniqueConstraint(fields=["content_type", "object_id"], name="unique_gsi_target"),
         ]
 
+    def __str__(self):
+        return f"{self.content_type.model} #{self.object_id} and query - {self.content_object}"
+ 
 
 class WatchStatus(models.Model):
     class StatusChoice(models.TextChoices):
@@ -227,10 +227,10 @@ class WatchStatus(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="watch_statuses", verbose_name=_("Movie"))
     status = models.CharField(max_length=20, choices=StatusChoice.choices, default=StatusChoice.VIEWED, verbose_name=_("Status"))
 
-    def __str__(self):
-        return self.get_status_display()
-
     class Meta:
         verbose_name = _("Watch Status")
         verbose_name_plural = _("Watch Statuses")
         constraints = [models.UniqueConstraint(fields=["user", "movie"], name="unique_movie_status")]
+
+    def __str__(self):
+        return self.get_status_display()
