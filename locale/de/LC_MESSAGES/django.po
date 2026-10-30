@@ -1665,3 +1665,23 @@ msgstr "Erscheinungsjahr"
 #: movies/movie_models.py
 msgid "Person name"
 msgstr "Name der Person"
+
+#: core/models.py:9
+msgid "Title of Homepage Collection"
+msgstr "Titel der Sammlung auf der Startseite"
+
+#: core/models.py:18
+msgid "Homepage Collection"
+msgstr "Sammlung auf der Startseite"
+
+#: core/models.py:19
+msgid "Homepage Collections"
+msgstr "Sammlungen auf der Startseite"
+
+#: core/models.py:50
+msgid "Homepage Collection Item"
+msgstr "Eintrag der Sammlung auf der Startseite"
+
+#: core/models.py:51
+msgid "Homepage Collection Items"
+msgstr "Einträge der Sammlungen auf der Startseite"

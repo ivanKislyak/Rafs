@@ -1665,3 +1665,23 @@ msgstr "Рік виходу"
 #: movies/movie_models.py
 msgid "Person name"
 msgstr "Ім’я"
+
+#: core/models.py:9
+msgid "Title of Homepage Collection"
+msgstr "Назва добірки на головній"
+
+#: core/models.py:18
+msgid "Homepage Collection"
+msgstr "Добірка на головній"
+
+#: core/models.py:19
+msgid "Homepage Collections"
+msgstr "Добірки на головній"
+
+#: core/models.py:50
+msgid "Homepage Collection Item"
+msgstr "Елемент добірки на головній"
+
+#: core/models.py:51
+msgid "Homepage Collection Items"
+msgstr "Елементи добірок на головній"

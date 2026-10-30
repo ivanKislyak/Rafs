@@ -1665,3 +1665,23 @@ msgstr "Шыққан жылы"
 #: movies/movie_models.py
 msgid "Person name"
 msgstr "Аты-жөні"
+
+#: core/models.py:9
+msgid "Title of Homepage Collection"
+msgstr "Басты бет топтамасының атауы"
+
+#: core/models.py:18
+msgid "Homepage Collection"
+msgstr "Басты бет топтамасы"
+
+#: core/models.py:19
+msgid "Homepage Collections"
+msgstr "Басты бет топтамалары"
+
+#: core/models.py:50
+msgid "Homepage Collection Item"
+msgstr "Басты бет топтамасының элементі"
+
+#: core/models.py:51
+msgid "Homepage Collection Items"
+msgstr "Басты бет топтамаларының элементтері"

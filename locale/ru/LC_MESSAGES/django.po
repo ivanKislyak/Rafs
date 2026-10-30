@@ -1653,3 +1653,23 @@ msgstr "Год выхода"
 #: movies/movie_models.py
 msgid "Person name"
 msgstr "Имя"
+
+#: core/models.py:9
+msgid "Title of Homepage Collection"
+msgstr "Название подборки на главной"
+
+#: core/models.py:18
+msgid "Homepage Collection"
+msgstr "Подборка на главной"
+
+#: core/models.py:19
+msgid "Homepage Collections"
+msgstr "Подборки на главной"
+
+#: core/models.py:50
+msgid "Homepage Collection Item"
+msgstr "Элемент подборки на главной"
+
+#: core/models.py:51
+msgid "Homepage Collection Items"
+msgstr "Элементы подборок на главной"
