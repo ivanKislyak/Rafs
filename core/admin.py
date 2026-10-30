@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.utils.translation import get_language
+from .models import HomepageCollection, HomepageCollectionItem
 from movies.models import GlobalSearchIndex
 from movies.movie_models import (
     TypeOfWork, Genre,
@@ -51,3 +52,12 @@ class TypeOfWorkAdmin(TranslatableAdmin):
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         return qs.translated(get_language()).order_by('translations__name').distinct()
+        
+@admin.register(HomepageCollection)
+class HomepageCollectionAdmin(TranslatableAdmin):
+    list_display = ('position', 'title', 'is_published')
+    list_editable = ('is_published',)
+    
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.translated(get_language()).order_by('translations__title').distinct()
