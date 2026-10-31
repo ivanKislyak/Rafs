@@ -83,6 +83,11 @@ def stopping_signals():
 
 
 class Command(MovieCommand):
+    importer = IMPORTER
+    read_config = staticmethod(saved_config)
+    state_class = AnimationState
+    campaign_label = "animation"
+
     help = (
         "Import Animation movie/whole tv works with exact Wikidata identity. "
         "--target-new uses SQLite-recorded new Movie cards across resumes (practical goal, 1-15000); "
@@ -109,9 +114,18 @@ class Command(MovieCommand):
         parser.add_argument("--sparql-delay", type=float, default=5.0)
         parser.add_argument("--maxlag-wait", type=int, default=1800)
 
-    def configuration(self, options, previous):
-        if not 1 <= options["target_new"] <= 15000:
+    def validate_target(self, target):
+        if not 1 <= target <= 15000:
             raise CommandError("--target-new must be between 1 and 15000.")
+
+    def selection_config(self, options):
+        return {"genre": ANIMATION_GENRE, "exclude_anime": options["exclude_anime"]}
+
+    def target_reached(self):
+        return self.created_count >= self.options["target_new"]
+
+    def configuration(self, options, previous):
+        self.validate_target(options["target_new"])
         if any(options[key] < 0 for key in ("min_votes", "max_candidates", "maxlag_wait")):
             raise CommandError("Votes, candidate budget and maxlag wait cannot be negative.")
         if any(not math.isfinite(options[key]) or options[key] < minimum for key, minimum in
@@ -133,22 +147,25 @@ class Command(MovieCommand):
             str(database.get("PORT", "")), database.get("USER", ""),
         ]).encode()).hexdigest()
         config = {
-            "importer": IMPORTER, "schema_version": SCHEMA_VERSION, "database_fingerprint": fingerprint,
+            "importer": self.importer, "schema_version": SCHEMA_VERSION, "database_fingerprint": fingerprint,
             "sources": ["movie", "tv"] if options["media_type"] == "both" else [options["media_type"]],
-            "genre": ANIMATION_GENRE, "exclude_anime": options["exclude_anime"],
+            **self.selection_config(options),
             "min_votes": options["min_votes"], "languages": languages, "sort": options["sort"],
             "date_from": lower.isoformat(), "date_to": upper.isoformat(),
         }
-        if previous is not None and {**previous, "importer": IMPORTER, "schema_version": SCHEMA_VERSION} != config:
+        compatible = previous
+        if previous is not None and self.importer == IMPORTER:
+            compatible = {**previous, "importer": IMPORTER, "schema_version": SCHEMA_VERSION}
+        if previous is not None and compatible != config:
             raise CommandError("State-dir belongs to another database, importer version or selection; use a separate directory.")
         return config
 
     def handle(self, *args, **options):
         directory = Path(options["state_dir"]).expanduser().resolve()
-        previous = saved_config(directory)
+        previous = self.read_config(directory)
         config = self.configuration(options, previous)
         if connection.vendor != "postgresql":
-            raise CommandError("import_animation requires PostgreSQL for shared writer locking and search indexing.")
+            raise CommandError(f"import_{self.campaign_label} requires PostgreSQL for shared writer locking and search indexing.")
         token = clean(os.getenv("TMDB_READ_TOKEN") or getattr(settings, "TMDB_READ_TOKEN", ""))
         key = clean(os.getenv("TMDB_API_KEY") or getattr(settings, "TMDB_API_KEY", ""))
         if not token and not key:
@@ -157,10 +174,10 @@ class Command(MovieCommand):
         self.options, self.config = options, config
         self.run_counts = Counter()
         self.dry_id = str(uuid.uuid4()) if options["dry_run"] else None
-        self.stdout.write("Written with AI assistance (OpenAI Codex). Resumable animation campaign.")
+        self.stdout.write(f"Written with AI assistance (OpenAI Codex). Resumable {self.campaign_label} campaign.")
         # Both locks fail immediately, rather than queuing behind another writer.
         with run_lock(directory), database_lock(), stopping_signals() as stopped:
-            state = AnimationState(directory, config)
+            state = self.state_class(directory, config)
             self.state = state
             self.created_count = state.created_count()
             if previous and previous["schema_version"] == 1:
@@ -175,9 +192,9 @@ class Command(MovieCommand):
                 with state.db:
                     if options["refresh_cache"]:
                         state.db.execute("DELETE FROM cache")
-                    if options["retry_skipped"] and not self.dry_id and self.created_count < options["target_new"]:
+                    if options["retry_skipped"] and not self.dry_id and not self.target_reached():
                         state.db.execute("UPDATE manifest SET status='pending' WHERE status='skipped'")
-                if self.created_count < options["target_new"]:
+                if not self.target_reached():
                     if options["exclude_anime"]:
                         keyword = api.get(f"{TMDB}/keyword/{ANIME_KEYWORD}")
                         if not keyword or keyword.get("id") != ANIME_KEYWORD or keyword.get("name") != "anime":
@@ -238,7 +255,7 @@ class Command(MovieCommand):
             self.last_checkpoint = time.monotonic()
 
     def run_campaign(self):
-        while self.created_count < self.options["target_new"]:
+        while not self.target_reached():
             budget = self.options["max_candidates"]
             remaining = budget - self.run_counts["examined"] if budget else BATCH_SIZE
             if remaining <= 0:
@@ -265,7 +282,7 @@ class Command(MovieCommand):
                 raise CommandError("Invalid discovery cursor; page 501 is never requested.")
             parameters = {
                 "language": "en-US", "sort_by": self.config["sort"], "page": page,
-                "include_adult": "false", "with_genres": str(ANIMATION_GENRE),
+                "include_adult": "false",
                 "vote_count.gte": self.config["min_votes"],
             }
             if self.config["exclude_anime"]:
@@ -278,6 +295,7 @@ class Command(MovieCommand):
                 field = "primary_release_date" if media == "movie" else "first_air_date"
                 parameters[field + ".gte"] = part["lower_date"]
                 parameters[field + ".lte"] = part["upper_date"]
+            parameters.update(self.selection_parameters(part))
             self.output(f"Discovery {media}/{part['mode']} {part['lower_date']}..{part['upper_date']} page={page}")
             data = self.api.get(f"{TMDB}/discover/{media}", parameters)
             if (not isinstance(data, dict) or not isinstance(data.get("results"), list)
@@ -295,6 +313,15 @@ class Command(MovieCommand):
                 self.checkpoint()
         return bool(pages)
 
+    def selection_parameters(self, part):
+        return {"with_genres": str(ANIMATION_GENRE)}
+
+    def validate_item(self, item, row):
+        validate_animation(item, row["media_type"], row["tmdb_id"], self.config["min_votes"], self.config["exclude_anime"])
+
+    def validate_relations(self, row, item, qid, entity, related):
+        """Optional selection-specific consistency check before any Movie write."""
+
     def finish(self, row, status, *, obj=None, qid="", code="", reason=""):
         self.state.finish(row, status, movie_pk=obj.pk if obj else None, qid=qid, code=code,
                           reason=self.redact(reason), dry_run_id=self.dry_id)
@@ -303,7 +330,7 @@ class Command(MovieCommand):
             self.created_count += 1
         self.output(f"{'DRY RUN ' if self.dry_id else ''}{status}: {row['media_type']}/{row['tmdb_id']} {qid} {code}; "
                     f"partition={row['partition_id']} page={row['source_page']}; "
-                    f"new={self.created_count}/{self.options['target_new']}")
+                    f"new={self.created_count}/{self.options['target_new'] or 'unlimited'}")
 
     def import_batch(self, rows):
         movie_ids = set()
@@ -313,7 +340,7 @@ class Command(MovieCommand):
             self.run_counts["examined"] += 1
             try:
                 item = self.api.details(row["media_type"], row["tmdb_id"])
-                validate_animation(item, row["media_type"], row["tmdb_id"], self.config["min_votes"], self.config["exclude_anime"])
+                self.validate_item(item, row)
                 prepared.append((row, item))
             except CandidateIssue as error:
                 self.finish(row, "skipped", code=error.code, reason=str(error))
@@ -327,7 +354,7 @@ class Command(MovieCommand):
                 issues.update({(media, key): value for key, value in media_issues.items()})
         entities = self.api.entities(mappings.values(), claims=True) if mappings else {}
         for row, item in prepared:
-            if self.created_count >= self.options["target_new"]:
+            if self.target_reached():
                 break  # Every remaining page ID stays pending, even after a SIGKILL.
             pair = (row["media_type"], row["tmdb_id"])
             qid = mappings.get(pair)
@@ -352,6 +379,7 @@ class Command(MovieCommand):
                 related = self.api.entities(related_ids)
                 if not related.get(work_type) or "missing" in related[work_type]:
                     raise CandidateIssue("invalid_format", "The confirmed type entity is unavailable.")
+                self.validate_relations(row, item, qid, entity, related)
                 movie_pk = self.save_candidate(row, item, qid, entity, related, work_type)
                 if movie_pk is not None:
                     movie_ids.add(movie_pk)

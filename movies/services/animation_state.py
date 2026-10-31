@@ -22,7 +22,7 @@ SCHEMA_VERSION = 2
 MAX_PAGES = 500
 
 
-def saved_config(directory):
+def saved_config(directory, *, versions=None, command="import_animation"):
     """Inspect read-only, before touching a foreign manifest or even its lock."""
     path = Path(directory).resolve() / "state.sqlite3"
     if not path.exists() or not path.stat().st_size:
@@ -36,9 +36,10 @@ def saved_config(directory):
                 raise ValueError
             values = dict(db.execute("SELECT key,value FROM meta"))
             config = json.loads(values.get("config", "null"))
-            if not isinstance(config, dict) or (config.get("importer"), config.get("schema_version")) not in {
+            accepted = versions if versions is not None else {
                 ("animation-v1", 1), (IMPORTER, SCHEMA_VERSION),
-            }:
+            }
+            if not isinstance(config, dict) or (config.get("importer"), config.get("schema_version")) not in accepted:
                 raise ValueError
             uuid.UUID(json.loads(values["campaign"]))
             required = {"position", "media_type", "tmdb_id", "status", "movie_pk", "wikidata_id",
@@ -55,13 +56,16 @@ def saved_config(directory):
                 raise ValueError
             return config
     except (sqlite3.Error, ValueError, KeyError, TypeError):
-        raise CommandError("State-dir is not a compatible import_animation campaign; use a separate directory.") from None
+        raise CommandError(f"State-dir is not a compatible {command} campaign; use a separate directory.") from None
 
 
 class AnimationState(State):
+    read_config = staticmethod(saved_config)
+    importer = IMPORTER
+
     def __init__(self, directory, config):
-        previous = saved_config(directory)
-        if previous is not None and {**previous, "importer": IMPORTER, "schema_version": SCHEMA_VERSION} != config:
+        previous = self.read_config(directory)
+        if previous is not None and {**previous, "importer": self.importer, "schema_version": SCHEMA_VERSION} != config:
             raise CommandError("State-dir belongs to another database or selection; use a separate directory.")
         self.directory = Path(directory).resolve()
         self.directory.mkdir(parents=True, exist_ok=True)
@@ -96,16 +100,21 @@ class AnimationState(State):
         if previous is None:
             self._meta("config", config)
             self._meta("campaign", str(uuid.uuid4()))
-            for media in config["sources"]:
-                self.db.execute("INSERT INTO partitions(media_type,mode) VALUES (?,'unfiltered')", (media,))
-                self.db.execute("INSERT INTO partitions(media_type,mode,lower_date,upper_date) VALUES (?,'dated',?,?)",
-                                (media, config["date_from"], config["date_to"]))
+            self.db.executemany(
+                "INSERT INTO partitions(media_type,mode,lower_date,upper_date) VALUES (?,?,?,?)",
+                self.initial_partitions(config),
+            )
         elif previous.get("schema_version") == 1:
             # Same manifest layout: keep all IDs, results, cache and cursors.
             # No reading or reconstruction from the removed Django journal.
             self._meta("config", config)
         self.db.commit()
         self.campaign = self.meta("campaign")
+
+    def initial_partitions(self, config):
+        for media in config["sources"]:
+            yield media, "unfiltered", "", ""
+            yield media, "dated", config["date_from"], config["date_to"]
 
     def _meta(self, key, value):
         self.db.execute("INSERT OR REPLACE INTO meta VALUES (?,?)", (key, json.dumps(value)))
