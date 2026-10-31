@@ -1685,3 +1685,12 @@ msgstr "Eintrag der Sammlung auf der Startseite"
 #: core/models.py:51
 msgid "Homepage Collection Items"
 msgstr "Einträge der Sammlungen auf der Startseite"
+
+#: movies/views.py
+#, python-format
+msgid "Achievement earned: %(name)s"
+msgstr "Erfolg erhalten: %(name)s"
+
+#: accounts/templates/accounts/_halloween_award.html
+msgid "Skip to award"
+msgstr "Zur Auszeichnung"

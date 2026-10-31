@@ -1673,3 +1673,12 @@ msgstr "Элемент подборки на главной"
 #: core/models.py:51
 msgid "Homepage Collection Items"
 msgstr "Элементы подборок на главной"
+
+#: movies/views.py
+#, python-format
+msgid "Achievement earned: %(name)s"
+msgstr "Получено достижение: %(name)s"
+
+#: accounts/templates/accounts/_halloween_award.html
+msgid "Skip to award"
+msgstr "Перейти к награде"

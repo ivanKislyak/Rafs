@@ -7,16 +7,9 @@
  * Color roles: neutral surfaces/text; pumpkin actions and selected controls;
  * purple artwork/supporting accents; green collection/hero details only.
  *
- * Backend handoff: profile Prefetch('achievement') must select avatar_image in
- * addition to id/name/description and filter display_in_profile=True before
- * assigning profile_achievements, so count and list use the same visible awards.
- * The old M2M remains authoritative here; UserAchievement integration belongs
- * to the backend. No earned_at is supplied or rendered. Review or Treat's
- * intended window is Oct 31–Nov 3, 2026 inclusive, UTC+5, enforced server-side.
- * A future presentation needs an explicit server-originated, persisted award
- * signal with a stable award ID, code, artwork and replay/acknowledgement policy.
- * Frames messages and review success are not award signals. jigsaw_boo.jpg is
- * intentionally unused: no display, preload, trigger, grant or callback.
+ * Award eligibility is enforced by accounts.services.achievements, independently
+ * of this appearance switch. halloween-award.js presents only a persisted new
+ * award signalled by Django messages; Frames alone never trigger the screamer.
  */
 
 html[data-event="halloween-2026"] {

@@ -1,6 +1,7 @@
 {% load static %}
 {% load i18n %}
 {% load seo %}
+{% load achievements %}
 <!DOCTYPE html>
 {% get_current_language as CURRENT_LANGUAGE %}
 {% comment %}Seasonal switch: remove data-event="halloween-2026" below to restore ordinary appearance.
@@ -64,6 +65,7 @@ Original opening tag: <html lang="{{ CURRENT_LANGUAGE }}">. See css/halloween.cs
               href="{% static 'css/components/profile-menu.css' %}" />
         {% block extra_css %}{% endblock %}
         <link rel="stylesheet" href="{% static 'css/halloween.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/components/halloween-award.css' %}" />
     </head>
     <body>
         {% include "_header.html" %}
@@ -76,8 +78,7 @@ Original opening tag: <html lang="{{ CURRENT_LANGUAGE }}">. See css/halloween.cs
                     <aside class="site-toast{% if 'frames-reward' in message.tags %} site-toast--frames{% endif %}"
                            data-site-toast
                            data-toast-tags="{{ message.tags }}"
-                           role="status"
-                           hidden>
+                           role="status">
                         {% if "frames-reward" in message.tags %}
                             <div class="site-toast-frame-icon"
                                  data-toast-particle-origin
@@ -102,6 +103,7 @@ Original opening tag: <html lang="{{ CURRENT_LANGUAGE }}">. See css/halloween.cs
                                 data-toast-close
                                 aria-label="{% translate 'Close notification' %}">×</button>
                         <span class="site-toast-timer" aria-hidden="true"></span>
+                        {% halloween_award message %}
                     </aside>
                 {% endfor %}
             </div>
@@ -109,6 +111,7 @@ Original opening tag: <html lang="{{ CURRENT_LANGUAGE }}">. See css/halloween.cs
         <div class="main-container">
             {% block content %}{% endblock %}
         </div>
+        <script src="{% static 'js/halloween-award.js' %}" defer></script>
         <script src="{% static 'js/notifications.js' %}" defer></script>
         <script src="{% static 'js/header.js' %}" defer></script>
         {% block extra_js %}{% endblock %}

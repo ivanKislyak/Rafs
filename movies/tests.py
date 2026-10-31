@@ -10,7 +10,7 @@ from django.contrib.postgres.search import SearchVector
 from django.contrib.auth import get_user_model
 from django.db import connection
 from django.db.models import Value
-from django.test import Client, SimpleTestCase, TestCase
+from django.test import Client, SimpleTestCase, TestCase, TransactionTestCase
 from django.test.utils import CaptureQueriesContext
 from django.urls import NoReverseMatch, reverse
 from django.utils import translation
@@ -328,16 +328,13 @@ class CatalogRatingFilterTests(TestCase):
         self.assertNotIn("Low review rating", movies)
 
 
-class ReviewFramesRewardTests(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        cls.user = get_user_model().objects.create_user(
+class ReviewFramesRewardTests(TransactionTestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(
             username="reward-reviewer",
             password="test-password",
         )
-        cls.movie = Movie.objects.create(name="Reward test movie", year=2024)
-
-    def setUp(self):
+        self.movie = Movie.objects.create(name="Reward test movie", year=2024)
         self.client.force_login(self.user)
 
     def submit_review(self, text):

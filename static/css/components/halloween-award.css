@@ -1,0 +1,39 @@
+/* Native dialog keeps the presentation inert until a server-issued message. */
+.halloween-award {
+  width: min(540px, calc(100% - 32px));
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+.halloween-award::backdrop { background: rgb(0 0 0 / 85%); }
+.halloween-award [hidden] { display: none; }
+.halloween-award-scare {
+  display: block;
+  width: 100%;
+  max-height: calc(100dvh - 120px);
+  object-fit: contain;
+}
+.halloween-award-content { padding: 24px; }
+.halloween-award h2 { margin: 0 0 18px; font-size: 1.5rem; }
+.halloween-award p { white-space: pre-line; overflow-wrap: anywhere; }
+.halloween-award-badge { display: block; max-width: 100%; object-fit: contain; margin: 0 auto 20px; }
+.halloween-award-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; }
+.halloween-award-actions a,
+.halloween-award-actions a:visited { color: var(--color-accent); }
+.halloween-award-actions a:hover { color: var(--color-text); }
+.halloween-award-button {
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+  cursor: pointer;
+}
+.halloween-award [data-scare-skip] { display: block; margin: 12px auto; }
+.halloween-award-button:hover { background: var(--color-surface-hover); }
+.halloween-award :is(button, a):focus-visible { outline: 2px solid var(--color-focus-visible-outline); outline-offset: 3px; }

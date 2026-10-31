@@ -1,0 +1,24 @@
+{% load i18n static %}
+{% if achievement %}
+    <template data-halloween-award>
+        <dialog class="halloween-award" aria-labelledby="halloween-award-title">
+            <div data-award-scare hidden>
+                <img class="halloween-award-scare" data-scare-image
+                     data-src="{% static 'images/halloween/jigsaw_boo.jpg' %}" alt="">
+                <button type="button" class="halloween-award-button" data-scare-skip>{% translate "Skip to award" %}</button>
+            </div>
+            <div class="halloween-award-content" data-award-content hidden>
+                <h2 id="halloween-award-title">{{ achievement.name }}</h2>
+                {% if achievement.badge_image %}
+                    <img class="halloween-award-badge" data-award-badge
+                         data-src="{{ achievement.badge_image.url }}" alt="" width="160" height="160">
+                {% endif %}
+                <p>{{ achievement.description }}</p>
+                <div class="halloween-award-actions">
+                    <a href="{% url 'profile' user.username %}">{% translate "Open profile" %}</a>
+                    <button type="button" class="halloween-award-button" data-award-close>{% translate "Close notification" %}</button>
+                </div>
+            </div>
+        </dialog>
+    </template>
+{% endif %}

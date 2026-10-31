@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
+from django.db import transaction
 from django.db.models import Avg, F, Count, Value, Prefetch, Q, OuterRef, Subquery
 from django.db.models.functions import Coalesce
 from django.template.loader import render_to_string
@@ -44,6 +45,7 @@ from .services.wikidata import (
     )
 from .services.import_wikidata import import_parsed_data_to_db 
 from core.utils import get_country_code
+from accounts.services.achievements import award_review_or_treat
 
 def catalog(request):
     filter_form = MovieFilterForm(request.GET or None)
@@ -159,6 +161,8 @@ def make_review_form(request, movie_id):
         movie_id=movie_id).first()
 
     if request.method == "POST":
+        # ModelForm validation mutates its instance, so capture this first.
+        previous_text = existing_review.text if existing_review else ""
         review_form = ReviewForm(request.POST, instance=existing_review)
 
         if review_form.is_valid():
@@ -167,16 +171,23 @@ def make_review_form(request, movie_id):
             review.movie = movie
             review.user = request.user
 
-            if is_new_review and not request.user.movies.filter(id=movie_id).exists():
-                request.user.movies.add(movie)
-                request.user.user_frames += 100
-                request.user.save()
-                messages.success(
-                    request,
-                    _("+100 Frames"),
-                    extra_tags="frames-reward",
-                )
-            review.save()
+            with transaction.atomic():
+                if is_new_review and not request.user.movies.filter(id=movie_id).exists():
+                    request.user.movies.add(movie)
+                    request.user.user_frames += 100
+                    request.user.save()
+                    transaction.on_commit(lambda: messages.success(
+                        request, _("+100 Frames"), extra_tags="frames-reward",
+                    ))
+                review.save()
+                award, created = award_review_or_treat(review, previous_text)
+                if created:
+                    name = award.achievement.name
+                    transaction.on_commit(lambda: messages.success(
+                        request,
+                        _("Achievement earned: %(name)s") % {"name": name},
+                        extra_tags="halloween-award-earned review-or-treat-2026",
+                    ))
 
             return redirect("movies:detail", movie_id=movie_id)
 

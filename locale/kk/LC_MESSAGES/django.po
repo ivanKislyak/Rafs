@@ -1685,3 +1685,12 @@ msgstr "Басты бет топтамасының элементі"
 #: core/models.py:51
 msgid "Homepage Collection Items"
 msgstr "Басты бет топтамаларының элементтері"
+
+#: movies/views.py
+#, python-format
+msgid "Achievement earned: %(name)s"
+msgstr "Жетістік алынды: %(name)s"
+
+#: accounts/templates/accounts/_halloween_award.html
+msgid "Skip to award"
+msgstr "Марапатқа өту"

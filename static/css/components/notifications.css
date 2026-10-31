@@ -1,6 +1,8 @@
 /* Toast notifications and frame reward animation. */
 
 .site-toast-region {
+  display: grid;
+  gap: 10px;
   position: fixed;
   right: 18px;
   bottom: 18px;
@@ -35,6 +37,13 @@
 .site-toast[hidden] {
   display: none;
 }
+
+/* Notifications remain readable when JavaScript is absent or fails to load. */
+html:not(.has-toast-js) .site-toast {
+  opacity: 1;
+  transform: none;
+}
+html:not(.has-toast-js) .site-toast-close { display: none; }
 
 .site-toast.is-visible {
   opacity: 1;
