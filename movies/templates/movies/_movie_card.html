@@ -27,10 +27,19 @@
             <h2 title="{{ movie_title }}">{{ movie_title }}</h2>
             <div class="movie-card-meta">
                 {% if movie.year %}<span>{{ movie.year }}</span>{% endif %}
+                {% comment %}Original rating branch preserved for reference. Collection cards must not resolve avg_rating:
                 {% if movie.avg_rating %}
                     <span class="movie-card-rating"><span class="visually-hidden">{% translate "RAFS rating:" %} </span>{{ movie.avg_rating }}<span class="movie-card-rating-scale"> / 10</span></span>
                 {% else %}
                     <span>{% translate "Not rated yet" %}</span>
+                {% endif %}
+                {% endcomment %}
+                {% if not hide_rating %}
+                    {% if movie.avg_rating %}
+                        <span class="movie-card-rating"><span class="visually-hidden">{% translate "RAFS rating:" %} </span>{{ movie.avg_rating }}<span class="movie-card-rating-scale"> / 10</span></span>
+                    {% else %}
+                        <span>{% translate "Not rated yet" %}</span>
+                    {% endif %}
                 {% endif %}
             </div>
         </div>

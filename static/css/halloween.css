@@ -1,0 +1,287 @@
+/* RAFS Halloween 2026 — reversible, appearance only.
+ * SINGLE SWITCH: templates/base.html, <html data-event="halloween-2026">.
+ * Disable: remove that attribute (or change its value). Restore the exact value
+ * to enable again. No dates, backend settings, localStorage or award logic.
+ * Original styles/assets stay intact. This file loads AFTER page-specific CSS.
+ * event-assets.js follows the same attribute for ICO/PNG favicon rollback.
+ * Color roles: neutral surfaces/text; pumpkin actions and selected controls;
+ * purple artwork/supporting accents; green collection/hero details only.
+ *
+ * Backend handoff: profile Prefetch('achievement') must select avatar_image in
+ * addition to id/name/description and filter display_in_profile=True before
+ * assigning profile_achievements, so count and list use the same visible awards.
+ * The old M2M remains authoritative here; UserAchievement integration belongs
+ * to the backend. No earned_at is supplied or rendered. Review or Treat's
+ * intended window is Oct 31–Nov 3, 2026 inclusive, UTC+5, enforced server-side.
+ * A future presentation needs an explicit server-originated, persisted award
+ * signal with a stable award ID, code, artwork and replay/acknowledgement policy.
+ * Frames messages and review success are not award signals. jigsaw_boo.jpg is
+ * intentionally unused: no display, preload, trigger, grant or callback.
+ */
+
+html[data-event="halloween-2026"] {
+  color-scheme: dark;
+  --rafs-logo-red: #7130a5;
+  --rafs-red-deep: var(--color-action-active);
+  --rafs-red-action: var(--color-action);
+  --rafs-red-hover: var(--color-action-hover);
+  --rafs-red-accent: var(--halloween-purple);
+  --rafs-red: var(--halloween-purple);
+  --rafs-red-soft: var(--halloween-purple);
+  --rafs-red-on-dark: var(--halloween-purple);
+  --rafs-red-tint: #e7e3df;
+  --color-bg: #0b0c0f;
+  --color-surface: #151619;
+  --color-surface-raised: #202226;
+  --color-border: #36393f;
+  --color-text: #f4f1ed;
+  --color-text-muted: #b9b8b6;
+  --color-accent: var(--halloween-purple);
+  --color-action: #e99a52;
+  --color-action-hover: #f2ad70;
+  --color-action-active: #d9873c;
+  --color-action-text: #18120d;
+  --color-focus-visible-outline: var(--halloween-orange-text);
+  --color-surface-hover: color-mix(in srgb, var(--color-text) 5%, var(--color-surface-raised));
+  --color-accent-surface-subtle: var(--color-surface-hover);
+  --color-accent-surface-hover: color-mix(in srgb, var(--color-text) 8%, var(--color-surface-raised));
+  --color-accent-glow: rgb(194 154 232 / 6%);
+  --halloween-orange-text: #e99a52;
+  --halloween-selection: color-mix(in srgb, var(--color-action) 12%, var(--color-surface-raised));
+  --halloween-purple: #c29ae8;
+  --halloween-green: #9dbf72;
+  --halloween-error: #ffaaa3;
+  --halloween-danger: #911818;
+  --halloween-danger-hover: #a51d1d;
+}
+
+html[data-event="halloween-2026"][data-theme="light"] {
+  color-scheme: light;
+  --color-bg: #f4f1ec;
+  --color-surface: #fcfaf7;
+  --color-surface-raised: #ffffff;
+  --color-border: #d3cec6;
+  --color-text: #201e1c;
+  --color-text-muted: #66615c;
+  --color-accent-glow: rgb(113 48 165 / 5%);
+  --halloween-orange-text: #934812;
+  --halloween-purple: #7130a5;
+  --halloween-green: #516e31;
+  --halloween-error: #a51d1d;
+}
+
+/* Existing logo dimensions and ordinary hover rules remain untouched. */
+html[data-event="halloween-2026"] .header-inner > .logo > :is(.logo-img, .red-logo-img, .blue-logo-img),
+html[data-event="halloween-2026"] .footer-logo:not(.halloween-art) {
+  display: none;
+}
+
+html[data-event="halloween-2026"] .halloween-art {
+  display: block;
+}
+
+html[data-event="halloween-2026"] .halloween-logo-main {
+  position: relative;
+  z-index: 2;
+  width: 86px;
+  height: 48px;
+  object-fit: contain;
+}
+
+html[data-event="halloween-2026"] :is(.halloween-logo-left, .halloween-logo-right, .halloween-logo-hover) {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  pointer-events: none;
+}
+
+html[data-event="halloween-2026"] :is(.halloween-logo-left, .halloween-logo-right) {
+  z-index: 1;
+  transition: transform 180ms ease, opacity 180ms ease;
+}
+
+html[data-event="halloween-2026"] .halloween-logo-hover { z-index: 3; }
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  html[data-event="halloween-2026"] .header-inner > .logo:hover .halloween-logo-left {
+    opacity: 1;
+    transform: translateX(-3px);
+  }
+  html[data-event="halloween-2026"] .header-inner > .logo:hover .halloween-logo-right {
+    opacity: 1;
+    transform: translateX(3px);
+  }
+  html[data-event="halloween-2026"] .header-inner > .logo:hover .halloween-logo-hover { opacity: 1; }
+}
+
+/* Quiet green decoration; the dark artwork layers are never text colors. */
+html[data-event="halloween-2026"] .home-collection-heading {
+  border-inline-start: 3px solid var(--halloween-green);
+  padding-inline-start: 14px;
+}
+
+html[data-event="halloween-2026"] :is(.main-header, .main-footer) { background: var(--color-surface); }
+
+/* Orange is visible even with no catalog items. General links keep their
+ * supporting accent; headings, borders and icons retain neutral defaults. */
+html[data-event="halloween-2026"] .search-bar-submit {
+  background: var(--color-action);
+  color: var(--color-action-text);
+}
+html[data-event="halloween-2026"] .search-bar-container:focus-within { border-color: var(--halloween-orange-text); }
+html[data-event="halloween-2026"] .activated-category a {
+  box-shadow: inset 0 -2px var(--halloween-orange-text);
+}
+html[data-event="halloween-2026"] .page-kicker { color: var(--halloween-orange-text); }
+html[data-event="halloween-2026"] .home-collection-controls button:not(:disabled) {
+  color: var(--halloween-orange-text);
+  border-color: var(--halloween-orange-text);
+}
+html[data-event="halloween-2026"] .home-collection-controls button:hover:not(:disabled) {
+  background: var(--color-action-hover);
+  color: var(--color-action-text);
+}
+html[data-event="halloween-2026"] .home-collection-controls button:active:not(:disabled) {
+  background: var(--color-action-active);
+  color: var(--color-action-text);
+}
+html[data-event="halloween-2026"] .profile-watch-item.is-active {
+  border-bottom-color: var(--halloween-orange-text);
+}
+html[data-event="halloween-2026"] :is(.movie-watch-status-btn.is-active, .review-action-button.is-active) {
+  border-color: var(--halloween-orange-text);
+  background: var(--halloween-selection);
+}
+html[data-event="halloween-2026"] .review-vote-button.is-selected {
+  background: var(--halloween-selection);
+  color: var(--halloween-orange-text);
+}
+html[data-event="halloween-2026"] :is(.register-form-submit, .about-button--primary, .review-rating-primary-mark) {
+  color: var(--color-action-text);
+}
+html[data-event="halloween-2026"] :is(.search-bar-submit, .register-form-submit, .about-button--primary, .review-reply-submit):hover:not(:disabled) {
+  background: var(--color-action-hover);
+  color: var(--color-action-text);
+}
+html[data-event="halloween-2026"] :is(.search-bar-submit, .register-form-submit, .about-button--primary, .profile-button--primary, .review-reply-submit, .wd-search-submit):active:not(:disabled) {
+  background: var(--color-action-active);
+  color: var(--color-action-text);
+}
+html[data-event="halloween-2026"] :is(.search-bar-submit, .register-form-submit, .btn, .profile-button--primary, .review-reply-submit, .wd-search-submit):disabled {
+  background: var(--color-surface-raised);
+  border-color: var(--color-border);
+  color: var(--color-text-muted);
+  cursor: not-allowed;
+  transform: none;
+}
+html[data-event="halloween-2026"] .wd-search-submit-spinner {
+  border-color: color-mix(in srgb, var(--color-action-text) 35%, transparent);
+  border-top-color: var(--color-action-text);
+}
+
+/* Literal red decorations and fixed dark auth/about surfaces need overrides. */
+html[data-event="halloween-2026"] .site-toast {
+  background: var(--color-surface);
+}
+html[data-event="halloween-2026"] .site-toast-frame-icon {
+  border-color: var(--color-border);
+  background: var(--color-accent-glow);
+}
+html[data-event="halloween-2026"] :is(.site-toast-frame-icon span, .frames-flight-square) { box-shadow: none; }
+
+html[data-event="halloween-2026"] .register-page {
+  background: var(--color-bg);
+}
+html[data-event="halloween-2026"] .register-form {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+html[data-event="halloween-2026"] :is(.register-form-header h1, .register-form-label) { color: var(--color-text); }
+html[data-event="halloween-2026"] :is(.register-form-header p, .register-form-help, .register-form-login) { color: var(--color-text-muted); }
+html[data-event="halloween-2026"] .register-form input:not([type="checkbox"]):not([type="hidden"]) {
+  background: var(--color-surface-raised);
+  border-color: var(--color-border);
+  color: var(--color-text);
+  caret-color: var(--halloween-orange-text);
+}
+html[data-event="halloween-2026"] .register-form input:not([type="checkbox"]):not([type="hidden"]):hover { border-color: var(--color-text-muted); }
+html[data-event="halloween-2026"] .register-form input:not([type="checkbox"]):not([type="hidden"]):focus {
+  border-color: var(--halloween-orange-text);
+  box-shadow: none;
+}
+html[data-event="halloween-2026"] .register-form input:not([type="checkbox"]):not([type="hidden"]):focus-visible,
+html[data-event="halloween-2026"] .form-range:focus-visible {
+  outline: 2px solid var(--color-focus-visible-outline);
+  outline-offset: 3px;
+}
+html[data-event="halloween-2026"] :is(input, textarea, select) { accent-color: var(--halloween-orange-text); }
+html[data-event="halloween-2026"] input::placeholder { color: var(--color-text-muted); opacity: 1; }
+html[data-event="halloween-2026"] .register-form input:-webkit-autofill,
+html[data-event="halloween-2026"] .register-form input:-webkit-autofill:hover,
+html[data-event="halloween-2026"] .register-form input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--color-text);
+  box-shadow: 0 0 0 1000px var(--color-surface-raised) inset;
+}
+html[data-event="halloween-2026"] :is(.register-form-login a:hover, .about-button--secondary:hover) { color: var(--color-accent); }
+html[data-event="halloween-2026"] .review-live-score-value { text-shadow: none; }
+html[data-event="halloween-2026"] .review-range-value { color: var(--color-accent); }
+/* Darker orange keeps native selected controls and slider tracks distinct in
+ * light appearance. Button fills stay pumpkin, with dark text in both modes. */
+html[data-event="halloween-2026"] .form-range { --color-action: var(--halloween-orange-text); }
+html[data-event="halloween-2026"] .review-rating-item--primary {
+  border-color: var(--halloween-orange-text);
+  background: var(--color-surface-raised);
+  box-shadow: none;
+}
+html[data-event="halloween-2026"] .review-final-score {
+  background: var(--color-surface-raised);
+  border-color: var(--color-border);
+}
+html[data-event="halloween-2026"] :is(.about-hero h1, .about-section h2, .about-roadmap h2, .about-cta h2, .about-feature-card h3, .about-roadmap-card h3) { color: var(--color-text); }
+html[data-event="halloween-2026"] :is(.about-lead, .about-hero-visual p, .about-feature-card p, .about-roadmap-card p) { color: var(--color-text-muted); }
+html[data-event="halloween-2026"] .about-hero-visual {
+  background: var(--color-surface);
+}
+html[data-event="halloween-2026"] .about-hero-visual::after {
+  background: var(--halloween-green);
+  box-shadow: none;
+}
+html[data-event="halloween-2026"] .about-hero-visual img { filter: none; }
+html[data-event="halloween-2026"] .about-cta {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+}
+
+/* Keep real validation and destructive states red, independent of branding. */
+html[data-event="halloween-2026"] :is(.register-form-errors, .review-form-errors, .profile-edit-error, .account-form-error, .wd-search-form-error, .wd-search-field-errors, .wd-search-state-error .wd-search-state-mark) { color: var(--halloween-error); }
+html[data-event="halloween-2026"] .register-form-errors {
+  border-color: var(--halloween-error);
+  background: rgb(219 57 47 / 10%);
+}
+html[data-event="halloween-2026"] :is(.profile-edit-field [aria-invalid="true"], .account-form-field.has-error input, .wd-search-field.has-error input, .wd-search-field.has-error select, .wd-search-state-error .wd-search-state-mark) { border-color: var(--halloween-error); }
+html[data-event="halloween-2026"] .wd-search-form-error {
+  border-color: var(--halloween-error);
+  background: rgb(219 57 47 / 10%);
+}
+html[data-event="halloween-2026"] .site-toast[data-toast-tags~="error"] { border-color: var(--halloween-error); }
+html[data-event="halloween-2026"] :is(.review-delete-button:hover, .review-reply-delete:hover, .profile-watch-remove:hover) {
+  color: var(--halloween-error);
+  border-color: var(--halloween-error);
+}
+html[data-event="halloween-2026"] .review-delete-dialog-confirm {
+  background: var(--halloween-danger);
+  border-color: var(--halloween-danger);
+  color: #ffffff;
+}
+html[data-event="halloween-2026"] .review-delete-dialog-confirm:hover {
+  background: var(--halloween-danger-hover);
+  border-color: var(--halloween-danger-hover);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-event="halloween-2026"] :is(.halloween-logo-left, .halloween-logo-right) { transition: none; }
+}

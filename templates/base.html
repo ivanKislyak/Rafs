@@ -3,7 +3,10 @@
 {% load seo %}
 <!DOCTYPE html>
 {% get_current_language as CURRENT_LANGUAGE %}
-<html lang="{{ CURRENT_LANGUAGE }}">
+{% comment %}Seasonal switch: remove data-event="halloween-2026" below to restore ordinary appearance.
+Original opening tag: <html lang="{{ CURRENT_LANGUAGE }}">. See css/halloween.css for the handoff.
+{% endcomment %}
+<html lang="{{ CURRENT_LANGUAGE }}" data-event="halloween-2026">
     <head>
         <meta charset="UTF-8" />
         <!-- Google tag (gtag.js) -->
@@ -40,9 +43,17 @@
         <meta name="viewport"
               content="width=device-width, user-scalable=yes, initial-scale=1.0" />
         <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        {% comment %}Original favicon, preserved below with a seasonal URL for the frontend asset switch:
+        <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+        {% endcomment %}
         <link rel="icon"
               type="image/x-icon"
+              data-event-icon="{% static 'images/halloween/halloween_favicon.ico' %}"
               href="{% static 'images/favicon.ico' %}">
+        <link type="image/png" data-event-only
+              data-event-icon="{% static 'images/halloween/halloween_favicon.png' %}"
+              href="{% static 'images/halloween/halloween_favicon.png' %}">
+        <script src="{% static 'js/event-assets.js' %}"></script>
         <script src="{% static 'js/theme.js' %}"></script>
         <link rel="stylesheet" href="{% static 'css/base.css' %}" />
         <link rel="stylesheet" href="{% static 'css/components/footer.css' %}" />
@@ -52,6 +63,7 @@
         <link rel="stylesheet"
               href="{% static 'css/components/profile-menu.css' %}" />
         {% block extra_css %}{% endblock %}
+        <link rel="stylesheet" href="{% static 'css/halloween.css' %}" />
     </head>
     <body>
         {% include "_header.html" %}

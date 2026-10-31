@@ -628,6 +628,29 @@
   color: var(--color-accent);
 }
 
+/* The diamond remains underneath as a fallback for absent or broken artwork. */
+.profile-achievement-art {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: 0 0 52px;
+  width: 52px;
+  height: 52px;
+  align-self: flex-start;
+  border-radius: 8px;
+  background: var(--color-surface-raised);
+}
+
+.profile-achievement-art img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: inherit;
+  background: var(--color-surface-raised);
+}
+
 .profile-achievement h3, .profile-achievement-empty strong {
   margin: 0;
   font-size: .95rem;

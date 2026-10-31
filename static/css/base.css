@@ -90,6 +90,11 @@ hr {
   display: none !important;
 }
 
+/* Seasonal artwork is opt-in; ordinary assets and palette remain the default. */
+html .halloween-art {
+  display: none;
+}
+
 .page-shell {
   width: min(1120px, calc(100% - 40px));
   margin: 40px auto 64px;

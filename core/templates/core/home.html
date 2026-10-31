@@ -21,6 +21,32 @@
 {% endblock %}
 {% block content %}
     <main class="page-shell home-page">
+        {% for collection in homepage_collections %}
+            {% with items=collection.items.all %}
+                {% if items %}
+                    <section class="home-collection" aria-labelledby="collection-title-{{ collection.pk }}" data-collection>
+                        <div class="home-collection-heading">
+                            {# Parler's title descriptor uses the configured language fallbacks. __str__ also supports any language. #}
+                            <h2 id="collection-title-{{ collection.pk }}">{% firstof collection.title collection %}</h2>
+                            <div class="home-collection-controls" data-collection-controls hidden>
+                                <button type="button" data-collection-prev
+                                        aria-label="{% translate 'Previous movies' %}"
+                                        aria-controls="collection-track-{{ collection.pk }}" disabled><span aria-hidden="true">←</span></button>
+                                <button type="button" data-collection-next
+                                        aria-label="{% translate 'Next movies' %}"
+                                        aria-controls="collection-track-{{ collection.pk }}" disabled><span aria-hidden="true">→</span></button>
+                            </div>
+                        </div>
+                        <div class="home-collection-track" id="collection-track-{{ collection.pk }}"
+                             tabindex="0" role="region" aria-labelledby="collection-title-{{ collection.pk }}" data-collection-track>
+                            {% for item in items %}
+                                {% include "movies/_movie_card.html" with movie=item.movie hide_rating=True %}
+                            {% endfor %}
+                        </div>
+                    </section>
+                {% endif %}
+            {% endwith %}
+        {% endfor %}
         <header class="page-heading">
             <div><p class="page-kicker">RAFS</p><h1>{% translate "Top movies" %}</h1></div>
         </header>
@@ -32,4 +58,7 @@
             {% endfor %}
         </div>
     </main>
+{% endblock %}
+{% block extra_js %}
+    <script src="{% static 'js/home-collections.js' %}" defer></script>
 {% endblock %}

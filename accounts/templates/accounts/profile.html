@@ -312,7 +312,16 @@
                 <div class="profile-achievement-grid">
                     {% for achievement in profile_user.profile_achievements %}
                         <article class="profile-achievement">
+                            {% comment %}Original placeholder; actual artwork is used only for achievements already supplied by the profile:
                             <span class="profile-achievement-mark" aria-hidden="true">◆</span>
+                            {% endcomment %}
+                            <span class="profile-achievement-art" aria-hidden="true">
+                                <span class="profile-achievement-mark">◆</span>
+                                {% if achievement.avatar_image %}
+                                    <img src="{{ achievement.avatar_image.url }}" alt="" loading="lazy"
+                                         onerror="this.hidden=true;" width="52" height="52">
+                                {% endif %}
+                            </span>
                             <div>
                                 <h3>{{ achievement.name }}</h3>
                                 <p>{{ achievement.description }}</p>

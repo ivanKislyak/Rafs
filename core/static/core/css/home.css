@@ -12,3 +12,100 @@
   color: var(--color-text-muted);
   line-height: 1.6;
 }
+
+/* Published collections work in both the ordinary and seasonal appearances. */
+.home-collection {
+  margin-bottom: 48px;
+  min-width: 0;
+}
+
+.home-collection-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.home-collection-heading h2 {
+  margin: 0;
+  font-size: clamp(1.35rem, 3vw, 1.8rem);
+  font-weight: 800;
+  letter-spacing: -.025em;
+  overflow-wrap: anywhere;
+}
+
+.home-collection-controls {
+  display: flex;
+  flex-shrink: 0;
+  gap: 8px;
+}
+
+.home-collection-controls button {
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+  font: inherit;
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+.home-collection-controls button:hover:not(:disabled) {
+  border-color: var(--color-accent);
+  background: var(--color-action);
+  color: var(--color-action-text);
+}
+
+.home-collection-controls button:active:not(:disabled) {
+  background: var(--color-action-active);
+}
+
+.home-collection-controls button:disabled {
+  opacity: .4;
+  cursor: default;
+}
+
+.home-collection-track {
+  --collection-columns: 2;
+  --collection-gap: 16px;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - (var(--collection-columns) - 1) * var(--collection-gap)) / var(--collection-columns));
+  gap: var(--collection-gap);
+  align-items: start;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) var(--color-bg);
+  padding: 4px 0 16px;
+}
+
+.home-collection-track > .movie-card {
+  scroll-snap-align: start;
+}
+
+.home-collection-track:focus-visible {
+  outline: 2px solid var(--color-focus-visible-outline);
+  outline-offset: 5px;
+}
+
+@media (min-width: 600px) {
+  .home-collection-track {
+    --collection-columns: 3;
+    --collection-gap: 22px;
+  }
+}
+
+@media (min-width: 900px) {
+  .home-collection-track { --collection-columns: 4; }
+}
+
+@media (min-width: 1100px) {
+  .home-collection-track { --collection-columns: 5; }
+}
