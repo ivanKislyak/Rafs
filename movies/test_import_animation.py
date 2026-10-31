@@ -17,13 +17,14 @@ from django.contrib.postgres.search import SearchQuery
 from django.core.management import call_command
 from django.core.management.base import CommandError
 from django.db import connection
+from django.db.migrations.executor import MigrationExecutor
 from django.test import SimpleTestCase, TestCase, TransactionTestCase
 from django.urls import reverse
 
 from movies.management.commands import import_animation as animation
 from movies.management.commands import import_anime as anime
 from movies.management.commands import import_popular_movies as popular
-from movies.models import AnimationImportReceipt, GlobalSearchIndex, Movie, Review, ReviewVote
+from movies.models import GlobalSearchIndex, Movie, Review, ReviewVote
 from movies.movie_models import Genre, Person, TypeOfWork
 from movies.services.animation_state import AnimationState, saved_config
 from movies.services.search_index import refresh_movie_documents
@@ -32,7 +33,7 @@ from movies.test_import_anime import LANGUAGES, entity, statement
 
 def config(**changes):
     return {
-        "importer": "animation-v1", "schema_version": 1, "sources": ["movie", "tv"],
+        "importer": "animation-v2", "schema_version": 2, "sources": ["movie", "tv"],
         "date_from": "2020-02-28", "date_to": "2020-03-01", **changes,
     }
 
@@ -212,6 +213,39 @@ class AnimationStateTests(SimpleTestCase):
         with self.assertRaisesMessage(CommandError, "unavailable"):
             animation.validate_animation(item, "tv", 1, exclude_anime=True)
 
+    def test_v1_sqlite_upgrade_preserves_results_cache_and_discovery(self):
+        with tempfile.TemporaryDirectory() as directory:
+            old = AnimationState(directory, config(importer="animation-v1", schema_version=1))
+            old.save_pages([(old.next_partition("movie"), {"results": [{"id": 1}, {"id": 2}], "total_pages": 1})])
+            old.finish(old.candidates(1)[0], "created", movie_pk=17, qid="Q1001")
+            old.put("fixture-cache", {"id": 1})
+            rows = [tuple(row) for row in old.db.execute("SELECT * FROM manifest ORDER BY position")]
+            parts = [tuple(row) for row in old.db.execute("SELECT * FROM partitions ORDER BY id")]
+            campaign = old.campaign
+            old.db.close()
+            self.assertEqual(saved_config(directory)["schema_version"], 1)
+            state = AnimationState(directory, config())
+            self.addCleanup(state.db.close)
+            self.assertEqual(state.meta("config")["schema_version"], 2)
+            self.assertEqual(state.created_count(), 1)
+            self.assertEqual(state.campaign, campaign)
+            self.assertEqual(state.cached("fixture-cache"), (True, {"id": 1}))
+            self.assertEqual([tuple(row) for row in state.db.execute("SELECT * FROM manifest ORDER BY position")], rows)
+            self.assertEqual([tuple(row) for row in state.db.execute("SELECT * FROM partitions ORDER BY id")], parts)
+
+    def test_incomplete_legacy_state_is_rejected_without_modifying_it(self):
+        with tempfile.TemporaryDirectory() as directory:
+            state = AnimationState(directory, config(importer="animation-v1", schema_version=1))
+            state.db.execute("DROP TABLE cache")
+            state.db.execute("CREATE TABLE cache (unexpected TEXT)")
+            state.db.commit()
+            state.db.close()
+            path = Path(directory) / "state.sqlite3"
+            before = path.read_bytes()
+            with self.assertRaisesMessage(CommandError, "separate directory"):
+                AnimationState(directory, config())
+            self.assertEqual(path.read_bytes(), before)
+
 
 class ImportFixtures:
     def setUp(self):
@@ -253,6 +287,28 @@ class ImportFixtures:
 
 @skipUnless(connection.vendor == "postgresql", "Animation campaigns require PostgreSQL")
 class ImportAnimationTests(ImportFixtures, TestCase):
+    def test_legacy_animation_state_resumes_from_sqlite_without_a_django_journal(self):
+        self.run_import(target_new=1)
+        before = Movie.objects.get(wikidata_id="Q1001").last_synced_at
+        with sqlite3.connect(self.directory / "state.sqlite3") as db:
+            previous = json.loads(db.execute("SELECT value FROM meta WHERE key='config'").fetchone()[0])
+            previous.update(importer="animation-v1", schema_version=1)
+            db.execute("UPDATE meta SET value=? WHERE key='config'", (json.dumps(previous),))
+        self.run_import(target_new=2)
+        self.assertIn("State upgraded to animation-v2", self.output.getvalue())
+        self.assertEqual(Movie.objects.count(), 2)
+        self.assertEqual(Movie.objects.get(wikidata_id="Q1001").last_synced_at, before)
+        self.assertEqual(self.summary()["created_in_campaign"], 2)
+
+    def test_new_state_directory_also_deduplicates_existing_cards(self):
+        self.run_import()
+        other = Path(self.temp.name) / "new-state"
+        self.run_import(directory=other)
+        self.assertEqual(Movie.objects.count(), 2)
+        report = json.loads((other / "summary.json").read_text())
+        self.assertEqual(report["created_in_campaign"], 0)
+        self.assertEqual(report["campaign_state"]["candidates"], {"existing": 2})
+
     def test_feature_short_and_whole_miniseries_preserve_specific_types_and_voice_cast(self):
         self.add_movie(2)
         FixtureAPI.documents["Q1002"]["claims"]["P31"] = [statement({"id": "Q24862"})]
@@ -297,7 +353,9 @@ class ImportAnimationTests(ImportFixtures, TestCase):
         for (media, _), item in FixtureAPI.items.items():
             item["keywords"]["keywords" if media == "movie" else "results"] = [{"id": 222243}]
         self.run_import(exclude_anime=True, directory=Path(self.temp.name) / "not-exact")
-        self.assertEqual(AnimationImportReceipt.objects.count(), 4)
+        report = json.loads((Path(self.temp.name) / "not-exact" / "summary.json").read_text())
+        self.assertEqual(report["created_in_campaign"], 0)
+        self.assertEqual(report["campaign_state"]["candidates"], {"existing": 2})
         self.assertEqual(Movie.objects.count(), 2)
 
     def test_target_counts_new_only_and_resume_preserves_rest_of_page(self):
@@ -313,7 +371,7 @@ class ImportAnimationTests(ImportFixtures, TestCase):
         self.assertEqual(self.summary()["created_in_campaign"], 3)
         self.assertEqual(Movie.objects.count(), 4)
         self.assertEqual(Movie.objects.get(wikidata_id="Q2001").last_synced_at, before)
-        self.assertEqual(AnimationImportReceipt.objects.filter(outcome="created").count(), 3)
+        self.assertEqual(sum(row["status"] == "created" for row in self.rows()), 3)
 
     def test_candidate_budget_stops_without_exhausting_and_same_command_continues_other_source(self):
         self.run_import(max_candidates=1)
@@ -337,7 +395,7 @@ class ImportAnimationTests(ImportFixtures, TestCase):
         with patch.object(animation, "refresh_movie_documents") as index:
             self.run_import(dry_run=True, max_candidates=40)
             index.assert_not_called()
-        for model in [Movie, TypeOfWork, Person, AnimationImportReceipt, GlobalSearchIndex]:
+        for model in [Movie, TypeOfWork, Person, GlobalSearchIndex]:
             self.assertEqual(model.objects.count(), 0)
         self.assertEqual([row["status"] for row in self.rows()], ["pending", "pending"])
         self.assertEqual(self.summary()["campaign_state"]["dry_run"], {"would_create": 2})
@@ -408,7 +466,9 @@ class ImportAnimationTests(ImportFixtures, TestCase):
         self.assertEqual(self.summary()["created_in_campaign"], 0)
         self.assertEqual(self.rows()[0]["status"], "updated")
         self.run_import(directory=Path(self.temp.name) / "another-campaign")
-        self.assertEqual(AnimationImportReceipt.objects.filter(outcome="existing").count(), 1)
+        report = json.loads((Path(self.temp.name) / "another-campaign" / "summary.json").read_text())
+        self.assertEqual(report["campaign_state"]["candidates"], {"existing": 1})
+        self.assertEqual(report["created_in_campaign"], 0)
 
     def test_same_title_year_without_matching_ids_is_never_merged(self):
         Movie.objects.create(name="Animated movie 1", year=2001)
@@ -436,7 +496,7 @@ class ImportAnimationTests(ImportFixtures, TestCase):
         self.assertEqual(self.summary()["campaign_state"]["skips_by_reason"], {"no_wikidata_match": 1})
         self.assertEqual(Movie.objects.count(), 1)
 
-    def test_all_six_translations_are_searchable_without_rebuilding_other_documents(self):
+    def test_six_translations_are_imported_but_search_keeps_its_original_four_languages(self):
         other = Movie.objects.create(name="unrelated original")
         refresh_movie_documents([other.pk])
         old = GlobalSearchIndex.objects.get(object_id=other.pk)
@@ -448,12 +508,18 @@ class ImportAnimationTests(ImportFixtures, TestCase):
         movie = Movie.objects.get(wikidata_id="Q1001")
         for language, text in names.items():
             with self.subTest(language=language):
+                self.assertEqual(movie.translations.get(language_code=language).wikidata_name, text)
+                if language in {"uk", "kk"}:
+                    self.assertFalse(GlobalSearchIndex.objects.filter(
+                        content_type=ContentType.objects.get_for_model(Movie), object_id=movie.pk,
+                        search_vector=SearchQuery(text, config="simple"),
+                    ).exists())
+                    continue
                 response = self.client.get(reverse("movies:search_results_api"), {"query": text})
                 self.assertEqual(response.status_code, 200)
                 self.assertIn(movie.pk, [result["id"] for result in response.json()["results"] if result["type"] == "movie"])
         old.refresh_from_db()
         self.assertEqual(old.search_vector, old_vector)
-        self.assertFalse(AnimationImportReceipt.objects.filter(indexed=False).exists())
 
     def test_configuration_mismatch_is_rejected_before_writing_state(self):
         self.run_import(max_candidates=1)
@@ -492,9 +558,8 @@ class ImportAnimationTests(ImportFixtures, TestCase):
             call_command("import_popular_movies", limit=1, skip_backfill=True, without_genres="",
                          state_dir=str(Path(self.temp.name) / "old-including-animation"), stdout=self.output)
         self.assertEqual(Movie.objects.count(), 1)
-        self.assertEqual(AnimationImportReceipt.objects.count(), 0)
 
-    def test_failed_index_keeps_previous_documents_and_is_recovered_even_at_target(self):
+    def test_failed_index_preserves_movies_and_can_be_fixed_with_manual_rebuild(self):
         other = Movie.objects.create(name="previous document")
         refresh_movie_documents([other.pk])
         with patch.object(animation, "refresh_movie_documents", side_effect=RuntimeError("index fixture")):
@@ -503,10 +568,14 @@ class ImportAnimationTests(ImportFixtures, TestCase):
         self.assertEqual(Movie.objects.count(), 2)
         self.assertTrue(GlobalSearchIndex.objects.filter(object_id=other.pk).exists())
         self.assertEqual(self.summary()["status"], "failed")
-        self.assertEqual(self.summary()["pending_index_receipts"], 1)
+        self.assertEqual(self.summary()["created_in_campaign"], 1)
         self.run_import(target_new=1)
         self.assertEqual(self.summary()["status"], "target_reached")
-        self.assertEqual(self.summary()["pending_index_receipts"], 0)
+        call_command("rebuild_search_index", stdout=self.output)
+        self.assertTrue(GlobalSearchIndex.objects.filter(
+            content_type=ContentType.objects.get_for_model(Movie),
+            object_id=Movie.objects.get(wikidata_id="Q1001").pk,
+        ).exists())
 
     def test_http_failure_is_not_a_permanent_no_match_and_credentials_are_redacted(self):
         with patch.object(FixtureAPI, "resolve", side_effect=CommandError("fixture-secret API unavailable")):
@@ -520,9 +589,9 @@ class ImportAnimationTests(ImportFixtures, TestCase):
         self.assertEqual(Movie.objects.count(), 2)
 
 
-@skipUnless(connection.vendor == "postgresql", "Receipt and cross-import locks require PostgreSQL")
-class AnimationCommitAndLockTests(ImportFixtures, TransactionTestCase):
-    def test_crash_between_django_commit_and_sqlite_finish_recovers_exact_count(self):
+@skipUnless(connection.vendor == "postgresql", "Resume and cross-import locks require PostgreSQL")
+class AnimationResumeAndLockTests(ImportFixtures, TransactionTestCase):
+    def test_commit_before_sqlite_write_can_undercount_but_resume_never_duplicates(self):
         FixtureAPI.require_outside_atomic = True
         original = AnimationState.finish
 
@@ -536,13 +605,13 @@ class AnimationCommitAndLockTests(ImportFixtures, TransactionTestCase):
             with self.assertRaises(CommandError):
                 self.run_import(target_new=1)
         self.assertEqual(Movie.objects.count(), 1)
-        self.assertEqual(AnimationImportReceipt.objects.filter(outcome="created").count(), 1)
-        self.assertEqual(self.summary()["run"]["created"], 1)
+        self.assertEqual(self.summary()["created_in_campaign"], 0)
         self.assertEqual(self.rows()[0]["status"], "pending")
-        self.run_import(target_new=2)
+        self.run_import(target_new=1)
         self.assertEqual(Movie.objects.count(), 2)
-        self.assertEqual(self.summary()["created_in_campaign"], 2)
-        self.assertEqual([row["status"] for row in self.rows()], ["created", "created"])
+        self.assertEqual(Movie.objects.filter(wikidata_id="Q1001").count(), 1)
+        self.assertEqual(self.summary()["created_in_campaign"], 1)
+        self.assertEqual([row["status"] for row in self.rows()], ["existing", "created"])
         self.assertEqual(self.summary()["run"]["created"], 1)
 
     def test_sigterm_rolls_back_current_object_then_resume_and_sigint_exit_code(self):
@@ -561,7 +630,7 @@ class AnimationCommitAndLockTests(ImportFixtures, TransactionTestCase):
                 self.run_import()
         self.assertEqual(failure.exception.returncode, 143)
         self.assertEqual(Movie.objects.count(), 1)
-        self.assertEqual(AnimationImportReceipt.objects.count(), 1)
+        self.assertEqual([row["status"] for row in self.rows()], ["created", "pending"])
         self.assertEqual(self.summary()["status"], "interrupted")
         self.run_import()
         self.assertEqual(Movie.objects.count(), 2)
@@ -591,6 +660,36 @@ class AnimationCommitAndLockTests(ImportFixtures, TransactionTestCase):
                 self.run_import()
         self.run_import()
         self.assertEqual(Movie.objects.count(), 2)
+
+
+@skipUnless(connection.vendor == "postgresql", "Migration preservation check requires PostgreSQL")
+class AnimationJournalRemovalMigrationTests(TransactionTestCase):
+    def test_deletion_migration_preserves_movie_translations_relations_and_reviews(self):
+        old_target = [("movies", "0047_animation_import_receipt")]
+        new_target = [("movies", "0048_remove_animation_import_receipt")]
+        executor = MigrationExecutor(connection)
+        executor.migrate(old_target)
+        self.addCleanup(lambda: MigrationExecutor(connection).migrate(new_target))
+        historical = executor.loader.project_state(old_target).apps
+        Journal = historical.get_model("movies", "AnimationImportReceipt")
+        movie = Movie.objects.create(wikidata_id="Q70001", name="Keep movie", description="Manual description", cover_url="https://example.org/cover.jpg")
+        popular.fill_translations(movie, {"uk": {"wikidata_name": "Збережена назва"}, "kk": {"wikidata_name": "Сақталған атау"}})
+        genre = Genre.objects.create(wikidata_id="Q70002")
+        movie.genres.add(genre)
+        user = get_user_model().objects.create_user(username="migration-owner", email="migration@example.com")
+        review = Review.objects.create(user=user, movie=movie, rating=8, text="Keep review")
+        Journal.objects.create(campaign="00000000-0000-0000-0000-000000000001", media_type="movie", tmdb_id=1,
+                               wikidata_id=movie.wikidata_id, movie_id=movie.pk, outcome="created")
+        before = list(Movie.objects.values())
+        translations_before = list(Movie._parler_meta.root_model.objects.order_by("pk").values())
+        executor = MigrationExecutor(connection)
+        executor.migrate(new_target)
+        self.assertNotIn("movies_animationimportreceipt", connection.introspection.table_names())
+        self.assertEqual(list(Movie.objects.values()), before)
+        self.assertEqual(list(Movie._parler_meta.root_model.objects.order_by("pk").values()), translations_before)
+        self.assertEqual(movie.genres.get().pk, genre.pk)
+        review.refresh_from_db()
+        self.assertEqual((review.text, review.rating), ("Keep review", 8))
 
 
 class AnimationHTTPTests(SimpleTestCase):

@@ -251,8 +251,9 @@ Wikidata identity checks and relations. It also searches for missing covers on
 existing records with suitable IDs. `import_anime` supports TMDB movie and TV
 sources for anime films and whole series, with a separate saved state.
 `import_animation` covers all Animation movie/TV works (including anime by
-default), with resumable date partitions and a target of up to 15,000 newly
-created cards. It requires PostgreSQL and the import-receipt migration.
+default), with resumable date partitions and a practical target of up to 15,000
+new cards. It requires PostgreSQL and stores progress/cache in SQLite; a crash
+after the Movie commit may undercount new cards, while ID checks prevent duplicates.
 
 Add your TMDB API Read Access Token to the local `.env` file:
 

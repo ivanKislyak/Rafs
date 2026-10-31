@@ -19,9 +19,8 @@ from pathlib import Path
 
 from django.conf import settings
 from django.core.management.base import CommandError
-from django.db import DatabaseError, connection, transaction
+from django.db import connection
 
-from movies.models import AnimationImportReceipt
 from movies.services.animation_state import AnimationState, IMPORTER, MAX_PAGES, SCHEMA_VERSION, saved_config
 from movies.services.search_index import refresh_movie_documents
 
@@ -86,7 +85,7 @@ def stopping_signals():
 class Command(MovieCommand):
     help = (
         "Import Animation movie/whole tv works with exact Wikidata identity. "
-        "--target-new counts committed new Movie cards across resumes (maximum 15000); "
+        "--target-new uses SQLite-recorded new Movie cards across resumes (practical goal, 1-15000); "
         "--max-candidates bounds this invocation, including skips. "
         "Written with AI assistance (OpenAI Codex). See README_import_animation.md."
     )
@@ -104,7 +103,7 @@ class Command(MovieCommand):
         parser.add_argument("--state-dir", default=str(Path(settings.BASE_DIR) / ".rafs_import" / "animation"))
         parser.add_argument("--dry-run", action="store_true", help="Only local discovery/cache/report writes; no Django writes or indexing.")
         parser.add_argument("--retry-skipped", action="store_true")
-        parser.add_argument("--refresh-cache", action="store_true", help="Refresh this campaign's API cache; preserve IDs/cursors/receipts.")
+        parser.add_argument("--refresh-cache", action="store_true", help="Refresh this campaign's API cache; preserve IDs, cursors and results.")
         parser.add_argument("--tmdb-delay", type=float, default=0.6)
         parser.add_argument("--wikidata-delay", type=float, default=1.0)
         parser.add_argument("--sparql-delay", type=float, default=5.0)
@@ -140,21 +139,16 @@ class Command(MovieCommand):
             "min_votes": options["min_votes"], "languages": languages, "sort": options["sort"],
             "date_from": lower.isoformat(), "date_to": upper.isoformat(),
         }
-        if previous is not None and previous != config:
+        if previous is not None and {**previous, "importer": IMPORTER, "schema_version": SCHEMA_VERSION} != config:
             raise CommandError("State-dir belongs to another database, importer version or selection; use a separate directory.")
         return config
 
     def handle(self, *args, **options):
         directory = Path(options["state_dir"]).expanduser().resolve()
-        config = self.configuration(options, saved_config(directory))
+        previous = saved_config(directory)
+        config = self.configuration(options, previous)
         if connection.vendor != "postgresql":
             raise CommandError("import_animation requires PostgreSQL for shared writer locking and search indexing.")
-        try:
-            tables = connection.introspection.table_names()
-        except Exception as error:
-            raise CommandError(f"Database preflight failed ({type(error).__name__}); check the database configuration.") from None
-        if AnimationImportReceipt._meta.db_table not in tables:
-            raise CommandError("Apply Django migrations (python manage.py migrate) before import_animation.")
         token = clean(os.getenv("TMDB_READ_TOKEN") or getattr(settings, "TMDB_READ_TOKEN", ""))
         key = clean(os.getenv("TMDB_API_KEY") or getattr(settings, "TMDB_API_KEY", ""))
         if not token and not key:
@@ -168,18 +162,16 @@ class Command(MovieCommand):
         with run_lock(directory), database_lock(), stopping_signals() as stopped:
             state = AnimationState(directory, config)
             self.state = state
+            self.created_count = state.created_count()
+            if previous and previous["schema_version"] == 1:
+                self.output("State upgraded to animation-v2: IDs/cache/cursors preserved; creation counts now come only from SQLite.")
             api = AnimeAPI(state, token, key, config["languages"], self.output, {
                 "tmdb": options["tmdb_delay"], "wikidata": options["wikidata_delay"], "sparql": options["sparql_delay"],
             }, maxlag_wait=options["maxlag_wait"])
             self.api = api
             failure, returncode, final = None, 1, "failed"
             try:
-                self.receipts = AnimationImportReceipt.objects.filter(campaign=state.campaign)
-                self.created_count = self.receipts.filter(outcome="created").count()
                 self.last_checkpoint = time.monotonic()
-                if not self.dry_id:
-                    state.reconcile(self.receipts.order_by("pk"))
-                    self.index_pending()
                 with state.db:
                     if options["refresh_cache"]:
                         state.db.execute("DELETE FROM cache")
@@ -207,21 +199,13 @@ class Command(MovieCommand):
                 state.set_meta("failed_runs", state.meta("failed_runs", 0) + 1)
             finally:
                 try:
-                    try:
-                        created = self.receipts.filter(outcome="created").count()
-                        summary = self.snapshot(final, created)
-                    except DatabaseError:
-                        final = "failed"
-                        failure = failure or "Database unavailable; authoritative counts will be recovered on resume."
-                        summary = {"status": "failed", "campaign": state.campaign,
-                                   "created_in_campaign": None, "target_new": options["target_new"],
-                                   "count_recovery_on_resume": True, "campaign_state": state.statistics(self.dry_id)}
+                    summary = self.snapshot(final)
                     state.report(summary)
                     self.output(json.dumps(summary, ensure_ascii=False))
                 except (OSError, sqlite3.Error) as error:
                     raise CommandError(
                         f"failed: local progress/report write failed ({type(error).__name__}). "
-                        "Committed Django receipts remain recoverable on resume."
+                        "Movie may already be committed; resume deduplicates by Wikidata/IMDb, but the counter may undercount."
                     ) from None
                 finally:
                     api.session.close()
@@ -237,7 +221,8 @@ class Command(MovieCommand):
     def output(self, message):
         self.stdout.write(self.redact(message))
 
-    def snapshot(self, status, created):
+    def snapshot(self, status):
+        created = self.state.created_count()
         run = dict(self.run_counts)
         run["processed"] = sum(value for key, value in run.items() if key not in {"examined", "errors"})
         return {
@@ -245,12 +230,11 @@ class Command(MovieCommand):
             "created_in_campaign": created, "target_new": self.options["target_new"],
             "shortfall": max(0, self.options["target_new"] - created),
             "run": run, "campaign_state": self.state.statistics(self.dry_id),
-            "pending_index_receipts": self.receipts.filter(indexed=False).count(),
         }
 
     def checkpoint(self):
         if time.monotonic() - self.last_checkpoint >= 60:
-            self.state.write_summary(self.snapshot("running", self.created_count))
+            self.state.write_summary(self.snapshot("running"))
             self.last_checkpoint = time.monotonic()
 
     def run_campaign(self):
@@ -264,9 +248,9 @@ class Command(MovieCommand):
                 if not self.discover_round():
                     return "source_exhausted"
                 continue
-            self.import_batch(rows)
-            if not self.dry_id:
-                self.index_pending()
+            movie_ids = self.import_batch(rows)
+            if movie_ids:
+                refresh_movie_documents(movie_ids)
             self.checkpoint()
         return "target_reached"
 
@@ -311,16 +295,18 @@ class Command(MovieCommand):
                 self.checkpoint()
         return bool(pages)
 
-    def finish(self, row, status, *, obj=None, qid="", code="", reason="", count=True):
+    def finish(self, row, status, *, obj=None, qid="", code="", reason=""):
         self.state.finish(row, status, movie_pk=obj.pk if obj else None, qid=qid, code=code,
                           reason=self.redact(reason), dry_run_id=self.dry_id)
-        if count:
-            self.run_counts[status] += 1
+        self.run_counts[status] += 1
+        if status == "created" and not self.dry_id:
+            self.created_count += 1
         self.output(f"{'DRY RUN ' if self.dry_id else ''}{status}: {row['media_type']}/{row['tmdb_id']} {qid} {code}; "
                     f"partition={row['partition_id']} page={row['source_page']}; "
                     f"new={self.created_count}/{self.options['target_new']}")
 
     def import_batch(self, rows):
+        movie_ids = set()
         prepared = []
         for row in rows:
             self.state.attempt(row)
@@ -366,13 +352,16 @@ class Command(MovieCommand):
                 related = self.api.entities(related_ids)
                 if not related.get(work_type) or "missing" in related[work_type]:
                     raise CandidateIssue("invalid_format", "The confirmed type entity is unavailable.")
-                self.save_candidate(row, item, qid, entity, related, work_type)
+                movie_pk = self.save_candidate(row, item, qid, entity, related, work_type)
+                if movie_pk is not None:
+                    movie_ids.add(movie_pk)
             except ImportIssue as error:
                 code = getattr(error, "code", None)
                 if code is None:
                     ambiguous = any(word in str(error).casefold() for word in ("неоднознач", "несколько"))
                     code = "ambiguous_identity" if ambiguous else "identity_conflict"
                 self.finish(row, "skipped", qid=qid or "", code=code, reason=str(error))
+        return movie_ids
 
     def save_candidate(self, row, item, qid, entity, related, work_type):
         arguments = (item, qid, entity, related, self.config["languages"], self.poster(item))
@@ -386,32 +375,10 @@ class Command(MovieCommand):
             status = "would_duplicate" if duplicate else "would_create" if created else "would_existing"
             self.finish(row, status, obj=obj, qid=entity["id"])
             return
-        # ALL network access happened above. This outer transaction ties the
-        # receipt to import_one's existing inner atomic Movie/translation/M2M save.
-        with transaction.atomic():
-            receipt = self.receipts.filter(media_type=row["media_type"], tmdb_id=row["tmdb_id"]).first()
-            if receipt is None:
-                obj, created = import_one(*arguments, track_changes=True, **keywords)
-                outcome = "created" if created else "updated" if obj._import_changed else "existing"
-                receipt = AnimationImportReceipt.objects.create(
-                    campaign=self.state.campaign, media_type=row["media_type"], tmdb_id=row["tmdb_id"],
-                    wikidata_id=entity["id"], movie=obj, outcome=outcome,
-                )
-                is_new_receipt = True
-            else:
-                obj, is_new_receipt = receipt.movie, False
-        if is_new_receipt and receipt.outcome == "created":
-            self.created_count += 1
-        if is_new_receipt:
-            self.run_counts[receipt.outcome] += 1
-        # This may fail after commit; startup reconciles the durable receipt.
-        self.finish(row, receipt.outcome, obj=obj, qid=receipt.wikidata_id, count=False)
-
-    def index_pending(self):
-        while True:
-            receipts = list(self.receipts.filter(indexed=False).order_by("pk")[:BATCH_SIZE])
-            if not receipts:
-                return
-            with transaction.atomic():
-                refresh_movie_documents({row.movie_id for row in receipts if row.movie_id is not None})
-                self.receipts.filter(pk__in=[row.pk for row in receipts]).update(indexed=True)
+        # import_one already commits Movie/translations/M2M atomically and does
+        # exact-ID deduplication. SQLite is a separate commit; a crash here may
+        # undercount, but resume finds the Movie instead of creating a duplicate.
+        obj, created = import_one(*arguments, track_changes=True, **keywords)
+        outcome = "created" if created else "updated" if obj._import_changed else "existing"
+        self.finish(row, outcome, obj=obj, qid=entity["id"])
+        return obj.pk

@@ -18,12 +18,9 @@ GERMAN_TRANSLATION_ATTR = "_search_german_translations"
 
 prefetch_trans_attr = [
     ENGLISH_TRANSLATIONS_ATTR, RUSSIAN_TRANSLATIONS_ATTR, 
-    SPANISH_TRANSLATION_ATTR, GERMAN_TRANSLATION_ATTR,
-    "_search_ukrainian_translations", "_search_kazakh_translations"]
-prefetch_lang_code = ["en", "ru", "es", "de", "uk", "kk"]
-# PostgreSQL has no built-in Ukrainian/Kazakh stemmers. Their literal tokens
-# remain searchable through RAFS's existing query configurations.
-prefetch_languages = ["english", "russian", "spanish", "german", "simple", "simple"]
+    SPANISH_TRANSLATION_ATTR, GERMAN_TRANSLATION_ATTR]
+prefetch_lang_code = ["en", "ru", "es", "de"]
+prefetch_languages = ["english", "russian", "spanish", "german"]
 
 logger = logging.getLogger(__name__)
 
@@ -174,10 +171,10 @@ def index_new_movies(movie_ids=None):
                 type_of_work_name = _lang_value(movie.type_of_work, "name", trans_attr=attr)
 
             names = _join_unique(
-                [_lang_value(movie, "wikidata_name", trans_attr=attr), movie.name if lang_code not in {"uk", "kk"} else ""]
+                [_lang_value(movie, "wikidata_name", trans_attr=attr), movie.name]
             )
             descriptions = _join_unique(
-                [_lang_value(movie, "wikidata_description", trans_attr=attr), movie.description if lang_code not in {"uk", "kk"} else ""]
+                [_lang_value(movie, "wikidata_description", trans_attr=attr), movie.description]
             )
             related_names = _join_unique(
                 [
@@ -190,11 +187,11 @@ def index_new_movies(movie_ids=None):
                     *(_lang_value(item, "name", trans_attr=attr)for item in getattr(movie, f"_search_screenwriters_{lang_code}")),
                     *(_lang_value(item, "name", trans_attr=attr) for item in getattr(movie, f"_search_producers_{lang_code}")),
                     *(_lang_value(item, "name", trans_attr=attr) for item in getattr(movie, f"_search_composers_{lang_code}")),
-                    *(tag.name for tag in movie.tags.all() if lang_code not in {"uk", "kk"}),
+                    *(tag.name for tag in movie.tags.all()),
                 ]
             )
             identifiers = _join_unique(
-                [movie.year, movie.imdb_id, movie.wikidata_id] if lang_code not in {"uk", "kk"} else []
+                [movie.year, movie.imdb_id, movie.wikidata_id]
             )
 
             language_vector = _build_search_vector(

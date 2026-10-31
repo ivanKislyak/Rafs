@@ -1,7 +1,7 @@
 """Animation campaign manifest. Written with AI assistance (OpenAI Codex).
 
-SQLite owns discovery/candidate cursors, not the authoritative creation count.
-Creation receipts live in Django's database, in the Movie commit transaction.
+SQLite owns discovery cursors, cache, results and the practical creation count.
+Movie writes commit separately; a crash between the two stores may undercount.
 """
 
 import csv
@@ -17,8 +17,8 @@ from django.core.management.base import CommandError
 
 from movies.management.commands.import_popular_movies import State
 
-IMPORTER = "animation-v1"
-SCHEMA_VERSION = 1
+IMPORTER = "animation-v2"
+SCHEMA_VERSION = 2
 MAX_PAGES = 500
 
 
@@ -36,11 +36,23 @@ def saved_config(directory):
                 raise ValueError
             values = dict(db.execute("SELECT key,value FROM meta"))
             config = json.loads(values.get("config", "null"))
-            if not isinstance(config, dict) or config.get("importer") != IMPORTER:
-                raise ValueError
-            if config.get("schema_version") != SCHEMA_VERSION:
+            if not isinstance(config, dict) or (config.get("importer"), config.get("schema_version")) not in {
+                ("animation-v1", 1), (IMPORTER, SCHEMA_VERSION),
+            }:
                 raise ValueError
             uuid.UUID(json.loads(values["campaign"]))
+            required = {"position", "media_type", "tmdb_id", "status", "movie_pk", "wikidata_id",
+                        "reason_code", "reason", "attempts", "partition_id", "source_page",
+                        "dry_run_id", "dry_status", "dry_wikidata_id", "dry_reason_code", "dry_reason"}
+            if not {"manifest", "partitions", "cache"} <= tables:
+                raise ValueError
+            if not {"key", "value"} <= {row[1] for row in db.execute("PRAGMA table_info(cache)")}:
+                raise ValueError
+            if not required <= {row[1] for row in db.execute("PRAGMA table_info(manifest)")}:
+                raise ValueError
+            partition_fields = {"id", "media_type", "mode", "lower_date", "upper_date", "page", "pages", "status", "limited"}
+            if not partition_fields <= {row[1] for row in db.execute("PRAGMA table_info(partitions)")}:
+                raise ValueError
             return config
     except (sqlite3.Error, ValueError, KeyError, TypeError):
         raise CommandError("State-dir is not a compatible import_animation campaign; use a separate directory.") from None
@@ -49,7 +61,7 @@ def saved_config(directory):
 class AnimationState(State):
     def __init__(self, directory, config):
         previous = saved_config(directory)
-        if previous is not None and previous != config:
+        if previous is not None and {**previous, "importer": IMPORTER, "schema_version": SCHEMA_VERSION} != config:
             raise CommandError("State-dir belongs to another database or selection; use a separate directory.")
         self.directory = Path(directory).resolve()
         self.directory.mkdir(parents=True, exist_ok=True)
@@ -88,6 +100,10 @@ class AnimationState(State):
                 self.db.execute("INSERT INTO partitions(media_type,mode) VALUES (?,'unfiltered')", (media,))
                 self.db.execute("INSERT INTO partitions(media_type,mode,lower_date,upper_date) VALUES (?,'dated',?,?)",
                                 (media, config["date_from"], config["date_to"]))
+        elif previous.get("schema_version") == 1:
+            # Same manifest layout: keep all IDs, results, cache and cursors.
+            # No reading or reconstruction from the removed Django journal.
+            self._meta("config", config)
         self.db.commit()
         self.campaign = self.meta("campaign")
 
@@ -148,15 +164,8 @@ class AnimationState(State):
                 self.db.execute("UPDATE manifest SET status=?,movie_pk=?,wikidata_id=?,reason_code=?,reason=? WHERE position=?",
                                 (status, movie_pk, qid, code, reason, row["position"]))
 
-    def reconcile(self, receipts):
-        """A receipt also restores IDs lost by restoring an older SQLite backup."""
-        with self.db:
-            for receipt in receipts.iterator(chunk_size=200):
-                self.db.execute("""INSERT INTO manifest(media_type,tmdb_id,status,movie_pk,wikidata_id)
-                    VALUES (?,?,?,?,?) ON CONFLICT(media_type,tmdb_id) DO UPDATE SET
-                    status=excluded.status,movie_pk=excluded.movie_pk,wikidata_id=excluded.wikidata_id,
-                    reason_code='',reason=''""", (receipt.media_type, receipt.tmdb_id, receipt.outcome,
-                                                 receipt.movie_id, receipt.wikidata_id))
+    def created_count(self):
+        return self.db.execute("SELECT COUNT(*) FROM manifest WHERE status='created'").fetchone()[0]
 
     def statistics(self, dry_run_id=None):
         candidates = dict(self.db.execute("SELECT status,COUNT(*) FROM manifest GROUP BY status").fetchall())
