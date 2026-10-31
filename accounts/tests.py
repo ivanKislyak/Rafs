@@ -15,6 +15,7 @@ from django.utils.formats import get_format
 from django.conf import settings
 from PIL import Image
 from rest_framework.test import APIClient
+from django.core.cache import cache
 
 from accounts.models import Achievement, SearchHistory, User
 from movies.models import Movie, Review, ReviewReply, WatchStatus
@@ -238,6 +239,10 @@ class ProfileLibraryLocalizationTests(TestCase):
             cls.movie.save()
         WatchStatus.objects.create(user=cls.owner, movie=cls.movie, status=WatchStatus.StatusChoice.VIEWED)
 
+    def setUp(self):
+        super().setUp()
+        cache.clear()
+        self.addCleanup(cache.clear)
     def profile(self, language):
         return self.client.get(
             reverse("profile", args=[self.owner.username]), HTTP_ACCEPT_LANGUAGE=language,
@@ -553,7 +558,7 @@ class SearchHistoryAPITests(TestCase):
         entry.refresh_from_db()
         self.assertGreater(entry.updated_at, later.updated_at)
         listing = self.client.get(self.url)
-        self.assertEqual([item["id"] for item in listing.json()], [entry.pk, later.pk])
+        self.assertEqual([item["id"] for item in listing.json()["results"]], [entry.pk, later.pk])
 
     def test_client_cannot_assign_another_owner(self):
         other_entry = SearchHistory.objects.create(user=self.other, query="same film")
@@ -577,7 +582,7 @@ class SearchHistoryAPITests(TestCase):
         own_url = reverse("accounts:searchhistory-detail", args=[own_entry.pk])
         other_url = reverse("accounts:searchhistory-detail", args=[other_entry.pk])
 
-        self.assertEqual([item["id"] for item in self.client.get(self.url).json()], [own_entry.pk])
+        self.assertEqual([item["id"] for item in self.client.get(self.url).json()["results"]], [own_entry.pk])
         self.assertEqual(self.client.get(own_url).status_code, 200)
         self.assertEqual(self.client.get(other_url).status_code, 404)
         self.assertEqual(self.client.delete(other_url).status_code, 404)

@@ -19,6 +19,7 @@ from django.template.loader_tags import BlockNode
 from django.test import RequestFactory, SimpleTestCase, TestCase
 from django.urls import resolve, reverse
 from django.utils import translation
+from django.core.cache import cache
 
 from core.seo import PUBLIC_ORIGIN, WEBSITE, canonical_url, public_image_url
 from core.templatetags.seo import website_json_ld
@@ -140,6 +141,11 @@ class PublicSEOTests(TestCase):
         movies = [cls.movie] + [Movie.objects.create(name=f"SEO Movie {i:02}", year=2024) for i in range(25)]
         for movie in movies[:11]:
             Review.objects.create(user=cls.author, movie=movie, text="A viewer review", rating=8)
+
+    def setUp(self):
+        super().setUp()
+        cache.clear()
+        self.addCleanup(cache.clear)
 
     def get_page(self, name, language="en", **kwargs):
         url_kwargs = kwargs.pop("url_kwargs", {})

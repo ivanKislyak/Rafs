@@ -24,7 +24,7 @@ class SearchHistoryAdmin(admin.ModelAdmin):
 
 @admin.register(Achievement)
 class AchievementAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'avatar_image', 'display_in_profile']
+    list_display = ['id', 'name', 'badge_image', 'display_in_profile']
     list_editable = ['display_in_profile']
 
 

@@ -11,7 +11,7 @@ from django.conf import settings
 class Achievement(models.Model):
     name = models.CharField(max_length=50, verbose_name=_("Name"))
     description = models.CharField(max_length=500, verbose_name=_("Description"))
-    avatar_image = models.ImageField(upload_to="achievements/", blank=True, null=True, verbose_name=_("Avatar"))
+    badge_image = models.ImageField(upload_to="achievements/", blank=True, null=True, verbose_name=_("Avatar"))
     display_in_profile = models.BooleanField(default=True, verbose_name=_("Display in profile"))
     code = models.SlugField(max_length=80, unique=True, blank=True, null=True, verbose_name=_("Code"))
     starts_at = models.DateTimeField(blank=True, null=True, verbose_name=_("Starts at"))
@@ -34,6 +34,7 @@ class User(AbstractUser):
     is_deleted = models.BooleanField(default=False, verbose_name=_("Deleted"))
     achievement = models.ManyToManyField(
         Achievement,
+        through="UserAchievement",
         blank=True,
         related_name="users", verbose_name=_("Achievements")
     )
