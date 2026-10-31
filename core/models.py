@@ -25,7 +25,6 @@ class HomepageCollection(TranslatableModel):
             any_language=True
         )) or str(self.position)
             
-    
 
 class HomepageCollectionItem(models.Model):
     collection = models.ForeignKey(
