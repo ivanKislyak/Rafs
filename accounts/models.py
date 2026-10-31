@@ -34,6 +34,7 @@ class User(AbstractUser):
     is_deleted = models.BooleanField(default=False, verbose_name=_("Deleted"))
     achievement = models.ManyToManyField(
         Achievement,
+        through="UserAchievement",
         blank=True,
         related_name="users", verbose_name=_("Achievements")
     )
