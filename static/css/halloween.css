@@ -159,6 +159,23 @@ html[data-event="halloween-2026"] .review-vote-button.is-selected {
   background: var(--halloween-selection);
   color: var(--halloween-orange-text);
 }
+/* Reuse the vote's selected class; removing data-event restores the img src.
+ * Only the rendered image changes, so optimistic updates and rollback stay intact. */
+html[data-event="halloween-2026"] .review-vote-icon {
+  filter: none;
+}
+html[data-event="halloween-2026"] .review-vote-button[data-vote-value="1"] .review-vote-icon {
+  content: url("../images/halloween/halloween_like_disabled.png");
+}
+html[data-event="halloween-2026"] .review-vote-button[data-vote-value="1"].is-selected .review-vote-icon {
+  content: url("../images/halloween/halloween_like_enabled.png");
+}
+html[data-event="halloween-2026"] .review-vote-button[data-vote-value="-1"] .review-vote-icon {
+  content: url("../images/halloween/halloween_dislike_disabled.png");
+}
+html[data-event="halloween-2026"] .review-vote-button[data-vote-value="-1"].is-selected .review-vote-icon {
+  content: url("../images/halloween/halloween_dislike_enabled.png");
+}
 html[data-event="halloween-2026"] :is(.register-form-submit, .about-button--primary, .review-rating-primary-mark) {
   color: var(--color-action-text);
 }
