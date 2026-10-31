@@ -44,8 +44,8 @@ html[data-event="halloween-2026"] {
   --halloween-purple: #c29ae8;
   --halloween-green: #9dbf72;
   --halloween-error: #ffaaa3;
-  --halloween-danger: #911818;
-  --halloween-danger-hover: #a51d1d;
+  --halloween-danger: #7130a5;
+  --halloween-danger-hover: #843fc0;
 }
 
 html[data-event="halloween-2026"][data-theme="light"] {
@@ -148,12 +148,13 @@ html[data-event="halloween-2026"] :is(.movie-watch-status-btn.is-active, .review
   border-color: var(--halloween-orange-text);
   background: var(--halloween-selection);
 }
-html[data-event="halloween-2026"] .review-vote-button.is-selected {
-  background: var(--halloween-selection);
-  color: var(--halloween-orange-text);
+html[data-event="halloween-2026"] .review-vote-button:is(:hover, :focus-visible, .is-selected) {
+  background: color-mix(in srgb, var(--halloween-purple) 12%, var(--color-surface-raised));
+  color: var(--halloween-purple);
 }
-/* Reuse the vote's selected class; removing data-event restores the img src.
- * Only the rendered image changes, so optimistic updates and rollback stay intact. */
+html[data-event="halloween-2026"] .review-vote-button:focus-visible {
+  outline-color: var(--halloween-purple);
+}
 html[data-event="halloween-2026"] .review-vote-icon {
   filter: none;
 }
@@ -266,7 +267,7 @@ html[data-event="halloween-2026"] .about-cta {
   border-color: var(--color-border);
 }
 
-/* Keep real validation and destructive states red, independent of branding. */
+/* Validation errors keep their error color; destructive controls use purple. */
 html[data-event="halloween-2026"] :is(.register-form-errors, .review-form-errors, .profile-edit-error, .account-form-error, .wd-search-form-error, .wd-search-field-errors, .wd-search-state-error .wd-search-state-mark) { color: var(--halloween-error); }
 html[data-event="halloween-2026"] .register-form-errors {
   border-color: var(--halloween-error);
@@ -279,17 +280,26 @@ html[data-event="halloween-2026"] .wd-search-form-error {
 }
 html[data-event="halloween-2026"] .site-toast[data-toast-tags~="error"] { border-color: var(--halloween-error); }
 html[data-event="halloween-2026"] :is(.review-delete-button:hover, .review-reply-delete:hover, .profile-watch-remove:hover) {
-  color: var(--halloween-error);
-  border-color: var(--halloween-error);
+  color: var(--halloween-purple);
+  border-color: var(--halloween-purple);
+  background: color-mix(in srgb, var(--halloween-purple) 12%, var(--color-surface-raised));
 }
 html[data-event="halloween-2026"] .review-delete-dialog-confirm {
   background: var(--halloween-danger);
   border-color: var(--halloween-danger);
   color: #ffffff;
+  box-shadow: none;
 }
-html[data-event="halloween-2026"] .review-delete-dialog-confirm:hover {
+html[data-event="halloween-2026"] .review-delete-dialog-confirm:hover:not(:disabled) {
   background: var(--halloween-danger-hover);
   border-color: var(--halloween-danger-hover);
+}
+html[data-event="halloween-2026"] .review-delete-dialog-confirm:active:not(:disabled) {
+  background: color-mix(in srgb, var(--halloween-danger) 80%, black);
+  border-color: color-mix(in srgb, var(--halloween-danger) 80%, black);
+}
+html[data-event="halloween-2026"] :is(.review-delete-button, .review-reply-delete, .profile-watch-remove, .review-delete-dialog-confirm):focus-visible {
+  outline-color: var(--halloween-purple);
 }
 
 @media (prefers-reduced-motion: reduce) {
