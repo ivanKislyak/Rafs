@@ -111,7 +111,7 @@ def validate_candidate(item, media_type, tmdb_id, min_votes):
         raise ImportIssue("Число голосов ниже --min-votes.")
 
 
-def confirmed_format(entity, media_type, api):
+def confirmed_format(entity, media_type, api, *, forbidden_types=()):
     """Confirm a direct P31 using the complete bounded P279 ancestry.
 
     Anime types can reach film/series quickly while another inheritance branch
@@ -123,7 +123,8 @@ def confirmed_format(entity, media_type, api):
     direct = set(claim_qids(entity, ("P31",)))
     if not direct:
         raise ImportIssue("Wikidata: нет P31 для подтверждения формата произведения.")
-    roots = set().union(*FORMAT_ROOTS.values()) | PART_TYPES
+    forbidden_types = set(forbidden_types)
+    roots = set().union(*FORMAT_ROOTS.values()) | PART_TYPES | forbidden_types
     # Class relationships are public source data, not a per-title verdict.
     # Reusing them avoids repeated API/cache decoding for shared ancestors.
     cache = getattr(api, "_anime_format_graph", None)
@@ -171,6 +172,8 @@ def confirmed_format(entity, media_type, api):
     all_ancestors = set().union(*paths.values())
     if all_ancestors & PART_TYPES:
         raise ImportIssue("Wikidata описывает отдельный сезон или эпизод, а не целое произведение.")
+    if all_ancestors & forbidden_types:
+        raise ImportIssue("Wikidata описывает сборную сущность или персонажа вместо отдельного произведения.")
     other = "tv" if media_type == "movie" else "movie"
     if all_ancestors & FORMAT_ROOTS[other]:
         raise ImportIssue("Формат Wikidata противоречит источнику TMDB movie/tv.")

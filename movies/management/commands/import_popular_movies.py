@@ -341,7 +341,7 @@ class API:
                 result[qid] = entity
         return result
 
-    def resolve(self, details, media_type="movie"):
+    def resolve(self, details, media_type="movie", *, issues=None):
         """Batch exact-ID lookup; movie remains the existing command's default."""
         tmdb_property = MEDIA_FIELDS[media_type][2]
         result, unresolved = {}, []
@@ -381,6 +381,8 @@ class API:
             qids = mappings[("tmdb", str(item["id"]))] | mappings[("imdb", imdb)]
             if len(qids) == 1:
                 result[item["id"]] = next(iter(qids))
+            elif issues is not None:
+                issues[item["id"]] = "ambiguous_identity" if qids else "no_wikidata_match"
         return result
 
 
@@ -473,7 +475,7 @@ def relation_data(entity, related_entities, languages):
 
 
 def import_one(item, original_qid, entity, related_entities, languages, poster_url, dry_run=False,
-               *, media_type="movie", confirmed_type=None):
+               *, media_type="movie", confirmed_type=None, track_changes=False):
     title_field, date_field, tmdb_property = MEDIA_FIELDS[media_type]
     if media_type == "tv" and not confirmed_type:
         raise ImportIssue("Для TV необходим подтверждённый тип произведения; film по умолчанию запрещён.")
@@ -542,13 +544,19 @@ def import_one(item, original_qid, entity, related_entities, languages, poster_u
                                           for lang in languages})
             obj.type_of_work = type_obj
             fields.append("type_of_work")
+        changed = created or bool(fields)
         obj.last_synced_at = timezone.now()
         fields.append("last_synced_at")
         obj.save(update_fields=fields)
-        fill_translations(obj, texts)
+        translations_changed = fill_translations(obj, texts)
+        changed = changed or bool(translations_changed)
         for field, objects in relation_data(entity, related_entities, languages).items():
             if objects:
+                if track_changes:
+                    ids = {item.pk for item in objects}
+                    changed = getattr(obj, field).filter(pk__in=ids).count() < len(ids) or changed
                 getattr(obj, field).add(*objects)
+        obj._import_changed = changed
         return obj, created
 
 

@@ -2,6 +2,7 @@ import logging
 
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.postgres.search import SearchVector
+from django.db import transaction
 from django.db.models import Prefetch, Value
 
 from accounts.models import User
@@ -17,9 +18,12 @@ GERMAN_TRANSLATION_ATTR = "_search_german_translations"
 
 prefetch_trans_attr = [
     ENGLISH_TRANSLATIONS_ATTR, RUSSIAN_TRANSLATIONS_ATTR, 
-    SPANISH_TRANSLATION_ATTR, GERMAN_TRANSLATION_ATTR]
-prefetch_lang_code = ["en", "ru", "es", "de", ]
-prefetch_languages = ["english", "russian", "spanish", "german"]
+    SPANISH_TRANSLATION_ATTR, GERMAN_TRANSLATION_ATTR,
+    "_search_ukrainian_translations", "_search_kazakh_translations"]
+prefetch_lang_code = ["en", "ru", "es", "de", "uk", "kk"]
+# PostgreSQL has no built-in Ukrainian/Kazakh stemmers. Their literal tokens
+# remain searchable through RAFS's existing query configurations.
+prefetch_languages = ["english", "russian", "spanish", "german", "simple", "simple"]
 
 logger = logging.getLogger(__name__)
 
@@ -131,7 +135,7 @@ for attr, lang_code in zip(prefetch_trans_attr, prefetch_lang_code):
     )
 
 # Main Functions
-def index_new_movies():
+def index_new_movies(movie_ids=None):
     content_type = ContentType.objects.get_for_model(Movie)
     indexed_object_ids = GlobalSearchIndex.objects.filter(
         content_type=content_type
@@ -155,6 +159,8 @@ def index_new_movies():
             "tags"
         )
     )
+    if movie_ids is not None:
+        movies = movies.filter(pk__in=movie_ids)
 
     documents = []
     prepared_count = 0
@@ -168,10 +174,10 @@ def index_new_movies():
                 type_of_work_name = _lang_value(movie.type_of_work, "name", trans_attr=attr)
 
             names = _join_unique(
-                [_lang_value(movie, "wikidata_name", trans_attr=attr), movie.name]
+                [_lang_value(movie, "wikidata_name", trans_attr=attr), movie.name if lang_code not in {"uk", "kk"} else ""]
             )
             descriptions = _join_unique(
-                [_lang_value(movie, "wikidata_description", trans_attr=attr), movie.description]
+                [_lang_value(movie, "wikidata_description", trans_attr=attr), movie.description if lang_code not in {"uk", "kk"} else ""]
             )
             related_names = _join_unique(
                 [
@@ -184,11 +190,11 @@ def index_new_movies():
                     *(_lang_value(item, "name", trans_attr=attr)for item in getattr(movie, f"_search_screenwriters_{lang_code}")),
                     *(_lang_value(item, "name", trans_attr=attr) for item in getattr(movie, f"_search_producers_{lang_code}")),
                     *(_lang_value(item, "name", trans_attr=attr) for item in getattr(movie, f"_search_composers_{lang_code}")),
-                    *(tag.name for tag in movie.tags.all()),
+                    *(tag.name for tag in movie.tags.all() if lang_code not in {"uk", "kk"}),
                 ]
             )
             identifiers = _join_unique(
-                [movie.year, movie.imdb_id, movie.wikidata_id]
+                [movie.year, movie.imdb_id, movie.wikidata_id] if lang_code not in {"uk", "kk"} else []
             )
 
             language_vector = _build_search_vector(
@@ -232,6 +238,17 @@ def index_new_movies():
         "Prepared %s new movie search documents for insertion.",
         prepared_count,
     )
+
+
+def refresh_movie_documents(movie_ids):
+    """Atomically refresh only a bounded batch; preserve the rest of the index."""
+    movie_ids = list(movie_ids)
+    if not movie_ids:
+        return
+    with transaction.atomic():
+        content_type = ContentType.objects.get_for_model(Movie)
+        GlobalSearchIndex.objects.filter(content_type=content_type, object_id__in=movie_ids).delete()
+        index_new_movies(movie_ids=movie_ids)
 
 
 def index_new_reviews():

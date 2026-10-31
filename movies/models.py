@@ -76,6 +76,23 @@ class Movie(TranslatableModel):
             return self.name
 
 
+class AnimationImportReceipt(models.Model):
+    """Commit provenance with Movie; SQLite progress can then be recovered safely."""
+
+    campaign = models.UUIDField()
+    media_type = models.CharField(max_length=5, choices=[("movie", "movie"), ("tv", "tv")])
+    tmdb_id = models.PositiveBigIntegerField()
+    wikidata_id = models.CharField(max_length=20)
+    movie = models.ForeignKey(Movie, on_delete=models.SET_NULL, null=True)
+    outcome = models.CharField(max_length=8, choices=[(x, x) for x in ("created", "updated", "existing")])
+    indexed = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=["campaign", "media_type", "tmdb_id"], name="unique_animation_receipt")]
+        indexes = [models.Index(fields=["campaign", "outcome"], name="animation_campaign_outcome")]
+
+
 class Review(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,

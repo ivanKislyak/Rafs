@@ -85,7 +85,8 @@ The complete list of Python dependencies is available in `requirements.txt`.
   PostgreSQL full-text query used by the search-results page. Importing or editing
   records does not automatically update `GlobalSearchIndex`. Run
   `python manage.py rebuild_search_index` after the initial data setup and again
-  whenever the searchable data changes, as described below.
+  whenever the searchable data changes, as described below. The animation
+  campaign command is an exception: it refreshes its affected Movie documents.
 - **Search suggestions are not live catalog autocomplete.** They show the signed-in
   user's history, or popular-query data when supplied to the template.
 - **Profile editing is partial.** Public profiles and avatar management work;
@@ -249,6 +250,9 @@ provide a remote `cover_url`.
 Wikidata identity checks and relations. It also searches for missing covers on
 existing records with suitable IDs. `import_anime` supports TMDB movie and TV
 sources for anime films and whole series, with a separate saved state.
+`import_animation` covers all Animation movie/TV works (including anime by
+default), with resumable date partitions and a target of up to 15,000 newly
+created cards. It requires PostgreSQL and the import-receipt migration.
 
 Add your TMDB API Read Access Token to the local `.env` file:
 
@@ -271,6 +275,8 @@ These imports are operator-run commands, not a background task started by the
 website. See the [popular-movie importer guide](movies/management/commands/README_import_popular_movies.md)
 and [anime importer guide](movies/management/commands/README_import_anime.md)
 for filters, identity checks, missing-cover-only runs, and retry/resume options.
+The [animation campaign guide](movies/management/commands/README_import_animation.md)
+documents the 40-candidate dry-run, tmux operation, accounting and coverage limits.
 
 Posters are stored as remote URLs, not downloaded into `media/`, and existing
 local covers and non-empty cover URLs are preserved by these command-line
