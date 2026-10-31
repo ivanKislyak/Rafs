@@ -63,7 +63,10 @@ def profile(request, username):
         .prefetch_related(
             Prefetch(
                 "achievement",
-                queryset=Achievement.objects.only("id", "name", "description"),
+                queryset=Achievement.objects.only(
+                    "id", "name", "description", "badge_image", 
+                    "display_in_profile", "starts_at", "ends_at", "created_at"
+                ).filter(display_in_profile=True),
                 to_attr="profile_achievements",
             )
         ),
