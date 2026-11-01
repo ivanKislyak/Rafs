@@ -18,7 +18,11 @@ interfaces or temporary development data.
 
 ## Current features
 
-- Home page with movies ranked by review activity and average user score
+- Home page with administrator-curated, translated collections above the
+  existing top movies ranked by review activity and average user score
+- Collection carousels with native horizontal scrolling, scroll snap, optional
+  previous/next controls, and keyboard/touch access; all prepared items remain
+  available, with roughly five visible on wide screens and no collection ratings
 - Responsive movie catalog with poster cards and incremental loading
 - Individual movie pages with ratings, reviews, and watch-status controls
 - Reviews feed with incremental loading and links to authors and reviewed works
@@ -26,11 +30,19 @@ interfaces or temporary development data.
 - Custom users with avatars, levels, and Frames — the RAFS experience points
 - Public profiles at `/@<username>/` with review/reply counts, achievements,
   and a library grouped by watch status; email and owner controls are private
+- Owner-only profile editor for biography, sex, and date of birth, with inline
+  validation and updates through the authenticated current-user API
 - Avatar upload, resizing, conversion to PNG, and removal from the owner's profile
+- Removal from the owner's watch library with confirmation, updated counts,
+  and an undo action
+- Existing achievement badges with image fallbacks, administrator-controlled
+  profile visibility, and user awards stored through `UserAchievement`
 - Movie ratings based on an overall score and optional additional criteria
 - Creation, editing, and deletion of user reviews
 - Expandable review-reply threads, posting replies, and deletion of reviews or
   replies by their author or a superuser
+- Inline reply editing by the reply's author on movie pages and the reviews feed,
+  including incrementally loaded content, without a full-page reload
 - Spoiler warnings for written reviews
 - Optimistic like/dislike updates on reviews, synchronized with the server and
   rolled back on error, without reloading the page
@@ -50,6 +62,10 @@ interfaces or temporary development data.
 - User-interface localization with English, Russian, Ukrainian, Kazakh, Spanish, and German language switching
 - Shared header and footer templates with component-based CSS
 - Light/dark themes, a compact mobile header, and public community guidelines
+- Reversible Halloween 2026 styling with neutral surfaces, pumpkin-orange actions,
+  purple artwork, restrained green details, and seasonal favicons
+- Canonical URLs, localized page descriptions, Open Graph metadata,
+  homepage WebSite structured data, `sitemap.xml`, and `robots.txt`
 
 These features depend on local data, database selection, and optional API
 credentials. See [Current limitations](#current-limitations) before a first run.
@@ -63,7 +79,8 @@ credentials. See [Current limitations](#current-limitations) before a first run.
   PostgreSQL 17 is included in the development Docker setup
 - Docker and Docker Compose
 - Django ORM and Django Template Language
-- Django REST Framework for the authenticated search-history API
+- Django REST Framework for search, search history, current-user profile,
+  watch-status, and review-reply APIs
 - HTML and component-based CSS
 - Vanilla JavaScript and the Fetch API
 - django-parler for translated movie metadata
@@ -89,13 +106,19 @@ The complete list of Python dependencies is available in `requirements.txt`.
   campaign command is an exception: it refreshes its affected Movie documents.
 - **Search suggestions are not live catalog autocomplete.** They show the signed-in
   user's history, or popular-query data when supplied to the template.
-- **Profile editing is partial.** Public profiles and avatar management work;
-  a general editor for username, biography, and other account fields is not yet
-  available. Achievement display exists, but automatic achievement awards are
-  not implemented.
-- **Reply tools are basic.** Replies can be posted, shown/hidden, and deleted with
-  ownership/superuser checks. Reply reactions, reply editing, and a broader
-  moderation workflow are not exposed by the current interface.
+- **Profile editing covers a defined set of fields.** Biography, sex, date of
+  birth, and avatar management are available. The current-user editor does not
+  change usernames or email addresses.
+- **Achievement awarding is unfinished.** Award records and profile badge display
+  exist, but automatic eligibility checks, seasonal grants, and an award-reveal
+  flow are not implemented. A successful review or Frames notification does not
+  mean that an achievement was earned.
+- **Reply tools are basic.** Authors can post and edit their own replies;
+  authors and superusers can delete them. Reply reactions and a broader moderation
+  workflow are not exposed by the current interface.
+- **Homepage collections need administrator setup.** Only published, non-empty
+  collections appear; no demo collections or movie selections are created by the
+  seasonal theme.
 - **Catalog filtering has no separate form.** The view accepts `query`,
   `min_rating`, `year_from`, and `year_to` parameters; the visible search is in
   the shared header.
@@ -107,6 +130,97 @@ The complete list of Python dependencies is available in `requirements.txt`.
 - **PostgreSQL support is not a complete production deployment.** The included
   containers use Django's development server. Production application serving,
   media-file delivery, and database operations must be configured separately.
+
+## Homepage collections
+
+Collections are managed through `HomepageCollection` in Django admin:
+
+1. Add a collection, provide its translated title, and set its `position`.
+2. Add existing movies through the inline collection items and set their positions.
+3. Enable `is_published` when the collection is ready to appear on the home page.
+
+Collections and their items are ordered by `position`, then primary key. Empty or
+unpublished collections are omitted. Titles use the project's language fallback
+conventions, and each movie retains its detail link, poster fallback, title, and
+year when available. The number of visible cards is a layout choice, not a limit
+on the collection's contents. There is no autoplay or carousel dependency; the
+native scroll area and movie links remain usable without JavaScript.
+
+The home view supplies `homepage_collections` separately from `top_movies`.
+Templates access `collection.items.all` and `item.movie`. Collection cards pass
+`hide_rating=True` to `movies/_movie_card.html`: the entire rating branch is
+skipped, including access to `movie.avg_rating`. Catalog cards, top movies, and
+other callers retain their existing rating display.
+
+## Themes and Halloween 2026
+
+The ordinary light/dark theme switch still stores its choice under `rafs-theme`
+in localStorage. The seasonal appearance is a separate, frontend-only switch in
+[`templates/base.html`](templates/base.html):
+
+```html
+<html lang="{{ CURRENT_LANGUAGE }}" data-event="halloween-2026">
+```
+
+- **Enable Halloween:** add `data-event="halloween-2026"` to the root `<html>` tag.
+- **Disable Halloween:** remove that attribute and reload the page. The ordinary
+  palette, header/footer artwork, favicon, and logo hover behavior return.
+
+The attribute is currently present in the template. It is not controlled by a
+date, backend setting, API, or administrator publication flag. Disabling the
+seasonal appearance does not hide published homepage collections.
+
+[`static/css/halloween.css`](static/css/halloween.css) loads after page-specific
+styles and scopes seasonal overrides to `html[data-event="halloween-2026"]`.
+Dark mode uses neutral charcoal surfaces and warm-white text; light mode uses
+neutral light surfaces and darker accent text. Pumpkin orange marks primary
+actions, active navigation, selected controls, and the small RAFS page eyebrow.
+Orange buttons use dark text. Purple remains in the supplied artwork and
+supporting accents; muted green is limited to small decorative details. Error
+and destructive states remain distinct.
+
+Original assets are preserved. Seasonal artwork lives in
+[`static/images/halloween/`](static/images/halloween/):
+
+- `halloween_def_rafs_logo.png`: primary header logo.
+- `halloween_darkpurple_gl_rafs_logo_for_leftside.png`: purple hover layer,
+  moving **left**.
+- `halloween_darkgreen_gl_rafs_logo_for_rightside.png`: green hover layer,
+  moving **right**.
+- `halloween_glitched_rafs_logo.png`: coordinated hover alternate.
+- `halloween_footer_logo.png`: footer artwork.
+- `halloween_favicon.ico` and `halloween_favicon.png`: seasonal favicon links,
+  synchronized with the root attribute by `static/js/event-assets.js`.
+
+Logo motion is limited to hover-capable pointing devices and respects
+`prefers-reduced-motion`. The reserved `jigsaw_boo.jpg` image is not displayed or
+preloaded; there are no jumpscare triggers or achievement-reveal sequences
+attached to review success. Existing Frames notifications remain separate.
+
+## Profiles and achievements
+
+Profile owners can edit `about`, `sex`, and `bd_date` through the profile dialog.
+It reads and updates the signed-in user through `/accounts/api/v1/me/`; `id` and
+`username` are read-only. Avatar upload/removal uses its existing separate form.
+Reply authors can edit reply text through the inline editor, backed by
+`PATCH /movies/api/v1/replies/<reply_id>/`. Superuser deletion privileges do not
+grant permission to edit another user's reply.
+
+`User.achievement` uses `UserAchievement` as its through model, with a unique
+user/achievement pair, an `earned_at` field, and an optional `source_review`.
+Achievement definitions include `badge_image`, `code`, event dates, and
+`display_in_profile`. Both definitions and award records are available in admin.
+
+The profile receives only achievements with `display_in_profile=True`; its count
+and list use the same prefetched data, including `badge_image`. Existing badges
+show their image with a diamond fallback. An empty award list remains empty,
+and award timestamps are not currently displayed.
+
+The intended "Review or Treat" event window is October 31 through November 3,
+2026 inclusive in UTC+5. This is a planned eligibility window, not an implemented
+automatic reward. Eligibility, awarding, and any future presentation must be
+driven by the server. A later reveal flow needs an explicit signal for a persisted
+award; ordinary review success and Frames messages are not that signal.
 
 ## Running with Docker
 
@@ -213,7 +327,10 @@ The following pages will then be available:
 - Movie catalog: <http://127.0.0.1:8000/movies/>
 - Reviews page: <http://127.0.0.1:8000/movies/reviews/>
 - Public profile: `/@<username>/` after registering a user
+- About RAFS: <http://127.0.0.1:8000/about_site/>
 - Community guidelines: <http://127.0.0.1:8000/community-guidelines/>
+- Sitemap: <http://127.0.0.1:8000/sitemap.xml>
+- Robots rules: <http://127.0.0.1:8000/robots.txt>
 - Staff Wikidata search: <http://127.0.0.1:8000/movies/wikidata/search/>
 - Django admin: <http://127.0.0.1:8000/admin/>
 
@@ -322,9 +439,11 @@ Check the Django configuration:
 python manage.py check
 ```
 
-The repository includes automated checks for profiles, avatar uploads, search
-history validation and ownership, review reactions and replies, watch statuses,
-SEO metadata, POST-only staff imports, and importer behavior using API fixtures.
+The repository includes automated checks for profile privacy and current-user
+editing, avatar uploads, localized watch libraries, search-history validation and
+ownership, review reactions, reply creation/editing permissions, watch statuses,
+home-page rankings, SEO metadata, POST-only staff imports, and importer behavior
+using API fixtures.
 The full-text rebuild checks require a separate PostgreSQL test database; the
 database role must be allowed to create that test database. Run the test suite with:
 
@@ -348,25 +467,32 @@ python manage.py collectstatic --noinput
 
 ## Planned features
 
-- General profile editing beyond avatar management
-- Reply reactions, reply editing, and expanded moderation tools
+- Additional account-management fields beyond the current profile editor
+- Reply reactions and expanded moderation tools
 - Expanded Wikidata synchronization
-- Search-index maintenance commands, refresh automation, and catalog autocomplete
+- Incremental search-index maintenance, refresh automation, and catalog autocomplete
 - Personalized movie recommendations
-- Automatic achievement awards
+- Server-side achievement eligibility and automatic awards, including seasonal
+  events and a dedicated earned-award presentation signal
 - Production-ready container startup and deployment configuration
 - Dedicated production media-file storage
 - Expanded PostgreSQL-search and browser-interaction test coverage
 
 ## Project structure
 
-- `accounts/` — authentication, custom users, profiles, achievements, and search history
+- `accounts/` — authentication, custom users, profile editing, achievement
+  definitions/award records, and search history
 - `movies/` — catalog works, ratings, reviews, replies, votes, and watch statuses
 - `movies/services/` — Wikidata requests/imports and PostgreSQL search-index helpers
 - `movies/management/commands/` — catalog imports, translations, and importer guides
-- `core/` — home page and general site pages
+- `core/` — home page, translated homepage collections, general site pages,
+  SEO helpers, and sitemaps
 - `templates/` — shared Django templates, including the header and footer
 - `static/css/components/` — shared interface-component styles
+- `static/css/halloween.css` — scoped seasonal palette and component overrides
+- `static/js/home-collections.js` — optional collection navigation controls
+- `static/js/event-assets.js` — seasonal favicon switching
+- `static/images/halloween/` — seasonal artwork and reserved presentation assets
 - `static/` — JavaScript, fonts, logos, and other interface assets
 - `locale/` — gettext translations for the supported interface languages
 - `media/` — user-uploaded files excluded from the repository
