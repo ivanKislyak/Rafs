@@ -1,4 +1,4 @@
-# RAFS
+# 🎃 RAFS
 
 <p align="center">
   <img src="static/images/rafs-preview-v3.png" alt="RAFS wasp mascot" width="760">
@@ -37,6 +37,8 @@ interfaces or temporary development data.
   and an undo action
 - Existing achievement badges with image fallbacks, administrator-controlled
   profile visibility, and user awards stored through `UserAchievement`
+- Automatic "Review or Treat" achievement awards for qualifying written reviews,
+  with a server-issued notification and Halloween badge-reveal dialog
 - Movie ratings based on an overall score and optional additional criteria
 - Creation, editing, and deletion of user reviews
 - Expandable review-reply threads, posting replies, and deletion of reviews or
@@ -55,6 +57,8 @@ interfaces or temporary development data.
 - Staff-only movie search and metadata import from Wikidata
 - TMDB/Wikidata command-line imports for popular movies and anime films/series,
   with dry-run, caching, saved progress, and resume support
+- Broad whole-series imports and production-country movie imports for RU, UA,
+  and KZ, including co-productions, with independent resumable campaign state
 - Automatic poster-URL import and missing-cover backfill through the TMDB importer
 - Local movie-cover uploads, remote cover URLs, and placeholder fallbacks
 - PostgreSQL connection settings for development and production deployments,
@@ -102,17 +106,19 @@ The complete list of Python dependencies is available in `requirements.txt`.
   PostgreSQL full-text query used by the search-results page. Importing or editing
   records does not automatically update `GlobalSearchIndex`. Run
   `python manage.py rebuild_search_index` after the initial data setup and again
-  whenever the searchable data changes, as described below. The animation
-  campaign command is an exception: it refreshes its affected Movie documents.
+  whenever the searchable data changes, as described below. The animation,
+  series, and country-movie campaign commands are exceptions: they refresh
+  their affected Movie documents.
 - **Search suggestions are not live catalog autocomplete.** They show the signed-in
   user's history, or popular-query data when supplied to the template.
 - **Profile editing covers a defined set of fields.** Biography, sex, date of
   birth, and avatar management are available. The current-user editor does not
   change usernames or email addresses.
-- **Achievement awarding is unfinished.** Award records and profile badge display
-  exist, but automatic eligibility checks, seasonal grants, and an award-reveal
-  flow are not implemented. A successful review or Frames notification does not
-  mean that an achievement was earned.
+- **Seasonal awards require event configuration.** "Review or Treat" awarding and
+  presentation are implemented, but require an achievement definition with code
+  `review-or-treat-2026` and valid timezone-aware event dates. Missing or invalid
+  configuration skips the award without blocking review submission. A Frames
+  notification alone is not an achievement signal.
 - **Reply tools are basic.** Authors can post and edit their own replies;
   authors and superusers can delete them. Reply reactions and a broader moderation
   workflow are not exposed by the current interface.
@@ -193,9 +199,10 @@ Original assets are preserved. Seasonal artwork lives in
   synchronized with the root attribute by `static/js/event-assets.js`.
 
 Logo motion is limited to hover-capable pointing devices and respects
-`prefers-reduced-motion`. The reserved `jigsaw_boo.jpg` image is not displayed or
-preloaded; there are no jumpscare triggers or achievement-reveal sequences
-attached to review success. Existing Frames notifications remain separate.
+`prefers-reduced-motion`. The seasonal switch also controls the Halloween
+award-reveal dialog; it does not enable or disable server-side awarding. When
+the theme is off, an earned achievement uses the ordinary notification instead.
+See [Review or Treat](#review-or-treat) for the presentation and eligibility rules.
 
 ## Profiles and achievements
 
@@ -216,11 +223,50 @@ and list use the same prefetched data, including `badge_image`. Existing badges
 show their image with a diamond fallback. An empty award list remains empty,
 and award timestamps are not currently displayed.
 
-The intended "Review or Treat" event window is October 31 through November 3,
-2026 inclusive in UTC+5. This is a planned eligibility window, not an implemented
-automatic reward. Eligibility, awarding, and any future presentation must be
-driven by the server. A later reveal flow needs an explicit signal for a persisted
-award; ordinary review success and Frames messages are not that signal.
+### Review or Treat
+
+[`accounts/services/achievements.py`](accounts/services/achievements.py) implements
+automatic awarding when a valid saved review first acquires non-whitespace text:
+
+- A new written review qualifies, as does adding text to an existing numeric-only
+  rating. There is no Halloween-movie restriction or additional minimum text length.
+- A numeric rating with empty/whitespace-only text does not qualify. Editing or
+  resaving a review that already had non-whitespace text does not qualify.
+- The server checks `starts_at <= now < ends_at` on the achievement definition
+  with code `review-or-treat-2026`. Event dates are configuration, not browser rules.
+- `get_or_create` and the unique user/achievement constraint make the award
+  one-time per user. The record stores the server's award time and source review;
+  another qualifying review does not replace them or send a second award message.
+
+To configure the October 31–November 3, 2026 event inclusive in UTC+5, create the
+achievement in admin with its name, description, optional `badge_image`, and code
+`review-or-treat-2026`. Use timezone-aware bounds equivalent to
+`2026-10-31T00:00:00+05:00` through `2026-11-04T00:00:00+05:00` (exclusive end).
+`display_in_profile` controls profile visibility and its count, not eligibility.
+The code does not automatically create the event definition or its artwork.
+
+Review saving and awarding run in one database transaction. Only a newly created
+award schedules the Django message with tags
+`halloween-award-earned review-or-treat-2026`, after commit. The inclusion tag in
+[`accounts/templatetags/achievements.py`](accounts/templatetags/achievements.py)
+also checks that the signed-in user owns the persisted award before supplying
+presentation data. Ordinary review success and `frames-reward` messages do not
+trigger the achievement presentation or grant an award.
+
+With the Halloween appearance active, JavaScript, and dialog support,
+[`static/js/halloween-award.js`](static/js/halloween-award.js) displays
+`jigsaw_boo.jpg`, followed by the earned badge when the user selects **Skip to
+award** or presses Escape. There is no sound or timer advancing the scare.
+With `prefers-reduced-motion: reduce`, the scare is skipped and the badge appears
+directly. Images load only when their presentation stage is shown; an unavailable
+scare image also advances to the badge. The dialog has a profile link and close
+control, keeps keyboard focus inside, and restores focus/scroll on closing.
+
+The achievement presentation is queued before ordinary messages, preserving the
+separate Frames notification. Without the seasonal dialog, the normal award
+notification remains available; notifications are also readable without
+JavaScript. Closing or skipping the presentation does not create, revoke, or
+re-award the achievement.
 
 ## Running with Docker
 
@@ -372,6 +418,21 @@ default), with resumable date partitions and a practical target of up to 15,000
 new cards. It requires PostgreSQL and stores progress/cache in SQLite; a crash
 after the Movie commit may undercount new cards, while ID checks prevent duplicates.
 
+`import_series` expands the campaign runner to whole TV/mini-series across
+countries, genres, and platforms, including animation and anime. It does not
+import individual seasons or episodes. `import_country_movies` selects movies
+produced in any of RU, UA, or KZ by default (`--countries` can select a subset).
+Selection is checked against TMDB `production_countries`, not inferred from the
+original language; co-productions qualify, while contradictory country data is
+skipped for review.
+
+Both new commands require PostgreSQL. They use separate state/cache/report
+directories and default to `--target-new 0`, scanning available partitions without
+the animation campaign's 15,000-card target. An optional positive target can exceed
+15,000; `--max-candidates` bounds a single invocation. Neither command guarantees
+complete source coverage. Like the animation importer, they preserve existing
+non-empty fields and refresh affected Movie search documents after writes.
+
 Add your TMDB API Read Access Token to the local `.env` file:
 
 ```dotenv
@@ -395,6 +456,11 @@ and [anime importer guide](movies/management/commands/README_import_anime.md)
 for filters, identity checks, missing-cover-only runs, and retry/resume options.
 The [animation campaign guide](movies/management/commands/README_import_animation.md)
 documents the 40-candidate dry-run, tmux operation, accounting and coverage limits.
+The [series importer guide](movies/management/commands/README_import_series.md)
+and [country-movie importer guide](movies/management/commands/README_import_country_movies.md)
+cover the new selections, bounded dry-runs, independent campaign state, and
+resume/coverage limits. Campaign imports share a writer lock and should be run
+sequentially; a competing writer is rejected rather than queued.
 
 Posters are stored as remote URLs, not downloaded into `media/`, and existing
 local covers and non-empty cover URLs are preserved by these command-line
@@ -443,7 +509,10 @@ The repository includes automated checks for profile privacy and current-user
 editing, avatar uploads, localized watch libraries, search-history validation and
 ownership, review reactions, reply creation/editing permissions, watch statuses,
 home-page rankings, SEO metadata, POST-only staff imports, and importer behavior
-using API fixtures.
+using API fixtures. Achievement tests cover eligibility, event boundaries,
+idempotency, transaction rollback, owned-award presentation data, and concurrent
+awards; the concurrency check requires PostgreSQL. Series/country-movie importer
+tests cover selection, identity conflicts, dry-runs, state isolation, and resume.
 The full-text rebuild checks require a separate PostgreSQL test database; the
 database role must be allowed to create that test database. Run the test suite with:
 
@@ -472,8 +541,6 @@ python manage.py collectstatic --noinput
 - Expanded Wikidata synchronization
 - Incremental search-index maintenance, refresh automation, and catalog autocomplete
 - Personalized movie recommendations
-- Server-side achievement eligibility and automatic awards, including seasonal
-  events and a dedicated earned-award presentation signal
 - Production-ready container startup and deployment configuration
 - Dedicated production media-file storage
 - Expanded PostgreSQL-search and browser-interaction test coverage
@@ -482,8 +549,11 @@ python manage.py collectstatic --noinput
 
 - `accounts/` — authentication, custom users, profile editing, achievement
   definitions/award records, and search history
+- `accounts/services/achievements.py` — server-side seasonal eligibility and awards
+- `accounts/templatetags/achievements.py` — owned-award data for presentation
 - `movies/` — catalog works, ratings, reviews, replies, votes, and watch statuses
-- `movies/services/` — Wikidata requests/imports and PostgreSQL search-index helpers
+- `movies/services/` — Wikidata requests/imports, shared catalog campaign runners,
+  and PostgreSQL search-index helpers
 - `movies/management/commands/` — catalog imports, translations, and importer guides
 - `core/` — home page, translated homepage collections, general site pages,
   SEO helpers, and sitemaps
@@ -492,7 +562,8 @@ python manage.py collectstatic --noinput
 - `static/css/halloween.css` — scoped seasonal palette and component overrides
 - `static/js/home-collections.js` — optional collection navigation controls
 - `static/js/event-assets.js` — seasonal favicon switching
-- `static/images/halloween/` — seasonal artwork and reserved presentation assets
+- `static/js/halloween-award.js` — server-signalled scare/badge presentation
+- `static/images/halloween/` — seasonal artwork and reward-presentation assets
 - `static/` — JavaScript, fonts, logos, and other interface assets
 - `locale/` — gettext translations for the supported interface languages
 - `media/` — user-uploaded files excluded from the repository
