@@ -34,8 +34,37 @@ class WatchStatusWriteAPITests(APITestCase):
             user=self.user, 
             movie=self.movie.pk
         )
-        watch_status = saved_statuses.get()
         self.assertEqual(saved_statuses.count(), 1)
+        watch_status = saved_statuses.get()
         self.assertEqual(watch_status.status, viewed_watch_status)
                 
-        
+    def test_put_updates_existing_watch_status_without_duplicate(self):
+        will_watch_status = WatchStatus.StatusChoice.WILL_WATCH
+        viewed_watch_status = WatchStatus.StatusChoice.VIEWED
+        first_status = WatchStatus.objects.create(
+            user=self.user,
+            movie=self.movie,
+            status=will_watch_status
+        )
+        first_status_id = first_status.pk
+
+        response = self.client.put(
+            self.url,
+            {"status": viewed_watch_status},
+            format="json",
+        )
+        expected_json = {
+            "movie_id": self.movie.pk,
+            "status": viewed_watch_status
+        }
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), expected_json)
+        first_status.refresh_from_db()
+        self.assertEqual(first_status.status, viewed_watch_status)
+        saved_statuses = WatchStatus.objects.filter(
+            user=self.user,
+            movie=self.movie.pk
+        )
+        self.assertEqual(saved_statuses.count(), 1)
+        self.assertEqual(saved_statuses.get().pk, first_status_id)
