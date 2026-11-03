@@ -68,3 +68,25 @@ class WatchStatusWriteAPITests(APITestCase):
         )
         self.assertEqual(saved_statuses.count(), 1)
         self.assertEqual(saved_statuses.get().pk, first_status_id)
+
+    def test_put_invalid_status_keeps_saved_status_unchanged(self):
+        watching_status = WatchStatus.StatusChoice.WATCHING
+        existing_status = WatchStatus.objects.create(
+            user=self.user,
+            movie=self.movie,
+            status=watching_status
+        )
+
+        response = self.client.put(
+            self.url,
+            {"status": "INVALID_STATUS"}, 
+            format="json"
+        )
+        self.assertEqual(response.status_code, 400)
+        existing_status.refresh_from_db()
+        saved_statuses = WatchStatus.objects.filter(
+            user=self.user,
+            movie=self.movie,
+        )
+        self.assertEqual(saved_statuses.count(), 1)
+        self.assertEqual(existing_status.status, watching_status)
