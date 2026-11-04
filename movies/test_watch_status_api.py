@@ -106,3 +106,35 @@ class WatchStatusWriteAPITests(APITestCase):
             movie=self.movie,
         )
         self.assertEqual(saved_statuses.count(), 0)
+    
+    def test_delete_removes_only_current_users_watch_status(self):
+        viewed_watch_status = WatchStatus.StatusChoice.VIEWED
+        dropped_status = WatchStatus.StatusChoice.DROPPED
+        
+        WatchStatus.objects.create(
+            user=self.user,
+            movie=self.movie,
+            status=viewed_watch_status
+        )
+        alien = User.objects.create_user(
+            username='alien',
+            email='alien-test@gmail.com'
+        )
+        WatchStatus.objects.create(
+            user=alien,
+            movie=self.movie,
+            status=dropped_status
+        )
+        response = self.client.delete(self.url)
+        
+        self.assertEqual(response.status_code, 204)
+        user_record_watch_status = WatchStatus.objects.filter(
+            user=self.user,
+            movie=self.movie,
+        )
+        self.assertEqual(user_record_watch_status.count(), 0)
+        alien_record_watch_status = WatchStatus.objects.filter(
+            user=alien,
+            movie=self.movie,
+        )
+        self.assertEqual(alien_record_watch_status.get().status, dropped_status)
