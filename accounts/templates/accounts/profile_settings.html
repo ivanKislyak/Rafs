@@ -4,9 +4,9 @@
 {% load i18n %}
 {% block title %}{{ profile_user.username }} {% translate "Profile settings" %}{% endblock %}
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'accounts/css/settings.css' %}">
+    <link rel="stylesheet" href="{% static 'accounts/css/profile_settings.css' %}">
 {% endblock %}
 {% block content %}
 {% endblock %}
-{% block extra_js %}
-{% endblock %}
+{% comment %} {% block extra_js %}
+{% endblock %} {% endcomment %}

@@ -223,4 +223,5 @@ class MeAPIView(generics.RetrieveUpdateAPIView):
 
 
 def profile_settings(request, username):
-    render(request, "accounts/profile_settings.html")
+    profile_user = get_object_or_404(User.objects.filter(is_deleted=False, username=username))
+    return render(request, "accounts/profile_settings.html", {"profile_user": profile_user})
