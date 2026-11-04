@@ -22,7 +22,7 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/', include('accounts.urls')),
     path("@<str:username>/", accounts_views.profile, name="profile"),
-    path("@<str:username>/settings/", accounts_views.profile_settings, name="profile_settings"),
+    path("settings/", accounts_views.profile_settings, name="profile_settings"),
 ]
 
 if settings.DEBUG:
