@@ -12,7 +12,8 @@ class ProfileSettingsPageTests(TestCase):
         self.url = reverse("profile_settings")
 
     def test_anonymous_is_redirected_to_login(self):
-        self.skipTest("TODO: Implement anonymous redirect test")
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 302)
 
     def test_owner_can_open_settings(self):
         self.skipTest("TODO: Implement owner settings test")
