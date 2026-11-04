@@ -90,3 +90,19 @@ class WatchStatusWriteAPITests(APITestCase):
         )
         self.assertEqual(saved_statuses.count(), 1)
         self.assertEqual(existing_status.status, watching_status)
+
+    def test_anonymous_put_does_not_create_watch_status(self):
+        self.client.force_authenticate(user=None)
+        viewed_watch_status = WatchStatus.StatusChoice.VIEWED
+        
+        response = self.client.put(
+            self.url,
+            {"status": viewed_watch_status}, 
+            format="json"
+        )
+        self.assertEqual(response.status_code, 403)
+        saved_statuses = WatchStatus.objects.filter(
+            user=self.user,
+            movie=self.movie,
+        )
+        self.assertEqual(saved_statuses.count(), 0)
