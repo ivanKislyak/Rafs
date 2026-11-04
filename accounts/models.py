@@ -26,6 +26,7 @@ class Achievement(models.Model):
         return self.name
 
 class User(AbstractUser):
+    name = models.CharField(_("name"), max_length=64, blank=True)
     about = models.TextField(blank=True, max_length=1000, verbose_name=_("About me"))
     user_lvl = models.IntegerField(default=1, validators=[MinValueValidator(1)], verbose_name=_("Level"))
     user_frames = models.IntegerField(default=1, validators=[MinValueValidator(1)], verbose_name=_("Frames"))
