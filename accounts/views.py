@@ -220,3 +220,7 @@ class MeAPIView(generics.RetrieveUpdateAPIView):
 
     def get_object(self):
         return self.request.user
+
+
+def profile_settings(request, username):
+    render(request, "accounts/profile_settings.html")

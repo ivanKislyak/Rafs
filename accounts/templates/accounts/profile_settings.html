@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% load i18n %}
+{% block title %}{{ profile_user.username }} {% translate "Profile settings" %}{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'accounts/css/settings.css' %}">
+{% endblock %}
+{% block content %}
+{% endblock %}
+{% block extra_js %}
+{% endblock %}
