@@ -6,92 +6,134 @@
     <link rel="stylesheet" href="{% static 'accounts/css/profile_settings.css' %}">
 {% endblock %}
 {% block content %}
-    <main class="profile-settings-page" data-profile-settings
-          data-saving="{% translate 'Saving...' %}"
-          data-saved="{% translate 'Profile saved' %}"
-          data-username-saved="{% translate 'Username saved' %}"
-          data-unchanged="{% translate 'No changes to save' %}"
-          data-error="{% translate 'Unable to save your profile' %}"
-          data-access-error="{% translate 'Access denied. Sign in again and reload the page' %}">
-        <header class="profile-settings-heading">
-            <div>
-                <p class="profile-eyebrow" data-settings-display-name>{{ profile_user.name|default:profile_user.username }}</p>
-                <h1>{% translate "Profile settings" %}</h1>
-                <p class="profile-form-hint">@<span data-current-username>{{ profile_user.username }}</span></p>
-            </div>
-            <a class="profile-button" data-own-profile-link href="{% url 'profile' profile_user.username %}">{% translate "Open profile" %}</a>
-        </header>
-        <noscript><p>{% translate "Enable JavaScript to edit these settings" %}</p></noscript>
-        <section class="profile-settings-section" aria-labelledby="settings-details-title">
-            <h2 id="settings-details-title">{% translate "Public profile" %}</h2>
-            <form action="{% url 'accounts:me' %}" method="post" data-settings-api-form data-fields="name,about">
-                {% csrf_token %}
-                <fieldset>
-                    <div class="profile-edit-field">
-                        <label for="settings-name">{% translate "Name" context "profile display name" %}</label>
-                        <input id="settings-name" name="name" maxlength="64" autocomplete="nickname"
-                               value="{{ profile_user.name }}" aria-describedby="settings-name-error">
-                        <p class="profile-edit-error" id="settings-name-error" data-field-error="name" aria-live="polite"></p>
-                    </div>
-                    <div class="profile-edit-field">
-                        <label for="settings-about">{% translate "About me" %}</label>
-                        <textarea id="settings-about" name="about" maxlength="1000" rows="5" aria-describedby="settings-about-error">{{ profile_user.about }}</textarea>
-                        <p class="profile-edit-error" id="settings-about-error" data-field-error="about" aria-live="polite"></p>
-                    </div>
-                    <button class="profile-button profile-button--primary" type="submit">{% translate "Save" %}</button>
-                </fieldset>
-                <p class="profile-edit-status" data-settings-status role="status" aria-live="polite" aria-atomic="true"></p>
-            </form>
-        </section>
-        <section class="profile-settings-section" aria-labelledby="settings-username-title">
-            <h2 id="settings-username-title">{% translate "Username" %}</h2>
-            <form action="{% url 'accounts:me-username' %}" method="post" data-settings-api-form data-fields="username">
-                {% csrf_token %}
-                <fieldset>
-                    <div class="profile-edit-field">
-                        <label for="settings-username">{% translate "Username" %}</label>
-                        <input id="settings-username" name="username" value="{{ profile_user.username }}" required maxlength="150"
-                               autocomplete="username" autocapitalize="none" spellcheck="false"
-                               aria-describedby="settings-username-hint settings-username-error">
-                        <p class="profile-form-hint" id="settings-username-hint">{% translate "Changing your username also changes your profile address" %}</p>
-                        <p class="profile-edit-error" id="settings-username-error" data-field-error="username" aria-live="polite"></p>
-                    </div>
-                    <button class="profile-button profile-button--primary" type="submit">{% translate "Save" %}</button>
-                </fieldset>
-                <p class="profile-edit-status" data-settings-status role="status" aria-live="polite" aria-atomic="true"></p>
-            </form>
-        </section>
-        <section class="profile-settings-section" aria-labelledby="settings-avatar-title">
-            <h2 id="settings-avatar-title">{% translate "Avatar" %}</h2>
-            <form action="{% url 'accounts:update-avatar' %}" method="post" enctype="multipart/form-data" data-settings-avatar>
-                {% csrf_token %}
-                <input type="hidden" name="return_to" value="settings">
-                <fieldset>
-                    <div class="profile-settings-avatar">
-                        <img class="profile-avatar" width="112" height="112" alt=""
-                             src="{% if profile_user.avatar_image %}{{ profile_user.avatar_image.url }}{% else %}{% static 'images/default_profile_img.png' %}{% endif %}"
-                             data-fallback-src="{% static 'images/default_profile_img.png' %}"
-                             onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;">
-                        <div>
-                            <div hidden>{{ avatar_form.avatar_image }}</div>
-                            <button class="profile-button" type="button" data-settings-choose-file
-                                    aria-describedby="settings-avatar-filename">{% translate "Choose file" %}</button>
-                            <p class="profile-avatar-filename" id="settings-avatar-filename" data-settings-filename
-                               data-empty="{% translate 'No file selected' %}" role="status" aria-live="polite">{% translate "No file selected" %}</p>
-                        </div>
-                    </div>
-                    <p class="profile-form-hint">{% translate "The image will be resized and converted to PNG. Maximum size: 12 MB." %}</p>
+<main class="profile-settings-page" data-profile-settings
+      data-default-avatar="{% static 'images/default_profile_img.png' %}"
+      data-has-avatar="{{ profile_user.avatar_image|yesno:'true,false' }}"
+      data-saving="{% translate 'Saving...' %}" data-saved="{% translate 'Profile saved' %}"
+      data-loading="{% translate 'Loading...' %}"
+      data-error="{% translate 'Unable to save your profile' %}"
+      data-access-error="{% translate 'Access denied. Sign in again and reload the page' %}"
+      data-image-error="{% translate 'Unable to read this image' %}"
+      data-image-size-error="{% translate 'The image must be smaller than 12 MB' %}">
+    <header class="profile-settings-heading">
+        <h1>{% translate "Profile settings" %}</h1>
+        <p class="profile-form-hint">@<span data-current-username>{{ profile_user.username }}</span></p>
+    </header>
+    <noscript><p>{% translate "Enable JavaScript to edit these settings" %}</p></noscript>
+    <form id="profile-settings-form" action="{% url 'accounts:profile-settings-api' %}" method="post" enctype="multipart/form-data" data-settings-form>
+        {% csrf_token %}
+        <fieldset>
+            <section class="profile-settings-section" aria-labelledby="settings-avatar-title">
+                <h2 id="settings-avatar-title">{% translate "Avatar" %}</h2>
+                <div class="profile-settings-avatar">
+                    <img class="profile-avatar" width="96" height="96" alt="" data-avatar-preview
+                         src="{% if profile_user.avatar_image %}{{ profile_user.avatar_image.url }}{% else %}{% static 'images/default_profile_img.png' %}{% endif %}"
+                         onerror="this.onerror=null; this.src=document.querySelector('[data-profile-settings]').dataset.defaultAvatar;">
                     <div class="profile-settings-actions">
-                        <button class="profile-button profile-button--primary" type="submit" name="avatar_action" value="upload">{% translate "Upload" %}</button>
-                        {% if profile_user.avatar_image %}
-                            <button class="profile-button" type="submit" name="avatar_action" value="delete" formnovalidate>{% translate "Remove" %}</button>
-                        {% endif %}
+                        <div hidden>{{ avatar_form.avatar_image }}</div>
+                        <button class="profile-button" type="button" data-avatar-choose>{% translate "Change avatar" %}</button>
+                        <button class="profile-button" type="button" data-avatar-remove>{% translate "Remove avatar" %}</button>
+                        <button class="profile-button profile-button--quiet" type="button" data-avatar-undo hidden>{% translate "Undo" %}</button>
                     </div>
+                </div>
+                <p class="profile-form-hint">{% translate "The image will be resized and converted to PNG. Maximum size: 12 MB." %}</p>
+                <p class="profile-edit-error" data-field-error="avatar_image" role="status" aria-live="polite"></p>
+            </section>
+            <section class="profile-settings-section" aria-labelledby="settings-name-title">
+                <h2 id="settings-name-title"><label for="settings-name">{% translate "Name" context "profile display name" %}</label></h2>
+                <div class="profile-edit-field">
+                    <input id="settings-name" name="name" maxlength="64" autocomplete="nickname" value="{{ profile_user.name }}" aria-describedby="settings-name-error">
+                    <p class="profile-edit-error" id="settings-name-error" data-field-error="name" aria-live="polite"></p>
+                </div>
+            </section>
+            <section class="profile-settings-section" aria-labelledby="settings-username-title">
+                <h2 id="settings-username-title"><label for="settings-username">{% translate "Username" %}</label></h2>
+                <div class="profile-edit-field">
+                    <div class="profile-username-field"><span aria-hidden="true">@</span><input id="settings-username" name="username" value="{{ profile_user.username }}" required maxlength="150" autocomplete="username" autocapitalize="none" spellcheck="false" aria-describedby="settings-username-hint settings-username-error"></div>
+                    <p class="profile-form-hint" id="settings-username-hint">{% translate "Changing your username also changes your profile address" %}</p>
+                    <p class="profile-edit-error" id="settings-username-error" data-field-error="username" aria-live="polite"></p>
+                </div>
+            </section>
+            <section class="profile-settings-section" aria-labelledby="settings-about-title">
+                <h2 id="settings-about-title"><label for="settings-about">{% translate "About me" %}</label></h2>
+                <div class="profile-edit-field">
+                    <textarea id="settings-about" name="about" maxlength="1000" rows="3" aria-describedby="settings-about-error">{{ profile_user.about }}</textarea>
+                    <p class="profile-edit-error" id="settings-about-error" data-field-error="about" aria-live="polite"></p>
+                </div>
+                <div class="profile-settings-private">
+                    <div class="profile-edit-field">
+                        <label for="settings-sex">{% translate "Sex" %}</label>
+                        <select id="settings-sex" name="sex" aria-describedby="settings-sex-error">
+                            <option value="">{% translate "Not specified" %}</option>
+                            {% for value, label in profile_sex_choices %}<option value="{{ value }}"{% if profile_user.sex == value %} selected{% endif %}>{{ label }}</option>{% endfor %}
+                        </select>
+                        <p class="profile-edit-error" id="settings-sex-error" data-field-error="sex" aria-live="polite"></p>
+                    </div>
+                    <div class="profile-edit-field">
+                        <label for="settings-bd-date">{% translate "Date of birth" %}</label>
+                        <input id="settings-bd-date" name="bd_date" type="date" value="{{ profile_user.bd_date|date:'Y-m-d' }}" aria-describedby="settings-bd-date-error">
+                        <p class="profile-edit-error" id="settings-bd-date-error" data-field-error="bd_date" aria-live="polite"></p>
+                    </div>
+                </div>
+                <p class="profile-form-hint">{% translate "Only you can see your sex and date of birth" %}</p>
+            </section>
+        </fieldset>
+    </form>
+    <section class="profile-settings-section" aria-labelledby="settings-email-title">
+        <h2 id="settings-email-title">{% translate "Email" %}</h2>
+        <p class="profile-settings-email" data-current-email>{{ profile_user.email }}</p>
+        <details data-email-editor>
+            <summary>{% translate "Change email" %}</summary>
+            <form action="{% url 'accounts:me-email' %}" method="post" data-email-form data-saved="{% translate 'Email updated' %}">
+                {% csrf_token %}
+                <fieldset>
+                    <div class="profile-edit-field">
+                        <label for="settings-email">{% translate "New email" %}</label>
+                        <input id="settings-email" type="email" name="email" maxlength="256" required autocomplete="email" value="{{ profile_user.email }}" aria-describedby="settings-email-error">
+                        <p id="settings-email-error" class="profile-edit-error" data-field-error="email" aria-live="polite"></p>
+                    </div>
+                    <div class="profile-edit-field">
+                        <label for="settings-password">{% translate "Current password" %}</label>
+                        <input id="settings-password" type="password" name="current_password" required autocomplete="current-password" aria-describedby="settings-password-error">
+                        <p id="settings-password-error" class="profile-edit-error" data-field-error="current_password" aria-live="polite"></p>
+                    </div>
+                    <button type="submit" class="profile-button">{% translate "Change email" %}</button>
                 </fieldset>
+                <p class="profile-edit-status" data-email-status role="status" aria-live="polite"></p>
             </form>
-        </section>
-    </main>
+        </details>
+    </section>
+    <div class="profile-settings-save">
+        <button class="profile-button profile-button--primary" form="profile-settings-form" type="submit" data-settings-save disabled>{% translate "Save changes" %}</button>
+        <p class="profile-form-hint" data-unsaved-hint hidden>{% translate "You have unsaved changes. Save them or they will be lost when you leave this page" %}</p>
+    </div>
+    <p class="profile-edit-status" data-settings-status role="status" aria-live="polite" aria-atomic="true"></p>
+
+    <dialog class="profile-settings-dialog" data-avatar-crop aria-labelledby="avatar-crop-title">
+        <h2 id="avatar-crop-title">{% translate "Crop avatar" %}</h2>
+        <p class="profile-form-hint" id="avatar-crop-help">{% translate "Drag the image or use arrow keys to move it. Adjust the zoom below" %}</p>
+        <div class="profile-crop-stage" tabindex="0" role="group" aria-describedby="avatar-crop-help">
+            <canvas width="512" height="512" aria-hidden="true"></canvas>
+        </div>
+        <label for="avatar-crop-zoom">{% translate "Zoom" %}</label>
+        <input id="avatar-crop-zoom" type="range" min="1" max="4" step="0.01" value="1">
+        <p class="profile-edit-status" data-crop-status role="status" aria-live="polite"></p>
+        <div class="profile-settings-actions">
+            <button class="profile-button profile-button--primary" type="button" data-crop-confirm>{% translate "Use avatar" %}</button>
+            <button class="profile-button" type="button" data-crop-cancel>{% translate "Cancel" %}</button>
+        </div>
+    </dialog>
+    <dialog class="profile-settings-dialog" data-avatar-remove-dialog aria-labelledby="avatar-remove-title">
+        <h2 id="avatar-remove-title">{% translate "Remove avatar?" %}</h2>
+        <p>{% translate "The avatar will be removed after you save changes" %}</p>
+        <div class="profile-settings-actions">
+            <button class="profile-button profile-button--primary" type="button" data-remove-confirm>{% translate "Remove avatar" %}</button>
+            <button class="profile-button" type="button" data-remove-cancel>{% translate "Cancel" %}</button>
+        </div>
+    </dialog>
+</main>
 {% endblock %}
 {% block extra_js %}
+    <script src="{% static 'accounts/js/profile-avatar-crop.js' %}" defer></script>
     <script src="{% static 'accounts/js/profile-settings.js' %}" defer></script>
 {% endblock %}
