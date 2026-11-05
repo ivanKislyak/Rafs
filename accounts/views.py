@@ -128,6 +128,11 @@ def update_avatar(request):
     if request.method != "POST":
         return redirect("profile", username=request.user.username)
 
+    destination = (
+        reverse("profile_settings") if request.POST.get("return_to") == "settings"
+        else reverse("profile", kwargs={"username": request.user.username})
+    )
+
     if request.POST.get("avatar_action") == "delete":
         old_avatar = request.user.avatar_image
         request.user.avatar_image = None
@@ -135,7 +140,7 @@ def update_avatar(request):
         if old_avatar:
             old_avatar.delete(save=False)
         messages.success(request, _("Avatar removed"))
-        return redirect("profile", username=request.user.username)
+        return redirect(destination)
 
     old_avatar_name = request.user.avatar_image.name if request.user.avatar_image else ""
     old_avatar_storage = request.user.avatar_image.storage
@@ -153,7 +158,7 @@ def update_avatar(request):
         )
         messages.error(request, error_text or _("Could not update the avatar"))
 
-    return redirect("profile", username=request.user.username)
+    return redirect(destination)
 
 
 class SearchHistoryViewSet(viewsets.ModelViewSet):
@@ -233,4 +238,7 @@ class UsernameSettingsAPIView(generics.RetrieveUpdateAPIView):
 @login_required
 def profile_settings(request):
     profile_user = request.user
-    return render(request, "accounts/profile_settings.html", {"profile_user": profile_user})
+    return render(request, "accounts/profile_settings.html", {
+        "profile_user": profile_user,
+        "avatar_form": AvatarUpdateForm(instance=profile_user),
+    })

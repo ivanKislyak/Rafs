@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.urls import reverse
 from rest_framework.renderers import JSONRenderer
 import io
 from accounts.models import SearchHistory, User
