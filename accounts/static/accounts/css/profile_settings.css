@@ -1,0 +1,49 @@
+/* Settings follow the profile's typography and shared form controls. */
+.profile-settings-page {
+  width: min(760px, calc(100% - 32px));
+  margin: 32px auto 64px;
+  color: var(--color-text);
+}
+.profile-settings-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-bottom: 24px;
+}
+.profile-settings-heading > div { min-width: 0; }
+.profile-settings-heading h1 { margin: 0 0 8px; font-size: 1.7rem; }
+.profile-settings-heading :is(p, span) { overflow-wrap: anywhere; }
+.profile-settings-section {
+  padding: 24px 0;
+  border-top: 1px solid var(--color-border);
+}
+.profile-settings-section h2 { margin: 0 0 18px; font-size: 1.15rem; }
+.profile-settings-page fieldset {
+  display: grid;
+  min-width: 0;
+  gap: 16px;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+.profile-settings-page fieldset > button { justify-self: start; }
+.profile-settings-page .profile-edit-field { min-width: 0; }
+.profile-settings-page :is(input:not([type="hidden"]), textarea) {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+.profile-settings-page textarea { resize: vertical; }
+.profile-settings-page .profile-edit-error { margin: 0; }
+.profile-settings-page .profile-edit-status { margin: 12px 0 0; overflow-wrap: anywhere; }
+.profile-settings-page :is(.profile-edit-error, .profile-edit-status):empty { display: none; }
+.profile-settings-avatar { display: flex; align-items: center; flex-wrap: wrap; gap: 18px; }
+.profile-settings-avatar > div { min-width: 0; }
+.profile-settings-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.profile-settings-page .profile-button { min-height: 44px; }
+.profile-settings-page .profile-button:focus-visible {
+  outline: 2px solid var(--color-focus-visible-outline);
+  outline-offset: 2px;
+}

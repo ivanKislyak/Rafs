@@ -116,7 +116,7 @@
                                 aria-label="{% translate 'Open profile menu' %}"
                                 aria-expanded="false"
                                 aria-controls="header-profile-panel">
-                            <span class="header-username">{{ user.username }}</span>
+                            <span class="header-username" data-current-username>{{ user.username }}</span>
                             <img class="header-user-avatar"
                                  src="{% if user.avatar_image %}{{ user.avatar_image.url }}{% else %}{% static 'images/default_profile_img.png' %}{% endif %}"
                                  data-fallback-src="{% static 'images/default_profile_img.png' %}"
@@ -126,7 +126,7 @@
                         </button>
                         <div class="header-profile-menu" id="header-profile-panel" hidden>
                             <span class="header-profile-label">{% translate "Profile" %}</span>
-                            <span class="header-profile-name">{{ user.username }}</span>
+                            <span class="header-profile-name" data-current-username>{{ user.username }}</span>
                             <div class="header-profile-stats">
                                 <div class="header-profile-stat header-tooltip"
                                      data-tooltip="{% translate 'Your current level' %}">
@@ -142,6 +142,7 @@
                             </div>
                             <div class="header-profile-actions">
                                 <a class="header-open-profile-page"
+                                   data-own-profile-link
                                    href="{% url 'profile' user.username %}">
                                     <svg class="header-profile-action-icon"
                                          viewBox="0 0 24 24"

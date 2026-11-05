@@ -69,7 +69,7 @@
                 <div class="profile-name-row">
                     <div>
                         <p class="profile-eyebrow">{% translate "RAFS profile" %}</p>
-                        <h1 id="profile-name">{{ profile_user.username }}</h1>
+                        <h1 id="profile-name">{{ profile_user.name|default:profile_user.username }}</h1>
                     </div>
                     <span class="profile-role" title="{% translate 'User role' %}">{{ profile_role }}</span>
                 </div>
@@ -103,6 +103,7 @@
                 </dl>
                 <p class="profile-about" data-profile-about{% if not profile_user.about %} hidden{% endif %}>{{ profile_user.about }}</p>
                 {% if is_owner %}
+                    <a class="profile-button" href="{% url 'profile_settings' %}">{% translate "Profile settings" %}</a>
                     <button class="profile-button" type="button" data-profile-edit-open
                             aria-haspopup="dialog" aria-controls="profile-edit-dialog">{% translate "Edit profile" %}</button>
                     <p class="profile-edit-status" data-profile-edit-result role="status" aria-live="polite"></p>
