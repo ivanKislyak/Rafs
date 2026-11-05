@@ -33,5 +33,20 @@ class ProfileSettingsPageTests(TestCase):
         self.assertTemplateUsed(response, "accounts/profile_settings.html")
         self.assertEqual(response.context["profile_user"].pk, self.alien.pk)
 
+class MeDisplayNameTests(APITestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.owner = User.objects.create_user(
+            username="profile-settings-owner", 
+            name="test-site-owner", 
+            about="I love watch Anime", 
+            email="profile-settings-owner@example.com")
+        self.other = User.objects.create_user(
+            username="profile-settings-other", 
+            name="test-site-other",
+            email="profile-settings-other@example.com",
+            )
 
-    
+    def setUp(self):
+        self.url = reverse("accounts:me")
+        self.client.force_authenticate(self.url)
