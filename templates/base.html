@@ -4,10 +4,11 @@
 {% load achievements %}
 <!DOCTYPE html>
 {% get_current_language as CURRENT_LANGUAGE %}
-{% comment %}Seasonal switch: remove data-event="halloween-2026" below to restore ordinary appearance.
-Original opening tag: <html lang="{{ CURRENT_LANGUAGE }}">. See css/halloween.css for the handoff.
+{% comment %}Ordinary appearance restored after Halloween 2026.
+To enable seasonal styling, add data-event="halloween-2026" to the html tag below.
+See css/halloween.css for the handoff.
 {% endcomment %}
-<html lang="{{ CURRENT_LANGUAGE }}" data-event="halloween-2026">
+<html lang="{{ CURRENT_LANGUAGE }}">
     <head>
         <meta charset="UTF-8" />
         <!-- Google tag (gtag.js) -->

@@ -165,14 +165,15 @@ in localStorage. The seasonal appearance is a separate, frontend-only switch in
 [`templates/base.html`](templates/base.html):
 
 ```html
-<html lang="{{ CURRENT_LANGUAGE }}" data-event="halloween-2026">
+<html lang="{{ CURRENT_LANGUAGE }}">
 ```
 
 - **Enable Halloween:** add `data-event="halloween-2026"` to the root `<html>` tag.
 - **Disable Halloween:** remove that attribute and reload the page. The ordinary
   palette, header/footer artwork, favicon, and logo hover behavior return.
 
-The attribute is currently present in the template. It is not controlled by a
+The attribute is currently absent: the ordinary red appearance is restored after
+Halloween 2026. The seasonal switch is not controlled by a
 date, backend setting, API, or administrator publication flag. Disabling the
 seasonal appearance does not hide published homepage collections.
 
