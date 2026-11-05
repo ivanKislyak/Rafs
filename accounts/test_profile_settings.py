@@ -1,7 +1,6 @@
 from django.test import TestCase
 from accounts.models import User
 from django.urls import reverse
-from django.template.loader import render_to_string
 from urllib.parse import urlsplit, parse_qs
 
 class ProfileSettingsPageTests(TestCase):
@@ -18,12 +17,21 @@ class ProfileSettingsPageTests(TestCase):
         self.assertEqual(response.status_code, 302)
         sliced_login_url = response.url.partition("?")
         self.assertEqual(sliced_login_url[0], reverse('login'))
-        # self.assertEqual(sliced_login_url[2], parse_qs(urlsplit(response.url).query)['next'])
 
     def test_owner_can_open_settings(self):
-        pass
+        self.client.force_login(self.owner)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "accounts/profile_settings.html")
+        self.assertEqual(response.context["profile_user"].pk, self.owner.pk)
+        # self.assertIn("avatar_form", response.context)
 
     def test_other_user_gets_their_own_settings(self):
-        pass
+        self.client.force_login(self.alien)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "accounts/profile_settings.html")
+        self.assertEqual(response.context["profile_user"].pk, self.alien.pk)
+
 
     
