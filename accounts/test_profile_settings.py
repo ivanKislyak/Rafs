@@ -58,25 +58,94 @@ class MeDisplayNameTests(APITestCase):
         self.assertEqual(response.data.get("name"), self.owner.name)
 
     def test_patch_name_trims_edges_and_preserves_other_fields(self):
+        owner_qs = User.objects.get(pk=self.owner.pk)
+        other_qs = User.objects.get(pk=self.other.pk)
         response = self.client.patch(
             self.url, {"name": "   Новый ник   "}, format="json"
         )
+        owner_qs.refresh_from_db()
+        other_qs.refresh_from_db()
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data.get("name"), "Новый ник")
         self.assertEqual(response.data.get("username"), self.owner.username)
         self.assertEqual(response.data.get("about"), self.owner.about)
+        self.assertEqual(owner_qs.username, self.owner.username)
+        self.assertEqual(owner_qs.name, "Новый ник")
+        self.assertEqual(owner_qs.about, self.owner.about)
+        self.assertEqual(other_qs.username, self.other.username)
+        self.assertEqual(other_qs.name, self.other.name)
+
+    def test_patch_preserves_name_when_omitted(self):
+        owner_qs = User.objects.get(pk=self.owner.pk)
+        response = self.client.patch(
+            self.url, {"about": "I hate Series"}, format="json"
+        )
+        owner_qs.refresh_from_db()
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(owner_qs.name, self.owner.name)
+        self.assertEqual(owner_qs.username, self.owner.username)
+        self.assertEqual(response.data.get("name"), self.owner.name)
 
     def test_name_can_be_cleared(self):
-        self.skipTest('')
+        owner_qs = User.objects.get(pk=self.owner.pk)
+        response = self.client.patch(
+            self.url, {"name": ""}, format="json"
+        )
+        owner_qs.refresh_from_db()
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data.get("name"), "")
+        self.assertEqual(owner_qs.name, "")
 
     def test_display_names_need_not_be_unique(self):
-        self.skipTest('')
+        owner_qs = User.objects.get(pk=self.owner.pk)
+        other_qs = User.objects.get(pk=self.other.pk)
+        response = self.client.patch(
+            self.url,
+            {"name": self.other.name}, 
+            format="json"
+        )
+        owner_qs.refresh_from_db()
+        other_qs.refresh_from_db()
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data.get("username"), owner_qs.username)
+        self.assertEqual(other_qs.username, self.other.username)
+        self.assertEqual(owner_qs.name, self.other.name)
+        self.assertEqual(other_qs.name, self.other.name)        
 
     def test_64_character_name_is_accepted(self):
-        self.skipTest('')
+        string_64 = "t"*64
+        response = self.client.patch(
+            self.url, {"name": string_64}, format="json"
+        )
+        self.assertEqual(response.status_code, 200)
+        owner_qs = User.objects.get(pk=self.owner.pk)
+        self.assertEqual(owner_qs.name, string_64)
 
     def test_65_character_name_rejects_entire_patch(self):
-        self.skipTest('')
+        string_65 = "t"*65
+        first_owner_qs = User.objects.get(pk=self.owner.pk)
+        response = self.client.patch(
+            self.url, {
+                "name": string_65,
+                "about": "new_about"}, format="json"
+        )
+        
+        second_owner_qs = User.objects.get(pk=self.owner.pk)
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("name", response.data)
+        self.assertEqual(first_owner_qs.name, second_owner_qs.name)
+        self.assertEqual(first_owner_qs.about, second_owner_qs.about)
 
     def test_null_name_is_rejected(self):
-        self.skipTest('')
+        first_owner_qs = User.objects.get(pk=self.owner.pk)
+        response = self.client.patch(
+            self.url, 
+            {"name": None}, 
+            format="json"
+        )
+        
+        second_owner_qs = User.objects.get(pk=self.owner.pk)
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("name", response.data)
+        self.assertEqual(first_owner_qs.name, second_owner_qs.name)
+
