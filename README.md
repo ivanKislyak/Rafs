@@ -1,4 +1,4 @@
-# 🎃 RAFS
+# RAFS
 
 <p align="center">
   <img src="static/images/rafs-preview-v3.png" alt="RAFS wasp mascot" width="760">
@@ -30,9 +30,11 @@ interfaces or temporary development data.
 - Custom users with avatars, levels, and Frames — the RAFS experience points
 - Public profiles at `/@<username>/` with review/reply counts, achievements,
   and a library grouped by watch status; email and owner controls are private
-- Owner-only profile editor for biography, sex, and date of birth, with inline
-  validation and updates through the authenticated current-user API
-- Avatar upload, resizing, conversion to PNG, and removal from the owner's profile
+- Owner-only settings at `/settings/` for display name, username, biography,
+  sex, date of birth, and avatar, with inline validation and a shared save action
+- Square avatar cropping with drag, zoom, touch, and keyboard controls;
+  previewed upload/removal takes effect only after **Save changes**
+- Separate email changes protected by the current password
 - Removal from the owner's watch library with confirmation, updated counts,
   and an undo action
 - Existing achievement badges with image fallbacks, administrator-controlled
@@ -111,9 +113,11 @@ The complete list of Python dependencies is available in `requirements.txt`.
   their affected Movie documents.
 - **Search suggestions are not live catalog autocomplete.** They show the signed-in
   user's history, or popular-query data when supplied to the template.
-- **Profile editing covers a defined set of fields.** Biography, sex, date of
-  birth, and avatar management are available. The current-user editor does not
-  change usernames or email addresses.
+- **Account settings have limits.** Changing a username changes the public
+  profile URL; the old address is not retained as a redirect. Email changes
+  require the current password but do not verify ownership of the new address
+  by email. Settings require JavaScript, and there is no date-of-birth check
+  rejecting future dates.
 - **Seasonal awards require event configuration.** "Review or Treat" awarding and
   presentation are implemented, but require an achievement definition with code
   `review-or-treat-2026` and valid timezone-aware event dates. Missing or invalid
@@ -207,9 +211,46 @@ See [Review or Treat](#review-or-treat) for the presentation and eligibility rul
 
 ## Profiles and achievements
 
-Profile owners can edit `about`, `sex`, and `bd_date` through the profile dialog.
-It reads and updates the signed-in user through `/accounts/api/v1/me/`; `id` and
-`username` are read-only. Avatar upload/removal uses its existing separate form.
+Public profiles use `/@<username>/`. The heading displays the user's `name`,
+falling back to `username` when no display name is set. Biography text is public;
+email, sex, and date of birth are not exposed on another user's profile.
+
+All profile-editing controls are on the signed-in user's `/settings/` page,
+linked from their profile. It contains avatar controls, display name, username
+with a visible `@` prefix, biography, private sex/date-of-birth fields, and a
+separate email editor. The `@` prefix is not part of the saved username.
+
+**Save changes** submits changed profile fields and any prepared avatar together
+using a multipart PATCH request. Validation errors leave the saved profile
+unchanged and preserve the entered values and avatar preview for correction.
+An unsaved-changes hint clears after saving or restoring the saved values;
+leaving the page does not trigger a browser warning.
+
+Choosing an avatar opens a square crop dialog with dragging, zoom, touch, and
+arrow-key controls. Confirming prepares a 512 × 512 PNG preview; canceling keeps
+the previous preview, including any earlier draft. Removal requires confirmation
+and also waits for **Save changes**. **Undo** restores the saved avatar.
+Uploaded images are validated on the server, limited to 12 MB, and converted to
+PNG. The older avatar POST endpoint remains available for existing callers.
+
+Changing email is an independent action requiring the current password. The new
+address is applied immediately; no confirmation email is sent. Changing a
+username keeps the user on `/settings/` and updates their profile links in the
+header. Their new public address resolves to the same account; the old address
+returns 404 while unassigned.
+
+The authenticated APIs always select `request.user`:
+
+| Endpoint | Purpose |
+| --- | --- |
+| `/accounts/api/v1/me/settings/` | GET/PATCH for combined profile fields and staged avatar upload/removal |
+| `/accounts/api/v1/me/email/` | GET/PATCH for email; updates require `current_password` |
+| `/accounts/api/v1/me/username/` | GET/PATCH for username and the resulting `profile_url` |
+| `/accounts/api/v1/me/` | Existing profile API for `name`, `about`, `sex`, and `bd_date`; `id` and `username` remain read-only |
+
+Settings requests use session authentication and CSRF protection. A supplied
+user ID cannot select another account for editing.
+
 Reply authors can edit reply text through the inline editor, backed by
 `PATCH /movies/api/v1/replies/<reply_id>/`. Superuser deletion privileges do not
 grant permission to edit another user's reply.
@@ -374,6 +415,7 @@ The following pages will then be available:
 - Movie catalog: <http://127.0.0.1:8000/movies/>
 - Reviews page: <http://127.0.0.1:8000/movies/reviews/>
 - Public profile: `/@<username>/` after registering a user
+- Profile settings: <http://127.0.0.1:8000/settings/> (sign-in required)
 - About RAFS: <http://127.0.0.1:8000/about_site/>
 - Community guidelines: <http://127.0.0.1:8000/community-guidelines/>
 - Sitemap: <http://127.0.0.1:8000/sitemap.xml>
@@ -506,8 +548,10 @@ Check the Django configuration:
 python manage.py check
 ```
 
-The repository includes automated checks for profile privacy and current-user
-editing, avatar uploads, localized watch libraries, search-history validation and
+The repository includes automated checks for profile privacy, owner-only
+settings, display-name/username changes, password-protected email changes,
+combined profile/avatar validation and rollback, avatar uploads, localized watch
+libraries, search-history validation and
 ownership, review reactions, reply creation/editing permissions, watch statuses,
 home-page rankings, SEO metadata, POST-only staff imports, and importer behavior
 using API fixtures. Achievement tests cover eligibility, event boundaries,
@@ -520,6 +564,16 @@ database role must be allowed to create that test database. Run the test suite w
 ```powershell
 python manage.py test
 ```
+
+For the account settings checks alone, run:
+
+```powershell
+python manage.py test accounts
+```
+
+The account suite uses temporary media storage for uploads. Its server-side
+tests do not replace browser checks of avatar dragging, touch gestures, dialog
+cancellation, and unsaved form state.
 
 For a running Docker environment, the same checks can be executed inside the
 web container:
@@ -537,7 +591,7 @@ python manage.py collectstatic --noinput
 
 ## Planned features
 
-- Additional account-management fields beyond the current profile editor
+- Email-address verification for email changes
 - Reply reactions and expanded moderation tools
 - Expanded Wikidata synchronization
 - Incremental search-index maintenance, refresh automation, and catalog autocomplete
