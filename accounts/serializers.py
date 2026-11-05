@@ -23,5 +23,5 @@ class SearchHistorySerializer(serializers.ModelSerializer):
 class MeSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'about', 'sex', 'bd_date']
+        fields = ['id', 'username', 'name', 'about', 'sex', 'bd_date']
         read_only_fields = ('id', 'username')
