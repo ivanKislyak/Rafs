@@ -1723,3 +1723,79 @@ msgstr "Пайдаланушы атын өзгерткенде профиль м
 msgctxt "profile display name"
 msgid "Name"
 msgstr "Есім"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Save changes"
+msgstr "Өзгерістерді сақтау"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Remove avatar"
+msgstr "Аватарды жою"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Crop avatar"
+msgstr "Аватарды қию"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Use avatar"
+msgstr "Аватарды қолдану"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Remove avatar?"
+msgstr "Аватар жойылсын ба?"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "The avatar will be removed after you save changes"
+msgstr "Аватар өзгерістер сақталғаннан кейін жойылады"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "You have unsaved changes. Save them or they will be lost when you leave this page"
+msgstr "Сақталмаған өзгерістер бар. Оларды сақтаңыз, әйтпесе беттен шыққанда жоғалады"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Drag the image or use arrow keys to move it. Adjust the zoom below"
+msgstr "Суретті сүйреңіз немесе бағыттауыш пернелермен жылжытыңыз. Масштабты төменде өзгертіңіз"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Zoom"
+msgstr "Масштаб"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Only you can see your sex and date of birth"
+msgstr "Жынысыңыз бен туған күніңізді тек өзіңіз көресіз"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Change email"
+msgstr "Поштаны өзгерту"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "New email"
+msgstr "Жаңа пошта"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Current password"
+msgstr "Қазіргі құпиясөз"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Email updated"
+msgstr "Пошта өзгертілді"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Incorrect password"
+msgstr "Құпиясөз қате"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "This email address is already in use"
+msgstr "Бұл пошта мекенжайы қолданыста"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Unable to read this image"
+msgstr "Суретті ашу мүмкін болмады"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Choose a square avatar"
+msgstr "Шаршы аватар таңдаңыз"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Confirm avatar cropping before saving"
+msgstr "Сақтамас бұрын аватарды қиюды растаңыз"

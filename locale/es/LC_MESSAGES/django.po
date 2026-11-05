@@ -1723,3 +1723,79 @@ msgstr "Al cambiar tu nombre de usuario también cambia la dirección de tu perf
 msgctxt "profile display name"
 msgid "Name"
 msgstr "Nombre"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Save changes"
+msgstr "Guardar cambios"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Remove avatar"
+msgstr "Eliminar avatar"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Crop avatar"
+msgstr "Recortar avatar"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Use avatar"
+msgstr "Usar avatar"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Remove avatar?"
+msgstr "¿Eliminar el avatar?"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "The avatar will be removed after you save changes"
+msgstr "El avatar se eliminará cuando guardes los cambios"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "You have unsaved changes. Save them or they will be lost when you leave this page"
+msgstr "Tienes cambios sin guardar. Guárdalos o se perderán al salir de esta página"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Drag the image or use arrow keys to move it. Adjust the zoom below"
+msgstr "Arrastra la imagen o muévela con las flechas. Ajusta el zoom abajo"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Zoom"
+msgstr "Zoom"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Only you can see your sex and date of birth"
+msgstr "Solo tú puedes ver tu sexo y fecha de nacimiento"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Change email"
+msgstr "Cambiar correo"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "New email"
+msgstr "Nuevo correo"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Current password"
+msgstr "Contraseña actual"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Email updated"
+msgstr "Correo actualizado"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Incorrect password"
+msgstr "Contraseña incorrecta"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "This email address is already in use"
+msgstr "Este correo ya está en uso"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Unable to read this image"
+msgstr "No se pudo abrir la imagen"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Choose a square avatar"
+msgstr "Elige un avatar cuadrado"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Confirm avatar cropping before saving"
+msgstr "Confirma el recorte del avatar antes de guardar"

@@ -1711,3 +1711,79 @@ msgstr "При смене имени пользователя меняется �
 msgctxt "profile display name"
 msgid "Name"
 msgstr "Имя"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Save changes"
+msgstr "Сохранить изменения"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Remove avatar"
+msgstr "Удалить аватар"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Crop avatar"
+msgstr "Кадрирование аватара"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Use avatar"
+msgstr "Использовать аватар"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Remove avatar?"
+msgstr "Удалить аватар?"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "The avatar will be removed after you save changes"
+msgstr "Аватар будет удалён после сохранения изменений"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "You have unsaved changes. Save them or they will be lost when you leave this page"
+msgstr "У вас есть несохранённые изменения. Сохраните их, иначе они пропадут при уходе со страницы"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Drag the image or use arrow keys to move it. Adjust the zoom below"
+msgstr "Перетаскивайте изображение или двигайте его стрелками. Масштаб можно изменить ниже"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Zoom"
+msgstr "Масштаб"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Only you can see your sex and date of birth"
+msgstr "Пол и дату рождения видите только вы"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Change email"
+msgstr "Сменить почту"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "New email"
+msgstr "Новая почта"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Current password"
+msgstr "Текущий пароль"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Email updated"
+msgstr "Почта изменена"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Incorrect password"
+msgstr "Неверный пароль"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "This email address is already in use"
+msgstr "Этот адрес почты уже используется"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Unable to read this image"
+msgstr "Не удалось открыть изображение"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Choose a square avatar"
+msgstr "Выберите квадратный аватар"
+
+#: accounts/templates/accounts/profile_settings.html accounts/serializers.py
+msgid "Confirm avatar cropping before saving"
+msgstr "Подтвердите кадрирование аватара перед сохранением"
