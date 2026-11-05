@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from rest_framework.decorators import action
 
+from django.urls import reverse
 from django.forms import model_to_dict
 from django.contrib import messages
 from django.contrib.auth import login
@@ -20,7 +21,7 @@ from movies.models import Review, ReviewReply, WatchStatus
 
 from .forms import AvatarUpdateForm, RegisterUserForm
 from .models import Achievement, User, SearchHistory
-from .serializers import SearchHistorySerializer, MeSerializer
+from .serializers import SearchHistorySerializer, MeSerializer, UsernameSettingsSerializer
 
 def register(request):
     if request.method == "POST":
@@ -217,6 +218,14 @@ class SearchHistoryAPIDetailView(generics.RetrieveUpdateDestroyAPIView):
 class MeAPIView(generics.RetrieveUpdateAPIView):
     serializer_class = MeSerializer
     permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+
+class UsernameSettingsAPIView(generics.RetrieveUpdateAPIView):
+    serializer_class = UsernameSettingsSerializer
+    permission_classes = [IsAuthenticated]
+    http_method_names = ["get", "patch", "head", "options"]
 
     def get_object(self):
         return self.request.user

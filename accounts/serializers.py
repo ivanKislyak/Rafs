@@ -25,3 +25,12 @@ class MeSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'username', 'name', 'about', 'sex', 'bd_date']
         read_only_fields = ('id', 'username')
+
+class UsernameSettingsSerializer(serializers.ModelSerializer):
+    profile_url = serializers.SerializerMethodField()
+    class Meta:
+        model = User
+        fields = ['username', 'profile_url']
+    
+    def get_profile_url(self, obj):
+        return reverse('profile', kwargs={"username": obj.username})    

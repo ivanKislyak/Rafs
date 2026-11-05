@@ -14,4 +14,5 @@ urlpatterns = [
     path("profile/avatar/", views.update_avatar, name="update-avatar"),
     path("api/v1/", include(router.urls)),
     path('api/v1/me/', views.MeAPIView.as_view(), name='me'),
+    path('api/v1/me/username/', views.UsernameSettingsAPIView.as_view(), name='me-username')
 ]
