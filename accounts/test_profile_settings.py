@@ -281,10 +281,12 @@ class SettingsIntegrationTests(TestCase):
         response = self.client.get(self.url, {'id':self.other.pk})
         self.assertEqual(response.context['profile_user'].pk, self.owner.pk)
         self.assertEqual(response.context['avatar_form'].instance.pk, self.owner.pk)
-        for name in ('accounts:me', 'accounts:me-username', 'accounts:update-avatar'):
+        for name in ('accounts:profile-settings-api', 'accounts:me-email'):
             self.assertContains(response, f'action="{reverse(name)}"')
         self.assertContains(response, 'enctype="multipart/form-data"')
-        self.assertContains(response, 'name="return_to" value="settings"')
+        self.assertContains(response, 'data-avatar-crop')
+        self.assertContains(response, 'name="sex"')
+        self.assertContains(response, 'name="bd_date"')
         self.assertContains(response, 'value="&lt;Display &amp; name&gt;"')
         self.assertContains(response, 'First line\n&lt;not HTML&gt;')
         self.assertNotContains(response, self.other.email)
@@ -297,12 +299,13 @@ class SettingsIntegrationTests(TestCase):
         response = self.client.get(url)
         self.assertContains(response, f'<h1 id="profile-name">{self.owner.username}</h1>', html=True)
 
-    def test_only_owner_has_settings_link_and_old_editor_remains(self):
+    def test_only_owner_has_settings_link_and_editor_is_removed(self):
         url = reverse('profile', args=[self.owner.username])
         response = self.client.get(url)
         self.assertContains(response, f'href="{self.url}"')
-        self.assertContains(response, 'data-profile-editor')
-        self.assertContains(response, 'accounts/js/profile-edit.js')
+        self.assertNotContains(response, 'data-profile-editor')
+        self.assertNotContains(response, 'data-avatar-editor')
+        self.assertNotContains(response, 'Edit profile')
         self.client.force_login(self.other)
         self.assertNotContains(self.client.get(url), f'href="{self.url}"')
         self.client.logout()
@@ -360,3 +363,151 @@ class SettingsAvatarTests(TestCase):
             with self.subTest(destination=destination):
                 response = self.client.post(self.url, {'return_to':destination,'avatar_action':'delete'})
                 self.assertRedirects(response, reverse('profile', args=[self.owner.username]))
+
+
+class UnifiedSettingsTests(APITestCase):
+    def setUp(self):
+        self.directory = TemporaryDirectory()
+        self.addCleanup(self.directory.cleanup)
+        self.override = override_settings(MEDIA_ROOT=self.directory.name)
+        self.override.enable(); self.addCleanup(self.override.disable)
+        self.owner = User.objects.create_user(username='unified-owner', email='unified@example.com', password='Current-password-123', name='Original', about='Original biography')
+        self.other = User.objects.create_user(username='unified-other', email='unified-other@example.com')
+        self.client.force_login(self.owner)
+        self.url = reverse('accounts:profile-settings-api')
+
+    @staticmethod
+    def image(width=512, height=512):
+        output = BytesIO()
+        Image.new('RGB', (width, height), (30, 90, 170)).save(output, format='PNG')
+        return SimpleUploadedFile('crop.png', output.getvalue(), content_type='image/png')
+
+    def test_combined_save_changes_all_fields_and_persists_square_avatar(self):
+        response = self.client.patch(self.url, {'name':'New display', 'username':'unified-renamed', 'about':'New\n<&>', 'sex':'O','bd_date':'2001-02-03', 'avatar_action':'upload','avatar_image':self.image()}, format='multipart')
+        self.assertEqual(response.status_code, 200, response.data)
+        self.owner.refresh_from_db()
+        self.assertEqual((self.owner.name,self.owner.username,self.owner.sex,str(self.owner.bd_date)), ('New display','unified-renamed','O','2001-02-03'))
+        with self.owner.avatar_image.open('rb') as file, Image.open(file) as image:
+            self.assertEqual(image.size,(512,512))
+            self.assertEqual(image.getpixel((256,256)),(30,90,170))
+        self.assertEqual(response.data['profile_url'], reverse('profile',args=['unified-renamed']))
+        profile = self.client.get(response.data['profile_url'])
+        self.assertEqual(profile.context['profile_user'].pk,self.owner.pk)
+        self.assertContains(profile,self.owner.avatar_image.url)
+        self.assertEqual(self.client.get(reverse('profile',args=['unified-owner'])).status_code,404)
+
+    def test_validation_error_in_any_field_applies_nothing_and_writes_no_file(self):
+        from pathlib import Path
+        for bad in ({'username':self.other.username}, {'name':'x'*65}, {'about':'x'*1001}, {'sex':'invalid'}, {'bd_date':'2000-02-30'}):
+            with self.subTest(bad=bad):
+                payload={'name':'Changed','username':'unified-renamed','about':'Changed','avatar_action':'upload','avatar_image':self.image(),**bad}
+                response=self.client.patch(self.url,payload,format='multipart')
+                self.assertEqual(response.status_code,400)
+                self.owner.refresh_from_db()
+                self.assertEqual((self.owner.name,self.owner.username,self.owner.about),('Original','unified-owner','Original biography'))
+                self.assertFalse(self.owner.avatar_image)
+                self.assertFalse(list(Path(self.directory.name).rglob('*.png')))
+
+    def test_invalid_or_nonsquare_avatar_does_not_apply_other_fields(self):
+        for image in (SimpleUploadedFile('bad.png',b'bad',content_type='image/png'),self.image(100,200)):
+            response=self.client.patch(self.url,{'name':'Changed','avatar_action':'upload','avatar_image':image},format='multipart')
+            self.assertEqual(response.status_code,400)
+            self.assertIn('avatar_image',response.data)
+            self.owner.refresh_from_db();self.assertEqual(self.owner.name,'Original')
+
+    def test_staged_removal_applies_only_on_valid_save_and_deletes_old_file_after_commit(self):
+        response=self.client.patch(self.url,{'avatar_action':'upload','avatar_image':self.image()},format='multipart')
+        self.assertEqual(response.status_code,200)
+        self.owner.refresh_from_db();old=self.owner.avatar_image;old_name=old.name
+        response=self.client.patch(self.url,{'username':self.other.username,'avatar_action':'remove'},format='json')
+        self.assertEqual(response.status_code,400)
+        self.owner.refresh_from_db();self.assertEqual(self.owner.avatar_image.name,old_name)
+        self.assertTrue(old.storage.exists(old_name))
+        with self.captureOnCommitCallbacks(execute=True):
+            response=self.client.patch(self.url,{'avatar_action':'remove'},format='json')
+        self.assertEqual(response.status_code,200)
+        self.owner.refresh_from_db();self.assertFalse(self.owner.avatar_image)
+        self.assertFalse(old.storage.exists(old_name))
+
+    def test_storage_failure_rolls_back_profile_fields(self):
+        from unittest.mock import patch
+        self.client.patch(self.url,{'avatar_action':'upload','avatar_image':self.image()},format='multipart')
+        self.owner.refresh_from_db()
+        old_name = self.owner.avatar_image.name
+        with patch('django.core.files.storage.FileSystemStorage.save',side_effect=OSError('fixture disk failure')):
+            with self.assertRaises(OSError):
+                self.client.patch(self.url,{'name':'Changed','avatar_action':'upload','avatar_image':self.image()},format='multipart')
+        self.owner.refresh_from_db()
+        self.assertEqual(self.owner.name,'Original')
+        self.assertEqual(self.owner.avatar_image.name,old_name)
+        self.assertTrue(self.owner.avatar_image.storage.exists(old_name))
+
+    def test_clearing_private_fields_and_partial_updates(self):
+        self.client.patch(self.url,{'sex':'M','bd_date':'2000-02-29'},format='json')
+        response=self.client.patch(self.url,{'sex':'','bd_date':''},format='multipart')
+        self.assertEqual(response.status_code,200,response.data)
+        self.owner.refresh_from_db()
+        self.assertEqual(self.owner.sex,'');self.assertIsNone(self.owner.bd_date)
+        self.assertEqual(self.owner.name,'Original')
+
+    def test_anonymous_is_denied_and_foreign_id_never_selects_another_user(self):
+        response=self.client.patch(self.url,{'id':self.other.pk,'user':self.other.pk,'name':'Own change','email':'ignored@example.com','is_staff':True},format='json')
+        self.assertEqual(response.status_code,200)
+        self.other.refresh_from_db();self.owner.refresh_from_db()
+        self.assertEqual(self.other.name,'');self.assertEqual(self.owner.name,'Own change')
+        self.assertEqual(self.owner.email,'unified@example.com');self.assertFalse(self.owner.is_staff)
+        self.client.logout()
+        self.assertEqual(self.client.get(self.url).status_code,403)
+        self.assertEqual(self.client.patch(self.url,{'name':'No'},format='json').status_code,403)
+
+    def test_session_and_csrf_are_required_for_combined_save(self):
+        client=APIClient(enforce_csrf_checks=True);client.force_login(self.owner)
+        self.assertEqual(client.patch(self.url,{'name':'No'},format='json').status_code,403)
+        client.get(reverse('profile_settings'))
+        response=client.patch(self.url,{'name':'Yes'},format='json',HTTP_X_CSRFTOKEN=client.cookies['csrftoken'].value)
+        self.assertEqual(response.status_code,200)
+
+    def test_profile_has_no_edit_controls_and_settings_section_order(self):
+        profile=self.client.get(reverse('profile',args=[self.owner.username]))
+        self.assertNotContains(profile,'Edit profile');self.assertNotContains(profile,'data-avatar-editor')
+        response=self.client.get(reverse('profile_settings'))
+        content=response.content.decode().split('<main',1)[1].split('</main>',1)[0]
+        self.assertNotIn('Open profile',content)
+        self.assertNotIn('beforeunload',content)
+        order=[content.index(f'id="settings-{name}-title"') for name in ('avatar','name','username','email')]
+        self.assertEqual(order,sorted(order))
+        for field in ('about','sex','bd_date'):
+            self.assertIn(f'name="{field}"',content)
+
+
+class EmailSettingsTests(APITestCase):
+    def setUp(self):
+        self.owner=User.objects.create_user(username='mail-owner',email='mail-owner@example.com',password='Current-password-123')
+        self.other=User.objects.create_user(username='mail-other',email='mail-other@example.com')
+        self.client.force_login(self.owner)
+        self.url=reverse('accounts:me-email')
+
+    def test_change_email_requires_current_password_and_only_changes_own_email(self):
+        response=self.client.patch(self.url,{'email':'new@example.com','current_password':'wrong'},format='json')
+        self.assertEqual(response.status_code,400)
+        self.owner.refresh_from_db();self.assertEqual(self.owner.email,'mail-owner@example.com')
+        response=self.client.patch(self.url,{'id':self.other.pk,'email':'new@example.com','current_password':'Current-password-123','username':'ignored'},format='json')
+        self.assertEqual(response.status_code,200)
+        self.assertEqual(response.data,{'email':'new@example.com'})
+        self.owner.refresh_from_db();self.other.refresh_from_db()
+        self.assertEqual(self.owner.username,'mail-owner');self.assertEqual(self.other.email,'mail-other@example.com')
+        self.assertNotIn('current_password',self.client.get(self.url).data)
+
+    def test_invalid_taken_and_missing_email_do_not_change_account(self):
+        for payload in ({'email':'bad'}, {'email':self.other.email}, {}, {'email':''}):
+            response=self.client.patch(self.url,{**payload,'current_password':'Current-password-123'},format='json')
+            self.assertEqual(response.status_code,400)
+            self.assertIn('email',response.data)
+            self.owner.refresh_from_db();self.assertEqual(self.owner.email,'mail-owner@example.com')
+
+    def test_mail_endpoint_requires_auth_and_session_csrf(self):
+        client=APIClient(enforce_csrf_checks=True);client.force_login(self.owner)
+        self.assertEqual(client.patch(self.url,{'email':'new@example.com','current_password':'Current-password-123'},format='json').status_code,403)
+        self.client.logout()
+        self.assertEqual(self.client.get(self.url).status_code,403)
+        self.assertEqual(self.client.patch(self.url,{'email':'new@example.com'},format='json').status_code,403)

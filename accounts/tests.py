@@ -96,7 +96,8 @@ class ProfilePageTests(TestCase):
         response = self.client.get(self.profile_url)
 
         self.assertContains(response, self.owner.email)
-        self.assertContains(response, "Change avatar")
+        self.assertContains(response, 'href="/settings/"')
+        self.assertNotContains(response, "Edit profile")
         self.assertNotContains(response, "Apply for moderation")
         self.assertNotContains(response, "View applications")
         self.assertTrue(response.context["is_owner"])
@@ -450,11 +451,11 @@ class MeProfileTests(TestCase):
         self.assertEqual(self.client.get(self.url).status_code, 403)
         self.assertEqual(self.client.patch(self.url, {"about": "No"}, format="json").status_code, 403)
 
-    def test_session_patch_requires_csrf_from_profile_form(self):
+    def test_session_patch_requires_csrf_from_settings_form(self):
         client = APIClient(enforce_csrf_checks=True)
         client.force_login(self.owner)
         self.assertEqual(client.patch(self.url, {"about": "No"}, format="json").status_code, 403)
-        response = client.get(self.profile_url)
+        response = client.get(reverse("profile_settings"))
         from html.parser import HTMLParser
 
         class Tokens(HTMLParser):
@@ -471,14 +472,16 @@ class MeProfileTests(TestCase):
         response = client.patch(self.url, {"about": "CSRF checked"}, format="json", HTTP_X_CSRFTOKEN=parser.token)
         self.assertEqual(response.status_code, 200)
 
-    def test_owner_editor_choices_and_escaped_public_about_without_private_fields(self):
+    def test_settings_have_editor_choices_and_public_profile_has_only_display_data(self):
         response = self.client.get(self.profile_url)
-        self.assertContains(response, f'data-api-url="{self.url}"')
-        self.assertContains(response, 'accounts/js/profile-edit.js')
-        self.assertContains(response, 'data-avatar-editor')
+        self.assertNotContains(response, 'data-profile-edit-open')
+        self.assertNotContains(response, 'data-avatar-editor')
         self.assertContains(response, 'data-profile-library')
+        settings_response = self.client.get(reverse("profile_settings"))
         for value, label in User.SexChoice.choices:
-            self.assertContains(response, f'<option value="{value}">{label}</option>')
+            self.assertContains(settings_response, f'<option value="{value}"', html=False)
+        self.assertContains(settings_response, 'name="sex"')
+        self.assertContains(settings_response, 'name="bd_date"')
         for authenticated in [True, False]:
             if authenticated:
                 self.client.force_login(self.other)
@@ -493,13 +496,13 @@ class MeProfileTests(TestCase):
 
     def test_editor_strings_are_localized_on_all_supported_languages(self):
         messages = [
-            "Edit profile", "About me", "Sex", "Not specified", "Date of birth", "Save", "Cancel",
-            "Loading...", "Saving...", "Try again", "Unable to load your profile",
+            "About me", "Sex", "Not specified", "Date of birth", "Save changes", "Cancel",
+            "Loading...", "Saving...",
             "Unable to save your profile", "Access denied. Sign in again and reload the page", "Profile saved",
         ]
         for language, _ in settings.LANGUAGES:
             with self.subTest(language=language), translation.override(language):
-                response = self.client.get(self.profile_url, HTTP_ACCEPT_LANGUAGE=language)
+                response = self.client.get(reverse("profile_settings"), HTTP_ACCEPT_LANGUAGE=language)
                 self.assertEqual(response.status_code, 200)
                 for message in messages:
                     translated = translation.gettext(message)
