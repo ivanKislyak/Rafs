@@ -1694,3 +1694,32 @@ msgstr "Erfolg erhalten: %(name)s"
 #: accounts/templates/accounts/_halloween_award.html
 msgid "Skip to award"
 msgstr "Zur Auszeichnung"
+
+#: accounts/templates/accounts/profile_settings.html
+msgid "Profile settings"
+msgstr "Profileinstellungen"
+
+#: accounts/templates/accounts/profile_settings.html
+msgid "Public profile"
+msgstr "Öffentliches Profil"
+
+#: accounts/templates/accounts/profile_settings.html
+msgid "Username saved"
+msgstr "Benutzername gespeichert"
+
+#: accounts/templates/accounts/profile_settings.html
+msgid "No changes to save"
+msgstr "Keine Änderungen zum Speichern"
+
+#: accounts/templates/accounts/profile_settings.html
+msgid "Enable JavaScript to edit these settings"
+msgstr "Aktiviere JavaScript, um diese Einstellungen zu bearbeiten"
+
+#: accounts/templates/accounts/profile_settings.html
+msgid "Changing your username also changes your profile address"
+msgstr "Wenn du deinen Benutzernamen änderst, ändert sich auch deine Profiladresse"
+
+#: accounts/templates/accounts/profile_settings.html
+msgctxt "profile display name"
+msgid "Name"
+msgstr "Name"

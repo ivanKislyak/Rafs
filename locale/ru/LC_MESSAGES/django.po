@@ -1682,3 +1682,32 @@ msgstr "Получено достижение: %(name)s"
 #: accounts/templates/accounts/_halloween_award.html
 msgid "Skip to award"
 msgstr "Перейти к награде"
+
+#: accounts/templates/accounts/profile_settings.html
+msgid "Profile settings"
+msgstr "Настройки профиля"
+
+#: accounts/templates/accounts/profile_settings.html
+msgid "Public profile"
+msgstr "Публичный профиль"
+
+#: accounts/templates/accounts/profile_settings.html
+msgid "Username saved"
+msgstr "Имя пользователя сохранено"
+
+#: accounts/templates/accounts/profile_settings.html
+msgid "No changes to save"
+msgstr "Нет изменений для сохранения"
+
+#: accounts/templates/accounts/profile_settings.html
+msgid "Enable JavaScript to edit these settings"
+msgstr "Включите JavaScript, чтобы редактировать эти настройки"
+
+#: accounts/templates/accounts/profile_settings.html
+msgid "Changing your username also changes your profile address"
+msgstr "При смене имени пользователя меняется и адрес профиля"
+
+#: accounts/templates/accounts/profile_settings.html
+msgctxt "profile display name"
+msgid "Name"
+msgstr "Имя"

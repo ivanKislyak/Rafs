@@ -1694,3 +1694,32 @@ msgstr "Жетістік алынды: %(name)s"
 #: accounts/templates/accounts/_halloween_award.html
 msgid "Skip to award"
 msgstr "Марапатқа өту"
+
+#: accounts/templates/accounts/profile_settings.html
+msgid "Profile settings"
+msgstr "Профиль баптаулары"
+
+#: accounts/templates/accounts/profile_settings.html
+msgid "Public profile"
+msgstr "Ашық профиль"
+
+#: accounts/templates/accounts/profile_settings.html
+msgid "Username saved"
+msgstr "Пайдаланушы аты сақталды"
+
+#: accounts/templates/accounts/profile_settings.html
+msgid "No changes to save"
+msgstr "Сақтайтын өзгерістер жоқ"
+
+#: accounts/templates/accounts/profile_settings.html
+msgid "Enable JavaScript to edit these settings"
+msgstr "Бұл баптауларды өзгерту үшін JavaScript қосыңыз"
+
+#: accounts/templates/accounts/profile_settings.html
+msgid "Changing your username also changes your profile address"
+msgstr "Пайдаланушы атын өзгерткенде профиль мекенжайы да өзгереді"
+
+#: accounts/templates/accounts/profile_settings.html
+msgctxt "profile display name"
+msgid "Name"
+msgstr "Есім"
