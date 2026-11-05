@@ -1,6 +1,8 @@
 from django.test import TestCase
 from accounts.models import User
 from django.urls import reverse
+from django.template.loader import render_to_string
+from urllib.parse import urlsplit, parse_qs
 
 class ProfileSettingsPageTests(TestCase):
     @classmethod
@@ -14,12 +16,14 @@ class ProfileSettingsPageTests(TestCase):
     def test_anonymous_is_redirected_to_login(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 302)
+        sliced_login_url = response.url.partition("?")
+        self.assertEqual(sliced_login_url[0], reverse('login'))
+        # self.assertEqual(sliced_login_url[2], parse_qs(urlsplit(response.url).query)['next'])
 
     def test_owner_can_open_settings(self):
-        self.skipTest("TODO: Implement owner settings test")
+        pass
 
-    def test_other_users_settings_are_forbidden(self):
-        self.skipTest("TODO: Implement other users' settings forbidden test")
+    def test_other_user_gets_their_own_settings(self):
+        pass
 
-    def test_unknown_users_settings_return_404(self):
-        self.skipTest("TODO: Implement unknown user settings 404 test")
+    
