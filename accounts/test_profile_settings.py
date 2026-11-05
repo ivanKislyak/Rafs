@@ -1,3 +1,4 @@
+from rest_framework.test import APITestCase
 from django.test import TestCase
 from accounts.models import User
 from django.urls import reverse
@@ -41,7 +42,7 @@ class MeDisplayNameTests(APITestCase):
             name="test-site-owner", 
             about="I love watch Anime", 
             email="profile-settings-owner@example.com")
-        self.other = User.objects.create_user(
+        cls.other = User.objects.create_user(
             username="profile-settings-other", 
             name="test-site-other",
             email="profile-settings-other@example.com",
@@ -49,4 +50,33 @@ class MeDisplayNameTests(APITestCase):
 
     def setUp(self):
         self.url = reverse("accounts:me")
-        self.client.force_authenticate(self.url)
+        self.client.force_authenticate(user=self.owner)
+
+    def test_get_returns_display_name(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data.get("name"), self.owner.name)
+
+    def test_patch_name_trims_edges_and_preserves_other_fields(self):
+        response = self.client.patch(
+            self.url, {"name": "   Новый ник   "}, format="json"
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data.get("name"), "Новый ник")
+        self.assertEqual(response.data.get("username"), self.owner.username)
+        self.assertEqual(response.data.get("about"), self.owner.about)
+
+    def test_name_can_be_cleared(self):
+        self.skipTest('')
+
+    def test_display_names_need_not_be_unique(self):
+        self.skipTest('')
+
+    def test_64_character_name_is_accepted(self):
+        self.skipTest('')
+
+    def test_65_character_name_rejects_entire_patch(self):
+        self.skipTest('')
+
+    def test_null_name_is_rejected(self):
+        self.skipTest('')

@@ -404,7 +404,7 @@ class MeProfileTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {
             "id": self.owner.pk, "username": self.owner.username,
-            "about": self.owner.about, "sex": "M", "bd_date": "2000-02-29",
+            "name": self.owner.name, "about": self.owner.about, "sex": "M", "bd_date": "2000-02-29",
         })
 
     def test_partial_updates_preserve_fields_not_sent(self):
