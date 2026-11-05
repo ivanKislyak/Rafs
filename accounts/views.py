@@ -21,7 +21,10 @@ from movies.models import Review, ReviewReply, WatchStatus
 
 from .forms import AvatarUpdateForm, RegisterUserForm
 from .models import Achievement, User, SearchHistory
-from .serializers import SearchHistorySerializer, MeSerializer, UsernameSettingsSerializer
+from .serializers import (
+    SearchHistorySerializer, MeSerializer, UsernameSettingsSerializer,
+    ProfileSettingsSerializer, EmailSettingsSerializer,
+)
 
 def register(request):
     if request.method == "POST":
@@ -235,10 +238,24 @@ class UsernameSettingsAPIView(generics.RetrieveUpdateAPIView):
     def get_object(self):
         return self.request.user
 
+
+class ProfileSettingsAPIView(generics.RetrieveUpdateAPIView):
+    serializer_class = ProfileSettingsSerializer
+    permission_classes = [IsAuthenticated]
+    http_method_names = ['get', 'patch', 'head', 'options']
+
+    def get_object(self):
+        return self.request.user
+
+
+class EmailSettingsAPIView(ProfileSettingsAPIView):
+    serializer_class = EmailSettingsSerializer
+
 @login_required
 def profile_settings(request):
     profile_user = request.user
     return render(request, "accounts/profile_settings.html", {
         "profile_user": profile_user,
         "avatar_form": AvatarUpdateForm(instance=profile_user),
+        "profile_sex_choices": User.SexChoice.choices,
     })
