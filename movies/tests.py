@@ -1,7 +1,7 @@
 import json
 from html import escape
 from html.parser import HTMLParser
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 from unittest import skipUnless
 from requests.exceptions import Timeout
 
@@ -22,7 +22,7 @@ from .models import GlobalSearchIndex, Movie, Review, ReviewReply, ReviewVote, W
 from .movie_models import Country, Genre, Person, Studio, TypeOfWork
 from .serializers import SearchResultSerializer
 from .views import search_page
-
+from .services.wikidata import search_wikidata_media
 
 @skipUnless(connection.vendor == "postgresql", "Search API uses PostgreSQL full-text queries")
 class SearchResultsAPITests(TestCase):
@@ -279,6 +279,27 @@ class WikidataImportPermissionTests(TestCase):
         sent = list(get_messages(response.wsgi_request))
         self.assertIn(ERROR, [message.level for message in sent])
         fetch.assert_called_once_with("Q123")
+
+    @patch("movies.services.wikidata.requests.get")
+    def test_search_maps_wikidata_response_to_movie_results(self, mock_get):
+        payload = {
+            "results": {
+                "bindings": [
+                    {
+                        "item": {"value": "http://www.wikidata.org/entity/Q123"},
+                        "itemLabel": {"value": "Fixture movie"},
+                        "itemDescription": {"value": "a test film"},
+                    },
+                ],
+            },
+        }
+        mock_response = MagicMock()
+        mock_response.json.return_value = payload
+        mock_get.return_value = mock_response
+        result = search_wikidata_media("Fixture", lang="en")
+
+        self.assertEqual(result, [{"id": "Q123", "title": "Fixture movie", "description": "A test film"}])
+        
 
     def test_search_result_posts_with_csrf_and_imports_only_after_submit(self):
         client = Client(enforce_csrf_checks=True)

@@ -451,7 +451,7 @@ def wikidata_save_item(request, qid):
     try:
         raw = fetch_movie_details_raw(qid)
     except RequestException:
-        messages.error(request, "Wikidata timed out")
+        messages.error(request, _("We were unable to retrieve data from Wikidata. Please try again"))
         return redirect("movies:wikidata_search")
     parsed = parse_movie_details(raw, qid)
     imported = import_parsed_data_to_db(qid, parsed)
