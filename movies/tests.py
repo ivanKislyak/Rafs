@@ -3,7 +3,9 @@ from html import escape
 from html.parser import HTMLParser
 from unittest.mock import patch
 from unittest import skipUnless
+from requests.exceptions import Timeout
 
+from django.contrib.messages import ERROR, get_messages
 from django.contrib.contenttypes.models import ContentType
 from django.conf import settings
 from django.contrib.postgres.search import SearchVector
@@ -267,6 +269,16 @@ class WikidataImportPermissionTests(TestCase):
         self.assertEqual(self.client.post(self.url).status_code, 302)
         fetch.assert_not_called()
         self.assertEqual(Movie.objects.count(), 0)
+
+    def test_import_timeout_redirects_with_error_and_does_not_create_movie(self):
+        self.client.force_login(self.staff)
+        with patch("movies.views.fetch_movie_details_raw", side_effect=Timeout("Wikidata timed out")) as fetch:
+            response = self.client.post(self.url)
+        self.assertFalse(Movie.objects.filter(wikidata_id="Q123").exists())
+        self.assertRedirects(response, reverse("movies:wikidata_search"), fetch_redirect_response=False)
+        sent = list(get_messages(response.wsgi_request))
+        self.assertIn(ERROR, [message.level for message in sent])
+        fetch.assert_called_once_with("Q123")
 
     def test_search_result_posts_with_csrf_and_imports_only_after_submit(self):
         client = Client(enforce_csrf_checks=True)

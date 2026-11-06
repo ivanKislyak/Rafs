@@ -448,7 +448,11 @@ def wikidata_search(request):
 @staff_member_required
 @require_POST
 def wikidata_save_item(request, qid):
-    raw = fetch_movie_details_raw(qid)
+    try:
+        raw = fetch_movie_details_raw(qid)
+    except RequestException:
+        messages.error(request, "Wikidata timed out")
+        return redirect("movies:wikidata_search")
     parsed = parse_movie_details(raw, qid)
     imported = import_parsed_data_to_db(qid, parsed)
     return redirect("movies:detail", movie_id=imported.id)
