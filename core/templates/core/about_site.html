@@ -15,85 +15,63 @@
     <link rel="stylesheet" href="{% static 'core/css/about.css' %}">
 {% endblock %}
 {% block content %}
-    <main class="about-page">
-        <section class="about-hero">
-            <div class="about-hero-copy">
-                <p class="about-kicker">RAFS / {% translate "About the project" %}</p>
-                <h1>
-                    {% translate "Not just choosing a movie" %}
-                    <span>{% translate "Understanding why it is right for you" %}</span>
-                </h1>
-                <div class="about-actions">
-                    <a class="about-button about-button--primary"
-                       href="{% url 'movies:catalog' %}">{% translate "Browse catalog" %}</a>
-                    {% if not user.is_authenticated %}
-                        <a class="about-button about-button--secondary"
-                           href="{% url 'accounts:register' %}">{% translate "Create an account" %}</a>
-                    {% endif %}
-                </div>
-            </div>
-            <div class="about-hero-visual">
-                <img src="{% static 'images/halloween/halloween_glitched_rafs_logo.png' %}"
-                     alt="{% translate 'RAFS logo' %}">
-                <p>{% translate "Watch. Rate. Find your own." %}</p>
-            </div>
-        </section>
-        <section class="about-section" aria-labelledby="about-principles-title">
-            <div class="about-section-heading">
-                <p class="about-kicker">{% translate "What matters here" %}</p>
-                <h2 id="about-principles-title">{% translate "Cinema begins after the final credits" %}</h2>
-            </div>
-            <div class="about-feature-grid">
-                <article class="about-feature-card">
-                    <span class="about-feature-number">01</span>
-                    <h3>{% translate "Honest ratings" %}</h3>
-                    <p>
-                        {% translate "Give a movie your score and break down your impression by the criteria that truly matter to you." %}
-                    </p>
-                </article>
-                <article class="about-feature-card">
-                    <span class="about-feature-number">02</span>
-                    <h3>{% translate "Real reviews" %}</h3>
-                    <p>
-                        {% translate "Share your thoughts without rigid templates and help others understand whether a movie is worth their time." %}
-                    </p>
-                </article>
-                <article class="about-feature-card">
-                    <span class="about-feature-number">03</span>
-                    <h3>{% translate "Taste matches" %}</h3>
-                    <p>
-                        {% translate "In the future, RAFS will find people with similar ratings and recommend movies based on their actual choices." %}
-                    </p>
-                </article>
-            </div>
-        </section>
-        <section class="about-roadmap" aria-labelledby="about-roadmap-title">
-            <div class="about-roadmap-heading">
-                <p class="about-kicker">{% translate "Project development" %}</p>
-                <h2 id="about-roadmap-title">{% translate "RAFS grows with your watch history" %}</h2>
-            </div>
-            <div class="about-roadmap-grid">
-                <article class="about-roadmap-card about-roadmap-card--current">
-                    <span class="about-roadmap-status">{% translate "Available now" %}</span>
-                    <h3>{% translate "Catalog, ratings, and reviews" %}</h3>
-                    <p>{% translate "Choose movies, save your personal impressions, and see ratings from other users." %}</p>
-                </article>
-                <article class="about-roadmap-card">
-                    <span class="about-roadmap-status">{% translate "Next stage" %}</span>
-                    <h3>{% translate "Recommendations and custom tags" %}</h3>
-                    <p>
-                        {% translate "Personal collections and flexible tags will help you find not only popular movies, but films that truly feel right for you." %}
-                    </p>
-                </article>
-            </div>
-        </section>
-        <section class="about-cta">
+    <main class="page-shell about-page" aria-labelledby="about-title">
+        <header class="page-heading about-heading">
             <div>
-                <p class="about-kicker">{% translate "Your next movie" %}</p>
-                <h2>{% translate "It may already be waiting for you in the catalog" %}</h2>
+                <p class="page-kicker">{% translate "Non-commercial project" %}</p>
+                <h1 id="about-title">{% translate "About RAFS" %}</h1>
             </div>
-            <a class="about-button about-button--primary"
-               href="{% url 'movies:catalog' %}">{% translate "Find a movie" %}</a>
+            <img class="about-logo"
+                 src="{% static 'images/def_rafs_logo.png' %}"
+                 alt="{% translate 'RAFS logo' %}"
+                 width="129"
+                 height="72">
+        </header>
+        <div class="about-intro">
+            <p class="about-lead">
+                {% translate "RAFS is a site for ratings and reviews of films, series and anime." %}
+            </p>
+            <div class="about-actions">
+                <a class="about-button about-button--primary"
+                   href="{% url 'movies:catalog' %}">{% translate "Browse catalog" %}</a>
+                {% if not user.is_authenticated %}
+                    <a class="about-button about-button--secondary"
+                       href="{% url 'accounts:register' %}">{% translate "Create an account" %}</a>
+                {% endif %}
+            </div>
+        </div>
+        <section class="about-section" aria-labelledby="about-catalog-title">
+            <h2 id="about-catalog-title">{% translate "Catalog" %}</h2>
+            <p>{% translate "Choose movies, save your personal impressions, and see ratings from other users." %}</p>
         </section>
+        <section class="about-section" aria-labelledby="about-ratings-title">
+            <h2 id="about-ratings-title">{% translate "Honest ratings" %}</h2>
+            <p>
+                {% translate "Give a movie your score and break down your impression by the criteria that truly matter to you." %}
+            </p>
+        </section>
+        <section class="about-section" aria-labelledby="about-reviews-title">
+            <h2 id="about-reviews-title">{% translate "Real reviews" %}</h2>
+            <div class="about-section-content">
+                <p>
+                    {% translate "Share your thoughts without rigid templates and help others understand whether a movie is worth their time." %}
+                </p>
+                <a class="about-link" href="{% url 'movies:show_reviews' %}">{% translate "Reviews" %}</a>
+            </div>
+        </section>
+        <section class="about-section" aria-labelledby="about-development-title">
+            <h2 id="about-development-title">{% translate "Project development" %}</h2>
+            <div class="about-section-content">
+                <p>
+                    {% translate "In the future, RAFS will find people with similar ratings and recommend movies based on their actual choices." %}
+                </p>
+                <p>
+                    {% translate "Personal collections and flexible tags will help you find not only popular movies, but films that truly feel right for you." %}
+                </p>
+            </div>
+        </section>
+        <div class="about-community">
+            <a class="about-link" href="{% url 'core:community_guidelines' %}">{% translate "Community guidelines" %}</a>
+        </div>
     </main>
 {% endblock %}
