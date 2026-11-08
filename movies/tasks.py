@@ -1,3 +1,8 @@
+import subprocess
+import sys
+import tempfile
+from django.conf import settings
+
 from celery import shared_task
 from celery.utils.log import get_task_logger
 from .services.wikidata import fetch_movie_details_raw
@@ -21,3 +26,13 @@ def check_wikidata_movie(qid: str):
 
     title = movie_data.get("labels", {}).get("en", {}).get("value", qid)
     logger.info("qid=%s title=%s" % (qid, title))
+
+@shared_task(ignore_result=True)
+def dry_run_animation_import():
+    out_dir = tempfile.mkdtemp()
+    logger.info("Dry-run state dir: %s" % out_dir)
+    subprocess.run(
+            [sys.executable, "manage.py", "import_animation", "--dry-run", "--max-candidates=3", f"--state-dir={out_dir}"],
+            cwd=settings.BASE_DIR,
+            check=True,
+        )
