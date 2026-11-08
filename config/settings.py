@@ -74,7 +74,6 @@ INSTALLED_APPS = [
     'core',
     'taggit',
     'parler',
-    'django_celery_results',
 ]
 
 MIDDLEWARE = [
