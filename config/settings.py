@@ -74,6 +74,7 @@ INSTALLED_APPS = [
     'core',
     'taggit',
     'parler',
+    'django_celery_results',
 ]
 
 MIDDLEWARE = [
@@ -214,3 +215,6 @@ REST_FRAMEWORK = {
 }
 
 AUTH_USER_MODEL = "accounts.User"
+
+# Celery config
+CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", "")
