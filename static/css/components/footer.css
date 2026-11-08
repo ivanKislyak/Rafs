@@ -37,7 +37,7 @@
 .child-right-info {
   display: grid;
   align-content: start;
-  gap: 4px;
+  gap: 2px;
 }
 
 .child-right-info > * {
@@ -47,11 +47,11 @@
 .child-right-info > a {
   display: flex;
   align-items: center;
-  min-height: 44px;
+  min-height: 28px;
 }
 
-.navigation-label {
-  margin-bottom: 8px !important;
+.child-right-info > .navigation-label {
+  margin-bottom: 4px;
   font-weight: 700;
 }
 
@@ -80,6 +80,12 @@
 
 .catalog-category-footer:hover, .about-site-footer:hover, .community-guidelines-footer:hover, .bottom-related-info:hover {
   color: var(--color-accent);
+}
+
+@media (pointer: coarse) {
+  .child-right-info > a {
+    min-height: 44px;
+  }
 }
 
 @media (max-width: 600px) {
