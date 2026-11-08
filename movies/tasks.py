@@ -13,7 +13,7 @@ logger = get_task_logger(__name__)
 def check_wikidata_movie(qid: str):
     payload = fetch_movie_details_raw(qid)
     entities = payload["entities"]
-    
+
     if qid not in entities:
         logger.warning("Warning! Missed Q-ID(%s)" % qid)
         return
