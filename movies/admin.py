@@ -1,7 +1,11 @@
 from django.contrib import admin
 from django.db.models import Prefetch
 from django.utils.translation import gettext_lazy as _
-from .models import Movie, Review, ReviewReply, WatchStatus
+from .models import (
+    Movie, Review, ReviewReply, 
+    WatchStatus, PlaylistItem,
+    Playlist
+    )
 from .movie_models import Studio
 from parler.admin import TranslatableAdmin
 
@@ -96,6 +100,22 @@ class WatchStatusAdmin(admin.ModelAdmin):
     raw_id_fields = ('user', 'movie')
 
 
+class PlaylistItemInline(admin.TabularInline):
+    model = PlaylistItem    
+    autocomplete_fields = ['playlist', 'movie']
+
+
+@admin.register(Playlist)
+class PlaylistAdmin(admin.ModelAdmin):
+    list_display = ('name', 'kind', 'is_public', 'created_at')
+    list_editable = ('is_public',)
+    list_display_links = ['name']
+    inlines = [
+        PlaylistItemInline,
+    ]
+
+
+# Site config
 admin.site.site_header = _("RAFS site administration")
 admin.site.site_title = "RAFS"
 admin.site.index_title = _("Movies, reviews and profiles")
