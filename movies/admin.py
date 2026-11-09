@@ -113,6 +113,9 @@ class PlaylistAdmin(admin.ModelAdmin):
     inlines = [
         PlaylistItemInline,
     ]
+    search_fields = [
+        "name",
+    ]
 
 
 # Site config
