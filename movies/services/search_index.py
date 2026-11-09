@@ -145,6 +145,7 @@ def index_new_movies(movie_ids=None):
             "pk",
             "wikidata_id",
             "imdb_id",
+            "tmdb_popularity",
             "year",
             "type_of_work_id",
             "name",
@@ -211,6 +212,7 @@ def index_new_movies(movie_ids=None):
             GlobalSearchIndex(
                 content_type=content_type,
                 object_id=movie.pk,
+                tmdb_popularity=movie.tmdb_popularity,
                 search_vector=combined_vector,
             )
         )
