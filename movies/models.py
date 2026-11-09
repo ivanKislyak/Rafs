@@ -234,3 +234,17 @@ class WatchStatus(models.Model):
 
     def __str__(self):
         return self.get_status_display()
+
+
+class Playlist(models.Model):
+    class KindChoice(models.TextChoices):
+        FAVOURITE = "FAVOURITE", _("Favourite")
+        CUSTOM = "CUSTOM", _("Custom")
+
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="user_playlist", verbose_name=_("User")
+    )
+    name = models.CharField(max_length=300, verbose_name=_("Name"))
+    kind = models.CharField(max_length=20, choices=KindChoice.choices, default=KindChoice.CUSTOM, verbose_name=_("Kind"))
