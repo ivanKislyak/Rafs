@@ -197,6 +197,6 @@ class ReviewReplySerializer(serializers.ModelSerializer):
 class PlaylistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Playlist
-        fields = ['id', 'name', 'kind', 'owner']
+        fields = ['id', 'name', 'kind', 'owner', 'cover']
         read_only_fields = ['kind', 'owner']
         
