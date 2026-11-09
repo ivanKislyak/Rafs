@@ -11,7 +11,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.postgres.search import SearchVectorField
 from django.utils.translation import gettext_lazy as _
-
+from django.db.models import Q
 
 class Movie(TranslatableModel):
     # Main data
@@ -236,15 +236,58 @@ class WatchStatus(models.Model):
         return self.get_status_display()
 
 
-class Playlist(models.Model):
-    class KindChoice(models.TextChoices):
-        FAVOURITE = "FAVOURITE", _("Favourite")
-        CUSTOM = "CUSTOM", _("Custom")
+class KindChoice(models.TextChoices):
+    FAVOURITE = "FAVOURITE", _("Favourite")
+    CUSTOM = "CUSTOM", _("Custom")
 
+class Playlist(models.Model):
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name="user_playlist", verbose_name=_("User")
+        related_name="playlists", verbose_name=_("User")
     )
     name = models.CharField(max_length=300, verbose_name=_("Name"))
     kind = models.CharField(max_length=20, choices=KindChoice.choices, default=KindChoice.CUSTOM, verbose_name=_("Kind"))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
+    is_public = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = _("Playlist")
+        verbose_name_plural = _("Playlists")
+        ordering=["-created_at", "pk"]
+        constraints = [
+            models.UniqueConstraint(
+                fields = ['owner'], 
+                condition=Q(kind=KindChoice.FAVOURITE),
+                name="unique_favourite_playlist"
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.name} ({self.kind}) by {self.owner}"
+
+class PlaylistItem(models.Model):
+    playlist = models.ForeignKey(
+        Playlist,
+        on_delete=models.CASCADE,
+        related_name="items",
+        verbose_name=_("Playlist")
+    )
+    movie = models.ForeignKey(
+        Movie,
+        on_delete=models.CASCADE, 
+        related_name="playlist_items", 
+        verbose_name=_("Movie")
+        )
+
+    position = models.PositiveSmallIntegerField(default=1)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
+
+    class Meta:
+        verbose_name = _("Playlist Item")
+        verbose_name_plural = _("Playlist Items")
+        ordering = ['position', 'pk']
+        constraints = [
+            models.UniqueConstraint(fields=['playlist', 'movie'], 
+                                    name="unique_playlist_for_movie"),
+            ]
