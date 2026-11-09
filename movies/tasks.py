@@ -7,9 +7,15 @@ from celery import shared_task
 from celery.utils.log import get_task_logger
 from .services.wikidata import fetch_movie_details_raw
 
+from requests.exceptions import Timeout
+
 logger = get_task_logger(__name__)
 
-@shared_task(ignore_result=True)
+@shared_task(
+    ignore_result=True,
+    autoretry_for=(Timeout,),
+    retry_kwargs={"max_retries": 1, "countdown": 3},
+)
 def check_wikidata_movie(qid: str):
     payload = fetch_movie_details_raw(qid)
     entities = payload["entities"]
