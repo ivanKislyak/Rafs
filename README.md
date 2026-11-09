@@ -518,6 +518,14 @@ With `DJANGO_DEBUG=True`, Django serves media files during local development. Me
 
 ## Building and rebuilding the search index
 
+For existing titles whose `tmdb_popularity` is still zero, the separate
+[`backfill_tmdb_popularity` guide](movies/management/commands/README_backfill_tmdb_popularity.md)
+describes a validated daily TMDB snapshot backfill, read-only import-state
+mapping, dry-runs, and batched resume. It updates only popularity in Movie and
+existing movie search documents, preserving their PKs and vectors. Run it
+separately from a full rebuild; the document builder preserves Movie popularity
+when a rebuild is later needed.
+
 Global search requires PostgreSQL. After applying migrations and adding the
 initial data, build the index with:
 
