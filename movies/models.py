@@ -252,6 +252,7 @@ class Playlist(models.Model):
     kind = models.CharField(max_length=20, choices=KindChoice.choices, default=KindChoice.CUSTOM, verbose_name=_("Kind"))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
     is_public = models.BooleanField(default=False)
+    cover = models.ImageField(upload_to="playlists/covers/", blank=True, null=True, verbose_name=_("Cover"))
 
     class Meta:
         verbose_name = _("Playlist")
