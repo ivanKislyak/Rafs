@@ -281,53 +281,19 @@ def search_page(request):
         'query': request.GET.get('query', '').strip(),
     })
 
-# TODO: Complete the WatchStatusAPIView functionality
-# class WatchStatusAPIView(APIView):
-#     serializer_class = WatchStatusSerializer
-#     permission_classes = [permissions.IsAuthenticated]
+
+class WatchStatusAPIView(APIView):
+    serializer_class = WatchStatusSerializer
+    permission_classes = [permissions.IsAuthenticated]
     
-#     def get(self, request, movie_id, *args, **kwargs):
-#         user = request.user
-#         movie = get_object_or_404(Movie, pk=movie_id)
-#         status_obj = WatchStatus.objects.filter(user=user, movie=movie).first()
-#         movie_status = getattr(status_obj, "status", None)
-#         return Response({"movie_id": movie_id, "status": movie_status})
-
-#     def put(self, request, movie_id: int):
-#         movie = get_object_or_404(Movie, pk=movie_id)
-#         serializer = WatchStatusSerializer(data=request.data)
-#         serializer.is_valid(raise_exception=True)
-#         new_status = serializer.validated_data["status"]
-
-#         instance, created = WatchStatus.objects.update_or_create(
-#             user=request.user,
-#             movie=movie,
-#             defaults={'status':new_status}
-#         )
-        
-#         status_code = status.HTTP_201_CREATED if created else status.HTTP_200_OK
-
-#         return Response(
-#             {"movie_id": movie_id, "status": instance.status}, 
-#             status=status_code)
-
-#     def delete(self, request, movie_id: int):
-#         user = request.user
-#         movie = get_object_or_404(Movie, pk=movie_id)
-#         WatchStatus.objects.filter(user=user, movie=movie).delete()
-#         return Response(status=status.HTTP_204_NO_CONTENT)
-    
-
-class PlaylistAPIView(APIView):
-    serializer_class = PlaylistSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
-    def get(self, request, pl_id, *args, **kwargs):
+    def get(self, request, movie_id, *args, **kwargs):
         user = request.user
-        playlist = get_object_or_404(Playlist, pk=pl_id, owner=user)
-        return Response({"playlist": playlist})
+        movie = get_object_or_404(Movie, pk=movie_id)
+        status_obj = WatchStatus.objects.filter(user=user, movie=movie).first()
+        movie_status = getattr(status_obj, "status", None)
+        return Response({"movie_id": movie_id, "status": movie_status})
 
-    def put(self, request, pl_id: int):
+    def put(self, request, movie_id: int):
         movie = get_object_or_404(Movie, pk=movie_id)
         serializer = WatchStatusSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -344,6 +310,41 @@ class PlaylistAPIView(APIView):
         return Response(
             {"movie_id": movie_id, "status": instance.status}, 
             status=status_code)
+
+    def delete(self, request, movie_id: int):
+        user = request.user
+        movie = get_object_or_404(Movie, pk=movie_id)
+        WatchStatus.objects.filter(user=user, movie=movie).delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+    
+# TODO: Complete the PlaylistAPIView functionality
+# class PlaylistAPIView(APIView):
+#     serializer_class = PlaylistSerializer
+#     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+#     def get(self, request, pl_id, *args, **kwargs):
+#         user = request.user
+#         playlist = get_object_or_404(Playlist, pk=pl_id, owner=user)
+#         return Response({"playlist": playlist})
+
+#     def put(self, request, pl_id: int):
+#         movie = get_object_or_404(Movie, pk=movie_id)
+#         serializer = WatchStatusSerializer(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         new_status = serializer.validated_data["status"]
+
+#         instance, created = WatchStatus.objects.update_or_create(
+#             user=request.user,
+#             movie=movie,
+#             defaults={'status':new_status}
+#         )
+        
+#         status_code = status.HTTP_201_CREATED if created else status.HTTP_200_OK
+
+#         return Response(
+#             {"movie_id": movie_id, "status": instance.status}, 
+#             status=status_code)
 
 class EditReplyAPIView(generics.RetrieveUpdateAPIView):
     serializer_class = ReviewReplySerializer
