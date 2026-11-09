@@ -17,6 +17,7 @@ class Movie(TranslatableModel):
     # Main data
     wikidata_id = models.CharField(verbose_name=_("ID on wikidata.org"), max_length=20, unique=True, null=True, blank=True)
     imdb_id = models.CharField(verbose_name=_("ID on imdb.com"), max_length=20, null=True, blank=True, db_index=True)
+    tmdb_popularity = models.FloatField(default=0.0)
 
     translations = TranslatedFields(
         wikidata_name = models.CharField(verbose_name=_("Movie Name"), max_length=500, blank=True),
@@ -199,6 +200,7 @@ class GlobalSearchIndex(models.Model):
     content_object = GenericForeignKey('content_type', 'object_id')
     
     search_vector = SearchVectorField(null=True)
+    tmdb_popularity = models.FloatField(default=0.0)
    
     class Meta:
         verbose_name = _("Global Search Index")
