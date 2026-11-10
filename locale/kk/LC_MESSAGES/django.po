@@ -1799,3 +1799,31 @@ msgstr "Шаршы аватар таңдаңыз"
 #: accounts/templates/accounts/profile_settings.html accounts/serializers.py
 msgid "Confirm avatar cropping before saving"
 msgstr "Сақтамас бұрын аватарды қиюды растаңыз"
+
+#: movies/models.py:242
+msgid "Favourite"
+msgstr "Таңдаулы"
+
+#: movies/models.py:243
+msgid "Custom"
+msgstr "Пайдаланушы жасаған"
+
+#: movies/models.py:252
+msgid "Kind"
+msgstr "Түрі"
+
+#: movies/models.py:258 movies/models.py:277
+msgid "Playlist"
+msgstr "Плейлист"
+
+#: movies/models.py:259
+msgid "Playlists"
+msgstr "Плейлисттер"
+
+#: movies/models.py:290
+msgid "Playlist Item"
+msgstr "Плейлист элементі"
+
+#: movies/models.py:291
+msgid "Playlist Items"
+msgstr "Плейлист элементтері"

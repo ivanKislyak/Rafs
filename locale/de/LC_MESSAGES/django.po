@@ -1799,3 +1799,31 @@ msgstr "Wähle einen quadratischen Avatar"
 #: accounts/templates/accounts/profile_settings.html accounts/serializers.py
 msgid "Confirm avatar cropping before saving"
 msgstr "Bestätige den Avatar-Zuschnitt vor dem Speichern"
+
+#: movies/models.py:242
+msgid "Favourite"
+msgstr "Favoriten"
+
+#: movies/models.py:243
+msgid "Custom"
+msgstr "Benutzerdefiniert"
+
+#: movies/models.py:252
+msgid "Kind"
+msgstr "Typ"
+
+#: movies/models.py:258 movies/models.py:277
+msgid "Playlist"
+msgstr "Wiedergabeliste"
+
+#: movies/models.py:259
+msgid "Playlists"
+msgstr "Wiedergabelisten"
+
+#: movies/models.py:290
+msgid "Playlist Item"
+msgstr "Eintrag der Wiedergabeliste"
+
+#: movies/models.py:291
+msgid "Playlist Items"
+msgstr "Einträge der Wiedergabeliste"

@@ -1799,3 +1799,31 @@ msgstr "Виберіть квадратний аватар"
 #: accounts/templates/accounts/profile_settings.html accounts/serializers.py
 msgid "Confirm avatar cropping before saving"
 msgstr "Підтвердьте кадрування аватара перед збереженням"
+
+#: movies/models.py:242
+msgid "Favourite"
+msgstr "Вибране"
+
+#: movies/models.py:243
+msgid "Custom"
+msgstr "Користувацький"
+
+#: movies/models.py:252
+msgid "Kind"
+msgstr "Тип"
+
+#: movies/models.py:258 movies/models.py:277
+msgid "Playlist"
+msgstr "Плейліст"
+
+#: movies/models.py:259
+msgid "Playlists"
+msgstr "Плейлісти"
+
+#: movies/models.py:290
+msgid "Playlist Item"
+msgstr "Елемент плейліста"
+
+#: movies/models.py:291
+msgid "Playlist Items"
+msgstr "Елементи плейліста"
