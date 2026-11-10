@@ -301,15 +301,27 @@ class SettingsIntegrationTests(TestCase):
 
     def test_only_owner_has_settings_link_and_editor_is_removed(self):
         url = reverse('profile', args=[self.owner.username])
-        response = self.client.get(url)
-        self.assertContains(response, f'href="{self.url}"')
-        self.assertNotContains(response, 'data-profile-editor')
-        self.assertNotContains(response, 'data-avatar-editor')
-        self.assertNotContains(response, 'Edit profile')
-        self.client.force_login(self.other)
-        self.assertNotContains(self.client.get(url), f'href="{self.url}"')
-        self.client.logout()
-        self.assertNotContains(self.client.get(url), f'href="{self.url}"')
+        for visitor, is_owner in ((self.owner, True), (self.other, False), (None, False)):
+            with self.subTest(visitor=visitor.username if visitor else 'guest'):
+                if visitor:
+                    self.client.force_login(visitor)
+                else:
+                    self.client.logout()
+                response = self.client.get(url)
+                self.assertEqual(response.status_code, 200)
+                self.assertEqual(response.context['is_owner'], is_owner)
+                # The header links to the visitor's own settings on every page
+                profile_html = (
+                    response.content.decode()
+                    .split('<main', 1)[1]
+                    .split('</main>', 1)[0]
+                )
+                if is_owner:
+                    self.assertIn(f'href="{self.url}"', profile_html)
+                else:
+                    self.assertNotIn(f'href="{self.url}"', profile_html)
+                for editor in ('data-profile-editor', 'data-avatar-editor', 'Edit profile'):
+                    self.assertNotIn(editor, profile_html)
 
 
 class SettingsAvatarTests(TestCase):
