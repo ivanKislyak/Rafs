@@ -5,7 +5,7 @@ from django.utils.translation import get_language, gettext as _
 from rest_framework import serializers
 
 from .search_config import TITLE_FIELDS, DESCRIPTION_FIELDS, IMAGE_FIELDS
-from .models import WatchStatus, ReviewReply, Playlist
+from .models import WatchStatus, ReviewReply, Playlist, PlaylistItem
 
 # Search Result Block
 def _read(target, field):
@@ -193,10 +193,15 @@ class ReviewReplySerializer(serializers.ModelSerializer):
         fields = ['id', 'user', 'review', 'text', 'created_at']
         read_only_fields = ['id', 'user', 'created_at', 'review']
 
+class PlaylistItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PlaylistItem
+        fields = ['position', 'added_at', 'movie']
 
 class PlaylistSerializer(serializers.ModelSerializer):
+    items = PlaylistItemSerializer(many=True, read_only=True)
     class Meta:
         model = Playlist
-        fields = ['id', 'name', 'kind', 'owner', 'cover', 'is_public']
+        fields = ['id', 'name', 'kind', 'owner', 'cover', 'is_public', 'items']
         read_only_fields = ['kind', 'owner']
         

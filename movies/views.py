@@ -32,7 +32,8 @@ from .forms import (
 from .models import (
     Movie, Review, ReviewReply,
     ReviewVote, WatchStatus,
-    GlobalSearchIndex, Playlist
+    GlobalSearchIndex, Playlist,
+    PlaylistItem
     )
 from .serializers import (
     SearchResultSerializer, WatchStatusSerializer, 
@@ -328,10 +329,20 @@ class PlaylistAPIView(APIView):
         if request.user.is_authenticated:
             playlist_qs = Playlist.objects.filter(Q(is_public=True) | Q(owner=request.user))
 
+        playlist_qs = playlist_qs.select_related("owner").prefetch_related(
+            Prefetch(
+                "items",
+                queryset=PlaylistItem.objects.select_related("movie").prefetch_related(
+                    "movie__translations",
+                )
+            )
+        )
+
         playlist_instance = get_object_or_404(playlist_qs, pk=pl_id)
         serializer = self.serializer_class(
             playlist_instance, context={"request": request}
         )
+
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 #     def put(self, request, pl_id: int):
