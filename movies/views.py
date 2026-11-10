@@ -323,9 +323,11 @@ class PlaylistAPIView(APIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get(self, request, pl_id, *args, **kwargs):
-        playlist_qs = Playlist.objects.filter(
-            Q(is_public=True) | Q(owner=request.user)
-        )
+        playlist_qs = Playlist.objects.filter(Q(is_public=True))
+
+        if request.user.is_authenticated:
+            playlist_qs = Playlist.objects.filter(Q(is_public=True) | Q(owner=request.user))
+
         playlist_instance = get_object_or_404(playlist_qs, pk=pl_id)
         serializer = self.serializer_class(
             playlist_instance, context={"request": request}
