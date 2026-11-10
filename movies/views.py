@@ -316,17 +316,21 @@ class WatchStatusAPIView(APIView):
         movie = get_object_or_404(Movie, pk=movie_id)
         WatchStatus.objects.filter(user=user, movie=movie).delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
-    
-# TODO: Complete the PlaylistAPIView functionality
-# class PlaylistAPIView(APIView):
-#     serializer_class = PlaylistSerializer
-#     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-#     def get(self, request, pl_id, *args, **kwargs):
-#         user = request.user
-#         playlist = get_object_or_404(Playlist, pk=pl_id, owner=user)
-#         return Response({"playlist": playlist})
+
+class PlaylistAPIView(APIView):
+    serializer_class = PlaylistSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get(self, request, pl_id, *args, **kwargs):
+        playlist_qs = Playlist.objects.filter(
+            Q(is_public=True) | Q(owner=request.user)
+        )
+        playlist_instance = get_object_or_404(playlist_qs, pk=pl_id)
+        serializer = self.serializer_class(
+            playlist_instance, context={"request": request}
+        )
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 #     def put(self, request, pl_id: int):
 #         movie = get_object_or_404(Movie, pk=movie_id)
