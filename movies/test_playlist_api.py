@@ -26,7 +26,8 @@ class PlaylistAPITests(APITestCase):
             "kind": self.playlist.kind,
             "owner": self.user.pk,
             "cover": None,
-            "is_public": self.playlist.is_public
+            "is_public": self.playlist.is_public,
+            "items": []
         }
 
         self.assertEqual(response.status_code, 200)
