@@ -296,7 +296,7 @@ class WatchStatusAPIView(APIView):
 
     def put(self, request, movie_id: int):
         movie = get_object_or_404(Movie, pk=movie_id)
-        serializer = WatchStatusSerializer(data=request.data)
+        serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         new_status = serializer.validated_data["status"]
 
@@ -345,23 +345,24 @@ class PlaylistAPIView(APIView):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-#     def put(self, request, pl_id: int):
-#         movie = get_object_or_404(Movie, pk=movie_id)
-#         serializer = WatchStatusSerializer(data=request.data)
-#         serializer.is_valid(raise_exception=True)
-#         new_status = serializer.validated_data["status"]
+    # def put(self, request, pl_id: int):
 
-#         instance, created = WatchStatus.objects.update_or_create(
-#             user=request.user,
-#             movie=movie,
-#             defaults={'status':new_status}
-#         )
+    #     movie = get_object_or_404(Movie, pk=movie_id)
+    #     serializer = WatchStatusSerializer(data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     new_status = serializer.validated_data["status"]
+
+    #     instance, created = WatchStatus.objects.update_or_create(
+    #         user=request.user,
+    #         movie=movie,
+    #         defaults={'status':new_status}
+    #     )
         
-#         status_code = status.HTTP_201_CREATED if created else status.HTTP_200_OK
+    #     status_code = status.HTTP_201_CREATED if created else status.HTTP_200_OK
 
-#         return Response(
-#             {"movie_id": movie_id, "status": instance.status}, 
-#             status=status_code)
+    #     return Response(
+    #         {"movie_id": movie_id, "status": instance.status}, 
+    #         status=status_code)
 
 class EditReplyAPIView(generics.RetrieveUpdateAPIView):
     serializer_class = ReviewReplySerializer
