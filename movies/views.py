@@ -325,7 +325,6 @@ class PlaylistAPIView(APIView):
 
     def get(self, request, pl_id, *args, **kwargs):
         playlist_qs = Playlist.objects.filter(Q(is_public=True))
-
         if request.user.is_authenticated:
             playlist_qs = Playlist.objects.filter(Q(is_public=True) | Q(owner=request.user))
 
@@ -337,32 +336,20 @@ class PlaylistAPIView(APIView):
                 )
             )
         )
-
         playlist_instance = get_object_or_404(playlist_qs, pk=pl_id)
         serializer = self.serializer_class(
             playlist_instance, context={"request": request}
         )
-
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    # def put(self, request, pl_id: int):
-
-    #     movie = get_object_or_404(Movie, pk=movie_id)
-    #     serializer = WatchStatusSerializer(data=request.data)
-    #     serializer.is_valid(raise_exception=True)
-    #     new_status = serializer.validated_data["status"]
-
-    #     instance, created = WatchStatus.objects.update_or_create(
-    #         user=request.user,
-    #         movie=movie,
-    #         defaults={'status':new_status}
-    #     )
+    def put(self, request, pl_id: int):
+        playlist = get_object_or_404(Playlist, pk=pl_id, owner=request.user)
         
-    #     status_code = status.HTTP_201_CREATED if created else status.HTTP_200_OK
+        serializer = self.serializer_class(playlist, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
 
-    #     return Response(
-    #         {"movie_id": movie_id, "status": instance.status}, 
-    #         status=status_code)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class EditReplyAPIView(generics.RetrieveUpdateAPIView):
     serializer_class = ReviewReplySerializer
