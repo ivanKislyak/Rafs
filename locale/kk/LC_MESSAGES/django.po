@@ -1827,3 +1827,35 @@ msgstr "Плейлист элементі"
 #: movies/models.py:291
 msgid "Playlist Items"
 msgstr "Плейлист элементтері"
+
+#: accounts/models.py:29
+msgid "name"
+msgstr "атау"
+
+#: accounts/serializers.py:113
+msgid "A user with that username already exists."
+msgstr "Осындай атаумен қолданушы бар."
+
+#: accounts/serializers.py:129
+msgid "This field is required."
+msgstr "Бұл мән міндетті."
+
+#: core/templates/core/home.html:33
+msgid "Previous movies"
+msgstr "Алдыңғы фильмдер"
+
+#: core/templates/core/home.html:36
+msgid "Next movies"
+msgstr "Келесі фильмдер"
+
+#: movies/models.py:287
+msgid "Added at"
+msgstr "Қосылған күні"
+
+#: movies/views.py:395
+msgid "The position exceeds the permissible limit"
+msgstr "Реттік нөмір рұқсат етілген шектен асады"
+
+#: movies/views.py:552
+msgid "We were unable to retrieve data from Wikidata. Please try again"
+msgstr "Wikidata деректерін алу мүмкін болмады. Қайталап көріңіз"

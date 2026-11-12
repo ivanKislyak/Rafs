@@ -1827,3 +1827,35 @@ msgstr "Elemento de la lista de reproducción"
 #: movies/models.py:291
 msgid "Playlist Items"
 msgstr "Elementos de la lista de reproducción"
+
+#: accounts/models.py:29
+msgid "name"
+msgstr "nombre"
+
+#: accounts/serializers.py:113
+msgid "A user with that username already exists."
+msgstr "Ya existe un usuario con este nombre."
+
+#: accounts/serializers.py:129
+msgid "This field is required."
+msgstr "Este campo es requerido."
+
+#: core/templates/core/home.html:33
+msgid "Previous movies"
+msgstr "Películas anteriores"
+
+#: core/templates/core/home.html:36
+msgid "Next movies"
+msgstr "Películas siguientes"
+
+#: movies/models.py:287
+msgid "Added at"
+msgstr "Fecha de incorporación"
+
+#: movies/views.py:395
+msgid "The position exceeds the permissible limit"
+msgstr "La posición supera el límite permitido"
+
+#: movies/views.py:552
+msgid "We were unable to retrieve data from Wikidata. Please try again"
+msgstr "No se pudieron obtener los datos de Wikidata. Inténtalo de nuevo"

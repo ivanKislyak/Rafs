@@ -1827,3 +1827,35 @@ msgstr "Eintrag der Wiedergabeliste"
 #: movies/models.py:291
 msgid "Playlist Items"
 msgstr "Einträge der Wiedergabeliste"
+
+#: accounts/models.py:29
+msgid "name"
+msgstr "Name"
+
+#: accounts/serializers.py:113
+msgid "A user with that username already exists."
+msgstr "Dieser Benutzername ist bereits vergeben."
+
+#: accounts/serializers.py:129
+msgid "This field is required."
+msgstr "Dieses Feld ist zwingend erforderlich."
+
+#: core/templates/core/home.html:33
+msgid "Previous movies"
+msgstr "Vorherige Filme"
+
+#: core/templates/core/home.html:36
+msgid "Next movies"
+msgstr "Nächste Filme"
+
+#: movies/models.py:287
+msgid "Added at"
+msgstr "Hinzugefügt am"
+
+#: movies/views.py:395
+msgid "The position exceeds the permissible limit"
+msgstr "Die Position überschreitet die zulässige Grenze"
+
+#: movies/views.py:552
+msgid "We were unable to retrieve data from Wikidata. Please try again"
+msgstr "Die Daten konnten nicht von Wikidata abgerufen werden. Bitte versuche es erneut"
