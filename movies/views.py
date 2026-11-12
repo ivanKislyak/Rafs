@@ -374,8 +374,15 @@ class PlaylistItemAPIView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request, pl_id, movie_id):
-        return
+        playlist_instance = get_object_or_404(Playlist, pk=pl_id, owner=request.user)
+        item_qs = PlaylistItem.objects.filter(playlist=playlist_instance, movie_id=movie_id).select_related("movie")
+        item = get_object_or_404(item_qs)
+        serializer = self.serializer_class(item, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
 
+        return Response(serializer.data, status=status.HTTP_200_OK)
+        
     def delete(self, request, pl_id, movie_id):
         return
 
