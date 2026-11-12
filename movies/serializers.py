@@ -203,7 +203,7 @@ class PlaylistItemSerializer(serializers.ModelSerializer):
     movie = MovieSerializer(read_only=True)
     class Meta:
         model = PlaylistItem
-        fields = ['position', 'added_at', 'movie']
+        fields = ['id', 'position', 'added_at', 'movie']
 
 class PlaylistSerializer(serializers.ModelSerializer):
     items = PlaylistItemSerializer(many=True, read_only=True)

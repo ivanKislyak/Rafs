@@ -37,7 +37,8 @@ from .models import (
     )
 from .serializers import (
     SearchResultSerializer, WatchStatusSerializer, 
-    ReviewReplySerializer, PlaylistSerializer
+    ReviewReplySerializer, PlaylistSerializer,
+    PlaylistItemSerializer
     )
 from .services.wikidata import (
     search_wikidata_media, 
@@ -319,15 +320,17 @@ class WatchStatusAPIView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+def visible_playlists(user):
+    if not user.is_authenticated:
+        return Playlist.objects.filter(is_public=True)
+    return Playlist.objects.filter(Q(is_public=True) | Q(owner=user))
+
 class PlaylistAPIView(APIView):
     serializer_class = PlaylistSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get(self, request, pl_id, *args, **kwargs):
-        playlist_qs = Playlist.objects.filter(Q(is_public=True))
-        if request.user.is_authenticated:
-            playlist_qs = Playlist.objects.filter(Q(is_public=True) | Q(owner=request.user))
-
+        playlist_qs = visible_playlists(request.user)
         playlist_qs = playlist_qs.select_related("owner").prefetch_related(
             Prefetch(
                 "items",
@@ -350,6 +353,32 @@ class PlaylistAPIView(APIView):
         serializer.save()
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class PlaylistItemAPIView(APIView):
+    """
+        Endpoint for working with a specific title(movie) within a specific playlist:
+    GET, PUT, DELETE
+    """
+
+    serializer_class = PlaylistItemSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get(self, request, pl_id, movie_id):
+        playlist_qs = visible_playlists(request.user)
+        playlist_instance = get_object_or_404(playlist_qs, pk=pl_id)
+        item_qs = PlaylistItem.objects.filter(playlist=playlist_instance, movie_id=movie_id).select_related("movie")
+        item = get_object_or_404(item_qs)
+        serializer = self.serializer_class(
+            item, context={"request": request}
+        )
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def put(self, request, pl_id, movie_id):
+        return
+
+    def delete(self, request, pl_id, movie_id):
+        return
+
 
 class EditReplyAPIView(generics.RetrieveUpdateAPIView):
     serializer_class = ReviewReplySerializer
