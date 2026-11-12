@@ -33,3 +33,20 @@ class PlaylistAPITests(APITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), expected_response)
 
+    def test_user_cant_read_other_private_playlist(self):
+        other_user = User.objects.create_user(
+            username='other_user',
+            email='other_user_email@mail.com'
+        )
+        other_private_playlist = Playlist.objects.create(
+            name="My Private Playlist",
+            owner=other_user,
+            kind=KindChoice.CUSTOM,
+            is_public=False
+        )
+        response = self.client.get(
+            reverse('movies:playlist_api', kwargs={"pl_id": other_private_playlist.pk})
+        )
+        expected_response = {'detail': 'No Playlist matches the given query.'}
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json(), expected_response)
