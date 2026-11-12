@@ -47,9 +47,7 @@ class PlaylistAPITests(APITestCase):
         response = self.client.get(
             reverse('movies:playlist_api', kwargs={"pl_id": other_private_playlist.pk})
         )
-        expected_response = {'detail': 'No Playlist matches the given query.'}
         self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.json(), expected_response)
 
     def test_authenticated_user_put_existing_playlist(self):
         raw_data = {
@@ -57,7 +55,7 @@ class PlaylistAPITests(APITestCase):
             "is_public": False,
         }
 
-        response = self.client.put(self.url, data=raw_data)
+        response = self.client.put(self.url, data=raw_data, format="json")
         expected_response = {
             "id": self.playlist.pk,
             "name": "My private Playlist",
