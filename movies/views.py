@@ -354,6 +354,11 @@ class PlaylistAPIView(APIView):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    def delete(self, request, pl_id: int):
+        Playlist.objects.filter(pk=pl_id, owner=request.user).delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 class PlaylistItemAPIView(APIView):
     """
         Endpoint for working with a specific title(movie) within a specific playlist:
