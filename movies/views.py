@@ -384,7 +384,9 @@ class PlaylistItemAPIView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
         
     def delete(self, request, pl_id, movie_id):
-        return
+        playlist_instance = get_object_or_404(Playlist, pk=pl_id, owner=request.user)
+        item_qs = PlaylistItem.objects.filter(playlist=playlist_instance, movie_id=movie_id).delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class EditReplyAPIView(generics.RetrieveUpdateAPIView):
