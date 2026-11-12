@@ -11,7 +11,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
 from django.db import transaction
-from django.db.models import Avg, F, Count, Value, Prefetch, Q, OuterRef, Subquery
+from django.db.models import Avg, F, Count, Value, Prefetch, Q, OuterRef, Subquery, Max
 from django.db.models.functions import Coalesce
 from django.template.loader import render_to_string
 from django.http import JsonResponse
@@ -379,14 +379,34 @@ class PlaylistItemAPIView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request, pl_id, movie_id):
-        playlist_instance = get_object_or_404(Playlist, pk=pl_id, owner=request.user)
-        item_qs = PlaylistItem.objects.filter(playlist=playlist_instance, movie_id=movie_id).select_related("movie")
-        item = get_object_or_404(item_qs)
-        serializer = self.serializer_class(item, data=request.data)
+        movie = get_object_or_404(Movie, pk=movie_id)
+        playlist = get_object_or_404(Playlist, pk=pl_id, owner=request.user)
+        serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        max_position = PlaylistItem.objects.filter(
+            playlist=playlist).aggregate(
+                max_position=Max('position', default=0)).get('max_position')
+
+        defaults = {}
+        position_from_validated_data = serializer.validated_data.get("position")
+        if position_from_validated_data is not None:
+            defaults = {
+                'position': position_from_validated_data
+            }
+
+        instance, created = PlaylistItem.objects.update_or_create(
+            movie=movie,
+            playlist=playlist,
+            defaults=defaults,
+            create_defaults={
+                'position': max_position+1
+            } if position_from_validated_data is None else defaults
+        )
+        
+        status_code = status.HTTP_201_CREATED if created else status.HTTP_200_OK
+        instance_data = self.serializer_class(instance).data
+        return Response(instance_data, status=status_code)
         
     def delete(self, request, pl_id, movie_id):
         playlist_instance = get_object_or_404(Playlist, pk=pl_id, owner=request.user)
