@@ -19,10 +19,9 @@ from django.urls import reverse
 from django.views.decorators.http import require_POST
 from requests import RequestException
 
-from rest_framework import status
+from rest_framework import status, serializers, generics, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import generics, permissions
 from .permissions import IsReplyAuthorOrReadOnly
 from .forms import (
     MovieFilterForm, 
@@ -389,11 +388,13 @@ class PlaylistItemAPIView(APIView):
                 max_position=Max('position', default=0)).get('max_position')
 
         defaults = {}
-        position_from_validated_data = serializer.validated_data.get("position")
-        if position_from_validated_data is not None:
-            defaults = {
-                'position': position_from_validated_data
-            }
+        position = serializer.validated_data.get("position")
+        if position is not None:
+            if position > max_position+1:
+                raise serializers.ValidationError(
+                    {"position": _("The position exceeds the permissible limit")}
+                )
+            defaults['position'] = position
 
         instance, created = PlaylistItem.objects.update_or_create(
             movie=movie,
@@ -401,7 +402,7 @@ class PlaylistItemAPIView(APIView):
             defaults=defaults,
             create_defaults={
                 'position': max_position+1
-            } if position_from_validated_data is None else defaults
+            } if position is None else defaults
         )
         
         status_code = status.HTTP_201_CREATED if created else status.HTTP_200_OK
