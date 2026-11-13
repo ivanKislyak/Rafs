@@ -16,6 +16,7 @@ urlpatterns = [
     path('save/status/', views.set_movie_status, name='set_movie_status'),
     path('reviews/', views.show_reviews, name='show_reviews'),
     path('search/', views.search_page, name='search_query'),
+    path('playlist/<int:pl_id>/', views.playlist_page, name='playlist'),
     path('api/v1/search/', views.SearchResultsListAPIView.as_view(), name='search_results_api'),
     path('api/v1/watch-status/<int:movie_id>/', views.WatchStatusAPIView.as_view(), name='watch_status_api'),
     path('api/v1/reviews/<int:review_id>/replies/', views.ReviewReplyListCreateAPIView.as_view(), name='review_reply_api'),

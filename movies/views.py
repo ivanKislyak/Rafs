@@ -324,6 +324,11 @@ def visible_playlists(user):
         return Playlist.objects.filter(is_public=True)
     return Playlist.objects.filter(Q(is_public=True) | Q(owner=user))
 
+def playlist_page(request):
+    return render(request, 'movies/playlist.html', {
+        'query': request.GET.get('query', '').strip(),
+    })
+
 class PlaylistAPIView(APIView):
     serializer_class = PlaylistSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
