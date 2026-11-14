@@ -324,9 +324,9 @@ def visible_playlists(user):
         return Playlist.objects.filter(is_public=True)
     return Playlist.objects.filter(Q(is_public=True) | Q(owner=user))
 
-def playlist_page(request):
+def playlist_page(request, pl_id):
     return render(request, 'movies/playlist.html', {
-        'query': request.GET.get('query', '').strip(),
+        'pl_id': pl_id,
     })
 
 class PlaylistAPIView(APIView):
