@@ -324,9 +324,26 @@ def visible_playlists(user):
         return Playlist.objects.filter(is_public=True)
     return Playlist.objects.filter(Q(is_public=True) | Q(owner=user))
 
+
+def prefetched_playlist_qs(playlist):
+    return playlist.select_related("owner").prefetch_related(
+            Prefetch(
+                "items",
+                queryset=PlaylistItem.objects.select_related("movie").prefetch_related(
+                    "movie__translations",
+                )
+            )
+        )
+
+
 def playlist_page(request, pl_id):
+    playlist_qs = prefetched_playlist_qs(visible_playlists(request.user))
+    playlist_instance = get_object_or_404(playlist_qs, pk=pl_id)
+    is_owner = (request.user == playlist_instance.owner)
     return render(request, 'movies/playlist.html', {
-        'pl_id': pl_id,
+        'playlist': playlist_instance,
+        'is_owner': is_owner,
+        'items': playlist_instance.items.all()
     })
 
 class PlaylistAPIView(APIView):
@@ -335,14 +352,7 @@ class PlaylistAPIView(APIView):
 
     def get(self, request, pl_id, *args, **kwargs):
         playlist_qs = visible_playlists(request.user)
-        playlist_qs = playlist_qs.select_related("owner").prefetch_related(
-            Prefetch(
-                "items",
-                queryset=PlaylistItem.objects.select_related("movie").prefetch_related(
-                    "movie__translations",
-                )
-            )
-        )
+        playlist_qs = prefetched_playlist(prefetched_playlist)
         playlist_instance = get_object_or_404(playlist_qs, pk=pl_id)
         serializer = self.serializer_class(
             playlist_instance, context={"request": request}
