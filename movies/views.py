@@ -352,7 +352,7 @@ class PlaylistAPIView(APIView):
 
     def get(self, request, pl_id, *args, **kwargs):
         playlist_qs = visible_playlists(request.user)
-        playlist_qs = prefetched_playlist(prefetched_playlist)
+        playlist_qs = prefetched_playlist_qs(playlist_qs)
         playlist_instance = get_object_or_404(playlist_qs, pk=pl_id)
         serializer = self.serializer_class(
             playlist_instance, context={"request": request}
