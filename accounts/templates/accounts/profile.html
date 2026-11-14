@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static images %}
 {% load humanize %}
 {% load i18n %}
 {% block title %}{{ profile_user.username }} · {% translate "Profile" %} · RAFS{% endblock %}
@@ -145,7 +145,7 @@
                                                  alt="{{ watch_entry.movie_title }}">
                                         {% elif watch_entry.movie.cover_url %}
                                             <img class="profile-watch-movie-cover"
-                                                 src="{{ watch_entry.movie.cover_url }}"
+                                                 src="{{ watch_entry.movie.cover_url|poster_size:'w154' }}"
                                                  data-fallback-src="{% static 'movies/images/nocover.png' %}"
                                                  onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
                                                  alt="{{ watch_entry.movie_title }}">
