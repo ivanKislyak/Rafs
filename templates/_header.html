@@ -19,6 +19,7 @@
                  alt="RAFS"
                  width="86"
                  height="48">
+            {% if site_event == "halloween-2026" %}
             <img class="halloween-art halloween-logo-left"
                  src="{% static 'images/halloween/halloween_darkpurple_gl_rafs_logo_for_leftside.png' %}"
                  alt="" aria-hidden="true" width="86" height="48">
@@ -31,6 +32,7 @@
             <img class="halloween-art halloween-logo-hover"
                  src="{% static 'images/halloween/halloween_glitched_rafs_logo.png' %}"
                  alt="" aria-hidden="true" width="86" height="48">
+            {% endif %}
         </a>
         <div class="header-navigation" id="header-navigation">
             <nav class="main-buttons" aria-label="{% translate 'Navigation' %}">

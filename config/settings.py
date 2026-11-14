@@ -105,12 +105,17 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'core.context_processors.site_event',
             ],
         },
     },
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
+
+# Seasonal appearance switch, e.g. SITE_EVENT=halloween-2026. Empty means the
+# ordinary site: event-only markup (and therefore its images) is not rendered.
+SITE_EVENT = os.getenv("SITE_EVENT", "").strip()
 
 
 # Database

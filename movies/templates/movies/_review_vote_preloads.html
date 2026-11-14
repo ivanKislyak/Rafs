@@ -11,7 +11,8 @@
 <link rel="preload"
       as="image"
       href="{% static 'images/dislike_disabled.png' %}">
-{% comment %}Preload both palettes so CSS theme/state switches need no extra visible image layers.{% endcomment %}
+{% if site_event == "halloween-2026" %}
+{% comment %}Preload the seasonal palette only while the event is on; otherwise it is never shown.{% endcomment %}
 <link rel="preload"
       as="image"
       href="{% static 'images/halloween/halloween_like_disabled.png' %}">
@@ -24,3 +25,4 @@
 <link rel="preload"
       as="image"
       href="{% static 'images/halloween/halloween_dislike_enabled.png' %}">
+{% endif %}
