@@ -1,4 +1,4 @@
-{% load static %}
+{% load static images %}
 {% load i18n %}
 {% firstof movie.wikidata_name movie.name as movie_title %}
 <article class="movie-card">
@@ -12,7 +12,9 @@
                  loading="lazy" />
         {% elif movie.cover_url %}
             <img class="movie-card-cover"
-                 src="{{ movie.cover_url }}"
+                 src="{{ movie.cover_url|poster_size:'w342' }}"
+                 srcset="{{ movie.cover_url|poster_size:'w342' }} 342w, {{ movie.cover_url|poster_size:'w500' }} 500w"
+                 sizes="(min-width: 1100px) 210px, (min-width: 900px) 25vw, (min-width: 600px) 33vw, 50vw"
                  alt="{{ movie_title }}"
                  data-fallback-src="{% static 'movies/images/nocover.png' %}"
                  onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"

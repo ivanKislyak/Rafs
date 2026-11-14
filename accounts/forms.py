@@ -1,4 +1,3 @@
-from io import BytesIO
 from uuid import uuid4
 
 from django.contrib.auth.forms import UserCreationForm
@@ -7,7 +6,9 @@ from django.core.files.base import ContentFile
 from django.core.exceptions import ValidationError
 from django import forms
 from django.utils.translation import gettext_lazy as _
-from PIL import Image, ImageOps, UnidentifiedImageError
+from PIL import Image, UnidentifiedImageError
+
+from core.images import AVATAR_SIZE, encode_webp
 
 class RegisterUserForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
@@ -41,18 +42,9 @@ class AvatarUpdateForm(forms.ModelForm):
         try:
             uploaded_file.seek(0)
             with Image.open(uploaded_file) as source_image:
-                image = ImageOps.exif_transpose(source_image)
-                image.thumbnail((1024, 1024), Image.Resampling.LANCZOS)
-                has_alpha = image.mode in {"RGBA", "LA"} or "transparency" in image.info
-                image = image.convert("RGBA" if has_alpha else "RGB")
-
-                output = BytesIO()
-                image.save(output, format="PNG", optimize=True)
+                data = encode_webp(source_image, AVATAR_SIZE)
         except (UnidentifiedImageError, OSError, ValueError):
             raise ValidationError(_("Upload a valid image file"))
 
-        return ContentFile(
-            output.getvalue(),
-            name=f"avatar_{uuid4().hex}.png",
-        )
+        return ContentFile(data, name=f"avatar_{uuid4().hex}.webp")
 

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static images %}
 {% load humanize %}
 {% load i18n %}
 {% load seo %}
@@ -37,7 +37,7 @@
                          onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;" />
                 {% elif movie.cover_url %}
                     <img class="movie-detail-cover"
-                         src="{{ movie.cover_url }}"
+                         src="{{ movie.cover_url|poster_size:'w500' }}"
                          alt="{{ movie_title }}"
                          data-fallback-src="{% static 'movies/images/nocover.png' %}"
                          onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;" />

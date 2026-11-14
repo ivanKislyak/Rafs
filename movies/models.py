@@ -65,6 +65,25 @@ class Movie(TranslatableModel):
     def image_exists(self):
         return bool(self.cover and self.cover.storage.exists(self.cover.name))
 
+    def save(self, *args, **kwargs):
+        # New uploads are shrunk to 2x the largest poster slot; stored ones are untouched.
+        if self.cover and not self.cover._committed:
+            from pathlib import PurePath
+            from django.core.files.base import ContentFile
+            from PIL import Image, UnidentifiedImageError
+            from core.images import MOVIE_COVER_SIZE, encode_jpeg
+            upload = self.cover.file
+            try:
+                upload.seek(0)
+                with Image.open(upload) as source:
+                    data = encode_jpeg(source, MOVIE_COVER_SIZE)
+            except (UnidentifiedImageError, OSError, ValueError):
+                pass  # Leave unreadable files to the ImageField's own validation.
+            else:
+                name = PurePath(self.cover.name).with_suffix(".jpg").name
+                self.cover = ContentFile(data, name=name)
+        super().save(*args, **kwargs)
+
     class Meta:
         ordering = ['-rate', 'name']
         verbose_name = _("Movie")

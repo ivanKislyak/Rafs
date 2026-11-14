@@ -374,7 +374,7 @@ class AvatarUpdateTests(TestCase):
             reverse("profile", kwargs={"username": self.user.username}),
         )
         self.user.refresh_from_db()
-        self.assertTrue(self.user.avatar_image.name.endswith(".png"))
+        self.assertTrue(self.user.avatar_image.name.endswith(".webp"))
         self.assertTrue(self.user.avatar_image.storage.exists(self.user.avatar_image.name))
 
         response = self.client.post(self.url, {"avatar_action": "delete"})

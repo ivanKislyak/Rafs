@@ -400,8 +400,9 @@ class UnifiedSettingsTests(APITestCase):
         self.owner.refresh_from_db()
         self.assertEqual((self.owner.name,self.owner.username,self.owner.sex,str(self.owner.bd_date)), ('New display','unified-renamed','O','2001-02-03'))
         with self.owner.avatar_image.open('rb') as file, Image.open(file) as image:
-            self.assertEqual(image.size,(512,512))
-            self.assertEqual(image.getpixel((256,256)),(30,90,170))
+            self.assertEqual((image.format,image.size),('WEBP',(224,224)))  # 2x the 112px avatar
+            pixel=image.convert('RGB').getpixel((112,112))
+            self.assertTrue(all(abs(a-b)<=4 for a,b in zip(pixel,(30,90,170))),pixel)
         self.assertEqual(response.data['profile_url'], reverse('profile',args=['unified-renamed']))
         profile = self.client.get(response.data['profile_url'])
         self.assertEqual(profile.context['profile_user'].pk,self.owner.pk)
@@ -418,7 +419,7 @@ class UnifiedSettingsTests(APITestCase):
                 self.owner.refresh_from_db()
                 self.assertEqual((self.owner.name,self.owner.username,self.owner.about),('Original','unified-owner','Original biography'))
                 self.assertFalse(self.owner.avatar_image)
-                self.assertFalse(list(Path(self.directory.name).rglob('*.png')))
+                self.assertFalse(list(Path(self.directory.name).rglob('*.webp')))
 
     def test_invalid_or_nonsquare_avatar_does_not_apply_other_fields(self):
         for image in (SimpleUploadedFile('bad.png',b'bad',content_type='image/png'),self.image(100,200)):

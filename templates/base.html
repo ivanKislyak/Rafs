@@ -4,11 +4,11 @@
 {% load achievements %}
 <!DOCTYPE html>
 {% get_current_language as CURRENT_LANGUAGE %}
-{% comment %}Ordinary appearance restored after Halloween 2026.
-To enable seasonal styling, add data-event="halloween-2026" to the html tag below.
-See css/halloween.css for the handoff.
+{% comment %}Seasonal styling is switched on the server: set SITE_EVENT=halloween-2026
+(settings.SITE_EVENT). When it is empty, event-only tags are not rendered, so their
+images are never downloaded. See css/halloween.css for the handoff.
 {% endcomment %}
-<html lang="{{ CURRENT_LANGUAGE }}">
+<html lang="{{ CURRENT_LANGUAGE }}"{% if site_event %} data-event="{{ site_event }}"{% endif %}>
     <head>
         <meta charset="UTF-8" />
         <!-- Google tag (gtag.js) -->
@@ -48,13 +48,17 @@ See css/halloween.css for the handoff.
         {% comment %}Original favicon, preserved below with a seasonal URL for the frontend asset switch:
         <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
         {% endcomment %}
-        <link rel="icon"
-              type="image/x-icon"
-              data-event-icon="{% static 'images/halloween/halloween_favicon.ico' %}"
-              href="{% static 'images/favicon.ico' %}">
-        <link type="image/png" data-event-only
-              data-event-icon="{% static 'images/halloween/halloween_favicon.png' %}"
-              href="{% static 'images/halloween/halloween_favicon.png' %}">
+        {% if site_event == "halloween-2026" %}
+            <link rel="icon"
+                  type="image/x-icon"
+                  data-event-icon="{% static 'images/halloween/halloween_favicon.ico' %}"
+                  href="{% static 'images/favicon.ico' %}">
+            <link type="image/png" data-event-only
+                  data-event-icon="{% static 'images/halloween/halloween_favicon.png' %}"
+                  href="{% static 'images/halloween/halloween_favicon.png' %}">
+        {% else %}
+            <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+        {% endif %}
         <script src="{% static 'js/event-assets.js' %}"></script>
         <script src="{% static 'js/theme.js' %}"></script>
         <link rel="stylesheet" href="{% static 'css/base.css' %}" />
@@ -65,7 +69,9 @@ See css/halloween.css for the handoff.
         <link rel="stylesheet"
               href="{% static 'css/components/profile-menu.css' %}" />
         {% block extra_css %}{% endblock %}
-        <link rel="stylesheet" href="{% static 'css/halloween.css' %}" />
+        {% if site_event == "halloween-2026" %}
+            <link rel="stylesheet" href="{% static 'css/halloween.css' %}" />
+        {% endif %}
         <link rel="stylesheet" href="{% static 'css/components/halloween-award.css' %}" />
     </head>
     <body>

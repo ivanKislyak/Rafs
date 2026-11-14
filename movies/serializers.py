@@ -4,6 +4,8 @@ from django.urls import reverse
 from django.utils.translation import get_language, gettext as _
 from rest_framework import serializers
 
+from core.images import tmdb_poster
+
 from .search_config import TITLE_FIELDS, DESCRIPTION_FIELDS, IMAGE_FIELDS
 from .models import WatchStatus, ReviewReply, Playlist, PlaylistItem, Movie
 
@@ -160,7 +162,8 @@ class SearchResultSerializer(serializers.Serializer):
             if not value:
                 continue
             if isinstance(value, str):
-                return value
+                # Search covers are 112px wide; w342 is the smallest TMDB size >= 2x.
+                return tmdb_poster(value, 'w342') if model == 'movie' else value
             if value.storage.exists(value.name):
                 return value.url
 

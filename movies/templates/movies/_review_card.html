@@ -1,4 +1,4 @@
-{% load static i18n humanize %}
+{% load static i18n humanize images %}
 <article class="review-comment" id="review-{{ review.id }}">
     <div class="review-comment-header">
         <div class="review-comment-author-block">
@@ -59,7 +59,7 @@
                      height="72"
                      alt="">
             {% elif review.movie.cover_url %}
-                <img src="{{ review.movie.cover_url }}"
+                <img src="{{ review.movie.cover_url|poster_size:'w154' }}"
                      loading="lazy"
                      decoding="async"
                      width="48"
