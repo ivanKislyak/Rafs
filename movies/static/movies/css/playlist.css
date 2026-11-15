@@ -8,6 +8,38 @@
   margin-bottom: 24px;
 }
 
+.playlist-header--with-cover {
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+}
+
+.playlist-header-body {
+  min-width: 0;
+  flex: 1;
+}
+
+.playlist-cover {
+  flex: none;
+  width: 160px;
+  height: 160px;
+  border-radius: 8px;
+  object-fit: cover;
+  background-color: var(--color-border);
+}
+
+@media (max-width: 560px) {
+  .playlist-header--with-cover {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .playlist-cover {
+    width: 120px;
+    height: 120px;
+  }
+}
+
 .playlist-owner {
   color: inherit;
   text-decoration: none;
