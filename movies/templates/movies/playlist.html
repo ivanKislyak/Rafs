@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% load i18n static images %}
+{% block title %}{{ playlist.name }} – {% translate "Playlist" %}{% endblock %}
+{% block meta_description %}{% blocktranslate with name=playlist.name username=playlist.owner.username %}Playlist {{ name }} by @{{ username }} on RAFS{% endblocktranslate %}{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'movies/css/playlist.css' %}">
+{% endblock %}
+{% block content %}
+    <main class="page-shell playlist-page">
+        <section class="playlist"
+                 data-playlist
+                 data-playlist-url="{% url 'movies:playlist_api' playlist.id %}"
+                 data-msg-remove-error="{% translate 'Could not remove the movie from the playlist' %}"
+                 data-msg-toggle-error="{% translate 'Could not change playlist visibility' %}">
+            <header class="playlist-header">
+                <p class="page-kicker playlist-kicker">
+                    {% translate "Playlist" %} ·
+                    <a class="playlist-owner" href="{% url 'profile' playlist.owner.username %}">@{{ playlist.owner.username }}</a>
+                </p>
+                <h1 class="playlist-title" data-playlist-name>{{ playlist.name }}</h1>
+                <div class="playlist-meta">
+                    <p class="playlist-count">
+                        <span>{% translate "Movies" %}:</span>
+                        <span data-playlist-count>{{ items|length }}</span>
+                    </p>
+                    {% if is_owner %}
+                        <label class="playlist-visibility">
+                            <input type="checkbox"
+                                   data-playlist-public
+                                   {% if playlist.is_public %}checked{% endif %}>
+                            <span>{% translate "Public playlist" %}</span>
+                        </label>
+                    {% endif %}
+                </div>
+            </header>
+            <p class="playlist-error" data-playlist-error role="alert" hidden></p>
+            <ol class="playlist-items" data-playlist-items>
+                {% for item in items %}
+                    {% with movie=item.movie %}
+                        {% firstof movie.wikidata_name movie.name as movie_title %}
+                        <li class="playlist-item"
+                            data-item
+                            data-movie-id="{{ item.movie.id }}"
+                            data-item-url="{% url 'movies:playlist_item_api' playlist.id item.movie.id %}">
+                            {% if movie.cover and movie.image_exists %}
+                                <img class="playlist-item-cover"
+                                     src="{{ movie.cover.url }}"
+                                     data-fallback-src="{% static 'movies/images/nocover.png' %}"
+                                     onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
+                                     width="56"
+                                     height="84"
+                                     loading="lazy"
+                                     decoding="async"
+                                     alt="">
+                            {% elif movie.cover_url %}
+                                <img class="playlist-item-cover"
+                                     src="{{ movie.cover_url|poster_size:'w154' }}"
+                                     data-fallback-src="{% static 'movies/images/nocover.png' %}"
+                                     onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
+                                     width="56"
+                                     height="84"
+                                     loading="lazy"
+                                     decoding="async"
+                                     alt="">
+                            {% else %}
+                                <img class="playlist-item-cover"
+                                     src="{% static 'movies/images/nocover.png' %}"
+                                     width="56"
+                                     height="84"
+                                     loading="lazy"
+                                     decoding="async"
+                                     alt="">
+                            {% endif %}
+                            <div class="playlist-item-info">
+                                <a class="playlist-item-title"
+                                   href="{% url 'movies:detail' movie.id %}">{{ movie_title }}</a>
+                                {% if movie.year %}<span class="playlist-item-year">{{ movie.year }}</span>{% endif %}
+                            </div>
+                            {% if is_owner %}
+                                <button class="playlist-item-remove"
+                                        type="button"
+                                        data-action="remove"
+                                        aria-label="{% blocktranslate with title=movie_title %}Remove {{ title }} from the playlist{% endblocktranslate %}"
+                                        title="{% blocktranslate with title=movie_title %}Remove {{ title }} from the playlist{% endblocktranslate %}">
+                                    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+                                        <path d="m6 6 12 12M18 6 6 18"></path>
+                                    </svg>
+                                </button>
+                            {% endif %}
+                        </li>
+                    {% endwith %}
+                {% endfor %}
+            </ol>
+            <p class="playlist-empty" data-playlist-empty{% if items %} hidden{% endif %}>
+                {% translate "There are no movies in this playlist yet" %}
+            </p>
+        </section>
+    </main>
+{% endblock %}
+{% block extra_js %}
+    <script src="{% static 'movies/js/api.js' %}" defer></script>
+    <script src="{% static 'movies/js/playlist-page.js' %}" defer></script>
+{% endblock %}
