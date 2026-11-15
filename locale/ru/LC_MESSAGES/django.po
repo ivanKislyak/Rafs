@@ -1847,3 +1847,29 @@ msgstr "Позиция превышает допустимый предел"
 #: movies/views.py:552
 msgid "We were unable to retrieve data from Wikidata. Please try again"
 msgstr "Не удалось получить данные из Wikidata. Попробуйте ещё раз"
+
+#: movies/templates/movies/playlist.html:4
+#, python-format
+msgid "Playlist %(name)s by @%(username)s on RAFS"
+msgstr "Плейлист «%(name)s» от @%(username)s на RAFS"
+
+#: movies/templates/movies/playlist.html:13
+msgid "Could not remove the movie from the playlist"
+msgstr "Не удалось убрать фильм из плейлиста"
+
+#: movies/templates/movies/playlist.html:14
+msgid "Could not change playlist visibility"
+msgstr "Не удалось изменить видимость плейлиста"
+
+#: movies/templates/movies/playlist.html:31
+msgid "Public playlist"
+msgstr "Публичный плейлист"
+
+#: movies/templates/movies/playlist.html:84
+#, python-format
+msgid "Remove %(title)s from the playlist"
+msgstr "Убрать «%(title)s» из плейлиста"
+
+#: movies/templates/movies/playlist.html:96
+msgid "There are no movies in this playlist yet"
+msgstr "В плейлисте пока нет фильмов"

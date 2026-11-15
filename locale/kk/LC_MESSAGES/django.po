@@ -1859,3 +1859,29 @@ msgstr "Реттік нөмір рұқсат етілген шектен аса�
 #: movies/views.py:552
 msgid "We were unable to retrieve data from Wikidata. Please try again"
 msgstr "Wikidata деректерін алу мүмкін болмады. Қайталап көріңіз"
+
+#: movies/templates/movies/playlist.html:4
+#, python-format
+msgid "Playlist %(name)s by @%(username)s on RAFS"
+msgstr "RAFS-тағы @%(username)s пайдаланушысының «%(name)s» плейлисті"
+
+#: movies/templates/movies/playlist.html:13
+msgid "Could not remove the movie from the playlist"
+msgstr "Фильмді плейлисттен алып тастау мүмкін болмады"
+
+#: movies/templates/movies/playlist.html:14
+msgid "Could not change playlist visibility"
+msgstr "Плейлисттің көрінуін өзгерту мүмкін болмады"
+
+#: movies/templates/movies/playlist.html:31
+msgid "Public playlist"
+msgstr "Жалпыға ашық плейлист"
+
+#: movies/templates/movies/playlist.html:84
+#, python-format
+msgid "Remove %(title)s from the playlist"
+msgstr "«%(title)s» фильмін плейлисттен алып тастау"
+
+#: movies/templates/movies/playlist.html:96
+msgid "There are no movies in this playlist yet"
+msgstr "Плейлистте әзірге фильм жоқ"

@@ -1859,3 +1859,29 @@ msgstr "Die Position überschreitet die zulässige Grenze"
 #: movies/views.py:552
 msgid "We were unable to retrieve data from Wikidata. Please try again"
 msgstr "Die Daten konnten nicht von Wikidata abgerufen werden. Bitte versuche es erneut"
+
+#: movies/templates/movies/playlist.html:4
+#, python-format
+msgid "Playlist %(name)s by @%(username)s on RAFS"
+msgstr "Wiedergabeliste „%(name)s“ von @%(username)s auf RAFS"
+
+#: movies/templates/movies/playlist.html:13
+msgid "Could not remove the movie from the playlist"
+msgstr "Der Film konnte nicht aus der Wiedergabeliste entfernt werden"
+
+#: movies/templates/movies/playlist.html:14
+msgid "Could not change playlist visibility"
+msgstr "Die Sichtbarkeit der Wiedergabeliste konnte nicht geändert werden"
+
+#: movies/templates/movies/playlist.html:31
+msgid "Public playlist"
+msgstr "Öffentliche Wiedergabeliste"
+
+#: movies/templates/movies/playlist.html:84
+#, python-format
+msgid "Remove %(title)s from the playlist"
+msgstr "„%(title)s“ aus der Wiedergabeliste entfernen"
+
+#: movies/templates/movies/playlist.html:96
+msgid "There are no movies in this playlist yet"
+msgstr "In dieser Wiedergabeliste sind noch keine Filme"
