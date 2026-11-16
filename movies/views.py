@@ -350,6 +350,9 @@ class PlaylistAPIView(APIView):
     serializer_class = PlaylistSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+    def post(self, request, *args, **kwargs):
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
     def get(self, request, pl_id, *args, **kwargs):
         playlist_qs = visible_playlists(request.user)
         playlist_qs = prefetched_playlist_qs(playlist_qs)
