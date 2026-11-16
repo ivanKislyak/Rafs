@@ -219,6 +219,119 @@
                 </div>
             </dialog>
         {% endif %}
+        {% if is_owner or playlists %}
+            <section class="profile-section profile-playlists"
+                     aria-labelledby="profile-playlists-title"
+                     data-playlists
+                     data-api-url="{% url 'movies:playlist_create_api' %}"
+                     data-playlist-page-template="{{ playlist_page_template }}"
+                     data-msg-create-error="{% translate 'Could not create the playlist' %}">
+                <div class="profile-section-heading">
+                    <div>
+                        <p class="profile-eyebrow">{% translate "Collections" %}</p>
+                        <h2 id="profile-playlists-title">{% translate "Playlists" %}</h2>
+                    </div>
+                    {% if is_owner %}
+                        <button class="profile-button profile-button--primary"
+                                type="button"
+                                data-action="open-create">{% translate "New playlist" %}</button>
+                    {% else %}
+                        <span class="profile-section-count">{{ playlists|length }}</span>
+                    {% endif %}
+                </div>
+                <div class="profile-playlist-grid" data-playlists-list>
+                    {% for playlist in playlists %}
+                        {% with first_movie=playlist.cover_items.0.movie %}
+                            <a class="profile-playlist-card"
+                               href="{% url 'movies:playlist' playlist.id %}"
+                               data-playlist-id="{{ playlist.id }}">
+                                <span class="profile-playlist-cover-wrap">
+                                    {% if playlist.cover %}
+                                        <img class="profile-playlist-cover"
+                                             src="{{ playlist.cover.url }}"
+                                             onerror="this.remove()"
+                                             loading="lazy"
+                                             decoding="async"
+                                             alt="">
+                                    {% elif first_movie.cover and first_movie.image_exists %}
+                                        <img class="profile-playlist-cover"
+                                             src="{{ first_movie.cover.url }}"
+                                             onerror="this.remove()"
+                                             loading="lazy"
+                                             decoding="async"
+                                             alt="">
+                                    {% elif first_movie.cover_url %}
+                                        <img class="profile-playlist-cover"
+                                             src="{{ first_movie.cover_url|poster_size:'w342' }}"
+                                             onerror="this.remove()"
+                                             loading="lazy"
+                                             decoding="async"
+                                             alt="">
+                                    {% endif %}
+                                    <svg class="profile-playlist-cover-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                        <path d="M4 6h12M4 12h12M4 18h8"></path>
+                                        <path d="m16 15 5 3-5 3Z"></path>
+                                    </svg>
+                                </span>
+                                <span class="profile-playlist-copy">
+                                    <span class="profile-playlist-name">
+                                        {% if not playlist.is_public %}
+                                            <svg class="profile-playlist-lock"
+                                                 viewBox="0 0 24 24"
+                                                 width="14"
+                                                 height="14"
+                                                 role="img"
+                                                 aria-label="{% translate 'Private playlist' %}">
+                                                <title>{% translate "Private playlist" %}</title>
+                                                <rect x="5" y="11" width="14" height="10" rx="2"></rect>
+                                                <path d="M8 11V8a4 4 0 0 1 8 0v3"></path>
+                                            </svg>
+                                        {% endif %}
+                                        <span>{{ playlist.name }}</span>
+                                    </span>
+                                    <span class="profile-playlist-count">
+                                        {% blocktranslate count counter=playlist.movies_count %}{{ counter }} movie{% plural %}{{ counter }} movies{% endblocktranslate %}
+                                    </span>
+                                </span>
+                            </a>
+                        {% endwith %}
+                    {% endfor %}
+                </div>
+                {% if is_owner %}
+                    <div class="profile-playlists-empty" data-playlists-empty{% if playlists %} hidden{% endif %}>
+                        <p>{% translate "You have no playlists yet. Collect movies into themed lists and share them." %}</p>
+                        <button class="profile-button"
+                                type="button"
+                                data-action="open-create">{% translate "Create a playlist" %}</button>
+                    </div>
+                    <dialog class="profile-watch-dialog profile-playlist-dialog"
+                            data-create-dialog
+                            aria-labelledby="profile-playlist-dialog-title">
+                        <form class="profile-watch-dialog-card" data-create-form novalidate>
+                            <p class="profile-eyebrow">{% translate "Playlists" %}</p>
+                            <h3 id="profile-playlist-dialog-title">{% translate "New playlist" %}</h3>
+                            <div class="account-form-field profile-playlist-field">
+                                <label for="profile-playlist-name">{% translate "Name" %}</label>
+                                <input id="profile-playlist-name"
+                                       name="name"
+                                       type="text"
+                                       maxlength="{{ playlist_name_max_length }}"
+                                       autocomplete="off"
+                                       required>
+                            </div>
+                            <p class="account-form-error" data-form-error role="alert" hidden></p>
+                            <div class="profile-watch-dialog-actions">
+                                <button class="profile-button profile-button--quiet"
+                                        type="button"
+                                        data-action="close-dialog">{% translate "Cancel" %}</button>
+                                <button class="profile-button profile-button--primary"
+                                        type="submit">{% translate "Create" %}</button>
+                            </div>
+                        </form>
+                    </dialog>
+                {% endif %}
+            </section>
+        {% endif %}
         <section class="profile-section" aria-labelledby="profile-achievements-title">
             <div class="profile-section-heading">
                 <div>
@@ -261,4 +374,8 @@
 {% endblock %}
 {% block extra_js %}
     <script src="{% static 'accounts/js/profile-library.js' %}" defer></script>
+    {% if is_owner %}
+        <script src="{% static 'movies/js/api.js' %}" defer></script>
+        <script src="{% static 'movies/js/profile-playlists.js' %}" defer></script>
+    {% endif %}
 {% endblock %}

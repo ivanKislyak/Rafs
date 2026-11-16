@@ -879,3 +879,136 @@
     padding: 20px;
   }
 }
+
+/* Playlists: square covers echo the playlist page header; the icon sits under the image as a fallback. */
+.profile-playlist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 160px), 1fr));
+  gap: 20px 16px;
+}
+
+.profile-playlist-grid:empty {
+  display: none;
+}
+
+.profile-playlist-card {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.profile-playlist-card:focus-visible {
+  outline: 2px solid var(--color-focus-visible-outline);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+.profile-playlist-cover-wrap {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border-radius: 6px;
+  background: var(--color-surface-raised);
+  overflow: hidden;
+}
+
+.profile-playlist-cover {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .2s ease;
+}
+
+.profile-playlist-card:hover .profile-playlist-cover {
+  transform: scale(1.03);
+}
+
+.profile-playlist-cover-icon {
+  width: 40%;
+  height: 40%;
+  fill: none;
+  stroke: var(--color-text-muted);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.profile-playlist-copy {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.profile-playlist-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  font-size: .9rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.profile-playlist-name > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profile-playlist-card:hover .profile-playlist-name {
+  color: var(--color-accent);
+}
+
+.profile-playlist-lock {
+  flex: none;
+  fill: none;
+  stroke: var(--color-text-muted);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.profile-playlist-count {
+  color: var(--color-text-muted);
+  font-size: .8rem;
+}
+
+.profile-playlists-empty {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+  padding: 20px;
+  border: 1px dashed var(--color-border);
+  border-radius: 6px;
+}
+
+.profile-playlists-empty[hidden] {
+  display: none;
+}
+
+.profile-playlists-empty p {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: .9rem;
+  line-height: 1.6;
+}
+
+.profile-playlist-field {
+  margin: 20px 0 8px;
+}
+
+.profile-playlist-dialog .account-form-error {
+  margin: 0 0 16px;
+}
+
+.profile-playlist-dialog .profile-watch-dialog-actions {
+  margin-top: 20px;
+}

@@ -11,13 +11,17 @@ from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
-from django.db.models import Count, IntegerField, OuterRef, Prefetch, Subquery, Value
+from django.db.models import Case, Count, IntegerField, OuterRef, Prefetch, Subquery, Value, When
 from django.db.models.functions import Coalesce
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext as _
 from django.utils.formats import get_format
 
-from movies.models import Review, ReviewReply, WatchStatus
+from movies.models import (
+    KindChoice, Playlist, PlaylistItem, Review, ReviewReply, WatchStatus,
+    PLAYLIST_NAME_MAX_LENGTH,
+)
+from movies.utils import url_template
 
 from .forms import AvatarUpdateForm, RegisterUserForm
 from .models import Achievement, User, SearchHistory
@@ -110,6 +114,29 @@ def profile(request, username):
     ]
     is_owner = request.user.is_authenticated and request.user.pk == profile_user.pk
 
+    playlists = Playlist.objects.filter(owner=profile_user)
+    if not is_owner:
+        playlists = playlists.filter(is_public=True)
+    playlists = list(
+        playlists.annotate(
+            movies_count=Count("items"),
+            favourite_first=Case(
+                When(kind=KindChoice.FAVOURITE, then=Value(0)),
+                default=Value(1),
+                output_field=IntegerField(),
+            ),
+        )
+        .prefetch_related(
+            # Only the first movie is needed as a fallback cover: one extra query in total.
+            Prefetch(
+                "items",
+                queryset=PlaylistItem.objects.select_related("movie").order_by("position", "pk")[:1],
+                to_attr="cover_items",
+            )
+        )
+        .order_by("favourite_first", "-created_at", "pk")
+    )
+
     return render(
         request,
         "accounts/profile.html",
@@ -122,6 +149,9 @@ def profile(request, username):
             "library_thousand_separator": get_format("THOUSAND_SEPARATOR"),
             "avatar_form": AvatarUpdateForm(instance=profile_user) if is_owner else None,
             "profile_sex_choices": User.SexChoice.choices if is_owner else (),
+            "playlists": playlists,
+            "playlist_page_template": url_template("movies:playlist", pl_id="__ID__"),
+            "playlist_name_max_length": PLAYLIST_NAME_MAX_LENGTH,
         },
     )
 

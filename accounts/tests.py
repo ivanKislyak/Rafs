@@ -159,7 +159,8 @@ class ProfilePageTests(TestCase):
             response = self.client.get(self.profile_url)
 
         self.assertEqual(response.status_code, 200)
-        self.assertLessEqual(len(queries), 3)
+        # User + achievements, watch statuses, playlists (cover prefetch only when any exist).
+        self.assertLessEqual(len(queries), 4)
 
     def test_public_library_is_visible_but_controls_are_owner_only(self):
         movie = Movie.objects.create(name="Public library movie", year=2023)
