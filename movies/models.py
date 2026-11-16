@@ -261,6 +261,12 @@ class KindChoice(models.TextChoices):
     FAVOURITE = "FAVOURITE", _("Favourite")
     CUSTOM = "CUSTOM", _("Custom")
 
+# Anti-spam cap: total playlists (including Favourite) a single user may own.
+PLAYLISTS_PER_USER_LIMIT = 100
+# API-level cap on playlist names; the column itself allows 300 characters.
+PLAYLIST_NAME_MAX_LENGTH = 100
+
+
 class Playlist(models.Model):
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL,

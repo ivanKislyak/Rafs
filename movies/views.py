@@ -5,13 +5,14 @@ from django.utils.translation import gettext as _
 
 from django.contrib.postgres.search import SearchQuery, SearchRank
 from django.contrib import messages
+from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.prefetch import GenericPrefetch
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
 from django.db import transaction
-from django.db.models import Avg, F, Count, Value, Prefetch, Q, OuterRef, Subquery, Max
+from django.db.models import Avg, F, Count, Exists, Value, Prefetch, Q, OuterRef, Subquery, Max
 from django.db.models.functions import Coalesce
 from django.template.loader import render_to_string
 from django.http import JsonResponse
@@ -20,6 +21,7 @@ from django.views.decorators.http import require_POST
 from requests import RequestException
 
 from rest_framework import status, serializers, generics, permissions
+from rest_framework.exceptions import APIException, PermissionDenied as APIPermissionDenied
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .permissions import IsReplyAuthorOrReadOnly
@@ -32,7 +34,8 @@ from .models import (
     Movie, Review, ReviewReply,
     ReviewVote, WatchStatus,
     GlobalSearchIndex, Playlist,
-    PlaylistItem
+    PlaylistItem, KindChoice,
+    PLAYLISTS_PER_USER_LIMIT, PLAYLIST_NAME_MAX_LENGTH,
     )
 from .serializers import (
     SearchResultSerializer, WatchStatusSerializer, 
@@ -45,7 +48,10 @@ from .services.wikidata import (
     parse_movie_details,
     )
 from .services.import_wikidata import import_parsed_data_to_db 
+from .services.search_index import searchable_playlists
+from .utils import url_template
 from core.utils import get_country_code
+from accounts.models import User
 from accounts.services.achievements import award_review_or_treat
 
 def catalog(request):
@@ -150,7 +156,11 @@ def movie_detail(request, movie_id):
                    "user_already_rated_this": user_already_rated_this,
                    "watch_status_model": WatchStatus,
                    "watch_status": watch_status,
-                   "open_replies_id": open_replies_id})
+                   "open_replies_id": open_replies_id,
+                   "playlist_item_url_template": url_template(
+                       "movies:playlist_item_api", pl_id="__PL__", movie_id="__MOVIE__",
+                   ),
+                   "playlist_name_max_length": PLAYLIST_NAME_MAX_LENGTH})
 
 @login_required
 def make_review_form(request, movie_id):
@@ -262,14 +272,22 @@ class SearchResultsListAPIView(generics.ListAPIView):
         if not query:
             return GlobalSearchIndex.objects.none()
             
+        playlist_type = ContentType.objects.get_for_model(Playlist)
         search_results = (GlobalSearchIndex.objects
                 .filter(search_vector=query)
+                # Privacy guard independent of index freshness: a playlist row is
+                # returned only while the playlist itself is searchable.
+                .exclude(
+                    Q(content_type=playlist_type)
+                    & ~Q(object_id__in=searchable_playlists().values('pk'))
+                )
                 .annotate(rank=SearchRank(F("search_vector"), query))
                 .select_related('content_type')
                 .prefetch_related(GenericPrefetch('content_object', [
                     Movie.objects.select_related('type_of_work').prefetch_related(
                         'type_of_work__translations',
                     ),
+                    Playlist.objects.select_related('owner'),
                 ]))
                 .order_by('-rank', '-tmdb_popularity', 'pk')
                 )
@@ -347,6 +365,11 @@ def playlist_page(request, pl_id):
     })
 
 
+class PlaylistLimitExceeded(APIException):
+    status_code = status.HTTP_400_BAD_REQUEST
+    default_code = "playlist_limit"
+
+
 class PlaylistListAPIView(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
     pagination_class = None  
@@ -357,12 +380,37 @@ class PlaylistListAPIView(generics.ListCreateAPIView):
         return PlaylistSerializer
 
     def get_queryset(self):
-        return Playlist.objects.filter(owner=self.request.user).annotate(
+        queryset = Playlist.objects.filter(owner=self.request.user).annotate(
             movies_count=Count('items')
         )
+        movie_id = self.request.query_params.get('movie_id')
+        if movie_id is not None:
+            try:
+                movie_id = int(movie_id)
+            except (TypeError, ValueError):
+                raise serializers.ValidationError(
+                    {"movie_id": _("A valid integer is required.")}
+                )
+            queryset = queryset.annotate(
+                contains_movie=Exists(
+                    PlaylistItem.objects.filter(playlist=OuterRef('pk'), movie_id=movie_id)
+                )
+            )
+        return queryset
 
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+        user = self.request.user
+        with transaction.atomic():
+            # Lock the owner row so concurrent requests cannot both pass the limit check.
+            User.objects.select_for_update().only("pk").get(pk=user.pk)
+            if Playlist.objects.filter(owner=user).count() >= PLAYLISTS_PER_USER_LIMIT:
+                # Same {"detail": "..."} shape as the 403 responses below.
+                raise PlaylistLimitExceeded(
+                    _("You can have at most %(limit)d playlists.")
+                    % {"limit": PLAYLISTS_PER_USER_LIMIT}
+                )
+            # kind is read-only in the serializer, so new playlists are always CUSTOM.
+            serializer.save(owner=user)
 
 
 class PlaylistAPIView(APIView):
@@ -378,17 +426,37 @@ class PlaylistAPIView(APIView):
         )
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def put(self, request, pl_id: int):
-        playlist = get_object_or_404(Playlist, pk=pl_id, owner=request.user)
-        
-        serializer = self.serializer_class(playlist, data=request.data)
+    def _update(self, request, pl_id, partial):
+        playlist = get_object_or_404(
+            prefetched_playlist_qs(Playlist.objects.filter(owner=request.user)), pk=pl_id,
+        )
+        serializer = self.serializer_class(
+            playlist, data=request.data, partial=partial, context={"request": request}
+        )
         serializer.is_valid(raise_exception=True)
-        serializer.save()
 
+        new_name = serializer.validated_data.get("name")
+        if (
+            playlist.kind == KindChoice.FAVOURITE
+            and new_name is not None
+            and new_name != playlist.name
+        ):
+            raise APIPermissionDenied(_("The Favourite playlist cannot be renamed."))
+
+        serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    def put(self, request, pl_id: int):
+        return self._update(request, pl_id, partial=False)
+
+    def patch(self, request, pl_id: int):
+        return self._update(request, pl_id, partial=True)
+
     def delete(self, request, pl_id: int):
-        Playlist.objects.filter(pk=pl_id, owner=request.user).delete()
+        playlist = get_object_or_404(Playlist, pk=pl_id, owner=request.user)
+        if playlist.kind == KindChoice.FAVOURITE:
+            raise APIPermissionDenied(_("The Favourite playlist cannot be deleted."))
+        playlist.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -440,12 +508,12 @@ class PlaylistItemAPIView(APIView):
         )
         
         status_code = status.HTTP_201_CREATED if created else status.HTTP_200_OK
-        instance_data = self.serializer_class(instance).data
+        instance_data = self.serializer_class(instance, context={"request": request}).data
         return Response(instance_data, status=status_code)
         
     def delete(self, request, pl_id, movie_id):
         playlist_instance = get_object_or_404(Playlist, pk=pl_id, owner=request.user)
-        item_qs = PlaylistItem.objects.filter(playlist=playlist_instance, movie_id=movie_id).delete()
+        PlaylistItem.objects.filter(playlist=playlist_instance, movie_id=movie_id).delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 

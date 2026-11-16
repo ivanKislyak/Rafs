@@ -7,7 +7,10 @@ from rest_framework import serializers
 from core.images import tmdb_poster
 
 from .search_config import TITLE_FIELDS, DESCRIPTION_FIELDS, IMAGE_FIELDS
-from .models import WatchStatus, ReviewReply, Playlist, PlaylistItem, Movie
+from .models import (
+    WatchStatus, ReviewReply, Playlist, PlaylistItem, Movie,
+    PLAYLIST_NAME_MAX_LENGTH,
+)
 
 # Search Result Block
 def _read(target, field):
@@ -21,7 +24,7 @@ class SearchResultSerializer(serializers.Serializer):
     Serializes a GlobalSearchIndex entry into a uniform search result.
 
     The index points to different models (movie, review, person, studio,
-    user, country, genre, typeofwork) through a generic relation, so every
+    user, country, genre, typeofwork, playlist) through a generic relation, so every
     result is flattened into the same set of fields: id, type, title,
     description, image, url, etc.
 
@@ -69,6 +72,8 @@ class SearchResultSerializer(serializers.Serializer):
             return f"{reverse('movies:detail', args=[target.movie.pk])}#review-{target.pk}"
         if model == 'user' and not target.is_deleted:
             return reverse('profile', kwargs={'username': target.username})
+        if model == 'playlist':
+            return reverse('movies:playlist', args=[target.pk])
         return None
 
     def get_type_of_work(self, obj):
@@ -134,6 +139,8 @@ class SearchResultSerializer(serializers.Serializer):
         model = obj.content_type.model
         if model == 'user' and target.is_deleted:
             return None
+        if model == 'playlist':
+            return f"@{target.owner.username}"
 
         for field in DESCRIPTION_FIELDS.get(model, ()):
             value = _read(target, field)
@@ -209,6 +216,9 @@ class PlaylistItemSerializer(serializers.ModelSerializer):
         fields = ['id', 'position', 'added_at', 'movie']
 
 class PlaylistSerializer(serializers.ModelSerializer):
+    # CharField trims surrounding whitespace and rejects blank values by default,
+    # so "   " is reported as a blank name (400).
+    name = serializers.CharField(max_length=PLAYLIST_NAME_MAX_LENGTH)
     items = PlaylistItemSerializer(many=True, read_only=True)
     class Meta:
         model = Playlist
@@ -216,7 +226,14 @@ class PlaylistSerializer(serializers.ModelSerializer):
         read_only_fields = ['kind', 'owner']
 
 class PlaylistShortSerializer(serializers.ModelSerializer):
+    movies_count = serializers.IntegerField(read_only=True)
+    contains_movie = serializers.SerializerMethodField()
+
     class Meta:
         model = Playlist
-        fields = ['id', 'name', 'kind', 'is_public']
-        
+        fields = ['id', 'name', 'kind', 'is_public', 'movies_count', 'contains_movie']
+
+    def get_contains_movie(self, obj):
+        # Annotated only when the list is requested with ?movie_id=<id>.
+        return getattr(obj, 'contains_movie', None)
+
