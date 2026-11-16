@@ -12,7 +12,7 @@ from django.db import DatabaseError, connection
 from django.test import SimpleTestCase, TestCase
 
 from accounts.models import User
-from movies.models import GlobalSearchIndex, Movie, Review
+from movies.models import GlobalSearchIndex, Movie, Playlist, Review
 from movies.movie_models import Person, Studio
 
 
@@ -171,3 +171,18 @@ class RebuildSearchIndexTests(TestCase):
                 self.assertEqual(output.getvalue(), "")
                 self.assertEqual(list(GlobalSearchIndex.objects.order_by("pk").values()), before)
                 self.assertEqual(self.source_snapshot(), sources)
+
+    def test_rebuild_indexes_only_public_playlists(self):
+        public = Playlist.objects.create(owner=self.user, name="Rebuildpublic", is_public=True)
+        private = Playlist.objects.create(owner=self.user, name="Rebuildprivate")
+        GlobalSearchIndex.objects.filter(
+            content_type=ContentType.objects.get_for_model(Playlist),
+        ).delete()
+
+        output = self.rebuild()
+
+        self.assertIn("playlists: 1", output)
+        self.assertTrue(self.document(public).filter(
+            search_vector=SearchQuery("rebuildpublic", config="english"),
+        ).exists())
+        self.assertFalse(self.document(private).exists())

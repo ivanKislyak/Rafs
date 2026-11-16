@@ -8,7 +8,7 @@
 
   const labels = list.dataset;
   const locale = document.documentElement.lang || 'en';
-  const types = new Set(['movie', 'review', 'user', 'person', 'studio', 'country', 'genre', 'typeofwork']);
+  const types = new Set(['movie', 'review', 'user', 'person', 'studio', 'country', 'genre', 'typeofwork', 'playlist']);
   const seenResults = new Set();
   const seenPages = new Set();
   const query = (labels.query || '').trim();
@@ -77,6 +77,7 @@
       country: '<path d="M5 21V3h14l-3 5 3 5H5"></path>',
       genre: '<path d="M3 3h8l10 10-8 8L3 11Z"></path><circle cx="7" cy="7" r="1"></circle>',
       typeofwork: '<rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M8 4v16M16 4v16M3 9h5M3 15h5M16 9h5M16 15h5"></path>',
+      playlist: '<path d="M4 6h12M4 12h12M4 18h8"></path><path d="m16 15 5 3-5 3Z"></path>',
     };
     return `<span class="search-result-symbol" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">${paths[type] || paths.person}</svg></span>`;
   }

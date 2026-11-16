@@ -5,7 +5,8 @@ TITLE_FIELDS = {
     'user': ('username',),
     'country': ('name',),
     'genre': ('name',),
-    'typeofwork': ('name',)
+    'typeofwork': ('name',),
+    'playlist': ('name',),
 }
 
 DESCRIPTION_FIELDS = {
@@ -23,4 +24,5 @@ IMAGE_FIELDS = {
     'country': ('banner_url', 'banner'), 
     'genre': ('banner_url', 'banner'),
     'typeofwork': ('banner_url', 'banner'),
+    'playlist': ('cover',),
 }

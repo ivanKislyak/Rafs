@@ -6,7 +6,7 @@ from django.db import transaction
 from django.db.models import Prefetch, Value
 
 from accounts.models import User
-from movies.models import GlobalSearchIndex, Movie, Review
+from movies.models import GlobalSearchIndex, Movie, Playlist, Review
 from movies.movie_models import Country, Genre, Person, Studio, TypeOfWork
 
 
@@ -491,3 +491,90 @@ def index_new_studios():
         "Prepared %s new studio search documents for insertion.",
         prepared_count,
     )
+
+
+# Playlists
+def searchable_playlists():
+    """Playlists that may appear in search: public and owned by a live account.
+
+    The search API filters by this queryset too, so a stale index row can never
+    expose a private playlist.
+    """
+    return Playlist.objects.filter(
+        is_public=True, owner__is_deleted=False, owner__is_active=True,
+    )
+
+
+def _playlist_search_vector(playlist):
+    # Names are free text in any language: index them with every search config.
+    combined_vector = None
+    for language in prefetch_languages:
+        language_vector = _build_search_vector(
+            text_a=_clean_text(playlist.name),
+            text_c=_clean_text(playlist.owner.username),
+            config_lang=language,
+        )
+        combined_vector = language_vector if combined_vector is None else combined_vector + language_vector
+    return combined_vector
+
+
+def index_new_playlists(playlist_ids=None):
+    content_type = ContentType.objects.get_for_model(Playlist)
+    indexed_object_ids = GlobalSearchIndex.objects.filter(
+        content_type=content_type
+    ).values_list("object_id", flat=True)
+
+    playlists = (
+        searchable_playlists()
+        .exclude(pk__in=indexed_object_ids)
+        .select_related("owner")
+        .only("pk", "name", "owner_id", "owner__username")
+    )
+    if playlist_ids is not None:
+        playlists = playlists.filter(pk__in=playlist_ids)
+
+    documents = []
+    prepared_count = 0
+
+    for playlist in playlists.iterator(chunk_size=BATCH_SIZE):
+        documents.append(
+            GlobalSearchIndex(
+                content_type=content_type,
+                object_id=playlist.pk,
+                search_vector=_playlist_search_vector(playlist),
+            )
+        )
+        prepared_count += 1
+
+        if len(documents) >= BATCH_SIZE:
+            GlobalSearchIndex.objects.bulk_create(
+                documents,
+                batch_size=BATCH_SIZE,
+                ignore_conflicts=True,
+            )
+            documents.clear()
+
+    if documents:
+        GlobalSearchIndex.objects.bulk_create(
+            documents,
+            batch_size=BATCH_SIZE,
+            ignore_conflicts=True,
+        )
+
+    logger.info(
+        "Prepared %s new playlist search documents for insertion.",
+        prepared_count,
+    )
+
+
+def refresh_playlist_document(playlist_id):
+    """Drop the playlist's document and re-add it only if it is still searchable."""
+    with transaction.atomic():
+        content_type = ContentType.objects.get_for_model(Playlist)
+        GlobalSearchIndex.objects.filter(content_type=content_type, object_id=playlist_id).delete()
+        index_new_playlists(playlist_ids=[playlist_id])
+
+
+def remove_playlist_document(playlist_id):
+    content_type = ContentType.objects.get_for_model(Playlist)
+    GlobalSearchIndex.objects.filter(content_type=content_type, object_id=playlist_id).delete()

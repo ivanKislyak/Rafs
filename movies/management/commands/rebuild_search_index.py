@@ -8,7 +8,7 @@ from movies.services import search_index
 
 class Command(BaseCommand):
     help = (
-        "Rebuild all five GlobalSearchIndex document types using PostgreSQL. "
+        "Rebuild all six GlobalSearchIndex document types using PostgreSQL. "
         "Source records are preserved; indexing remains manual."
     )
 
@@ -26,6 +26,7 @@ class Command(BaseCommand):
                 search_index.index_new_users()
                 search_index.index_new_persons()
                 search_index.index_new_studios()
+                search_index.index_new_playlists()
 
                 counts = {
                     row["content_type__model"]: row["total"]
@@ -43,5 +44,5 @@ class Command(BaseCommand):
             f"Search index rebuilt: {previous_count} previous documents, {total} current. "
             f"Movies: {counts.get('movie', 0)}; reviews: {counts.get('review', 0)}; "
             f"users: {counts.get('user', 0)}; persons: {counts.get('person', 0)}; "
-            f"studios: {counts.get('studio', 0)}."
+            f"studios: {counts.get('studio', 0)}; playlists: {counts.get('playlist', 0)}."
         ))
