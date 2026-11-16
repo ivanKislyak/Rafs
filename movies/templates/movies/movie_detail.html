@@ -65,6 +65,52 @@
         {% else %}
             <a class="btn" href="{% url 'movies:review_form' movie.id %}">{% translate "Rate" %}</a>
         {% endif %}
+        {% if user.is_authenticated %}
+            <div class="movie-playlist"
+                 data-add-to-playlist
+                 data-movie-id="{{ movie.id }}"
+                 data-playlists-url="{% url 'movies:playlist_create_api' %}"
+                 data-item-url-template="{{ playlist_item_url_template }}"
+                 data-msg-load-error="{% translate 'Could not load your playlists' %}"
+                 data-msg-toggle-error="{% translate 'Could not update the playlist' %}"
+                 data-msg-empty="{% translate 'You have no playlists yet' %}">
+                <button class="movie-playlist-toggle"
+                        type="button"
+                        data-action="toggle-menu"
+                        aria-expanded="false"
+                        aria-haspopup="true"
+                        aria-controls="movie-playlist-menu">
+                    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false">
+                        <path d="M4 6h12M4 12h12M4 18h7M18 15v6M15 18h6"></path>
+                    </svg>
+                    <span>{% translate "Add to playlist" %}</span>
+                </button>
+                <div class="movie-playlist-menu" id="movie-playlist-menu" data-menu hidden>
+                    <p class="movie-playlist-menu-title">{% translate "Your playlists" %}</p>
+                    <ul class="movie-playlist-list" data-menu-list></ul>
+                    <form class="movie-playlist-create" data-menu-create novalidate>
+                        <input class="movie-playlist-input"
+                               id="movie-playlist-new-name"
+                               aria-label="{% translate 'New playlist' %}"
+                               name="name"
+                               type="text"
+                               maxlength="{{ playlist_name_max_length }}"
+                               autocomplete="off"
+                               placeholder="{% translate 'New playlist' %}"
+                               required>
+                        <button class="movie-playlist-create-button" type="submit">{% translate "Create" %}</button>
+                    </form>
+                </div>
+            </div>
+        {% else %}
+            <a class="movie-playlist-toggle"
+               href="{% url 'login' %}?next={{ request.path|urlencode }}">
+                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false">
+                    <path d="M4 6h12M4 12h12M4 18h7M18 15v6M15 18h6"></path>
+                </svg>
+                <span>{% translate "Add to playlist" %}</span>
+            </a>
+        {% endif %}
     </div>
     </div>
     {% if movie_description %}<p class="movie-detail-main-description">{{ movie_description }}</p>{% endif %}
@@ -220,4 +266,8 @@
     <script src="{% static 'movies/js/review-replies.js' %}" defer></script>
     <script src="{% static 'movies/js/reply-edit.js' %}" defer></script>
     <script src="{% static 'movies/js/movie_watch_status.js' %}" defer></script>
+    {% if user.is_authenticated %}
+        <script src="{% static 'movies/js/api.js' %}" defer></script>
+        <script src="{% static 'movies/js/movie-add-to-playlist.js' %}" defer></script>
+    {% endif %}
 {% endblock %}

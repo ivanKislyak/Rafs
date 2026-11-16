@@ -114,6 +114,162 @@
   margin: 0;
 }
 
+/* Add-to-playlist: a quiet button beside "Rate"; the menu is filled by movie-add-to-playlist.js. */
+.movie-playlist {
+  position: relative;
+}
+
+.movie-playlist-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 9px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  font-size: .9rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.movie-playlist-toggle svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.movie-playlist-toggle:hover, .movie-playlist-toggle[aria-expanded="true"] {
+  background: var(--color-surface-hover);
+  color: var(--color-text);
+}
+
+.movie-playlist-toggle:focus-visible, .movie-playlist-input:focus-visible, .movie-playlist-create-button:focus-visible {
+  outline: 2px solid var(--color-focus-visible-outline);
+  outline-offset: 2px;
+}
+
+.movie-playlist-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 20;
+  width: min(300px, calc(100vw - 32px));
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface);
+  box-shadow: 0 12px 32px rgb(0 0 0 / 28%);
+  color: var(--color-text);
+}
+
+.movie-playlist-menu[hidden] {
+  display: none;
+}
+
+.movie-playlist-menu-title {
+  margin: 0 0 8px;
+  color: var(--color-text-muted);
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.movie-playlist-list {
+  display: grid;
+  gap: 2px;
+  max-height: 260px;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.movie-playlist-list:not(:empty) {
+  margin-bottom: 10px;
+}
+
+/* Rows rendered by JS: a <label> with a checkbox, or a plain message such as the empty/error text. */
+.movie-playlist-list label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-size: .9rem;
+  cursor: pointer;
+}
+
+.movie-playlist-list label:hover {
+  background: var(--color-surface-hover);
+}
+
+.movie-playlist-list input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--color-action);
+}
+
+.movie-playlist-list li > p {
+  margin: 0;
+  padding: 6px 8px;
+  color: var(--color-text-muted);
+  font-size: .85rem;
+}
+
+.movie-playlist-create {
+  display: flex;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid var(--color-border);
+}
+
+.movie-playlist-input {
+  flex: 1;
+  min-width: 0;
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  outline: none;
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+  font: inherit;
+  font-size: .9rem;
+}
+
+.movie-playlist-input:focus {
+  border-color: var(--color-accent);
+}
+
+.movie-playlist-create-button {
+  min-height: 40px;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 4px;
+  background: var(--color-action);
+  color: var(--color-action-text);
+  font: inherit;
+  font-size: .85rem;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.movie-playlist-create-button:hover {
+  background: var(--color-action-hover);
+}
+
+.movie-playlist-create-button:disabled {
+  opacity: .5;
+  cursor: progress;
+}
+
 @media (max-width: 600px) {
   .movie-detail-main-container {
     grid-template-columns: minmax(90px, 28%) minmax(0, 1fr);
@@ -141,6 +297,18 @@
   .movie-detail-actions .btn {
     padding: 9px 14px;
     font-size: .9rem;
+  }
+  .movie-playlist-toggle {
+    font-size: .85rem;
+  }
+  /* The actions sit in a narrow column: show the menu as a bottom sheet instead. */
+  .movie-playlist-menu {
+    position: fixed;
+    top: auto;
+    right: 16px;
+    bottom: 16px;
+    left: 16px;
+    width: auto;
   }
   .movie-detail-main-description {
     grid-column: 1 / -1;

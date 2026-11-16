@@ -51,8 +51,17 @@
   text-decoration: underline;
 }
 
+.playlist-title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+  margin-bottom: 16px;
+}
+
 .playlist-title {
-  margin: 0 0 16px;
+  min-width: 0;
+  margin: 0;
   overflow-wrap: anywhere;
   font-size: clamp(1.55rem, 4vw, 2.5rem);
   font-weight: 800;
@@ -239,5 +248,116 @@
   .playlist-item-cover {
     width: 48px;
     height: 72px;
+  }
+}
+
+/* Owner controls: rename sits beside the title, delete trails the meta row. */
+.playlist-title-action, .playlist-delete, .playlist-dialog-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: .85rem;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.playlist-title-action svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.playlist-title-action:hover, .playlist-dialog-button:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text);
+}
+
+.playlist-delete {
+  margin-inline-start: auto;
+  border-color: transparent;
+}
+
+.playlist-delete:hover {
+  border-color: color-mix(in srgb, var(--color-accent) 55%, var(--color-border));
+  background: var(--color-accent-glow);
+  color: var(--color-accent);
+}
+
+.playlist-title-action:focus-visible, .playlist-delete:focus-visible, .playlist-dialog-button:focus-visible {
+  outline: 2px solid var(--color-focus-visible-outline);
+  outline-offset: 2px;
+}
+
+:is(.playlist-title-action, .playlist-delete, .playlist-dialog-button):disabled {
+  opacity: .5;
+  cursor: progress;
+}
+
+.playlist-dialog {
+  width: min(430px, calc(100vw - 28px));
+  max-width: none;
+  padding: 24px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.playlist-dialog::backdrop {
+  background: rgb(4 5 7 / 70%);
+}
+
+.playlist-dialog-title {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-size: 1.15rem;
+}
+
+.playlist-dialog-text {
+  margin: 16px 0 24px;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+.playlist-dialog-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.playlist-dialog-button--danger {
+  border-color: var(--color-action);
+  background: var(--color-action);
+  color: var(--color-action-text);
+}
+
+.playlist-dialog-button--danger:hover {
+  background: var(--color-action-hover);
+  color: var(--color-action-text);
+}
+
+@media (max-width: 600px) {
+  .playlist-title-action span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .playlist-delete {
+    margin-inline-start: 0;
   }
 }
