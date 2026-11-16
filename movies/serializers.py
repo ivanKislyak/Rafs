@@ -214,4 +214,9 @@ class PlaylistSerializer(serializers.ModelSerializer):
         model = Playlist
         fields = ['id', 'name', 'kind', 'owner', 'cover', 'is_public', 'items']
         read_only_fields = ['kind', 'owner']
+
+class PlaylistShortSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Playlist
+        fields = ['id', 'name', 'kind', 'is_public']
         

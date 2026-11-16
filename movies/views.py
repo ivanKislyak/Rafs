@@ -37,7 +37,7 @@ from .models import (
 from .serializers import (
     SearchResultSerializer, WatchStatusSerializer, 
     ReviewReplySerializer, PlaylistSerializer,
-    PlaylistItemSerializer
+    PlaylistItemSerializer, PlaylistShortSerializer
     )
 from .services.wikidata import (
     search_wikidata_media, 
@@ -346,12 +346,28 @@ def playlist_page(request, pl_id):
         'items': playlist_instance.items.all()
     })
 
+
+class PlaylistListAPIView(generics.ListCreateAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    pagination_class = None  
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return PlaylistShortSerializer
+        return PlaylistSerializer
+
+    def get_queryset(self):
+        return Playlist.objects.filter(owner=self.request.user).annotate(
+            movies_count=Count('items')
+        )
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+
 class PlaylistAPIView(APIView):
     serializer_class = PlaylistSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
-    def post(self, request, *args, **kwargs):
-        return Response(status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request, pl_id, *args, **kwargs):
         playlist_qs = visible_playlists(request.user)
