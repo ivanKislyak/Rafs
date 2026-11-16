@@ -1885,3 +1885,101 @@ msgstr "Прибрати «%(title)s» з плейліста"
 #: movies/templates/movies/playlist.html:96
 msgid "There are no movies in this playlist yet"
 msgstr "У плейлісті поки немає фільмів"
+
+#: movies/views.py
+msgid "A valid integer is required."
+msgstr "Потрібне ціле число."
+
+#: movies/views.py
+#, python-format
+msgid "You can have at most %(limit)d playlists."
+msgstr "Можна створити не більше %(limit)d плейлістів."
+
+#: movies/views.py
+msgid "The Favourite playlist cannot be renamed."
+msgstr "Плейліст «Обране» не можна перейменувати."
+
+#: movies/views.py
+msgid "The Favourite playlist cannot be deleted."
+msgstr "Плейліст «Обране» не можна видалити."
+
+#: accounts/templates/accounts/profile.html
+msgid "Could not create the playlist"
+msgstr "Не вдалося створити плейліст"
+
+#: accounts/templates/accounts/profile.html
+msgid "Collections"
+msgstr "Добірки"
+
+#: accounts/templates/accounts/profile.html
+msgid "New playlist"
+msgstr "Новий плейліст"
+
+#: accounts/templates/accounts/profile.html
+msgid "Private playlist"
+msgstr "Приватний плейліст"
+
+#: accounts/templates/accounts/profile.html
+msgid "You have no playlists yet. Collect movies into themed lists and share them."
+msgstr "У вас поки немає плейлістів. Збирайте фільми в тематичні добірки й діліться ними."
+
+#: accounts/templates/accounts/profile.html
+msgid "Create a playlist"
+msgstr "Створити плейліст"
+
+#: accounts/templates/accounts/profile.html
+msgid "Create"
+msgstr "Створити"
+
+#: movies/templates/movies/playlist.html
+msgid "Could not rename the playlist"
+msgstr "Не вдалося перейменувати плейліст"
+
+#: movies/templates/movies/playlist.html
+msgid "Could not delete the playlist"
+msgstr "Не вдалося видалити плейліст"
+
+#: movies/templates/movies/playlist.html
+msgid "Rename playlist"
+msgstr "Перейменувати плейліст"
+
+#: movies/templates/movies/playlist.html
+msgid "Rename"
+msgstr "Перейменувати"
+
+#: movies/templates/movies/playlist.html
+msgid "Delete playlist"
+msgstr "Видалити плейліст"
+
+#: movies/templates/movies/playlist.html
+msgid "The playlist will be deleted for good. The movies themselves stay on RAFS."
+msgstr "Плейліст буде видалено назавжди. Самі фільми залишаться на RAFS."
+
+#: movies/templates/movies/movie_detail.html
+msgid "Could not load your playlists"
+msgstr "Не вдалося завантажити ваші плейлісти"
+
+#: movies/templates/movies/movie_detail.html
+msgid "Could not update the playlist"
+msgstr "Не вдалося оновити плейліст"
+
+#: movies/templates/movies/movie_detail.html
+msgid "You have no playlists yet"
+msgstr "У вас поки немає плейлістів"
+
+#: movies/templates/movies/movie_detail.html
+msgid "Add to playlist"
+msgstr "До плейліста"
+
+#: movies/templates/movies/movie_detail.html
+msgid "Your playlists"
+msgstr "Ваші плейлісти"
+
+#: accounts/templates/accounts/profile.html
+#, python-format
+msgid "%(counter)s movie"
+msgid_plural "%(counter)s movies"
+msgstr[0] "%(counter)s фільм"
+msgstr[1] "%(counter)s фільми"
+msgstr[2] "%(counter)s фільмів"
+msgstr[3] "%(counter)s фільму"

@@ -1885,3 +1885,99 @@ msgstr "„%(title)s“ aus der Wiedergabeliste entfernen"
 #: movies/templates/movies/playlist.html:96
 msgid "There are no movies in this playlist yet"
 msgstr "In dieser Wiedergabeliste sind noch keine Filme"
+
+#: movies/views.py
+msgid "A valid integer is required."
+msgstr "Eine gültige Ganzzahl ist erforderlich."
+
+#: movies/views.py
+#, python-format
+msgid "You can have at most %(limit)d playlists."
+msgstr "Du kannst höchstens %(limit)d Wiedergabelisten haben."
+
+#: movies/views.py
+msgid "The Favourite playlist cannot be renamed."
+msgstr "Die Favoriten-Liste kann nicht umbenannt werden."
+
+#: movies/views.py
+msgid "The Favourite playlist cannot be deleted."
+msgstr "Die Favoriten-Liste kann nicht gelöscht werden."
+
+#: accounts/templates/accounts/profile.html
+msgid "Could not create the playlist"
+msgstr "Die Wiedergabeliste konnte nicht erstellt werden"
+
+#: accounts/templates/accounts/profile.html
+msgid "Collections"
+msgstr "Sammlungen"
+
+#: accounts/templates/accounts/profile.html
+msgid "New playlist"
+msgstr "Neue Wiedergabeliste"
+
+#: accounts/templates/accounts/profile.html
+msgid "Private playlist"
+msgstr "Private Wiedergabeliste"
+
+#: accounts/templates/accounts/profile.html
+msgid "You have no playlists yet. Collect movies into themed lists and share them."
+msgstr "Du hast noch keine Wiedergabelisten. Sammle Filme in thematischen Listen und teile sie."
+
+#: accounts/templates/accounts/profile.html
+msgid "Create a playlist"
+msgstr "Wiedergabeliste erstellen"
+
+#: accounts/templates/accounts/profile.html
+msgid "Create"
+msgstr "Erstellen"
+
+#: movies/templates/movies/playlist.html
+msgid "Could not rename the playlist"
+msgstr "Die Wiedergabeliste konnte nicht umbenannt werden"
+
+#: movies/templates/movies/playlist.html
+msgid "Could not delete the playlist"
+msgstr "Die Wiedergabeliste konnte nicht gelöscht werden"
+
+#: movies/templates/movies/playlist.html
+msgid "Rename playlist"
+msgstr "Wiedergabeliste umbenennen"
+
+#: movies/templates/movies/playlist.html
+msgid "Rename"
+msgstr "Umbenennen"
+
+#: movies/templates/movies/playlist.html
+msgid "Delete playlist"
+msgstr "Wiedergabeliste löschen"
+
+#: movies/templates/movies/playlist.html
+msgid "The playlist will be deleted for good. The movies themselves stay on RAFS."
+msgstr "Die Wiedergabeliste wird endgültig gelöscht. Die Filme selbst bleiben auf RAFS."
+
+#: movies/templates/movies/movie_detail.html
+msgid "Could not load your playlists"
+msgstr "Deine Wiedergabelisten konnten nicht geladen werden"
+
+#: movies/templates/movies/movie_detail.html
+msgid "Could not update the playlist"
+msgstr "Die Wiedergabeliste konnte nicht aktualisiert werden"
+
+#: movies/templates/movies/movie_detail.html
+msgid "You have no playlists yet"
+msgstr "Du hast noch keine Wiedergabelisten"
+
+#: movies/templates/movies/movie_detail.html
+msgid "Add to playlist"
+msgstr "Zur Wiedergabeliste"
+
+#: movies/templates/movies/movie_detail.html
+msgid "Your playlists"
+msgstr "Deine Wiedergabelisten"
+
+#: accounts/templates/accounts/profile.html
+#, python-format
+msgid "%(counter)s movie"
+msgid_plural "%(counter)s movies"
+msgstr[0] "%(counter)s Film"
+msgstr[1] "%(counter)s Filme"

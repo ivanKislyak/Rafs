@@ -1885,3 +1885,99 @@ msgstr "«%(title)s» фильмін плейлисттен алып таста�
 #: movies/templates/movies/playlist.html:96
 msgid "There are no movies in this playlist yet"
 msgstr "Плейлистте әзірге фильм жоқ"
+
+#: movies/views.py
+msgid "A valid integer is required."
+msgstr "Бүтін сан қажет."
+
+#: movies/views.py
+#, python-format
+msgid "You can have at most %(limit)d playlists."
+msgstr "Ең көбі %(limit)d плейлист жасауға болады."
+
+#: movies/views.py
+msgid "The Favourite playlist cannot be renamed."
+msgstr "«Таңдаулылар» плейлистін қайта атауға болмайды."
+
+#: movies/views.py
+msgid "The Favourite playlist cannot be deleted."
+msgstr "«Таңдаулылар» плейлистін жоюға болмайды."
+
+#: accounts/templates/accounts/profile.html
+msgid "Could not create the playlist"
+msgstr "Плейлист жасау мүмкін болмады"
+
+#: accounts/templates/accounts/profile.html
+msgid "Collections"
+msgstr "Жинақтар"
+
+#: accounts/templates/accounts/profile.html
+msgid "New playlist"
+msgstr "Жаңа плейлист"
+
+#: accounts/templates/accounts/profile.html
+msgid "Private playlist"
+msgstr "Жеке плейлист"
+
+#: accounts/templates/accounts/profile.html
+msgid "You have no playlists yet. Collect movies into themed lists and share them."
+msgstr "Сізде әзірге плейлист жоқ. Фильмдерді тақырыптық жинақтарға жинап, бөлісіңіз."
+
+#: accounts/templates/accounts/profile.html
+msgid "Create a playlist"
+msgstr "Плейлист жасау"
+
+#: accounts/templates/accounts/profile.html
+msgid "Create"
+msgstr "Жасау"
+
+#: movies/templates/movies/playlist.html
+msgid "Could not rename the playlist"
+msgstr "Плейлистті қайта атау мүмкін болмады"
+
+#: movies/templates/movies/playlist.html
+msgid "Could not delete the playlist"
+msgstr "Плейлистті жою мүмкін болмады"
+
+#: movies/templates/movies/playlist.html
+msgid "Rename playlist"
+msgstr "Плейлистті қайта атау"
+
+#: movies/templates/movies/playlist.html
+msgid "Rename"
+msgstr "Қайта атау"
+
+#: movies/templates/movies/playlist.html
+msgid "Delete playlist"
+msgstr "Плейлистті жою"
+
+#: movies/templates/movies/playlist.html
+msgid "The playlist will be deleted for good. The movies themselves stay on RAFS."
+msgstr "Плейлист біржола жойылады. Фильмдердің өздері RAFS-та қалады."
+
+#: movies/templates/movies/movie_detail.html
+msgid "Could not load your playlists"
+msgstr "Плейлисттеріңізді жүктеу мүмкін болмады"
+
+#: movies/templates/movies/movie_detail.html
+msgid "Could not update the playlist"
+msgstr "Плейлистті жаңарту мүмкін болмады"
+
+#: movies/templates/movies/movie_detail.html
+msgid "You have no playlists yet"
+msgstr "Сізде әзірге плейлист жоқ"
+
+#: movies/templates/movies/movie_detail.html
+msgid "Add to playlist"
+msgstr "Плейлистке қосу"
+
+#: movies/templates/movies/movie_detail.html
+msgid "Your playlists"
+msgstr "Сіздің плейлисттеріңіз"
+
+#: accounts/templates/accounts/profile.html
+#, python-format
+msgid "%(counter)s movie"
+msgid_plural "%(counter)s movies"
+msgstr[0] "%(counter)s фильм"
+msgstr[1] "%(counter)s фильм"
