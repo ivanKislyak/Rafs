@@ -20,6 +20,8 @@
     });
     createFormPlaylist.addEventListener('submit', async(event) => {
         event.preventDefault();
+        const submitButton = createFormPlaylist.querySelector('.profile-button.profile-button--primary');
+        submitButton.disabled = true;
         try {
             const response = await apiRequest(url, {
                 method: "POST",
@@ -28,6 +30,7 @@
             const newData = await response.json();
         } catch (error) {
         } finally {
+            submitButton.disabled = false;
         }
     })
 
