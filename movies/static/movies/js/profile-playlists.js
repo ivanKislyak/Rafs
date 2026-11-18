@@ -11,6 +11,7 @@
   const url = root.dataset.apiUrl;
   const createFormPlaylist = root.querySelector("form[data-create-form]");
   const errorEl = root.querySelector("[data-form-error]");
+  const emptyErrReason = errorEl.dataset.emptyFieldError;
   const dialog = root.querySelector("dialog[data-create-dialog]");
   if (!dialog) {
     return;
@@ -33,6 +34,12 @@
     event.preventDefault();
     const submitButton = createFormPlaylist.querySelector('[type="submit"]');
     submitButton.disabled = true;
+    if (!inputName.value.trim()) {
+      errorEl.textContent = emptyErrReason;
+      errorEl.hidden = false;
+      submitButton.disabled = false;
+      return;
+    }
     try {
       const response = await apiRequest(url, {
         method: "POST",
