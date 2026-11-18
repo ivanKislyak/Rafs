@@ -33,7 +33,7 @@
         method: "POST",
         body: { name: inputName.value.trim() },
       });
-      const newData = await response.json();
+      const newData = await response;
     } catch (error) {
     } finally {
       submitButton.disabled = false;
