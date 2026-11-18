@@ -1,4 +1,9 @@
 (() => {
+  window.addEventListener("pageshow", (event) => {
+    if (event.persisted) {
+      location.reload();
+    }
+  });
   const root = document.querySelector("[data-playlists]");
   if (!root) {
     return;
@@ -26,7 +31,7 @@
   });
   createFormPlaylist.addEventListener("submit", async (event) => {
     event.preventDefault();
-    const submitButton = createFormPlaylist.querySelector(".profile-button.profile-button--primary");
+    const submitButton = createFormPlaylist.querySelector('[type="submit"]');
     submitButton.disabled = true;
     try {
       const response = await apiRequest(url, {
@@ -35,6 +40,7 @@
       });
       const playlistId = response.data.id;
       const pageTemplate = root.dataset.playlistPageTemplate;
+      dialog.close();
       location.href = pageTemplate.replace("__ID__", playlistId);
     } catch (error) {
       console.error(error);
