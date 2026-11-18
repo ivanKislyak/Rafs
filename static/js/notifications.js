@@ -11,13 +11,15 @@
   }
 
   // Present the badge first, then preserve every other message (including Frames).
-  const hasAwardTags = toast => {
-    const tags = new Set((toast.dataset.toastTags || '').split(/\s+/));
-    return tags.has('halloween-award-earned') && tags.has('review-or-treat-2026');
+  const hasAwardTags = (toast) => {
+    const tags = new Set((toast.dataset.toastTags || "").split(/\s+/));
+    return tags.has("halloween-award-earned") && tags.has("review-or-treat-2026");
   };
   toasts.sort((a, b) => Number(hasAwardTags(b)) - Number(hasAwardTags(a)));
-  toasts.forEach(toast => { toast.hidden = true; });
-  document.documentElement.classList.add('has-toast-js');
+  toasts.forEach((toast) => {
+    toast.hidden = true;
+  });
+  document.documentElement.classList.add("has-toast-js");
 
   function nextToast() {
     const toast = toasts.shift();
@@ -25,15 +27,18 @@
       region.remove();
       return;
     }
-    if (window.RafsHalloweenAward?.present(toast, () => {
-      toast.remove();
-      nextToast();
-    })) return;
+    if (
+      window.RafsHalloweenAward?.present(toast, () => {
+        toast.remove();
+        nextToast();
+      })
+    ) {
+      return;
+    }
     showToast(toast);
   }
 
   function showToast(toast) {
-
     let closeTimer;
     let rewardTimer;
     let isClosed = false;

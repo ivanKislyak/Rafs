@@ -26,7 +26,9 @@
 
   const setupToggle = () => {
     const toggle = document.querySelector("[data-theme-toggle]");
-    if (!toggle) return;
+    if (!toggle) {
+      return;
+    }
 
     const label = toggle.querySelector("[data-theme-toggle-label]");
 
@@ -35,7 +37,9 @@
       const nextLabel = isLight ? toggle.dataset.darkLabel : toggle.dataset.lightLabel;
       toggle.setAttribute("aria-label", nextLabel);
       toggle.setAttribute("aria-pressed", String(isLight));
-      if (label) label.textContent = nextLabel;
+      if (label) {
+        label.textContent = nextLabel;
+      }
     };
 
     toggle.addEventListener("click", () => {

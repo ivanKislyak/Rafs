@@ -1,7 +1,9 @@
 (() => {
   const form = document.querySelector("[data-wd-search-form]");
 
-  if (!form) return;
+  if (!form) {
+    return;
+  }
 
   const queryInput = form.querySelector("#id_query");
   const clearButton = form.querySelector("[data-wd-search-clear]");
@@ -9,7 +11,9 @@
   const submitLabel = submitButton?.querySelector(".wd-search-submit-label");
 
   const updateClearButton = () => {
-    if (!queryInput || !clearButton) return;
+    if (!queryInput || !clearButton) {
+      return;
+    }
     clearButton.hidden = queryInput.value.length === 0;
   };
 
@@ -26,8 +30,12 @@
 
   form.addEventListener("submit", () => {
     form.classList.add("is-loading");
-    if (submitButton) submitButton.disabled = true;
-    if (submitLabel) submitLabel.textContent = form.dataset.searchingLabel;
+    if (submitButton) {
+      submitButton.disabled = true;
+    }
+    if (submitLabel) {
+      submitLabel.textContent = form.dataset.searchingLabel;
+    }
   });
 
   document.querySelectorAll("[data-wd-copy]").forEach((button) => {
@@ -35,7 +43,9 @@
       const qid = button.dataset.wdCopy;
       const label = button.querySelector("[data-wd-copy-label]");
 
-      if (!qid || !label) return;
+      if (!qid || !label) {
+        return;
+      }
 
       try {
         await navigator.clipboard.writeText(qid);

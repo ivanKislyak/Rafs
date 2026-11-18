@@ -11,8 +11,11 @@
     icons.forEach(({ icon, ordinary }) => {
       icon.setAttribute("href", enabled ? icon.dataset.eventIcon : ordinary);
       if (icon.hasAttribute("data-event-only")) {
-        if (enabled) icon.setAttribute("rel", "icon");
-        else icon.removeAttribute("rel");
+        if (enabled) {
+          icon.setAttribute("rel", "icon");
+        } else {
+          icon.removeAttribute("rel");
+        }
       }
     });
   };
