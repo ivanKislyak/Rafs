@@ -43,6 +43,8 @@
       dialog.close();
       location.href = pageTemplate.replace("__ID__", playlistId);
     } catch (error) {
+      errorEl.hidden = false;
+      errorEl.textContent = error instanceof Error ? error.message : String(error);
       console.error(error);
     } finally {
       submitButton.disabled = false;
