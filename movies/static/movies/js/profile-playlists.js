@@ -33,8 +33,11 @@
         method: "POST",
         body: { name: inputName.value.trim() },
       });
-      const newData = await response;
+      const playlistId = response.data.id;
+      const pageTemplate = root.dataset.playlistPageTemplate;
+      location.href = pageTemplate.replace("__ID__", playlistId);
     } catch (error) {
+      console.error(error);
     } finally {
       submitButton.disabled = false;
     }
