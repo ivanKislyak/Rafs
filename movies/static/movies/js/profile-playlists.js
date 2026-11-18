@@ -30,6 +30,11 @@
   closeDialog.addEventListener("click", () => {
     dialog.close();
   });
+  dialog.addEventListener("click", (event) => {
+    if (event.target === dialog) {
+      dialog.close();
+    }
+  });
   createFormPlaylist.addEventListener("submit", async (event) => {
     event.preventDefault();
     const submitButton = createFormPlaylist.querySelector('[type="submit"]');
