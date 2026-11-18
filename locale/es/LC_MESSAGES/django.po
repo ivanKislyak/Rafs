@@ -1982,3 +1982,7 @@ msgid_plural "%(counter)s movies"
 msgstr[0] "%(counter)s película"
 msgstr[1] "%(counter)s películas"
 msgstr[2] "%(counter)s películas"
+
+#: accounts/templates/accounts/profile.html
+msgid "Enter a playlist name"
+msgstr "Introduce un nombre para la lista de reproducción"

@@ -1983,3 +1983,7 @@ msgstr[0] "%(counter)s фільм"
 msgstr[1] "%(counter)s фільми"
 msgstr[2] "%(counter)s фільмів"
 msgstr[3] "%(counter)s фільму"
+
+#: accounts/templates/accounts/profile.html
+msgid "Enter a playlist name"
+msgstr "Введіть назву плейлиста"

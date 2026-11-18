@@ -1971,3 +1971,7 @@ msgstr[0] "%(counter)s фильм"
 msgstr[1] "%(counter)s фильма"
 msgstr[2] "%(counter)s фильмов"
 msgstr[3] "%(counter)s фильма"
+
+#: accounts/templates/accounts/profile.html
+msgid "Enter a playlist name"
+msgstr "Введите название плейлиста"
