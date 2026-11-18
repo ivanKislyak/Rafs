@@ -15,7 +15,9 @@
     };
 
     const save = async () => {
-      if (saving) return;
+      if (saving) {
+        return;
+      }
       saving = true;
 
       // Send requests in order while keeping the latest choice visible and clickable.

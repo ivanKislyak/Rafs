@@ -1,6 +1,8 @@
 (() => {
   const root = document.querySelector("[data-playlist]");
-  if (!root) return;
+  if (!root) {
+    return;
+  }
 
   const list = root.querySelector("[data-playlist-items]");
   const countEl = root.querySelector("[data-playlist-count]");
@@ -26,7 +28,9 @@
 
   async function removeItem(button) {
     const playlistItem = button.closest("[data-item]");
-    if (!playlistItem) return;
+    if (!playlistItem) {
+      return;
+    }
     const url = playlistItem.dataset.itemUrl;
     button.disabled = true;
     try {
@@ -42,7 +46,9 @@
 
   list.addEventListener("click", (event) => {
     const buttonRemove = event.target.closest('[data-action="remove"]');
-    if (!buttonRemove) return;
+    if (!buttonRemove) {
+      return;
+    }
     removeItem(buttonRemove);
   });
 
