@@ -1,21 +1,23 @@
 (() => {
-  const dialog = document.querySelector('[data-profile-editor]');
-  const trigger = document.querySelector('[data-profile-edit-open]');
-  if (!dialog || !trigger) return;
+  const dialog = document.querySelector("[data-profile-editor]");
+  const trigger = document.querySelector("[data-profile-edit-open]");
+  if (!dialog || !trigger) {
+    return;
+  }
 
-  const form = dialog.querySelector('[data-profile-edit-form]');
-  const fieldset = dialog.querySelector('[data-profile-edit-fields]');
-  const save = dialog.querySelector('[data-profile-edit-save]');
-  const cancel = dialog.querySelector('[data-profile-edit-cancel]');
-  const retry = dialog.querySelector('[data-profile-edit-retry]');
-  const status = dialog.querySelector('[data-profile-edit-status]');
-  const result = document.querySelector('[data-profile-edit-result]');
-  const about = document.querySelector('[data-profile-about]');
-  const fields = ['about', 'sex', 'bd_date'];
+  const form = dialog.querySelector("[data-profile-edit-form]");
+  const fieldset = dialog.querySelector("[data-profile-edit-fields]");
+  const save = dialog.querySelector("[data-profile-edit-save]");
+  const cancel = dialog.querySelector("[data-profile-edit-cancel]");
+  const retry = dialog.querySelector("[data-profile-edit-retry]");
+  const status = dialog.querySelector("[data-profile-edit-status]");
+  const result = document.querySelector("[data-profile-edit-result]");
+  const about = document.querySelector("[data-profile-about]");
+  const fields = ["about", "sex", "bd_date"];
   const controls = Object.fromEntries(fields.map((name) => [name, form.elements.namedItem(name)]));
-  const errors = Object.fromEntries(fields.map((name) => [name,
-    dialog.querySelector(`[data-profile-edit-error="${name}"]`),
-  ]));
+  const errors = Object.fromEntries(
+    fields.map((name) => [name, dialog.querySelector(`[data-profile-edit-error="${name}"]`)]),
+  );
   let original = null;
   let loading = false;
   let saving = false;
@@ -24,14 +26,14 @@
 
   const clearErrors = () => {
     fields.forEach((name) => {
-      errors[name].textContent = '';
-      controls[name].removeAttribute('aria-invalid');
+      errors[name].textContent = "";
+      controls[name].removeAttribute("aria-invalid");
     });
-    status.textContent = '';
+    status.textContent = "";
   };
 
   const setBusy = () => {
-    dialog.setAttribute('aria-busy', String(loading || saving));
+    dialog.setAttribute("aria-busy", String(loading || saving));
     fieldset.disabled = loading || saving || !original;
     save.disabled = fieldset.disabled;
     cancel.disabled = saving;
@@ -40,7 +42,9 @@
   };
 
   const close = () => {
-    if (saving) return;
+    if (saving) {
+      return;
+    }
     // A dismissed GET must never fill a later editing session.
     loadVersion += 1;
     controller?.abort();
@@ -55,11 +59,15 @@
 
   const fill = (data) => {
     original = { about: data.about, sex: data.sex, bd_date: data.bd_date };
-    fields.forEach((name) => { controls[name].value = original[name] ?? ''; });
+    fields.forEach((name) => {
+      controls[name].value = original[name] ?? "";
+    });
   };
 
   const load = async () => {
-    if (loading || saving) return;
+    if (loading || saving) {
+      return;
+    }
     const version = ++loadVersion;
     controller = new AbortController();
     loading = true;
@@ -70,66 +78,85 @@
     setBusy();
     try {
       const response = await fetch(dialog.dataset.apiUrl, {
-        credentials: 'same-origin', headers: { Accept: 'application/json' },
+        credentials: "same-origin",
+        headers: { Accept: "application/json" },
         signal: controller.signal,
       });
-      if (version !== loadVersion) return;
+      if (version !== loadVersion) {
+        return;
+      }
       if (!response.ok) {
         status.textContent = [401, 403].includes(response.status)
-          ? dialog.dataset.accessError : dialog.dataset.loadError;
+          ? dialog.dataset.accessError
+          : dialog.dataset.loadError;
         retry.hidden = false;
         return;
       }
       const data = await response.json();
-      if (version !== loadVersion) return;
+      if (version !== loadVersion) {
+        return;
+      }
       fill(data);
-      status.textContent = '';
+      status.textContent = "";
     } catch (error) {
-      if (version !== loadVersion) return;
+      if (version !== loadVersion) {
+        return;
+      }
       status.textContent = dialog.dataset.loadError;
       retry.hidden = false;
     } finally {
       if (version === loadVersion) {
         loading = false;
         setBusy();
-        if (original) controls.about.focus();
-        else retry.focus();
+        if (original) {
+          controls.about.focus();
+        } else {
+          retry.focus();
+        }
       }
     }
   };
 
-  trigger.addEventListener('click', () => {
-    if (saving || dialog.open) return;
-    result.textContent = '';
+  trigger.addEventListener("click", () => {
+    if (saving || dialog.open) {
+      return;
+    }
+    result.textContent = "";
     dialog.showModal();
     cancel.focus();
     load();
   });
-  retry.addEventListener('click', load);
-  cancel.addEventListener('click', close);
-  dialog.addEventListener('cancel', (event) => {
+  retry.addEventListener("click", load);
+  cancel.addEventListener("click", close);
+  dialog.addEventListener("cancel", (event) => {
     event.preventDefault();
     close();
   });
-  dialog.addEventListener('click', (event) => {
+  dialog.addEventListener("click", (event) => {
     // Only the backdrop, not padding or controls inside the dialog, dismisses it.
     const box = dialog.getBoundingClientRect();
-    if (event.target === dialog && (event.clientX < box.left || event.clientX > box.right
-        || event.clientY < box.top || event.clientY > box.bottom)) close();
+    if (
+      event.target === dialog &&
+      (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom)
+    ) {
+      close();
+    }
   });
 
-  form.addEventListener('submit', async (event) => {
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
-    if (loading || saving || !original || !form.reportValidity()) return;
+    if (loading || saving || !original || !form.reportValidity()) {
+      return;
+    }
     const values = {
       about: controls.about.value,
       sex: controls.sex.value,
       // Keep the date-only ISO string: JS Date would introduce timezone conversion.
       bd_date: controls.bd_date.value || null,
     };
-    const changes = Object.fromEntries(fields
-      .filter((name) => values[name] !== original[name])
-      .map((name) => [name, values[name]]));
+    const changes = Object.fromEntries(
+      fields.filter((name) => values[name] !== original[name]).map((name) => [name, values[name]]),
+    );
     if (!Object.keys(changes).length) {
       close();
       return;
@@ -142,10 +169,12 @@
     let invalidField = null;
     try {
       const response = await fetch(dialog.dataset.apiUrl, {
-        method: 'PATCH', credentials: 'same-origin',
+        method: "PATCH",
+        credentials: "same-origin",
         headers: {
-          Accept: 'application/json', 'Content-Type': 'application/json',
-          'X-CSRFToken': form.elements.namedItem('csrfmiddlewaretoken').value,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "X-CSRFToken": form.elements.namedItem("csrfmiddlewaretoken").value,
         },
         body: JSON.stringify(changes),
       });
@@ -153,7 +182,9 @@
         status.textContent = dialog.dataset.accessError;
         return;
       }
-      if (!response.ok && response.status !== 400) throw new Error('Profile request failed');
+      if (!response.ok && response.status !== 400) {
+        throw new Error("Profile request failed");
+      }
       const data = await response.json();
       if (response.ok) {
         fill(data);
@@ -165,9 +196,11 @@
         status.textContent = dialog.dataset.saveError;
         fields.forEach((name) => {
           const message = data[name];
-          if (!message) return;
-          errors[name].textContent = Array.isArray(message) ? message.join(' ') : String(message);
-          controls[name].setAttribute('aria-invalid', 'true');
+          if (!message) {
+            return;
+          }
+          errors[name].textContent = Array.isArray(message) ? message.join(" ") : String(message);
+          controls[name].setAttribute("aria-invalid", "true");
           invalidField ||= controls[name];
         });
       }
@@ -176,8 +209,11 @@
     } finally {
       saving = false;
       setBusy();
-      if (succeeded) close();
-      else invalidField?.focus();
+      if (succeeded) {
+        close();
+      } else {
+        invalidField?.focus();
+      }
     }
   });
 })();

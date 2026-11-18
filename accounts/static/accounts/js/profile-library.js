@@ -8,7 +8,9 @@
   const formatCount = (count) => {
     const size = Number(library.dataset.numberGrouping);
     const value = String(count);
-    if (!Number.isInteger(size) || size <= 0) return value;
+    if (!Number.isInteger(size) || size <= 0) {
+      return value;
+    }
     const groups = [];
     for (let end = value.length; end > 0; end -= size) {
       groups.unshift(value.slice(Math.max(0, end - size), end));
@@ -17,12 +19,12 @@
   };
   const libraryStatus = library.querySelector("[data-library-status]");
   const announce = (message) => {
-    if (libraryStatus) libraryStatus.textContent = message;
+    if (libraryStatus) {
+      libraryStatus.textContent = message;
+    }
   };
 
-  const controlledPanel = (control) => (
-    document.getElementById(control.getAttribute("aria-controls"))
-  );
+  const controlledPanel = (control) => document.getElementById(control.getAttribute("aria-controls"));
 
   document.querySelectorAll("[data-profile-watch-toggle]").forEach((toggle) => {
     toggle.addEventListener("click", () => {
@@ -39,14 +41,11 @@
           otherPanel.hidden = !(isCurrent && willOpen);
         }
       });
-
     });
   });
 
   const dialog = document.querySelector("[data-profile-watch-dialog]");
-  const csrfInput = library.querySelector(
-    "[data-profile-library-csrf] [name=csrfmiddlewaretoken]"
-  );
+  const csrfInput = library.querySelector("[data-profile-library-csrf] [name=csrfmiddlewaretoken]");
 
   if (!dialog || !csrfInput) {
     return;
@@ -60,7 +59,9 @@
   let returnFocus = null;
 
   const focusControl = (control) => {
-    if (!control?.isConnected) return;
+    if (!control?.isConnected) {
+      return;
+    }
     const panel = control.closest("[data-profile-watch-panel]");
     const target = panel?.hidden
       ? library.querySelector(`[data-profile-watch-toggle][aria-controls="${panel.id}"]`)
@@ -79,7 +80,9 @@
   };
 
   const closeDialog = (focusTarget = pendingTrigger) => {
-    if (pendingCard?.dataset.pending === "true") return;
+    if (pendingCard?.dataset.pending === "true") {
+      return;
+    }
     returnFocus = focusTarget;
     if (typeof dialog.close === "function" && dialog.open) {
       dialog.close();
@@ -91,10 +94,10 @@
 
   const setCount = (card, difference) => {
     const panel = card.closest("[data-profile-watch-panel]");
-    if (!panel) return;
-    const toggle = document.querySelector(
-      `[aria-controls="${panel.id}"][data-profile-watch-toggle]`
-    );
+    if (!panel) {
+      return;
+    }
+    const toggle = document.querySelector(`[aria-controls="${panel.id}"][data-profile-watch-toggle]`);
     const count = toggle?.querySelector("[data-profile-watch-count]");
 
     if (count) {
@@ -113,9 +116,12 @@
         "X-CSRFToken": csrfInput.value,
         Accept: "application/json",
       },
-      body: method === "PUT" ? JSON.stringify({
-        status: card.dataset.status,
-      }) : undefined,
+      body:
+        method === "PUT"
+          ? JSON.stringify({
+              status: card.dataset.status,
+            })
+          : undefined,
     });
 
     if (!response.ok) {
@@ -141,12 +147,21 @@
 
   // Delegation also covers cards inserted into a status panel after page load.
   library.addEventListener("click", async (event) => {
-    if (!(event.target instanceof Element)) return;
+    if (!(event.target instanceof Element)) {
+      return;
+    }
     const trigger = event.target.closest("[data-library-remove]");
     if (trigger) {
       const card = trigger.closest("[data-library-movie]");
-      if (!card || trigger.disabled || card.dataset.pending === "true"
-          || card.classList.contains("is-removed") || dialog.hasAttribute("open")) return;
+      if (
+        !card ||
+        trigger.disabled ||
+        card.dataset.pending === "true" ||
+        card.classList.contains("is-removed") ||
+        dialog.hasAttribute("open")
+      ) {
+        return;
+      }
       event.preventDefault();
       pendingCard = card;
       pendingTrigger = trigger;
@@ -164,10 +179,13 @@
     }
 
     const undoButton = event.target.closest("[data-library-undo]");
-    if (!undoButton) return;
+    if (!undoButton) {
+      return;
+    }
     const card = undoButton.closest("[data-library-movie]");
-    if (!card || undoButton.disabled || card.dataset.pending === "true"
-        || !card.classList.contains("is-removed")) return;
+    if (!card || undoButton.disabled || card.dataset.pending === "true" || !card.classList.contains("is-removed")) {
+      return;
+    }
     event.preventDefault();
     const removeButton = card.querySelector("[data-library-remove]");
     const removedMessage = card.querySelector("[data-library-removed]");
@@ -247,7 +265,9 @@
   });
 
   dialog.addEventListener("cancel", (event) => {
-    if (pendingCard?.dataset.pending === "true") event.preventDefault();
+    if (pendingCard?.dataset.pending === "true") {
+      event.preventDefault();
+    }
   });
 
   dialog.addEventListener("click", (event) => {
@@ -256,6 +276,8 @@
     }
   });
   dialog.addEventListener("close", () => {
-    if (!dialog.open) finishDialog();
+    if (!dialog.open) {
+      finishDialog();
+    }
   });
 })();
