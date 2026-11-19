@@ -18,6 +18,31 @@
   console.log({ movieId, playlistsUrl, itemUrlTemplate });
 
   // 2nd Stage - functions
+  function openMenu() {
+    menu.hidden = false;
+    menu.setAttribute("aria-expanded", "true");
+  }
 
-  // 3rd Stage - response
+  function closeMenu() {
+    menu.hidden = true;
+    menu.setAttribute("aria-expanded", "false");
+  }
+
+  // 3rd Stage - handlers and response
+  toggle.addEventListener("click", () => {
+    menu.hidden ? openMenu() : closeMenu();
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!root.contains(event.target)) {
+      closeMenu();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (!menu.hidden) {
+      closeMenu();
+      toggle.focus();
+    }
+  });
 })();
