@@ -1,19 +1,23 @@
 (() => {
-  const root = document.querySelector("div[data-add-to-playlist]");
+  const root = document.querySelector("[data-add-to-playlist]");
   if (!root) {
     return;
   }
-  const url = root.dataset.playlistsUrl;
-  const playlistList = root.querySelector("ul[data-menu-list]");
-  const newMovieTitle = root.querySelector("form[data-menu-create]");
+
+  // 1st Stage - elements and data
+  const toggle = root.querySelector('button[data-action="toggle-menu"]');
+  const menu = root.querySelector("div[data-menu]");
+  const list = root.querySelector("ul[data-menu-list]");
   const errorEl = root.querySelector("p[data-menu-error]");
-  root.addEventListener("click", (event) => {
-    const addToPlaylistBtn = event.target.closest('button[data-action="toggle-menu"]');
-    if (!addToPlaylistBtn) {
-      return;
-    }
-    errorEl.hidden = true;
-    const addToPlaylistMenu = root.querySelector("div[data-menu]");
-    addToPlaylistMenu.hidden = false;
-  });
+  const createForm = root.querySelector("form[data-menu-create]");
+  const nameInput = createForm.querySelector('input[name="name"]');
+
+  const { movieId, playlistsUrl, itemUrlTemplate, msgLoadError, msgToggleError, msgEmpty } = root.dataset;
+
+  console.log({ toggle, menu, list, errorEl, createForm, nameInput });
+  console.log({ movieId, playlistsUrl, itemUrlTemplate });
+
+  // 2nd Stage - functions
+
+  // 3rd Stage - response
 })();
