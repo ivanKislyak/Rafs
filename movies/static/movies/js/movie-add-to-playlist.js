@@ -19,6 +19,8 @@
 
   // 2nd Stage - functions
   function openMenu() {
+    clearError();
+    loadPlaylists();
     menu.hidden = false;
     menu.setAttribute("aria-expanded", "true");
   }
@@ -45,4 +47,28 @@
       toggle.focus();
     }
   });
+
+  let loaded = false;
+
+  function showError(text) {
+    errorEl.textContent = text;
+    errorEl.hidden = false;
+  }
+  function clearError() {
+    errorEl.hidden = true;
+  }
+
+  async function loadPlaylists() {
+    if (loaded) {
+      return;
+    }
+    try {
+      const response = await apiRequest(`${playlistsUrl}?movie_id=${movieId}`);
+      console.log(response.data);
+      loaded = true;
+    } catch (error) {
+      console.error(error);
+      showError(msgLoadError);
+    }
+  }
 })();
