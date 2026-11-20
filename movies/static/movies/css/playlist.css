@@ -329,6 +329,16 @@
   line-height: 1.6;
 }
 
+/* Shown inside the dialog: the page error under a modal would be covered by the backdrop. */
+.playlist-dialog-error {
+  margin: -8px 0 16px;
+  padding: 10px 12px;
+  border: 1px solid color-mix(in srgb, var(--rafs-red) 55%, var(--color-border));
+  border-radius: 8px;
+  background-color: var(--color-accent-glow);
+  color: var(--rafs-red-soft);
+}
+
 .playlist-dialog-actions {
   display: flex;
   flex-wrap: wrap;
