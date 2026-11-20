@@ -19,10 +19,13 @@
                  data-kind="{{ playlist.kind }}"
                  data-msg-rename-error="{% translate 'Could not rename the playlist' %}"
                  data-msg-delete-error="{% translate 'Could not delete the playlist' %}"
-                 data-msg-empty-name="{% translate 'Enter a playlist name' %}">
-            <header class="playlist-header{% if playlist.cover %} playlist-header--with-cover{% endif %}">
+                 data-msg-empty-name="{% translate 'Enter a playlist name' %}"
+                 data-msg-cover-error="{% translate 'Could not change the playlist cover' %}">
+            <header class="playlist-header{% if playlist.cover %} playlist-header--with-cover{% endif %}"
+                    data-playlist-header>
                 {% if playlist.cover %}
                     <img class="playlist-cover"
+                         data-playlist-cover
                          src="{{ playlist.cover.url }}"
                          onerror="this.remove()"
                          width="160"
@@ -70,6 +73,10 @@
                                 <span>{% translate "Public playlist" %}</span>
                             </label>
                             {% if playlist.kind != "FAVOURITE" %}
+                                <input type="file" accept="image/*" data-cover-input hidden>
+                                <button class="playlist-cover-button"
+                                        type="button"
+                                        data-action="change-cover">{% translate "Change cover" %}</button>
                                 <button class="playlist-delete"
                                         type="button"
                                         data-action="delete-playlist">{% translate "Delete playlist" %}</button>

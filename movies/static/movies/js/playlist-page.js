@@ -10,10 +10,13 @@
   const errorEl = root.querySelector("[data-playlist-error]");
   const nameEl = root.querySelector("[data-playlist-name]");
   const publicToggle = root.querySelector("[data-playlist-public]");
+  const header = root.querySelector("[data-playlist-header]");
 
   // Owner-only controls: they are missing for guests and for the Favourite playlist.
   const renameButton = root.querySelector('[data-action="rename"]');
   const renameInput = root.querySelector("[data-rename-input]");
+  const coverButton = root.querySelector('[data-action="change-cover"]');
+  const coverInput = root.querySelector("[data-cover-input]");
   const deleteButton = root.querySelector('[data-action="delete-playlist"]');
   const deleteDialog = root.querySelector("[data-delete-dialog]");
   const deleteDialogName = deleteDialog?.querySelector("[data-delete-dialog-name]");
@@ -131,6 +134,47 @@
     }
   }
 
+  // Cover: the <img> exists only when the playlist already had a cover, so create it on the first upload.
+  function showCover(url) {
+    let coverImg = header.querySelector("[data-playlist-cover]");
+    if (!coverImg) {
+      coverImg = document.createElement("img");
+      coverImg.className = "playlist-cover";
+      coverImg.dataset.playlistCover = "";
+      coverImg.width = 160;
+      coverImg.height = 160;
+      coverImg.alt = "";
+      header.prepend(coverImg);
+      header.classList.add("playlist-header--with-cover");
+    }
+    coverImg.src = url;
+  }
+
+  async function uploadCover() {
+    const file = coverInput.files[0];
+    if (!file) {
+      return;
+    }
+    const formData = new FormData();
+    formData.append("cover", file);
+
+    coverButton.disabled = true;
+    clearError();
+    try {
+      const response = await apiRequest(root.dataset.playlistUrl, {
+        method: "PATCH",
+        body: formData,
+      });
+      showCover(response.data.cover);
+    } catch (error) {
+      showError(error.data?.cover?.[0] ?? error.data?.detail ?? root.dataset.msgCoverError);
+    } finally {
+      coverButton.disabled = false;
+      // Reset the input so choosing the same file again still fires "change".
+      coverInput.value = "";
+    }
+  }
+
   function openDeleteDialog() {
     deleteErrorEl.hidden = true;
     deleteDialog.showModal();
@@ -169,6 +213,9 @@
       cancelRename();
     }
   });
+
+  coverButton?.addEventListener("click", () => coverInput.click());
+  coverInput?.addEventListener("change", uploadCover);
 
   deleteButton?.addEventListener("click", openDeleteDialog);
   cancelDeleteButton?.addEventListener("click", () => deleteDialog.close());

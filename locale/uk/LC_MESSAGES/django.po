@@ -1987,3 +1987,11 @@ msgstr[3] "%(counter)s фільму"
 #: accounts/templates/accounts/profile.html
 msgid "Enter a playlist name"
 msgstr "Введіть назву плейлиста"
+
+#: movies/templates/movies/playlist.html
+msgid "Change cover"
+msgstr "Змінити обкладинку"
+
+#: movies/templates/movies/playlist.html
+msgid "Could not change the playlist cover"
+msgstr "Не вдалося змінити обкладинку плейліста"

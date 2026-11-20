@@ -279,7 +279,7 @@
 }
 
 /* Owner controls: rename sits beside the title, delete trails the meta row. */
-.playlist-title-action, .playlist-delete, .playlist-dialog-button {
+.playlist-title-action, .playlist-cover-button, .playlist-delete, .playlist-dialog-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -304,7 +304,7 @@
   stroke-linejoin: round;
 }
 
-.playlist-title-action:hover, .playlist-dialog-button:hover {
+.playlist-title-action:hover, .playlist-cover-button:hover, .playlist-dialog-button:hover {
   background: var(--color-surface-hover);
   color: var(--color-text);
 }
@@ -320,12 +320,12 @@
   color: var(--color-accent);
 }
 
-.playlist-title-action:focus-visible, .playlist-delete:focus-visible, .playlist-dialog-button:focus-visible {
+.playlist-title-action:focus-visible, .playlist-cover-button:focus-visible, .playlist-delete:focus-visible, .playlist-dialog-button:focus-visible {
   outline: 2px solid var(--color-focus-visible-outline);
   outline-offset: 2px;
 }
 
-:is(.playlist-title-action, .playlist-delete, .playlist-dialog-button):disabled {
+:is(.playlist-title-action, .playlist-cover-button, .playlist-delete, .playlist-dialog-button):disabled {
   opacity: .5;
   cursor: progress;
 }

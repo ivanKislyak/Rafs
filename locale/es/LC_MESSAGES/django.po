@@ -1986,3 +1986,11 @@ msgstr[2] "%(counter)s películas"
 #: accounts/templates/accounts/profile.html
 msgid "Enter a playlist name"
 msgstr "Introduce un nombre para la lista de reproducción"
+
+#: movies/templates/movies/playlist.html
+msgid "Change cover"
+msgstr "Cambiar portada"
+
+#: movies/templates/movies/playlist.html
+msgid "Could not change the playlist cover"
+msgstr "No se pudo cambiar la portada de la lista de reproducción"

@@ -1985,3 +1985,11 @@ msgstr[1] "%(counter)s фильм"
 #: accounts/templates/accounts/profile.html
 msgid "Enter a playlist name"
 msgstr "Плейлист атауын енгізіңіз"
+
+#: movies/templates/movies/playlist.html
+msgid "Change cover"
+msgstr "Мұқабаны өзгерту"
+
+#: movies/templates/movies/playlist.html
+msgid "Could not change the playlist cover"
+msgstr "Плейлист мұқабасын өзгерту мүмкін болмады"
