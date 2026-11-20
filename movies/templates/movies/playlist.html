@@ -18,7 +18,8 @@
                  data-profile-url="{% url 'profile' playlist.owner.username %}"
                  data-kind="{{ playlist.kind }}"
                  data-msg-rename-error="{% translate 'Could not rename the playlist' %}"
-                 data-msg-delete-error="{% translate 'Could not delete the playlist' %}">
+                 data-msg-delete-error="{% translate 'Could not delete the playlist' %}"
+                 data-msg-empty-name="{% translate 'Enter a playlist name' %}">
             <header class="playlist-header{% if playlist.cover %} playlist-header--with-cover{% endif %}">
                 {% if playlist.cover %}
                     <img class="playlist-cover"
@@ -37,6 +38,12 @@
                     <div class="playlist-title-row">
                         <h1 class="playlist-title" data-playlist-name>{{ playlist.name }}</h1>
                         {% if is_owner and playlist.kind != "FAVOURITE" %}
+                            <input class="playlist-title-input"
+                                   type="text"
+                                   data-rename-input
+                                   aria-label="{% translate 'Rename playlist' %}"
+                                   autocomplete="off"
+                                   hidden>
                             <button class="playlist-title-action"
                                     type="button"
                                     data-action="rename"
@@ -138,7 +145,7 @@
                         aria-labelledby="playlist-delete-title"
                         aria-describedby="playlist-delete-description">
                     <p class="page-kicker">{% translate "Delete playlist" %}</p>
-                    <h2 class="playlist-dialog-title" id="playlist-delete-title">{{ playlist.name }}</h2>
+                    <h2 class="playlist-dialog-title" id="playlist-delete-title" data-delete-dialog-name>{{ playlist.name }}</h2>
                     <p class="playlist-dialog-text" id="playlist-delete-description">
                         {% translate "The playlist will be deleted for good. The movies themselves stay on RAFS." %}
                     </p>

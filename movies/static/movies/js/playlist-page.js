@@ -12,8 +12,11 @@
   const publicToggle = root.querySelector("[data-playlist-public]");
 
   // Owner-only controls: they are missing for guests and for the Favourite playlist.
+  const renameButton = root.querySelector('[data-action="rename"]');
+  const renameInput = root.querySelector("[data-rename-input]");
   const deleteButton = root.querySelector('[data-action="delete-playlist"]');
   const deleteDialog = root.querySelector("[data-delete-dialog]");
+  const deleteDialogName = deleteDialog?.querySelector("[data-delete-dialog-name]");
   const deleteErrorEl = deleteDialog?.querySelector("[data-delete-error]");
   const cancelDeleteButton = deleteDialog?.querySelector('[data-action="close-dialog"]');
   const confirmDeleteButton = deleteDialog?.querySelector('[data-action="confirm-delete"]');
@@ -72,6 +75,62 @@
     }
   }
 
+  // Rename: the title is swapped for an input. Enter or leaving the input saves, Esc cancels.
+  function startRename() {
+    clearError();
+    renameInput.value = nameEl.textContent.trim();
+    nameEl.hidden = true;
+    renameButton.hidden = true;
+    renameInput.hidden = false;
+    renameInput.focus();
+    renameInput.select();
+  }
+
+  function finishRename() {
+    renameInput.hidden = true;
+    renameInput.disabled = false;
+    nameEl.hidden = false;
+    renameButton.hidden = false;
+  }
+
+  function cancelRename() {
+    finishRename();
+    renameButton.focus();
+  }
+
+  async function saveRename() {
+    // Already closed (Esc) or the request is running (Enter and then blur).
+    if (renameInput.hidden || renameInput.disabled) {
+      return;
+    }
+    const newName = renameInput.value.trim();
+    if (!newName) {
+      finishRename();
+      showError(root.dataset.msgEmptyName);
+      return;
+    }
+    if (newName === nameEl.textContent.trim()) {
+      finishRename();
+      return;
+    }
+
+    renameInput.disabled = true;
+    clearError();
+    try {
+      const response = await apiRequest(root.dataset.playlistUrl, {
+        method: "PATCH",
+        body: { name: newName },
+      });
+      nameEl.textContent = response.data.name;
+      deleteDialogName.textContent = response.data.name;
+      finishRename();
+    } catch (error) {
+      renameInput.disabled = false;
+      renameInput.focus();
+      showError(error.data?.name?.[0] ?? error.data?.detail ?? root.dataset.msgRenameError);
+    }
+  }
+
   function openDeleteDialog() {
     deleteErrorEl.hidden = true;
     deleteDialog.showModal();
@@ -99,6 +158,17 @@
   });
 
   publicToggle?.addEventListener("change", togglePublic);
+
+  renameButton?.addEventListener("click", startRename);
+  renameInput?.addEventListener("blur", saveRename);
+  renameInput?.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      saveRename();
+    } else if (event.key === "Escape") {
+      cancelRename();
+    }
+  });
 
   deleteButton?.addEventListener("click", openDeleteDialog);
   cancelDeleteButton?.addEventListener("click", () => deleteDialog.close());

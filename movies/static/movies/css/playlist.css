@@ -69,6 +69,33 @@
   line-height: 1.2;
 }
 
+/* Rename: the input takes the title's place and keeps its size. */
+.playlist-title-input {
+  flex: 1;
+  min-width: 0;
+  padding: 2px 8px;
+  border: 1px solid var(--color-accent);
+  border-radius: 6px;
+  outline: none;
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+  font: inherit;
+  font-size: clamp(1.55rem, 4vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -.035em;
+  line-height: 1.2;
+}
+
+.playlist-title-input:focus-visible {
+  outline: 2px solid var(--color-focus-visible-outline);
+  outline-offset: 2px;
+}
+
+.playlist-title-input:disabled {
+  opacity: .5;
+  cursor: progress;
+}
+
 .playlist-meta {
   display: flex;
   flex-wrap: wrap;
