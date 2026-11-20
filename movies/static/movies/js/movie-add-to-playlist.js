@@ -91,4 +91,25 @@
       showError(msgLoadError);
     }
   }
+
+  list.addEventListener("change", async(event) => {
+    const box = event.target;
+    if (!box.matches('input[type="checkbox"]')) return;
+    box.disabled = true
+    const inputStatus = box.checked
+    clearError();
+    try {
+      await apiRequest(
+        itemUrlTemplate
+        .replace("__PL__", box.dataset.playlistId)
+        .replace("__MOVIE__", movieId), {method:inputStatus?'PUT':'DELETE'}
+      )
+    } catch (error) {
+      console.error(error);
+      showError(msgToggleError)
+      box.checked = (!inputStatus)
+    } finally {
+      box.disabled = false;
+    }
+  })
 })();
