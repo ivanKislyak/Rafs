@@ -225,6 +225,7 @@
 
 .movie-playlist-create {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   padding-top: 10px;
   border-top: 1px solid var(--color-border);
@@ -268,6 +269,31 @@
 .movie-playlist-create-button:disabled {
   opacity: .5;
   cursor: progress;
+}
+
+/* "Private playlist" checkbox: its own row under the name input and the Create button. */
+.movie-playlist-private {
+  display: flex;
+  flex-basis: 100%;
+  align-items: center;
+  gap: 10px;
+  min-height: 36px;
+  color: var(--color-text-muted);
+  font-size: .85rem;
+  cursor: pointer;
+}
+
+.movie-playlist-private input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--color-action);
+  cursor: pointer;
+}
+
+.movie-playlist-private input:focus-visible {
+  outline: 2px solid var(--color-focus-visible-outline);
+  outline-offset: 2px;
 }
 
 @media (max-width: 600px) {

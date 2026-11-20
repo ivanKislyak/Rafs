@@ -10,6 +10,7 @@
   const errorEl = root.querySelector("p[data-menu-error]");
   const createForm = root.querySelector("form[data-menu-create]");
   const nameInput = createForm.querySelector('input[name="name"]');
+  const privateInput = createForm.querySelector('input[name="is_private"]');
   const { movieId, playlistsUrl, itemUrlTemplate, msgLoadError, msgToggleError, msgEmpty } = root.dataset;
 
   function openMenu() {
@@ -130,7 +131,7 @@
     try {
       const response1 = await apiRequest(playlistsUrl, {
         method: "POST",
-        body: { name: name },
+        body: { name: name, is_public: !privateInput.checked },
       });
 
       playlist = response1.data;

@@ -100,6 +100,10 @@
                                placeholder="{% translate 'New playlist' %}"
                                required>
                         <button class="movie-playlist-create-button" type="submit">{% translate "Create" %}</button>
+                        <label class="movie-playlist-private">
+                            <input type="checkbox" name="is_private" checked>
+                            <span>{% translate "Private playlist" %}</span>
+                        </label>
                     </form>
                 </div>
             </div>
