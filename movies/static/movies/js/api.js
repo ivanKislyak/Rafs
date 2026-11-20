@@ -15,7 +15,9 @@ function getCookie(field) {
 }
 
 async function apiRequest(url, { method = "GET", body = null } = {}) {
-  const headers = { "Content-Type": "application/json" };
+  // FormData (file upload) goes as is: the browser sets Content-Type with the boundary itself.
+  const isFormData = body instanceof FormData;
+  const headers = isFormData ? {} : { "Content-Type": "application/json" };
   if (["POST", "PUT", "PATCH", "DELETE"].includes(method.toUpperCase())) {
     headers["X-CSRFToken"] = getCookie("csrftoken");
   }
@@ -23,7 +25,7 @@ async function apiRequest(url, { method = "GET", body = null } = {}) {
     method: method,
     credentials: "same-origin",
     headers: headers,
-    body: body !== null ? JSON.stringify(body) : null,
+    body: isFormData || body === null ? body : JSON.stringify(body),
   };
   const response = await fetch(url, options);
 
