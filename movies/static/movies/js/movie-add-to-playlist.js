@@ -10,14 +10,7 @@
   const errorEl = root.querySelector("p[data-menu-error]");
   const createForm = root.querySelector("form[data-menu-create]");
   const nameInput = createForm.querySelector('input[name="name"]');
-  const {
-    movieId,
-    playlistsUrl,
-    itemUrlTemplate,
-    msgLoadError,
-    msgToggleError,
-    msgEmpty,
-  } = root.dataset;
+  const { movieId, playlistsUrl, itemUrlTemplate, msgLoadError, msgToggleError, msgEmpty } = root.dataset;
 
   function openMenu() {
     clearError();
@@ -101,17 +94,16 @@
 
   list.addEventListener("change", async (event) => {
     const box = event.target;
-    if (!box.matches('input[type="checkbox"]')) return;
+    if (!box.matches('input[type="checkbox"]')) {
+      return;
+    }
     box.disabled = true;
     const inputStatus = box.checked;
     clearError();
     try {
-      await apiRequest(
-        itemUrlTemplate
-          .replace("__PL__", box.dataset.playlistId)
-          .replace("__MOVIE__", movieId),
-        { method: inputStatus ? "PUT" : "DELETE" },
-      );
+      await apiRequest(itemUrlTemplate.replace("__PL__", box.dataset.playlistId).replace("__MOVIE__", movieId), {
+        method: inputStatus ? "PUT" : "DELETE",
+      });
     } catch (error) {
       console.error(error);
       showError(msgToggleError);
@@ -125,7 +117,7 @@
     event.preventDefault();
     const name = nameInput.value.trim();
     if (!name) {
-      nameInput.value = '';
+      nameInput.value = "";
       nameInput.focus();
       return;
     }
@@ -140,26 +132,21 @@
         method: "POST",
         body: { name: name },
       });
-      
+
       playlist = response1.data;
-      const response2 = await apiRequest(
-        itemUrlTemplate
-          .replace("__PL__", playlist.id)
-          .replace("__MOVIE__", movieId),
-        { method: "PUT" },
-      );
+      await apiRequest(itemUrlTemplate.replace("__PL__", playlist.id).replace("__MOVIE__", movieId), { method: "PUT" });
       playlist.contains_movie = true;
     } catch (error) {
-      const errorResponse =
-        (error.data?.name?.[0] ?? error.data?.detail) || msgToggleError;
+      const errorResponse = (error.data?.name?.[0] ?? error.data?.detail) || msgToggleError;
       showError(errorResponse);
-      console.error(errorResponse);
+      console.error(error);
     } finally {
       button.disabled = false;
     }
 
     if (playlist) {
-      list.querySelector('p') ? list.replaceChildren() : list.prepend(renderRow(playlist));
+      const rowPl = renderRow(playlist);
+      list.querySelector("p") ? list.replaceChildren(rowPl) : list.prepend(rowPl);
       createForm.reset();
     }
   });
