@@ -44,24 +44,16 @@
     }
   }
 
-  list.addEventListener("click", (event) => {
-    const buttonRemove = event.target.closest('[data-action="remove"]');
-    if (!buttonRemove) {
-      return;
-    }
-    removeItem(buttonRemove);
-  });
-
-  publicToggle?.addEventListener("change", async () => {
+  async function togglePublic() {
     const isPublic = publicToggle.checked;
     publicToggle.disabled = true;
     clearError();
 
     try {
-      const url = root.dataset.playlistUrl;
-      const response = await apiRequest(url, {
-        method: "PUT",
-        body: { is_public: isPublic, name: nameEl.textContent.trim() },
+      // PATCH sends only is_public, so it never overwrites the name.
+      const response = await apiRequest(root.dataset.playlistUrl, {
+        method: "PATCH",
+        body: { is_public: isPublic },
       });
 
       publicToggle.checked = response.data.is_public;
@@ -71,5 +63,15 @@
     } finally {
       publicToggle.disabled = false;
     }
+  }
+
+  list.addEventListener("click", (event) => {
+    const buttonRemove = event.target.closest('[data-action="remove"]');
+    if (!buttonRemove) {
+      return;
+    }
+    removeItem(buttonRemove);
   });
+
+  publicToggle?.addEventListener("change", togglePublic);
 })();
