@@ -85,14 +85,14 @@ class LikedTitlesAPITests(APITestCase):
         self.client.force_authenticate(self.user)
 
     def item_url(self, movie):
-        return reverse("movies:playlist_item_api", kwargs={"pl_id": self.liked.pk, "movie_id": movie.pk})
+        return reverse("movies:playlist_item_api", kwargs={"pl_external_id": self.liked.external_id, "movie_id": movie.pk})
 
     def test_heart_state_is_loaded_from_the_list_and_detail_endpoints(self):
         PlaylistItem.objects.create(playlist=self.liked, movie=self.movie)
         playlists = self.client.get(reverse("movies:playlist_create_api")).json()
         favourite = next(row for row in playlists if row["kind"] == KindChoice.FAVOURITE)
-        self.assertEqual(favourite["id"], self.liked.pk)
-        detail = self.client.get(reverse("movies:playlist_api", kwargs={"pl_id": favourite["id"]})).json()
+        self.assertEqual(favourite["id"], self.liked.external_id)
+        detail = self.client.get(reverse("movies:playlist_api", kwargs={"pl_external_id": favourite["id"]})).json()
         self.assertEqual([item["movie"]["id"] for item in detail["items"]], [self.movie.pk])
 
     def test_like_and_unlike(self):
@@ -109,19 +109,19 @@ class LikedTitlesAPITests(APITestCase):
 
     def test_cannot_like_into_someone_elses_liked_titles(self):
         other = liked_titles(make_user("other"))
-        url = reverse("movies:playlist_item_api", kwargs={"pl_id": other.pk, "movie_id": self.movie.pk})
+        url = reverse("movies:playlist_item_api", kwargs={"pl_external_id": other.external_id, "movie_id": self.movie.pk})
         self.assertEqual(self.client.put(url).status_code, 404)
         self.assertFalse(other.items.exists())
 
     def test_liked_titles_is_hidden_from_other_users(self):
-        url = reverse("movies:playlist_api", kwargs={"pl_id": self.liked.pk})
+        url = reverse("movies:playlist_api", kwargs={"pl_external_id": self.liked.external_id})
         self.client.force_authenticate(make_user("stranger"))
         self.assertEqual(self.client.get(url).status_code, 404)
 
     def test_cover_can_be_reset_to_the_default(self):
         # The trash button on the playlist page sends PATCH {"cover": null}.
         Playlist.objects.filter(pk=self.liked.pk).update(cover="playlists/covers/mine.png")
-        url = reverse("movies:playlist_api", kwargs={"pl_id": self.liked.pk})
+        url = reverse("movies:playlist_api", kwargs={"pl_external_id": self.liked.external_id})
         response = self.client.patch(url, {"cover": None}, format="json")
         self.assertEqual(response.status_code, 200)
         self.assertIsNone(response.json()["cover"])
@@ -145,7 +145,7 @@ class LikedTitlesPagesTests(TestCase):
         grid = html[html.index("data-playlists-list"):html.index("data-playlists-empty")]
         tile, first_card = grid.index("profile-playlist-new"), grid.index("profile-playlist-card")
         self.assertLess(tile, first_card)
-        self.assertIn(f'data-playlist-id="{self.liked.pk}"', grid[first_card:first_card + 300])
+        self.assertIn(f'data-playlist-id="{self.liked.external_id}"', grid[first_card:first_card + 300])
         self.assertIn("images/favPl.png", grid)
         self.assertIn("<span>Liked Titles</span>", grid)
 
@@ -170,7 +170,7 @@ class LikedTitlesPagesTests(TestCase):
     def test_playlist_page_allows_cover_but_not_rename_delete_or_privacy(self):
         PlaylistItem.objects.create(playlist=self.liked, movie=self.movie)
         self.client.force_login(self.user)
-        response = self.client.get(reverse("movies:playlist", args=[self.liked.pk]))
+        response = self.client.get(reverse("movies:playlist", args=[self.liked.external_id]))
         self.assertContains(response, '<h1 class="playlist-title" data-playlist-name>Liked Titles</h1>', html=True)
         self.assertContains(response, 'data-action="change-cover"')
         self.assertContains(response, "images/favPl.png")
@@ -182,7 +182,7 @@ class LikedTitlesPagesTests(TestCase):
 
     def reset_button(self, playlist):
         self.client.force_login(self.user)
-        html = self.client.get(reverse("movies:playlist", args=[playlist.pk])).content.decode()
+        html = self.client.get(reverse("movies:playlist", args=[playlist.external_id])).content.decode()
         match = re.search(r'<button class="playlist-cover-reset".*?>', html, re.S)
         return match.group(0) if match else None
 
@@ -199,7 +199,7 @@ class LikedTitlesPagesTests(TestCase):
         custom = Playlist.objects.create(owner=self.user, name="Mine", cover="playlists/covers/mine.png")
         button = self.reset_button(custom)
         self.assertIn('aria-label="Remove cover"', button)
-        self.assertNotIn("data-default-cover", self.client.get(reverse("movies:playlist", args=[custom.pk])).content.decode())
+        self.assertNotIn("data-default-cover", self.client.get(reverse("movies:playlist", args=[custom.external_id])).content.decode())
 
     def test_reset_button_label_is_translated(self):
         Playlist.objects.filter(pk=self.liked.pk).update(cover="playlists/covers/mine.png")
@@ -211,13 +211,13 @@ class LikedTitlesPagesTests(TestCase):
             owner=self.user, name="Shared", is_public=True, cover="playlists/covers/mine.png",
         )
         self.client.force_login(make_user("guest"))
-        response = self.client.get(reverse("movies:playlist", args=[custom.pk]))
+        response = self.client.get(reverse("movies:playlist", args=[custom.external_id]))
         self.assertNotContains(response, "playlist-cover-reset")
 
     def test_custom_playlist_page_keeps_its_controls(self):
         custom = Playlist.objects.create(owner=self.user, name="Mine")
         self.client.force_login(self.user)
-        response = self.client.get(reverse("movies:playlist", args=[custom.pk]))
+        response = self.client.get(reverse("movies:playlist", args=[custom.external_id]))
         for marker in ("data-playlist-public", 'data-action="rename"', 'data-action="delete-playlist"'):
             self.assertContains(response, marker)
         self.assertNotContains(response, "playlist-private-note")
@@ -245,7 +245,7 @@ class LikeHeartRenderingTests(TestCase):
         pages = {
             "catalog": reverse("movies:catalog"),
             "movie": reverse("movies:detail", args=[self.movie.pk]),
-            "playlist": reverse("movies:playlist", args=[playlist.pk]),
+            "playlist": reverse("movies:playlist", args=[playlist.external_id]),
             "review form": reverse("movies:review_form", args=[self.movie.pk]),
             "reviews feed": reverse("movies:show_reviews"),
             "profile library": reverse("profile", args=[self.user.username]),
@@ -284,7 +284,7 @@ class LikeHeartRenderingTests(TestCase):
         playlist = Playlist.objects.create(owner=self.user, name="Once")
         for url in (
             reverse("movies:detail", args=[self.movie.pk]),
-            reverse("movies:playlist", args=[playlist.pk]),
+            reverse("movies:playlist", args=[playlist.external_id]),
             reverse("profile", args=[self.user.username]),
         ):
             with self.subTest(url=url):

@@ -30,13 +30,13 @@ class PlaylistAPITests(APITestCase):
             kind=KindChoice.CUSTOM,
             is_public=True
         )
-        self.url = reverse('movies:playlist_api', kwargs={"pl_id": self.playlist.pk})
+        self.url = reverse('movies:playlist_api', kwargs={"pl_external_id": self.playlist.external_id})
         self.client.force_authenticate(user=self.user)
 
     def test_authenticated_user_gets_existing_playlist(self):
         response = self.client.get(self.url)
         expected_response = {
-            "id": self.playlist.pk,
+            "id": self.playlist.external_id,
             "name": self.playlist.name,
             "kind": self.playlist.kind,
             "owner": self.user.pk,
@@ -60,7 +60,7 @@ class PlaylistAPITests(APITestCase):
             is_public=False
         )
         response = self.client.get(
-            reverse('movies:playlist_api', kwargs={"pl_id": other_private_playlist.pk})
+            reverse('movies:playlist_api', kwargs={"pl_external_id": other_private_playlist.external_id})
         )
         self.assertEqual(response.status_code, 404)
 
@@ -72,7 +72,7 @@ class PlaylistAPITests(APITestCase):
 
         response = self.client.put(self.url, data=raw_data, format="json")
         expected_response = {
-            "id": self.playlist.pk,
+            "id": self.playlist.external_id,
             "name": "My private Playlist",
             "kind": self.playlist.kind,
             "owner": self.user.pk,
@@ -109,7 +109,7 @@ class PlaylistCreateAPITests(PlaylistTestMixin, APITestCase):
             format="json",
         )
         self.assertEqual(response.status_code, 201)
-        playlist = Playlist.objects.get(pk=response.json()["id"])
+        playlist = Playlist.objects.get(external_id=response.json()["id"])
         self.assertEqual(playlist.owner, self.user)
         self.assertEqual(playlist.kind, KindChoice.CUSTOM)
         self.assertEqual(playlist.name, "Weekend")
@@ -146,7 +146,7 @@ class PlaylistCreateAPITests(PlaylistTestMixin, APITestCase):
                 self.url, {"name": "With cover", "is_public": "true", "cover": cover}, format="multipart",
             )
             self.assertEqual(response.status_code, 201)
-            playlist = Playlist.objects.get(pk=response.json()["id"])
+            playlist = Playlist.objects.get(external_id=response.json()["id"])
             self.assertTrue(playlist.is_public)
             self.assertTrue(playlist.cover.name.startswith("playlists/covers/"))
 
@@ -199,19 +199,19 @@ class PlaylistListAPITests(PlaylistTestMixin, APITestCase):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         data = {row["id"]: row for row in response.json()}
-        self.assertEqual(set(data), {self.with_movie.pk, self.without_movie.pk, self.liked.pk})
-        self.assertEqual(data[self.liked.pk]["kind"], KindChoice.FAVOURITE)
-        self.assertEqual(data[self.liked.pk]["movies_count"], 0)
-        self.assertEqual(data[self.with_movie.pk]["movies_count"], 2)
-        self.assertEqual(data[self.without_movie.pk]["movies_count"], 1)
-        self.assertIsNone(data[self.with_movie.pk]["contains_movie"])
+        self.assertEqual(set(data), {self.with_movie.external_id, self.without_movie.external_id, self.liked.external_id})
+        self.assertEqual(data[self.liked.external_id]["kind"], KindChoice.FAVOURITE)
+        self.assertEqual(data[self.liked.external_id]["movies_count"], 0)
+        self.assertEqual(data[self.with_movie.external_id]["movies_count"], 2)
+        self.assertEqual(data[self.without_movie.external_id]["movies_count"], 1)
+        self.assertIsNone(data[self.with_movie.external_id]["contains_movie"])
 
     def test_contains_movie_flag(self):
         response = self.client.get(self.url, {"movie_id": self.movie.pk})
         self.assertEqual(response.status_code, 200)
         flags = {row["id"]: row["contains_movie"] for row in response.json()}
         self.assertEqual(
-            flags, {self.with_movie.pk: True, self.without_movie.pk: False, self.liked.pk: False},
+            flags, {self.with_movie.external_id: True, self.without_movie.external_id: False, self.liked.external_id: False},
         )
 
     def test_invalid_movie_id_is_rejected(self):
@@ -246,7 +246,7 @@ class PlaylistUpdateDeleteAPITests(PlaylistTestMixin, APITestCase):
 
     @staticmethod
     def url(playlist):
-        return reverse("movies:playlist_api", kwargs={"pl_id": playlist.pk})
+        return reverse("movies:playlist_api", kwargs={"pl_external_id": playlist.external_id})
 
     def test_patch_renames_and_keeps_other_fields(self):
         self.playlist.is_public = True
@@ -287,7 +287,7 @@ class PlaylistUpdateDeleteAPITests(PlaylistTestMixin, APITestCase):
         foreign = Playlist.objects.create(owner=self.other, name="Theirs")
         self.assertEqual(self.client.delete(self.url(foreign)).status_code, 404)
         self.assertTrue(Playlist.objects.filter(pk=foreign.pk).exists())
-        missing = reverse("movies:playlist_api", kwargs={"pl_id": 999999})
+        missing = reverse("movies:playlist_api", kwargs={"pl_external_id": 999999})
         self.assertEqual(self.client.delete(missing).status_code, 404)
 
     def test_favourite_cannot_be_deleted(self):
@@ -327,7 +327,7 @@ class PlaylistUpdateDeleteAPITests(PlaylistTestMixin, APITestCase):
     def test_item_put_returns_movie_with_request_context(self):
         movie = Movie.objects.create(name="Added")
         response = self.client.put(
-            reverse("movies:playlist_item_api", kwargs={"pl_id": self.playlist.pk, "movie_id": movie.pk}),
+            reverse("movies:playlist_item_api", kwargs={"pl_external_id": self.playlist.external_id, "movie_id": movie.pk}),
             {}, format="json",
         )
         self.assertEqual(response.status_code, 201)
@@ -417,25 +417,25 @@ class PlaylistSearchTests(PlaylistTestMixin, APITestCase):
 
     def test_public_playlist_is_found(self):
         results = self.search()
-        self.assertEqual([row["id"] for row in results], [self.playlist.pk])
-        self.assertEqual(results[0]["url"], reverse("movies:playlist", args=[self.playlist.pk]))
+        self.assertEqual([row["id"] for row in results], [self.playlist.external_id])
+        self.assertEqual(results[0]["url"], reverse("movies:playlist", args=[self.playlist.external_id]))
         self.assertEqual(results[0]["title"], "Zeppelinwatch marathon")
         self.assertEqual(results[0]["description"], "@searchowner")
 
     def test_found_by_owner_username(self):
-        self.assertEqual([row["id"] for row in self.search("searchowner")], [self.playlist.pk])
+        self.assertEqual([row["id"] for row in self.search("searchowner")], [self.playlist.external_id])
 
     def test_private_playlist_is_never_indexed_or_found(self):
         private = Playlist.objects.create(owner=self.owner, name="Zeppelinwatch secret")
         self.assertFalse(GlobalSearchIndex.objects.filter(
             content_type=ContentType.objects.get_for_model(Playlist), object_id=private.pk,
         ).exists())
-        self.assertNotIn(private.pk, [row["id"] for row in self.search()])
+        self.assertNotIn(private.external_id, [row["id"] for row in self.search()])
 
     def test_not_found_after_switching_to_private(self):
         self.client.force_authenticate(self.owner)
         response = self.client.patch(
-            reverse("movies:playlist_api", kwargs={"pl_id": self.playlist.pk}),
+            reverse("movies:playlist_api", kwargs={"pl_external_id": self.playlist.external_id}),
             {"is_public": False}, format="json",
         )
         self.assertEqual(response.status_code, 200)
@@ -452,12 +452,12 @@ class PlaylistSearchTests(PlaylistTestMixin, APITestCase):
         self.playlist.name = "Airshipnight"
         self.playlist.save()
         self.assertEqual(self.search(), [])
-        self.assertEqual([row["id"] for row in self.search("airshipnight")], [self.playlist.pk])
+        self.assertEqual([row["id"] for row in self.search("airshipnight")], [self.playlist.external_id])
 
     def test_not_found_after_delete(self):
         self.client.force_authenticate(self.owner)
         response = self.client.delete(
-            reverse("movies:playlist_api", kwargs={"pl_id": self.playlist.pk}),
+            reverse("movies:playlist_api", kwargs={"pl_external_id": self.playlist.external_id}),
         )
         self.assertEqual(response.status_code, 204)
         self.assertFalse(self.document().exists())
@@ -466,3 +466,4 @@ class PlaylistSearchTests(PlaylistTestMixin, APITestCase):
     def test_playlists_of_deleted_owner_are_hidden(self):
         User.objects.filter(pk=self.owner.pk).update(is_deleted=True)
         self.assertEqual(self.search(), [])
+
