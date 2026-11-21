@@ -50,6 +50,18 @@
   font-size: .8rem;
 }
 
+/* Wraps the movie link so the like heart can sit on its 48px poster (top-right corner). */
+.review-card-movie-wrap {
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.review-card-movie-wrap .like-heart {
+  right: auto;
+  left: calc(48px - var(--like-size) - var(--like-inset));
+}
+
 .review-card-movie {
   display: flex;
   align-items: center;

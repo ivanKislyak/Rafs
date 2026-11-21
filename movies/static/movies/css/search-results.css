@@ -96,6 +96,12 @@
   min-height: 168px;
 }
 
+/* Like heart on the movie poster (the left 112px column of the card). */
+.search-result-card--movie .like-heart {
+  right: auto;
+  left: calc(112px - var(--like-size) - var(--like-inset));
+}
+
 .search-result-cover-wrap {
   display: block;
   overflow: hidden;
@@ -353,6 +359,12 @@
   .search-result-movie-link {
     grid-template-columns: 86px minmax(0, 1fr);
     min-height: 132px;
+  }
+
+  .search-result-card--movie .like-heart {
+    --like-size: 28px;
+    --like-inset: 6px;
+    left: calc(86px - var(--like-size) - var(--like-inset));
   }
 
   .search-result-cover {

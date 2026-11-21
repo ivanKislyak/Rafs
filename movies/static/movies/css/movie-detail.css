@@ -10,7 +10,7 @@
   margin-bottom: 20px;
   color: var(--color-text-muted);
   text-decoration: none;
-  font-size: .9rem;
+  font-size: 0.9rem;
 }
 
 .movie-back-link:hover {
@@ -24,9 +24,14 @@
   align-items: start;
 }
 
+/* The wrapper holds the grid placement so the like heart can sit on the poster. */
+.movie-detail-cover-wrap {
+  position: relative;
+  grid-row: 1 / 3;
+}
+
 .movie-detail-cover {
   display: block;
-  grid-row: 1 / 3;
   width: 100%;
   aspect-ratio: 2 / 3;
   object-fit: contain;
@@ -43,17 +48,18 @@
   overflow-wrap: anywhere;
   font-size: clamp(1.55rem, 3.5vw, 2.5rem);
   font-weight: 800;
-  letter-spacing: -.035em;
+  letter-spacing: -0.035em;
   line-height: 1.2;
 }
 
-.movie-detail-meta, .movie-detail-actions {
+.movie-detail-meta,
+.movie-detail-actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 12px 20px;
   color: var(--color-text-muted);
-  font-size: .9rem;
+  font-size: 0.9rem;
 }
 
 .movie-detail-rating strong {
@@ -84,7 +90,6 @@
   gap: 8px;
   margin: 32px 0 40px;
   padding-top: 24px;
-  border-top: 1px solid var(--color-border);
 }
 
 .movie-watch-status-btn {
@@ -95,7 +100,7 @@
   background: transparent;
   color: var(--color-text-muted);
   font: inherit;
-  font-size: .85rem;
+  font-size: 0.85rem;
   cursor: pointer;
 }
 
@@ -130,7 +135,7 @@
   background: transparent;
   color: var(--color-text);
   font: inherit;
-  font-size: .9rem;
+  font-size: 0.9rem;
   text-decoration: none;
   cursor: pointer;
 }
@@ -142,12 +147,15 @@
   stroke-linecap: round;
 }
 
-.movie-playlist-toggle:hover, .movie-playlist-toggle[aria-expanded="true"] {
+.movie-playlist-toggle:hover,
+.movie-playlist-toggle[aria-expanded="true"] {
   background: var(--color-surface-hover);
   color: var(--color-text);
 }
 
-.movie-playlist-toggle:focus-visible, .movie-playlist-input:focus-visible, .movie-playlist-create-button:focus-visible {
+.movie-playlist-toggle:focus-visible,
+.movie-playlist-input:focus-visible,
+.movie-playlist-create-button:focus-visible {
   outline: 2px solid var(--color-focus-visible-outline);
   outline-offset: 2px;
 }
@@ -173,9 +181,9 @@
 .movie-playlist-menu-title {
   margin: 0 0 8px;
   color: var(--color-text-muted);
-  font-size: .75rem;
+  font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: .08em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
@@ -201,7 +209,7 @@
   min-height: 40px;
   padding: 6px 8px;
   border-radius: 6px;
-  font-size: .9rem;
+  font-size: 0.9rem;
   cursor: pointer;
 }
 
@@ -220,7 +228,7 @@
   margin: 0;
   padding: 6px 8px;
   color: var(--color-text-muted);
-  font-size: .85rem;
+  font-size: 0.85rem;
 }
 
 .movie-playlist-create {
@@ -242,7 +250,7 @@
   background: var(--color-surface-raised);
   color: var(--color-text);
   font: inherit;
-  font-size: .9rem;
+  font-size: 0.9rem;
 }
 
 .movie-playlist-input:focus {
@@ -257,7 +265,7 @@
   background: var(--color-action);
   color: var(--color-action-text);
   font: inherit;
-  font-size: .85rem;
+  font-size: 0.85rem;
   font-weight: 650;
   cursor: pointer;
 }
@@ -267,7 +275,7 @@
 }
 
 .movie-playlist-create-button:disabled {
-  opacity: .5;
+  opacity: 0.5;
   cursor: progress;
 }
 
@@ -279,7 +287,7 @@
   gap: 10px;
   min-height: 36px;
   color: var(--color-text-muted);
-  font-size: .85rem;
+  font-size: 0.85rem;
   cursor: pointer;
 }
 
@@ -288,8 +296,12 @@
     grid-template-columns: minmax(90px, 28%) minmax(0, 1fr);
     gap: 20px 16px;
   }
-  .movie-detail-cover {
+  .movie-detail-cover-wrap {
     grid-row: 1;
+  }
+  .movie-detail-cover-wrap .like-heart {
+    --like-size: 30px;
+    --like-inset: 6px;
   }
   .movie-detail-main-textinfo .page-kicker {
     display: none;
@@ -300,19 +312,19 @@
   }
   .movie-detail-meta {
     gap: 6px 12px;
-    font-size: .8rem;
+    font-size: 0.8rem;
   }
   .movie-detail-actions {
     gap: 8px;
     margin-top: 14px;
-    font-size: .8rem;
+    font-size: 0.8rem;
   }
   .movie-detail-actions .btn {
     padding: 9px 14px;
-    font-size: .9rem;
+    font-size: 0.9rem;
   }
   .movie-playlist-toggle {
-    font-size: .85rem;
+    font-size: 0.85rem;
   }
   /* The actions sit in a narrow column: show the menu as a bottom sheet instead. */
   .movie-playlist-menu {

@@ -20,6 +20,7 @@
 }
 
 .movie-cover-preview {
+  position: relative;
   min-width: 140px;
 }
 
@@ -301,6 +302,11 @@
 
   .movie-cover-preview {
     min-width: 100px;
+  }
+
+  .movie-cover-preview .like-heart {
+    --like-size: 28px;
+    --like-inset: 6px;
   }
 
   .movie-cover-image {

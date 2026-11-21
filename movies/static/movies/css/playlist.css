@@ -293,6 +293,12 @@
   text-align: end;
 }
 
+/* Holds the cover's grid cell so the like heart can sit on the poster. */
+.playlist-item-cover-wrap {
+  position: relative;
+  display: block;
+}
+
 .playlist-item-cover {
   display: block;
   width: 56px;

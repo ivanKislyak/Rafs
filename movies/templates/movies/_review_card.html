@@ -49,36 +49,41 @@
               datetime="{{ review.created_at|date:'c' }}">{{ review.created_at|naturaltime }}</time>
     </div>
     {% if feed %}
-        <a class="review-card-movie"
-           href="{% url 'movies:detail' review.movie_id %}">
-            {% if review.movie.cover %}
-                <img src="{{ review.movie.cover.url }}"
-                     loading="lazy"
-                     decoding="async"
-                     width="48"
-                     height="72"
-                     alt="">
-            {% elif review.movie.cover_url %}
-                <img src="{{ review.movie.cover_url|poster_size:'w154' }}"
-                     loading="lazy"
-                     decoding="async"
-                     width="48"
-                     height="72"
-                     alt="">
-            {% endif %}
-            <span>
-                <span class="review-card-movie-label">
-                    {% translate "Review of" %}
-                </span>
-                <strong>
-                    {% firstof review.movie.wikidata_name review.movie.name %}
-                </strong>
-                {% if review.movie.year %}
-                    <span class="review-card-movie-year">
-                        {{ review.movie.year }}</span>
+        <div class="review-card-movie-wrap">
+            <a class="review-card-movie"
+               href="{% url 'movies:detail' review.movie_id %}">
+                {% if review.movie.cover %}
+                    <img src="{{ review.movie.cover.url }}"
+                         loading="lazy"
+                         decoding="async"
+                         width="48"
+                         height="72"
+                         alt="">
+                {% elif review.movie.cover_url %}
+                    <img src="{{ review.movie.cover_url|poster_size:'w154' }}"
+                         loading="lazy"
+                         decoding="async"
+                         width="48"
+                         height="72"
+                         alt="">
                 {% endif %}
-            </span>
-        </a>
+                <span>
+                    <span class="review-card-movie-label">
+                        {% translate "Review of" %}
+                    </span>
+                    <strong>
+                        {% firstof review.movie.wikidata_name review.movie.name %}
+                    </strong>
+                    {% if review.movie.year %}
+                        <span class="review-card-movie-year">
+                            {{ review.movie.year }}</span>
+                    {% endif %}
+                </span>
+            </a>
+            {% if review.movie.cover or review.movie.cover_url %}
+                {% include "movies/_like_button.html" with movie_id=review.movie_id variant="sm" %}
+            {% endif %}
+        </div>
     {% endif %}
     {% if review.contains_spoiler %}
         <details class="review-comment-details">

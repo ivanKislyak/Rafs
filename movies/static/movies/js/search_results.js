@@ -9,6 +9,8 @@
   }
 
   const labels = list.dataset;
+  // Like heart markup from base.html (signed-in users only); liked-titles.js paints and handles it.
+  const heartTemplate = document.querySelector("template[data-like-heart-template]")?.innerHTML.trim() ?? "";
   const locale = document.documentElement.lang || "en";
   const types = new Set(["movie", "review", "user", "person", "studio", "country", "genre", "typeofwork", "playlist"]);
   const seenResults = new Set();
@@ -132,6 +134,7 @@
             ${description ? `<span class="search-result-description">${description}</span>` : ""}
           </span>
         </${tag}>
+        ${url && heartTemplate && result.id ? heartTemplate.replace("__MOVIE__", escapeHTML(result.id)) : ""}
       </article>`;
     }
 

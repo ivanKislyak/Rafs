@@ -21,6 +21,7 @@
                          src="{% static 'movies/images/nocover.png' %}"
                          alt="{{ movie.name }}">
                 {% endif %}
+                {% include "movies/_like_button.html" with movie_id=movie.pk %}
             </div>
             <div class="movie-cover-info">
                 <h1>{{ movie.name }}</h1>

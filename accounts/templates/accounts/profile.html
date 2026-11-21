@@ -134,27 +134,30 @@
                                          data-update-url="{% url 'movies:watch_status_api' watch_entry.movie_id %}"
                                          data-status="{{ status.value }}"
                                          data-movie-name="{{ watch_entry.movie_title }}">
-                                    <a class="profile-watch-movie-cover-link"
-                                       href="{% url 'movies:detail' watch_entry.movie_id %}"
-                                       aria-label="{{ watch_entry.movie_title }}">
-                                        {% if watch_entry.movie.cover and watch_entry.movie.image_exists %}
-                                            <img class="profile-watch-movie-cover"
-                                                 src="{{ watch_entry.movie.cover.url }}"
-                                                 data-fallback-src="{% static 'movies/images/nocover.png' %}"
-                                                 onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
-                                                 alt="{{ watch_entry.movie_title }}">
-                                        {% elif watch_entry.movie.cover_url %}
-                                            <img class="profile-watch-movie-cover"
-                                                 src="{{ watch_entry.movie.cover_url|poster_size:'w154' }}"
-                                                 data-fallback-src="{% static 'movies/images/nocover.png' %}"
-                                                 onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
-                                                 alt="{{ watch_entry.movie_title }}">
-                                        {% else %}
-                                            <img class="profile-watch-movie-cover"
-                                                 src="{% static 'movies/images/nocover.png' %}"
-                                                 alt="{{ watch_entry.movie_title }}">
-                                        {% endif %}
-                                    </a>
+                                    <div class="profile-watch-movie-cover-wrap">
+                                        <a class="profile-watch-movie-cover-link"
+                                           href="{% url 'movies:detail' watch_entry.movie_id %}"
+                                           aria-label="{{ watch_entry.movie_title }}">
+                                            {% if watch_entry.movie.cover and watch_entry.movie.image_exists %}
+                                                <img class="profile-watch-movie-cover"
+                                                     src="{{ watch_entry.movie.cover.url }}"
+                                                     data-fallback-src="{% static 'movies/images/nocover.png' %}"
+                                                     onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
+                                                     alt="{{ watch_entry.movie_title }}">
+                                            {% elif watch_entry.movie.cover_url %}
+                                                <img class="profile-watch-movie-cover"
+                                                     src="{{ watch_entry.movie.cover_url|poster_size:'w154' }}"
+                                                     data-fallback-src="{% static 'movies/images/nocover.png' %}"
+                                                     onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
+                                                     alt="{{ watch_entry.movie_title }}">
+                                            {% else %}
+                                                <img class="profile-watch-movie-cover"
+                                                     src="{% static 'movies/images/nocover.png' %}"
+                                                     alt="{{ watch_entry.movie_title }}">
+                                            {% endif %}
+                                        </a>
+                                        {% include "movies/_like_button.html" with movie_id=watch_entry.movie_id variant="sm" %}
+                                    </div>
                                     <div class="profile-watch-movie-copy">
                                         <a class="profile-watch-movie-title"
                                            title="{{ watch_entry.movie_title }}"

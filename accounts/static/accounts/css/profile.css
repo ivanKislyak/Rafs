@@ -413,13 +413,18 @@
   min-height: 128px;
 }
 
-.profile-watch-movie--editable .profile-watch-movie-cover-link {
+.profile-watch-movie--editable .profile-watch-movie-cover-wrap {
   grid-row: 1 / 3;
+}
+
+/* Holds the cover's grid cell so the like heart can sit on the poster. */
+.profile-watch-movie-cover-wrap {
+  position: relative;
+  align-self: center;
 }
 
 .profile-watch-movie-cover-link {
   display: block;
-  align-self: center;
   width: 60px;
   aspect-ratio: 2 / 3;
   border-radius: 3px;
