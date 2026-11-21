@@ -28,13 +28,142 @@
   background-color: var(--color-border);
 }
 
+/* Owner: the cover is the "change cover" control. Without an image it is a dashed "Add cover" square;
+ * with one, hover/focus darkens the image and shows a pencil with the caption. */
+.playlist-cover-edit {
+  position: relative;
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 160px;
+  height: 160px;
+  padding: 0;
+  overflow: hidden;
+  border: 1.5px dashed color-mix(in srgb, var(--color-text-muted) 50%, var(--color-surface-raised));
+  border-radius: 8px;
+  background: var(--color-surface-raised);
+  color: var(--color-text-muted);
+  font: inherit;
+  cursor: pointer;
+  transition: border-color .2s ease, color .2s ease;
+}
+
+.playlist-cover-edit:has(.playlist-cover) {
+  border: 0;
+}
+
+.playlist-cover-edit:hover {
+  border-color: var(--color-action);
+  color: var(--color-text);
+}
+
+.playlist-cover-edit:focus-visible {
+  outline: 2px solid var(--color-focus-visible-outline);
+  outline-offset: 3px;
+}
+
+.playlist-cover-edit:disabled {
+  cursor: progress;
+}
+
+.playlist-cover-edit .playlist-cover {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  transition: transform .2s ease;
+}
+
+.playlist-cover-placeholder, .playlist-cover-overlay {
+  justify-items: center;
+  gap: 8px;
+  padding: 8px;
+  font-size: .8rem;
+  font-weight: 650;
+  line-height: 1.3;
+  text-align: center;
+}
+
+.playlist-cover-placeholder {
+  display: grid;
+}
+
+.playlist-cover-placeholder svg, .playlist-cover-overlay svg {
+  width: 28px;
+  height: 28px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform .2s ease;
+}
+
+.playlist-cover-edit:hover .playlist-cover-placeholder svg {
+  transform: scale(1.08);
+}
+
+/* The overlay sits on the image (a dark scrim with light text works in every theme). */
+.playlist-cover-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: none;
+  align-content: center;
+  background: rgb(0 0 0 / 50%);
+  color: rgb(255 255 255);
+  opacity: 0;
+  transition: opacity .2s ease;
+}
+
+.playlist-cover-edit:has(.playlist-cover) .playlist-cover-overlay {
+  display: grid;
+}
+
+.playlist-cover-edit:is(:hover, :focus-visible, :disabled) .playlist-cover-overlay {
+  opacity: 1;
+}
+
+.playlist-cover-edit:is(:hover, :focus-visible) .playlist-cover {
+  transform: scale(1.03);
+}
+
+/* Touch screens have no hover: keep a small pencil badge in the corner so the cover reads as editable. */
+@media (hover: none) {
+  .playlist-cover-overlay {
+    align-content: end;
+    justify-items: end;
+    background: none;
+    opacity: 1;
+  }
+
+  .playlist-cover-overlay > span {
+    display: none;
+  }
+
+  .playlist-cover-overlay svg {
+    width: 32px;
+    height: 32px;
+    padding: 7px;
+    border-radius: 50%;
+    background: rgb(0 0 0 / 55%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .playlist-cover-edit, .playlist-cover-edit .playlist-cover, .playlist-cover-overlay, .playlist-cover-placeholder svg {
+    transition: none;
+  }
+}
+
 @media (max-width: 560px) {
   .playlist-header--with-cover {
     flex-direction: column;
     align-items: flex-start;
   }
 
-  .playlist-cover {
+  .playlist-cover, .playlist-cover-edit {
     width: 120px;
     height: 120px;
   }
@@ -266,7 +395,7 @@
 }
 
 /* Owner controls: rename sits beside the title, delete trails the meta row. */
-.playlist-title-action, .playlist-cover-button, .playlist-delete, .playlist-dialog-button {
+.playlist-title-action, .playlist-delete, .playlist-dialog-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -291,7 +420,7 @@
   stroke-linejoin: round;
 }
 
-.playlist-title-action:hover, .playlist-cover-button:hover, .playlist-dialog-button:hover {
+.playlist-title-action:hover, .playlist-dialog-button:hover {
   background: var(--color-surface-hover);
   color: var(--color-text);
 }
@@ -307,12 +436,12 @@
   color: var(--color-accent);
 }
 
-.playlist-title-action:focus-visible, .playlist-cover-button:focus-visible, .playlist-delete:focus-visible, .playlist-dialog-button:focus-visible {
+.playlist-title-action:focus-visible, .playlist-delete:focus-visible, .playlist-dialog-button:focus-visible {
   outline: 2px solid var(--color-focus-visible-outline);
   outline-offset: 2px;
 }
 
-:is(.playlist-title-action, .playlist-cover-button, .playlist-delete, .playlist-dialog-button):disabled {
+:is(.playlist-title-action, .playlist-delete, .playlist-dialog-button):disabled {
   opacity: .5;
   cursor: progress;
 }

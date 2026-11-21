@@ -10,7 +10,6 @@
   const errorEl = root.querySelector("[data-playlist-error]");
   const nameEl = root.querySelector("[data-playlist-name]");
   const publicToggle = root.querySelector("[data-playlist-public]");
-  const header = root.querySelector("[data-playlist-header]");
 
   // Owner-only controls: they are missing for guests and for the Favourite playlist.
   const renameButton = root.querySelector('[data-action="rename"]');
@@ -134,9 +133,10 @@
     }
   }
 
-  // Cover: the <img> exists only when the playlist already had a cover, so create it on the first upload.
+  // Cover: the <img> lives inside the cover button and exists only when the playlist already had a cover,
+  // so create it on the first upload (before the overlay, which must stay on top).
   function showCover(url) {
-    let coverImg = header.querySelector("[data-playlist-cover]");
+    let coverImg = coverButton.querySelector("[data-playlist-cover]");
     if (!coverImg) {
       coverImg = document.createElement("img");
       coverImg.className = "playlist-cover";
@@ -144,8 +144,8 @@
       coverImg.width = 160;
       coverImg.height = 160;
       coverImg.alt = "";
-      header.prepend(coverImg);
-      header.classList.add("playlist-header--with-cover");
+      coverButton.querySelector(".playlist-cover-overlay").before(coverImg);
+      coverButton.setAttribute("aria-label", coverButton.dataset.labelChange);
     }
     coverImg.src = url;
   }
