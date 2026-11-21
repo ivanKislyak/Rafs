@@ -11,7 +11,8 @@
   const createForm = root.querySelector("form[data-menu-create]");
   const nameInput = createForm.querySelector('input[name="name"]');
   const privateInput = createForm.querySelector('input[name="is_private"]');
-  const { movieId, playlistsUrl, itemUrlTemplate, msgLoadError, msgToggleError, msgEmpty } = root.dataset;
+  const { movieId, playlistsUrl, itemUrlTemplate, msgLoadError, msgToggleError, msgEmpty, likedTitlesLabel } =
+    root.dataset;
 
   function openMenu() {
     clearError();
@@ -80,6 +81,11 @@
     inputCheckbox.checked = playlist.contains_movie;
     inputCheckbox.dataset.playlistId = playlist.id;
     spanName.textContent = playlist.name;
+    // Liked Titles (the Favourite playlist) is shown in the reader's language and kept in sync with the heart.
+    if (playlist.kind === "FAVOURITE") {
+      inputCheckbox.dataset.favourite = "";
+      spanName.textContent = likedTitlesLabel;
+    }
     return listItem;
   }
 
@@ -103,7 +109,11 @@
         showMessage(msgEmpty);
         return;
       }
-      list.replaceChildren(...response.data.map(renderRow));
+      // Liked Titles first, then the other playlists in the API order (newest first).
+      const playlists = [...response.data].sort(
+        (a, b) => Number(b.kind === "FAVOURITE") - Number(a.kind === "FAVOURITE"),
+      );
+      list.replaceChildren(...playlists.map(renderRow));
       loaded = true;
     } catch (error) {
       console.error(error);
@@ -123,12 +133,31 @@
       await apiRequest(itemUrlTemplate.replace("__PL__", box.dataset.playlistId).replace("__MOVIE__", movieId), {
         method: inputStatus ? "PUT" : "DELETE",
       });
+      if ("favourite" in box.dataset) {
+        document.dispatchEvent(
+          new CustomEvent("liked-titles:change", {
+            detail: { movieId: String(movieId), liked: inputStatus, source: "menu" },
+          }),
+        );
+      }
     } catch (error) {
       console.error(error);
       showError(msgToggleError);
       box.checked = !inputStatus;
     } finally {
       box.disabled = false;
+    }
+  });
+
+  // A heart on this page (the poster) changed Liked Titles: tick or untick its row if the menu is loaded.
+  document.addEventListener("liked-titles:change", (event) => {
+    const { detail } = event;
+    if (detail.source === "menu" || String(detail.movieId) !== String(movieId)) {
+      return;
+    }
+    const favouriteBox = list.querySelector("input[data-favourite]");
+    if (favouriteBox) {
+      favouriteBox.checked = detail.liked;
     }
   });
 
