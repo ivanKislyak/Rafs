@@ -119,6 +119,8 @@ images are never downloaded. See css/halloween.css for the handoff.
         <div class="main-container">
             {% block content %}{% endblock %}
         </div>
+        {# Shared fetch helper (apiRequest); page scripts in extra_js run after it. #}
+        <script src="{% static 'movies/js/api.js' %}" defer></script>
         <script src="{% static 'js/halloween-award.js' %}" defer></script>
         <script src="{% static 'js/notifications.js' %}" defer></script>
         <script src="{% static 'js/header.js' %}" defer></script>
