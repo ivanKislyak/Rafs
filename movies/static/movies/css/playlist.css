@@ -243,6 +243,25 @@
   font-weight: 700;
 }
 
+/* Liked Titles is always private: a quiet note takes the place of the visibility toggle. */
+.playlist-private-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.playlist-private-note svg {
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .playlist-visibility {
   display: inline-flex;
   align-items: center;

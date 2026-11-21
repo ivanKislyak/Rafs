@@ -298,6 +298,13 @@ class Playlist(models.Model):
     def __str__(self):
         return f"{self.name} ({self.kind}) by {self.owner}"
 
+    @property
+    def display_name(self):
+        # The Favourite playlist cannot be renamed, so its fixed name is translated for display.
+        if self.kind == KindChoice.FAVOURITE:
+            return _("Liked Titles")
+        return self.name
+
 class PlaylistItem(models.Model):
     playlist = models.ForeignKey(
         Playlist,

@@ -11,7 +11,8 @@
   const nameEl = root.querySelector("[data-playlist-name]");
   const publicToggle = root.querySelector("[data-playlist-public]");
 
-  // Owner-only controls: they are missing for guests and for the Favourite playlist.
+  // Owner-only controls: they are missing for guests. Liked Titles (the Favourite playlist) keeps the
+  // cover control but has no rename, delete or privacy toggle: it is always private.
   const renameButton = root.querySelector('[data-action="rename"]');
   const renameInput = root.querySelector("[data-rename-input]");
   const coverButton = root.querySelector('[data-action="change-cover"]');

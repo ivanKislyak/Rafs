@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% load i18n static images seo %}
-{% block title %}{{ playlist.name }} – {% translate "Playlist" %}{% endblock %}
-{% block meta_description %}{% blocktranslate with name=playlist.name username=playlist.owner.username %}Playlist {{ name }} by @{{ username }} on RAFS{% endblocktranslate %}{% endblock %}
-{% block og_title %}{{ playlist.name }} – {% translate "Playlist" %} · RAFS{% endblock %}
-{% block og_description %}{% blocktranslate with name=playlist.name username=playlist.owner.username %}Playlist {{ name }} by @{{ username }} on RAFS{% endblocktranslate %}{% endblock %}
+{% block title %}{{ playlist.display_name }} – {% translate "Playlist" %}{% endblock %}
+{% block meta_description %}{% blocktranslate with name=playlist.display_name username=playlist.owner.username %}Playlist {{ name }} by @{{ username }} on RAFS{% endblocktranslate %}{% endblock %}
+{% block og_title %}{{ playlist.display_name }} – {% translate "Playlist" %} · RAFS{% endblock %}
+{% block og_description %}{% blocktranslate with name=playlist.display_name username=playlist.owner.username %}Playlist {{ name }} by @{{ username }} on RAFS{% endblocktranslate %}{% endblock %}
 {% block og_image %}{% if playlist.cover %}{{ playlist.cover.url|public_image_url }}{% else %}{% with first_movie=items.0.movie %}{% if first_movie.cover and first_movie.image_exists %}{{ first_movie.cover.url|public_image_url }}{% else %}{{ first_movie.cover_url|poster_size:'w500'|public_image_url }}{% endif %}{% endwith %}{% endif %}{% endblock %}
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'movies/css/playlist.css' %}">
@@ -21,14 +21,14 @@
                  data-msg-delete-error="{% translate 'Could not delete the playlist' %}"
                  data-msg-empty-name="{% translate 'Enter a playlist name' %}"
                  data-msg-cover-error="{% translate 'Could not change the playlist cover' %}">
-            <header class="playlist-header{% if playlist.cover or is_owner and playlist.kind != 'FAVOURITE' %} playlist-header--with-cover{% endif %}">
-                {% if is_owner and playlist.kind != "FAVOURITE" %}
+            <header class="playlist-header{% if playlist.cover or is_owner or playlist.kind == 'FAVOURITE' %} playlist-header--with-cover{% endif %}">
+                {% if is_owner %}
                     {# The cover itself is the control: hover darkens it and shows a pencil; without a cover it is an "Add cover" placeholder. #}
                     <input type="file" accept="image/*" data-cover-input hidden>
                     <button class="playlist-cover-edit"
                             type="button"
                             data-action="change-cover"
-                            aria-label="{% if playlist.cover %}{% translate 'Change cover' %}{% else %}{% translate 'Add cover' %}{% endif %}"
+                            aria-label="{% if playlist.cover or playlist.kind == 'FAVOURITE' %}{% translate 'Change cover' %}{% else %}{% translate 'Add cover' %}{% endif %}"
                             data-label-change="{% translate 'Change cover' %}">
                         <span class="playlist-cover-placeholder" aria-hidden="true">
                             <svg viewBox="0 0 24 24" focusable="false">
@@ -43,6 +43,14 @@
                                  data-playlist-cover
                                  src="{{ playlist.cover.url }}"
                                  onerror="this.remove()"
+                                 width="160"
+                                 height="160"
+                                 decoding="async"
+                                 alt="">
+                        {% elif playlist.kind == "FAVOURITE" %}
+                            <img class="playlist-cover"
+                                 data-playlist-cover
+                                 src="{% static 'images/favPl.png' %}"
                                  width="160"
                                  height="160"
                                  decoding="async"
@@ -65,6 +73,14 @@
                          height="160"
                          decoding="async"
                          alt="">
+                {% elif playlist.kind == "FAVOURITE" %}
+                    <img class="playlist-cover"
+                         data-playlist-cover
+                         src="{% static 'images/favPl.png' %}"
+                         width="160"
+                         height="160"
+                         decoding="async"
+                         alt="">
                 {% endif %}
                 <div class="playlist-header-body">
                     <p class="page-kicker playlist-kicker">
@@ -72,7 +88,7 @@
                         <a class="playlist-owner" href="{% url 'profile' playlist.owner.username %}">@{{ playlist.owner.username }}</a>
                     </p>
                     <div class="playlist-title-row">
-                        <h1 class="playlist-title" data-playlist-name>{{ playlist.name }}</h1>
+                        <h1 class="playlist-title" data-playlist-name>{{ playlist.display_name }}</h1>
                         {% if is_owner and playlist.kind != "FAVOURITE" %}
                             <input class="playlist-title-input"
                                    type="text"
@@ -98,7 +114,15 @@
                             <span>{% translate "Movies" %}:</span>
                             <span data-playlist-count>{{ items|length }}</span>
                         </p>
-                        {% if is_owner %}
+                        {% if is_owner and playlist.kind == "FAVOURITE" %}
+                            <p class="playlist-private-note">
+                                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false">
+                                    <rect x="5" y="11" width="14" height="10" rx="2"></rect>
+                                    <path d="M8 11V8a4 4 0 0 1 8 0v3"></path>
+                                </svg>
+                                <span>{% translate "Private playlist" %} · {% translate "Only you can see it" %}</span>
+                            </p>
+                        {% elif is_owner %}
                             <label class="checkbox playlist-visibility">
                                 <input type="checkbox"
                                        data-playlist-public

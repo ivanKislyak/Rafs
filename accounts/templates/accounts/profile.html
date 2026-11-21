@@ -264,6 +264,12 @@
                                              loading="lazy"
                                              decoding="async"
                                              alt="">
+                                    {% elif playlist.kind == "FAVOURITE" %}
+                                        <img class="profile-playlist-cover"
+                                             src="{% static 'images/favPl.png' %}"
+                                             loading="lazy"
+                                             decoding="async"
+                                             alt="">
                                     {% elif first_movie.cover and first_movie.image_exists %}
                                         <img class="profile-playlist-cover"
                                              src="{{ first_movie.cover.url }}"
@@ -298,7 +304,7 @@
                                                 <path d="M8 11V8a4 4 0 0 1 8 0v3"></path>
                                             </svg>
                                         {% endif %}
-                                        <span>{{ playlist.name }}</span>
+                                        <span>{{ playlist.display_name }}</span>
                                     </span>
                                     <span class="profile-playlist-count">
                                         {% blocktranslate count counter=playlist.movies_count %}{{ counter }} movie{% plural %}{{ counter }} movies{% endblocktranslate %}
