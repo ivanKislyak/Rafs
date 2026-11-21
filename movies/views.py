@@ -442,6 +442,8 @@ class PlaylistAPIView(APIView):
             and new_name != playlist.name
         ):
             raise APIPermissionDenied(_("The Favourite playlist cannot be renamed."))
+        if playlist.kind == KindChoice.FAVOURITE and serializer.validated_data.get("is_public"):
+            raise APIPermissionDenied(_("The Liked Titles playlist is always private"))
 
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)

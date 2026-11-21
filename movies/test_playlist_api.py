@@ -305,13 +305,24 @@ class PlaylistUpdateDeleteAPITests(PlaylistTestMixin, APITestCase):
         self.favourite.refresh_from_db()
         self.assertEqual(self.favourite.name, LIKED_TITLES_NAME)
 
-    def test_favourite_visibility_can_change(self):
-        response = self.client.put(
-            self.url(self.favourite), {"name": LIKED_TITLES_NAME, "is_public": True}, format="json",
-        )
-        self.assertEqual(response.status_code, 200)
+    def test_favourite_cannot_be_made_public(self):
+        # Liked Titles is always private: PATCH and PUT with is_public=true are refused.
+        for method, body in (
+            (self.client.patch, {"is_public": True}),
+            (self.client.put, {"name": LIKED_TITLES_NAME, "is_public": True}),
+        ):
+            with self.subTest(method=method.__name__):
+                response = method(self.url(self.favourite), body, format="json")
+                self.assertEqual(response.status_code, 403)
+                self.assertIsInstance(response.json()["detail"], str)
+        self.favourite.refresh_from_db()
+        self.assertFalse(self.favourite.is_public)
+
+    def test_favourite_stays_editable_while_private(self):
+        # Saving it as private (and changing its cover) is still allowed.
         response = self.client.patch(self.url(self.favourite), {"is_public": False}, format="json")
         self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.json()["is_public"])
 
     def test_item_put_returns_movie_with_request_context(self):
         movie = Movie.objects.create(name="Added")
