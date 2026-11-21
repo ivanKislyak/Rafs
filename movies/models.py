@@ -261,6 +261,10 @@ class KindChoice(models.TextChoices):
     FAVOURITE = "FAVOURITE", _("Favourite")
     CUSTOM = "CUSTOM", _("Custom")
 
+# Stored name of the Favourite playlist every user gets on sign-up (see movies/signals.py).
+# Pages show Playlist.display_name instead, so readers see it in their own language.
+LIKED_TITLES_NAME = "Liked Titles"
+
 # Anti-spam cap: total playlists (including Favourite) a single user may own.
 PLAYLISTS_PER_USER_LIMIT = 100
 # API-level cap on playlist names; the column itself allows 300 characters.

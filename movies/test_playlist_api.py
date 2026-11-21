@@ -13,7 +13,7 @@ from rest_framework.test import APITestCase
 
 from accounts.models import User
 from .models import (
-    GlobalSearchIndex, KindChoice, Movie, Playlist, PlaylistItem,
+    GlobalSearchIndex, KindChoice, LIKED_TITLES_NAME, Movie, Playlist, PlaylistItem,
     PLAYLISTS_PER_USER_LIMIT, PLAYLIST_NAME_MAX_LENGTH,
 )
 
@@ -124,7 +124,7 @@ class PlaylistCreateAPITests(PlaylistTestMixin, APITestCase):
                 self.assertIn("name", response.json())
         response = self.client.post(self.url, {}, format="json")
         self.assertEqual(response.status_code, 400)
-        self.assertFalse(Playlist.objects.filter(owner=self.user).exists())
+        self.assertFalse(Playlist.objects.filter(owner=self.user, kind=KindChoice.CUSTOM).exists())
 
     def test_name_length_limit(self):
         self.client.force_authenticate(self.user)
@@ -158,12 +158,13 @@ class PlaylistCreateAPITests(PlaylistTestMixin, APITestCase):
         )
         self.assertEqual(response.status_code, 400)
         self.assertIn("cover", response.json())
-        self.assertFalse(Playlist.objects.filter(owner=self.user).exists())
+        self.assertFalse(Playlist.objects.filter(owner=self.user, kind=KindChoice.CUSTOM).exists())
 
     def test_playlist_limit_per_user(self):
         Playlist.objects.bulk_create(
             Playlist(owner=self.user, name=f"List {index}")
-            for index in range(PLAYLISTS_PER_USER_LIMIT)
+            # Liked Titles, created on sign-up, counts towards the limit.
+            for index in range(PLAYLISTS_PER_USER_LIMIT - 1)
         )
         self.client.force_authenticate(self.user)
         response = self.client.post(self.url, {"name": "One too many"}, format="json")
@@ -190,6 +191,7 @@ class PlaylistListAPITests(PlaylistTestMixin, APITestCase):
         PlaylistItem.objects.create(playlist=self.with_movie, movie=self.other_movie)
         PlaylistItem.objects.create(playlist=self.without_movie, movie=self.other_movie)
         Playlist.objects.create(owner=self.other, name="Foreign", is_public=True)
+        self.liked = Playlist.objects.get(owner=self.user, kind=KindChoice.FAVOURITE)
         self.url = reverse("movies:playlist_create_api")
         self.client.force_authenticate(self.user)
 
@@ -197,7 +199,9 @@ class PlaylistListAPITests(PlaylistTestMixin, APITestCase):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         data = {row["id"]: row for row in response.json()}
-        self.assertEqual(set(data), {self.with_movie.pk, self.without_movie.pk})
+        self.assertEqual(set(data), {self.with_movie.pk, self.without_movie.pk, self.liked.pk})
+        self.assertEqual(data[self.liked.pk]["kind"], KindChoice.FAVOURITE)
+        self.assertEqual(data[self.liked.pk]["movies_count"], 0)
         self.assertEqual(data[self.with_movie.pk]["movies_count"], 2)
         self.assertEqual(data[self.without_movie.pk]["movies_count"], 1)
         self.assertIsNone(data[self.with_movie.pk]["contains_movie"])
@@ -206,7 +210,9 @@ class PlaylistListAPITests(PlaylistTestMixin, APITestCase):
         response = self.client.get(self.url, {"movie_id": self.movie.pk})
         self.assertEqual(response.status_code, 200)
         flags = {row["id"]: row["contains_movie"] for row in response.json()}
-        self.assertEqual(flags, {self.with_movie.pk: True, self.without_movie.pk: False})
+        self.assertEqual(
+            flags, {self.with_movie.pk: True, self.without_movie.pk: False, self.liked.pk: False},
+        )
 
     def test_invalid_movie_id_is_rejected(self):
         response = self.client.get(self.url, {"movie_id": "abc"})
@@ -235,9 +241,7 @@ class PlaylistUpdateDeleteAPITests(PlaylistTestMixin, APITestCase):
         self.user = self.make_user("editor")
         self.other = self.make_user("intruder")
         self.playlist = Playlist.objects.create(owner=self.user, name="Original")
-        self.favourite = Playlist.objects.create(
-            owner=self.user, name="Favourite", kind=KindChoice.FAVOURITE,
-        )
+        self.favourite = Playlist.objects.get(owner=self.user, kind=KindChoice.FAVOURITE)
         self.client.force_authenticate(self.user)
 
     @staticmethod
@@ -299,12 +303,11 @@ class PlaylistUpdateDeleteAPITests(PlaylistTestMixin, APITestCase):
                 )
                 self.assertEqual(response.status_code, 403)
         self.favourite.refresh_from_db()
-        self.assertEqual(self.favourite.name, "Favourite")
+        self.assertEqual(self.favourite.name, LIKED_TITLES_NAME)
 
     def test_favourite_visibility_can_change(self):
-        # playlist-page.js sends PUT with the current name when toggling visibility.
         response = self.client.put(
-            self.url(self.favourite), {"name": "Favourite", "is_public": True}, format="json",
+            self.url(self.favourite), {"name": LIKED_TITLES_NAME, "is_public": True}, format="json",
         )
         self.assertEqual(response.status_code, 200)
         response = self.client.patch(self.url(self.favourite), {"is_public": False}, format="json")
@@ -346,11 +349,12 @@ class ProfilePlaylistsTests(PlaylistTestMixin, TestCase):
         self.client.force_login(self.owner)
         response = self.client.get(self.url)
         self.assertEqual(
-            {p.pk for p in response.context["playlists"]}, {self.public.pk, self.private.pk},
+            {p.pk for p in response.context["playlists"]},
+            {self.public.pk, self.private.pk, self.owner.playlists.get(kind=KindChoice.FAVOURITE).pk},
         )
         self.assertContains(response, "Secret stash")
         self.assertContains(response, "data-create-dialog")
-        self.assertContains(response, "profile-playlist-lock", count=1)
+        self.assertContains(response, "profile-playlist-lock", count=2)
 
     def test_section_hidden_for_visitor_without_public_playlists(self):
         self.public.delete()
