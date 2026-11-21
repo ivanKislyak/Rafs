@@ -118,6 +118,17 @@ class LikedTitlesAPITests(APITestCase):
         self.client.force_authenticate(make_user("stranger"))
         self.assertEqual(self.client.get(url).status_code, 404)
 
+    def test_cover_can_be_reset_to_the_default(self):
+        # The trash button on the playlist page sends PATCH {"cover": null}.
+        Playlist.objects.filter(pk=self.liked.pk).update(cover="playlists/covers/mine.png")
+        url = reverse("movies:playlist_api", kwargs={"pl_id": self.liked.pk})
+        response = self.client.patch(url, {"cover": None}, format="json")
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNone(response.json()["cover"])
+        self.liked.refresh_from_db()
+        self.assertFalse(self.liked.cover)
+        self.assertFalse(self.liked.is_public)
+
 
 class LikedTitlesPagesTests(TestCase):
     def setUp(self):
@@ -168,6 +179,40 @@ class LikedTitlesPagesTests(TestCase):
         self.assertNotContains(response, 'data-action="rename"')
         self.assertNotContains(response, 'data-action="delete-playlist"')
         self.assertContains(response, HEART.format(self.movie.pk))
+
+    def reset_button(self, playlist):
+        self.client.force_login(self.user)
+        html = self.client.get(reverse("movies:playlist", args=[playlist.pk])).content.decode()
+        match = re.search(r'<button class="playlist-cover-reset".*?>', html, re.S)
+        return match.group(0) if match else None
+
+    def test_reset_button_appears_only_for_an_uploaded_cover(self):
+        button = self.reset_button(self.liked)
+        self.assertIn("hidden", button)
+        Playlist.objects.filter(pk=self.liked.pk).update(cover="playlists/covers/mine.png")
+        button = self.reset_button(self.liked)
+        self.assertNotIn("hidden", button)
+        self.assertIn('aria-label="Restore the default cover"', button)
+        self.assertIn('data-tooltip="Restore the default cover"', button)
+
+    def test_reset_button_removes_the_cover_of_a_custom_playlist(self):
+        custom = Playlist.objects.create(owner=self.user, name="Mine", cover="playlists/covers/mine.png")
+        button = self.reset_button(custom)
+        self.assertIn('aria-label="Remove cover"', button)
+        self.assertNotIn("data-default-cover", self.client.get(reverse("movies:playlist", args=[custom.pk])).content.decode())
+
+    def test_reset_button_label_is_translated(self):
+        Playlist.objects.filter(pk=self.liked.pk).update(cover="playlists/covers/mine.png")
+        self.client.cookies[settings.LANGUAGE_COOKIE_NAME] = "ru"
+        self.assertIn('data-tooltip="Вернуть обложку по умолчанию"', self.reset_button(self.liked))
+
+    def test_no_reset_button_for_visitors(self):
+        custom = Playlist.objects.create(
+            owner=self.user, name="Shared", is_public=True, cover="playlists/covers/mine.png",
+        )
+        self.client.force_login(make_user("guest"))
+        response = self.client.get(reverse("movies:playlist", args=[custom.pk]))
+        self.assertNotContains(response, "playlist-cover-reset")
 
     def test_custom_playlist_page_keeps_its_controls(self):
         custom = Playlist.objects.create(owner=self.user, name="Mine")
