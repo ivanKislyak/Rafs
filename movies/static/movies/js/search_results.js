@@ -254,7 +254,7 @@
       const pageKeys = new Set();
       const html = [];
       for (const result of data.results) {
-        if (!result || !types.has(result.type) || result.is_missing || !/^\d+$/.test(String(result.id))) {
+        if (!result || !types.has(result.type) || result.is_missing || !/^[0-9A-Za-z]+$/.test(String(result.id))) {
           continue;
         }
         const key = `${result.type}:${result.id}`;
