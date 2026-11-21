@@ -1952,8 +1952,8 @@ msgid "Delete playlist"
 msgstr "Eliminar la lista de reproducción"
 
 #: movies/templates/movies/playlist.html
-msgid "The playlist will be deleted for good. The movies themselves stay on RAFS."
-msgstr "La lista se eliminará para siempre. Las películas seguirán en RAFS."
+msgid "The playlist will be deleted for good"
+msgstr "La lista se eliminará para siempre"
 
 #: movies/templates/movies/movie_detail.html
 msgid "Could not load your playlists"
