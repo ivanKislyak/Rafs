@@ -6,7 +6,8 @@ from PIL import Image
 from django.contrib.contenttypes.models import ContentType
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.db import connection
-from django.test import TestCase
+from django.db.migrations.executor import MigrationExecutor
+from django.test import TestCase, TransactionTestCase
 from django.test.utils import CaptureQueriesContext
 from django.urls import reverse
 from rest_framework.test import APITestCase
@@ -467,3 +468,80 @@ class PlaylistSearchTests(PlaylistTestMixin, APITestCase):
         User.objects.filter(pk=self.owner.pk).update(is_deleted=True)
         self.assertEqual(self.search(), [])
 
+
+class PlaylistExternalIdTests(PlaylistTestMixin, APITestCase):
+    """Playlists are addressed by a random external_id; the sequential pk never leaves the server."""
+
+    def setUp(self):
+        self.owner = self.make_user("extowner")
+        self.playlist = Playlist.objects.create(owner=self.owner, name="Shared", is_public=True)
+
+    def test_every_new_playlist_gets_a_unique_url_safe_id(self):
+        Playlist.objects.bulk_create([Playlist(owner=self.owner, name=f"Bulk {n}") for n in range(3)])
+        ids = list(Playlist.objects.values_list("external_id", flat=True))
+        # Custom ones, the bulk-created ones and the Liked Titles playlist made by the signal.
+        self.assertEqual(len(ids), 5)
+        self.assertEqual(len(set(ids)), len(ids))
+        for external_id in ids:
+            self.assertRegex(external_id, r"^[0-9A-Za-z]{22}$")
+
+    def test_page_and_api_are_reached_by_external_id(self):
+        page = reverse("movies:playlist", args=[self.playlist.external_id])
+        self.assertEqual(page, f"/movies/playlist/{self.playlist.external_id}/")
+        self.assertEqual(self.client.get(page).status_code, 200)
+        api = self.client.get(reverse("movies:playlist_api", args=[self.playlist.external_id]))
+        self.assertEqual(api.json()["id"], self.playlist.external_id)
+
+    def test_numeric_pk_no_longer_opens_a_playlist(self):
+        self.assertEqual(self.client.get(f"/movies/playlist/{self.playlist.pk}/").status_code, 404)
+        self.assertEqual(self.client.get(f"/movies/api/v1/playlists/{self.playlist.pk}/").status_code, 404)
+
+    def test_list_api_does_not_expose_the_pk(self):
+        self.client.force_authenticate(self.owner)
+        rows = self.client.get(reverse("movies:playlist_create_api")).json()
+        self.assertEqual(
+            {row["id"] for row in rows},
+            set(self.owner.playlists.values_list("external_id", flat=True)),
+        )
+
+    def test_external_id_cannot_be_changed_through_the_api(self):
+        self.client.force_authenticate(self.owner)
+        url = reverse("movies:playlist_api", args=[self.playlist.external_id])
+        response = self.client.patch(url, {"id": "hijacked", "external_id": "hijacked"}, format="json")
+        self.assertEqual(response.status_code, 200)
+        self.playlist.refresh_from_db()
+        self.assertNotEqual(self.playlist.external_id, "hijacked")
+        self.assertEqual(response.json()["id"], self.playlist.external_id)
+
+
+class FillPlaylistExternalIdMigrationTests(TransactionTestCase):
+    """0057 gives playlists created before the field existed their own ids."""
+
+    before = [("movies", "0056_playlist_external_id")]
+    after = [("movies", "0057_fill_playlist_external_id")]
+
+    def tearDown(self):
+        executor = MigrationExecutor(connection)
+        executor.loader.build_graph()
+        executor.migrate(executor.loader.graph.leaf_nodes())
+
+    def test_existing_playlists_are_backfilled(self):
+        executor = MigrationExecutor(connection)
+        executor.migrate(self.before)
+        old_apps = executor.loader.project_state(self.before).apps
+        OldPlaylist = old_apps.get_model("movies", "Playlist")
+        # Only movies is rolled back, so the current user model still matches its table.
+        owner_id = User.objects.create_user(username="legacy", email="legacy@example.com").pk
+        OldPlaylist.objects.bulk_create([OldPlaylist(owner_id=owner_id, name=f"Old {n}") for n in range(3)])
+        self.assertEqual(OldPlaylist.objects.filter(external_id__isnull=True).count(), 3)
+
+        executor = MigrationExecutor(connection)
+        executor.loader.build_graph()
+        executor.migrate(self.after)
+        new_apps = executor.loader.project_state(self.after).apps
+        playlists = new_apps.get_model("movies", "Playlist").objects.filter(name__startswith="Old ")
+        ids = list(playlists.values_list("external_id", flat=True))
+        self.assertEqual(len(ids), 3)
+        self.assertEqual(len(set(ids)), 3)
+        for external_id in ids:
+            self.assertRegex(external_id, r"^[0-9A-Za-z]{22}$")
