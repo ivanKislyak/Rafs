@@ -50,24 +50,36 @@
     </div>
     {% if feed %}
         <div class="review-card-movie-wrap">
+            {% if review.movie.cover or review.movie.cover_url %}
+                {# Blurred, dimmed copy of the cover behind the strip, fading out to the right (same URL, from the cache). #}
+                <span class="review-card-movie-backdrop" aria-hidden="true">
+                    <img src="{% if review.movie.cover %}{{ review.movie.cover.url }}{% else %}{{ review.movie.cover_url|poster_size:'w154' }}{% endif %}"
+                         onerror="this.parentElement.remove()"
+                         loading="lazy"
+                         decoding="async"
+                         alt="">
+                </span>
+            {% endif %}
             <a class="review-card-movie"
                href="{% url 'movies:detail' review.movie_id %}">
                 {% if review.movie.cover %}
-                    <img src="{{ review.movie.cover.url }}"
+                    <img class="review-card-movie-cover"
+                         src="{{ review.movie.cover.url }}"
                          loading="lazy"
                          decoding="async"
-                         width="48"
-                         height="72"
+                         width="64"
+                         height="96"
                          alt="">
                 {% elif review.movie.cover_url %}
-                    <img src="{{ review.movie.cover_url|poster_size:'w154' }}"
+                    <img class="review-card-movie-cover"
+                         src="{{ review.movie.cover_url|poster_size:'w154' }}"
                          loading="lazy"
                          decoding="async"
-                         width="48"
-                         height="72"
+                         width="64"
+                         height="96"
                          alt="">
                 {% endif %}
-                <span>
+                <span class="review-card-movie-copy">
                     <span class="review-card-movie-label">
                         {% translate "Review of" %}
                     </span>

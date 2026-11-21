@@ -50,37 +50,72 @@
   font-size: .8rem;
 }
 
-/* Wraps the movie link so the like heart can sit on its 48px poster (top-right corner). */
+/* Movie strip of a feed card, full width without borders. The poster fills its left edge and a
+ * blurred copy of it sits behind the strip, solid on the left and fading out to the right.
+ * The wrapper also holds the like heart (outside the link) on the poster's top-right corner. */
 .review-card-movie-wrap {
+  --review-cover-width: 64px;
   position: relative;
-  width: fit-content;
-  max-width: 100%;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 6px;
 }
 
 .review-card-movie-wrap .like-heart {
   right: auto;
-  left: calc(48px - var(--like-size) - var(--like-inset));
+  left: calc(var(--review-cover-width) - var(--like-size) - var(--like-inset));
+}
+
+.review-card-movie-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to right, black, transparent);
+  mask-image: linear-gradient(to right, black, transparent);
+}
+
+.review-card-movie-backdrop img {
+  position: absolute;
+  inset: -24px;
+  width: calc(100% + 48px);
+  height: calc(100% + 48px);
+  object-fit: cover;
+  filter: brightness(0.4) blur(20px) saturate(1.3);
+}
+
+/* Same theme-surface veil as the playlist items, so the theme's text colours stay readable. */
+.review-card-movie-backdrop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--color-surface) 72%, transparent);
 }
 
 .review-card-movie {
   display: flex;
   align-items: center;
   gap: 14px;
-  width: fit-content;
-  max-width: 100%;
   color: var(--color-text);
   text-decoration: none;
 }
 
-.review-card-movie img {
-  flex: 0 0 48px;
+.review-card-movie-cover {
+  flex: 0 0 var(--review-cover-width);
+  align-self: stretch;
+  width: var(--review-cover-width);
+  height: auto;
+  min-height: calc(var(--review-cover-width) * 1.5);
   object-fit: cover;
-  border-radius: 3px;
+  background: var(--color-surface-raised);
 }
 
-.review-card-movie > span {
+.review-card-movie-copy {
   display: grid;
   gap: 3px;
+  min-width: 0;
+  padding: 10px 14px 10px 0;
 }
 
 .review-card-movie strong {
