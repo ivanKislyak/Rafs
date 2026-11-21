@@ -1059,8 +1059,229 @@
   line-height: 1.6;
 }
 
-.profile-playlist-field {
+/* Create dialog: an optional square cover on the left, name and privacy on the right. */
+.profile-playlist-dialog {
+  width: min(520px, calc(100vw - 28px));
+}
+
+.profile-playlist-create-body {
+  display: grid;
+  grid-template-columns: 136px minmax(0, 1fr);
+  align-items: start;
+  gap: 20px;
   margin: 20px 0 8px;
+}
+
+.profile-playlist-create-fields {
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+}
+
+.profile-playlist-cover-field {
+  position: relative;
+}
+
+.profile-playlist-cover-picker {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 0;
+  overflow: hidden;
+  border: 1.5px dashed color-mix(in srgb, var(--color-text-muted) 50%, var(--color-surface-raised));
+  border-radius: 6px;
+  background: var(--color-surface-raised);
+  color: var(--color-text-muted);
+  font: inherit;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.profile-playlist-cover-picker:hover {
+  border-color: var(--color-action);
+  color: var(--color-text);
+}
+
+/* Children ignore the pointer so dragging across them does not fire dragleave on the picker. */
+.profile-playlist-cover-picker > * {
+  pointer-events: none;
+}
+
+/* A file dragged over the picker: same accent as hover plus a tinted fill. */
+.profile-playlist-cover-field[data-dragover] .profile-playlist-cover-picker {
+  border-color: var(--color-action);
+  background: var(--color-accent-surface-subtle);
+  color: var(--color-text);
+}
+
+.profile-playlist-cover-picker:focus-visible {
+  outline: 2px solid var(--color-focus-visible-outline);
+  outline-offset: 3px;
+}
+
+.profile-playlist-cover-placeholder {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 8px;
+  font-size: 0.78rem;
+  font-weight: 650;
+  line-height: 1.3;
+  text-align: center;
+}
+
+.profile-playlist-cover-placeholder svg {
+  width: 28px;
+  height: 28px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.2s ease;
+}
+
+.profile-playlist-cover-picker:hover .profile-playlist-cover-placeholder svg {
+  transform: scale(1.08);
+}
+
+.profile-playlist-cover-preview {
+  position: absolute;
+  inset: 0;
+  display: none;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.2s ease;
+}
+
+/* "Change cover" caption over the picked image: on hover/focus with a mouse, always on touch screens. */
+.profile-playlist-cover-change {
+  position: absolute;
+  inset: auto 0 0;
+  display: none;
+  padding: 8px;
+  background: color-mix(in srgb, var(--color-bg) 78%, transparent);
+  color: var(--color-text);
+  font-size: 0.75rem;
+  font-weight: 650;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.profile-playlist-cover-field[data-has-cover] .profile-playlist-cover-picker {
+  border-style: solid;
+  border-color: transparent;
+}
+
+.profile-playlist-cover-field[data-has-cover] .profile-playlist-cover-preview,
+.profile-playlist-cover-field[data-has-cover] .profile-playlist-cover-change {
+  display: block;
+}
+
+.profile-playlist-cover-field[data-has-cover] .profile-playlist-cover-placeholder {
+  display: none;
+}
+
+.profile-playlist-cover-picker:hover .profile-playlist-cover-preview {
+  transform: scale(1.03);
+}
+
+.profile-playlist-cover-picker:is(:hover, :focus-visible) .profile-playlist-cover-change {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .profile-playlist-cover-change {
+    opacity: 1;
+  }
+}
+
+.profile-playlist-cover-remove {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  z-index: 1;
+  display: none;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.profile-playlist-cover-field[data-has-cover] .profile-playlist-cover-remove {
+  display: grid;
+}
+
+.profile-playlist-cover-remove:hover {
+  border-color: var(--color-action);
+  background: var(--color-action);
+  color: var(--color-action-text);
+}
+
+.profile-playlist-cover-remove:focus-visible {
+  outline: 2px solid var(--color-focus-visible-outline);
+  outline-offset: 2px;
+}
+
+.profile-playlist-cover-remove svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+/* Privacy: the whole row is the click target, the hint under the title follows the checkbox. */
+.profile-playlist-private {
+  display: flex;
+  align-items: flex-start;
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  font-size: 0.88rem;
+  font-weight: 650;
+  line-height: 1.35;
+  transition: background-color 0.15s ease;
+}
+
+.profile-playlist-private:hover {
+  background: var(--color-surface-hover);
+}
+
+@media (max-width: 480px) {
+  .profile-playlist-create-body {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+  .profile-playlist-cover-field {
+    width: 112px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .profile-playlist-cover-picker,
+  .profile-playlist-cover-preview,
+  .profile-playlist-cover-placeholder svg,
+  .profile-playlist-cover-change {
+    transition: none;
+  }
 }
 
 .profile-playlist-dialog .account-form-error {

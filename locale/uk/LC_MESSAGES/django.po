@@ -1995,3 +1995,23 @@ msgstr "Змінити обкладинку"
 #: movies/templates/movies/playlist.html
 msgid "Could not change the playlist cover"
 msgstr "Не вдалося змінити обкладинку плейліста"
+
+#: accounts/templates/accounts/profile.html
+msgid "Choose an image file"
+msgstr "Виберіть файл зображення"
+
+#: accounts/templates/accounts/profile.html
+msgid "Add cover"
+msgstr "Додати обкладинку"
+
+#: accounts/templates/accounts/profile.html
+msgid "Remove cover"
+msgstr "Прибрати обкладинку"
+
+#: accounts/templates/accounts/profile.html
+msgid "Only you can see it"
+msgstr "Бачите лише ви"
+
+#: accounts/templates/accounts/profile.html
+msgid "Everyone can see it on your profile"
+msgstr "Видно всім у вашому профілі"

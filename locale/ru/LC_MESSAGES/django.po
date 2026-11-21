@@ -1983,3 +1983,23 @@ msgstr "Сменить обложку"
 #: movies/templates/movies/playlist.html
 msgid "Could not change the playlist cover"
 msgstr "Не удалось сменить обложку плейлиста"
+
+#: accounts/templates/accounts/profile.html
+msgid "Choose an image file"
+msgstr "Выберите файл изображения"
+
+#: accounts/templates/accounts/profile.html
+msgid "Add cover"
+msgstr "Добавить обложку"
+
+#: accounts/templates/accounts/profile.html
+msgid "Remove cover"
+msgstr "Убрать обложку"
+
+#: accounts/templates/accounts/profile.html
+msgid "Only you can see it"
+msgstr "Видите только вы"
+
+#: accounts/templates/accounts/profile.html
+msgid "Everyone can see it on your profile"
+msgstr "Виден всем в вашем профиле"

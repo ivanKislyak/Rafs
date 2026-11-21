@@ -1,6 +1,10 @@
+import io
+import tempfile
 from unittest import skipUnless
 
+from PIL import Image
 from django.contrib.contenttypes.models import ContentType
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.db import connection
 from django.test import TestCase
 from django.test.utils import CaptureQueriesContext
@@ -130,6 +134,31 @@ class PlaylistCreateAPITests(PlaylistTestMixin, APITestCase):
         self.assertEqual(too_long.status_code, 400)
         fits = self.client.post(self.url, {"name": "x" * PLAYLIST_NAME_MAX_LENGTH}, format="json")
         self.assertEqual(fits.status_code, 201)
+
+    def test_multipart_create_with_cover_and_privacy(self):
+        # The profile "New playlist" dialog sends name, is_public and cover in one multipart POST.
+        image = io.BytesIO()
+        Image.new("RGB", (8, 8), "red").save(image, format="PNG")
+        cover = SimpleUploadedFile("cover.png", image.getvalue(), content_type="image/png")
+        self.client.force_authenticate(self.user)
+        with tempfile.TemporaryDirectory() as media_root, self.settings(MEDIA_ROOT=media_root):
+            response = self.client.post(
+                self.url, {"name": "With cover", "is_public": "true", "cover": cover}, format="multipart",
+            )
+            self.assertEqual(response.status_code, 201)
+            playlist = Playlist.objects.get(pk=response.json()["id"])
+            self.assertTrue(playlist.is_public)
+            self.assertTrue(playlist.cover.name.startswith("playlists/covers/"))
+
+    def test_multipart_create_with_invalid_cover_creates_nothing(self):
+        not_an_image = SimpleUploadedFile("cover.png", b"not an image", content_type="image/png")
+        self.client.force_authenticate(self.user)
+        response = self.client.post(
+            self.url, {"name": "Broken", "is_public": "false", "cover": not_an_image}, format="multipart",
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("cover", response.json())
+        self.assertFalse(Playlist.objects.filter(owner=self.user).exists())
 
     def test_playlist_limit_per_user(self):
         Playlist.objects.bulk_create(
