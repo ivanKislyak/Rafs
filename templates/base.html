@@ -69,6 +69,7 @@ images are never downloaded. See css/halloween.css for the handoff.
         <link rel="stylesheet"
               href="{% static 'css/components/profile-menu.css' %}" />
         <link rel="stylesheet" href="{% static 'css/components/checkbox.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/components/like-heart.css' %}" />
         {% block extra_css %}{% endblock %}
         {% if site_event == "halloween-2026" %}
             <link rel="stylesheet" href="{% static 'css/halloween.css' %}" />
@@ -119,8 +120,22 @@ images are never downloaded. See css/halloween.css for the handoff.
         <div class="main-container">
             {% block content %}{% endblock %}
         </div>
+        {% if user.is_authenticated %}
+            {# Liked Titles hearts: settings for movies/js/liked-titles.js and a heart for JS-rendered cards (search). #}
+            <div hidden
+                 data-liked-titles
+                 data-playlists-url="{% url 'movies:playlist_create_api' %}"
+                 data-label-add="{% translate 'Add to Liked Titles' %}"
+                 data-label-remove="{% translate 'Remove from Liked Titles' %}"></div>
+            <template data-like-heart-template>
+                {% include "movies/_like_button.html" with movie_id="__MOVIE__" %}
+            </template>
+        {% endif %}
         {# Shared fetch helper (apiRequest); page scripts in extra_js run after it. #}
         <script src="{% static 'movies/js/api.js' %}" defer></script>
+        {% if user.is_authenticated %}
+            <script src="{% static 'movies/js/liked-titles.js' %}" defer></script>
+        {% endif %}
         <script src="{% static 'js/halloween-award.js' %}" defer></script>
         <script src="{% static 'js/notifications.js' %}" defer></script>
         <script src="{% static 'js/header.js' %}" defer></script>

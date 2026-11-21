@@ -1,0 +1,126 @@
+/* Like heart over a movie cover (movies/_like_button.html + movies/js/liked-titles.js).
+ * A translucent round chip in the cover's top-right corner; pressed means the movie is in Liked Titles.
+ * The chip sits on images, so it uses a dark scrim with a light outline in every theme. */
+.like-heart {
+  --like-size: 34px;
+  --like-inset: 8px;
+  position: absolute;
+  top: var(--like-inset);
+  right: var(--like-inset);
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: var(--like-size);
+  height: var(--like-size);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgb(0 0 0 / 35%);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  color: rgb(255 255 255 / 90%);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color 0.2s ease,
+    opacity 0.25s ease;
+}
+
+.like-heart--sm {
+  --like-size: 24px;
+  --like-inset: 3px;
+}
+
+.like-heart--lg {
+  --like-size: 42px;
+  --like-inset: 10px;
+}
+
+.like-heart svg {
+  width: 54%;
+  height: 54%;
+  margin-top: 1px;
+  fill: transparent;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition:
+    fill 0.2s ease,
+    stroke 0.2s ease,
+    transform 0.2s ease;
+}
+
+.like-heart--sm svg {
+  stroke-width: 2.4;
+}
+
+.like-heart:hover {
+  background: rgb(0 0 0 / 55%);
+}
+
+.like-heart:hover svg {
+  transform: scale(1.1);
+}
+
+.like-heart:focus-visible {
+  outline: 2px solid var(--color-focus-visible-outline);
+  outline-offset: 2px;
+}
+
+/* Liked: the heart fills with the accent colour. */
+.like-heart[aria-pressed="true"] svg {
+  fill: var(--color-accent);
+  stroke: var(--color-accent);
+}
+
+/* Until the liked state has loaded the button is disabled and hidden, so it never shows a wrong state. */
+.like-heart:disabled {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.like-heart.is-popping svg {
+  animation: like-heart-pop 0.45s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+
+.like-heart.is-failed {
+  animation: like-heart-shake 0.4s ease;
+}
+
+@keyframes like-heart-pop {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.35);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes like-heart-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-3px);
+  }
+  75% {
+    transform: translateX(3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .like-heart,
+  .like-heart svg {
+    transition: none;
+  }
+
+  .like-heart.is-popping svg,
+  .like-heart.is-failed {
+    animation: none;
+  }
+}
