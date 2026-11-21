@@ -202,10 +202,10 @@ class MovieDetailTranslationTests(TestCase):
                     ('property="og:title"', f"{title} (2024) – RAFS"),
                 ]:
                     self.assertContains(response, f'<meta {attributes} content="{escape(value)}">', html=True)
-                # Browser titles retain the previously requested format and base name.
+                # The browser title uses the localized name too
                 with translation.override(language):
                     suffix = translation.gettext("Ratings and reviews")
-                self.assertContains(response, f"<title>Original title (2024) – {suffix} · RAFS</title>", html=True)
+                self.assertContains(response, f"<title>{escape(title)} (2024) – {suffix} · RAFS</title>", html=True)
 
     def test_translated_description_is_shown_even_when_base_description_is_empty(self):
         self.movie.description = ""
