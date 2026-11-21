@@ -36,7 +36,6 @@
   aspect-ratio: 2 / 3;
   object-fit: contain;
   border-radius: 3px;
-  background: var(--color-surface);
 }
 
 .movie-detail-main-textinfo {
