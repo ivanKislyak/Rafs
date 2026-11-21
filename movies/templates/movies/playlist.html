@@ -150,14 +150,32 @@
                             data-item
                             data-movie-id="{{ item.movie.id }}"
                             data-item-url="{% url 'movies:playlist_item_api' playlist.id item.movie.id %}">
+                            {# Blurred, dimmed copy of the cover behind the card (same URL, so it comes from the cache). #}
+                            {% if movie.cover and movie.image_exists %}
+                                <img class="playlist-item-backdrop"
+                                     src="{{ movie.cover.url }}"
+                                     onerror="this.remove()"
+                                     loading="lazy"
+                                     decoding="async"
+                                     alt=""
+                                     aria-hidden="true">
+                            {% elif movie.cover_url %}
+                                <img class="playlist-item-backdrop"
+                                     src="{{ movie.cover_url|poster_size:'w154' }}"
+                                     onerror="this.remove()"
+                                     loading="lazy"
+                                     decoding="async"
+                                     alt=""
+                                     aria-hidden="true">
+                            {% endif %}
                             <span class="playlist-item-cover-wrap">
                                 {% if movie.cover and movie.image_exists %}
                                     <img class="playlist-item-cover"
                                          src="{{ movie.cover.url }}"
                                          data-fallback-src="{% static 'movies/images/nocover.png' %}"
                                          onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
-                                         width="56"
-                                         height="84"
+                                         width="80"
+                                         height="120"
                                          loading="lazy"
                                          decoding="async"
                                          alt="">
@@ -166,16 +184,16 @@
                                          src="{{ movie.cover_url|poster_size:'w154' }}"
                                          data-fallback-src="{% static 'movies/images/nocover.png' %}"
                                          onerror="this.onerror=null; this.src=this.dataset.fallbackSrc;"
-                                         width="56"
-                                         height="84"
+                                         width="80"
+                                         height="120"
                                          loading="lazy"
                                          decoding="async"
                                          alt="">
                                 {% else %}
                                     <img class="playlist-item-cover"
                                          src="{% static 'movies/images/nocover.png' %}"
-                                         width="56"
-                                         height="84"
+                                         width="80"
+                                         height="120"
                                          loading="lazy"
                                          decoding="async"
                                          alt="">

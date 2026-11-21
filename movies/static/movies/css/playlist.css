@@ -299,20 +299,43 @@
 }
 
 .playlist-item {
+  --item-cover-width: 80px;
+  position: relative;
+  isolation: isolate;
   display: grid;
-  grid-template-columns: 2ch 56px minmax(0, 1fr) auto;
+  grid-template-columns: var(--item-cover-width) 2ch minmax(0, 1fr) auto;
   align-items: center;
   gap: 14px;
-  min-height: 100px;
-  padding: 8px 8px 8px 12px;
-  border: 1px solid var(--color-border);
+  padding: 0 8px 0 0;
+  overflow: hidden;
   border-radius: 8px;
   background: var(--color-surface);
   counter-increment: playlist-position;
 }
 
+.playlist-item-backdrop {
+  position: absolute;
+  inset: -24px;
+  z-index: -2;
+  width: calc(100% + 48px);
+  height: calc(100% + 48px);
+  object-fit: cover;
+  filter: brightness(0.4) blur(20px) saturate(1.3);
+  pointer-events: none;
+}
+
+.playlist-item:has(.playlist-item-backdrop)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: color-mix(in srgb, var(--color-surface) 72%, transparent);
+  pointer-events: none;
+}
+
 /* Numbering lives in CSS, so it stays correct when JS removes an item. */
 .playlist-item::before {
+  order: 1;
   content: counter(playlist-position);
   color: var(--color-text-muted);
   font-size: 0.85rem;
@@ -320,19 +343,31 @@
   text-align: end;
 }
 
-/* Holds the cover's grid cell so the like heart can sit on the poster. */
+/* The cover fills the card's left edge, top to bottom; the card's rounded corners clip it.
+ * It holds the grid cell so the like heart can sit on the poster. */
 .playlist-item-cover-wrap {
   position: relative;
   display: block;
+  order: 0;
+  align-self: stretch;
 }
 
 .playlist-item-cover {
   display: block;
-  width: 56px;
-  height: 84px;
+  width: var(--item-cover-width);
+  height: 100%;
+  min-height: calc(var(--item-cover-width) * 1.5);
   object-fit: cover;
-  border-radius: 3px;
   background: var(--color-surface-raised);
+}
+
+.playlist-item-info,
+.playlist-item-remove {
+  order: 2;
+}
+
+.playlist-item-info {
+  padding: 10px 0;
 }
 
 .playlist-item-info {
@@ -415,15 +450,9 @@
 
 @media (max-width: 600px) {
   .playlist-item {
-    grid-template-columns: 2ch 48px minmax(0, 1fr) auto;
+    --item-cover-width: 64px;
     gap: 10px;
-    min-height: 88px;
-    padding: 6px 4px 6px 8px;
-  }
-
-  .playlist-item-cover {
-    width: 48px;
-    height: 72px;
+    padding-right: 4px;
   }
 }
 
