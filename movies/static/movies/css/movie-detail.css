@@ -209,11 +209,11 @@
   background: var(--color-surface-hover);
 }
 
-.movie-playlist-list input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  margin: 0;
-  accent-color: var(--color-action);
+.movie-playlist-list .checkbox-text {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .movie-playlist-list li > p {
@@ -281,19 +281,6 @@
   color: var(--color-text-muted);
   font-size: .85rem;
   cursor: pointer;
-}
-
-.movie-playlist-private input {
-  width: 18px;
-  height: 18px;
-  margin: 0;
-  accent-color: var(--color-action);
-  cursor: pointer;
-}
-
-.movie-playlist-private input:focus-visible {
-  outline: 2px solid var(--color-focus-visible-outline);
-  outline-offset: 2px;
 }
 
 @media (max-width: 600px) {

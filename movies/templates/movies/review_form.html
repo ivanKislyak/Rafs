@@ -55,9 +55,12 @@
                 <div class="review-rating-item review-rating-item--optional is-disabled">
                     <div class="review-rating-heading">
                         <label class="review-rating-name" for="{{ field.id_for_label }}">{{ field.label }}</label>
-                        <label class="review-rating-toggle" for="{{ toggle.id_for_label }}">
+                        <label class="checkbox review-rating-toggle" for="{{ toggle.id_for_label }}">
                             {{ toggle }}
-                            <span>{{ toggle.label }}</span>
+                            <span class="checkbox-box" aria-hidden="true">
+                                <svg viewBox="0 0 16 16" focusable="false"><path d="M3.5 8.5 6.5 11.5 12.5 4.5" pathLength="1"></path></svg>
+                            </span>
+                            <span class="checkbox-text">{{ toggle.label }}</span>
                         </label>
                     </div>
                     <div class="review-rating-controls">
@@ -96,10 +99,13 @@
             {% endif %}
         </div>
         <div class="review-form-field">
-            <label class="review-checkbox-row"
+            <label class="checkbox review-checkbox-row"
                    for="{{ review_form.contains_spoiler.id_for_label }}">
                 {{ review_form.contains_spoiler }}
-                <span>{{ review_form.contains_spoiler.label }}</span>
+                <span class="checkbox-box" aria-hidden="true">
+                    <svg viewBox="0 0 16 16" focusable="false"><path d="M3.5 8.5 6.5 11.5 12.5 4.5" pathLength="1"></path></svg>
+                </span>
+                <span class="checkbox-text">{{ review_form.contains_spoiler.label }}</span>
             </label>
             {% if review_form.contains_spoiler.errors %}
                 <div class="review-form-errors">{{ review_form.contains_spoiler.errors }}</div>

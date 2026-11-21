@@ -50,14 +50,32 @@
     errorEl.hidden = true;
   }
 
+  // Same markup as the shared .checkbox component (static/css/components/checkbox.css).
+  function createCheckboxBox() {
+    const svgNs = "http://www.w3.org/2000/svg";
+    const box = document.createElement("span");
+    const svg = document.createElementNS(svgNs, "svg");
+    const path = document.createElementNS(svgNs, "path");
+    box.className = "checkbox-box";
+    box.setAttribute("aria-hidden", "true");
+    svg.setAttribute("viewBox", "0 0 16 16");
+    svg.setAttribute("focusable", "false");
+    path.setAttribute("d", "M3.5 8.5 6.5 11.5 12.5 4.5");
+    path.setAttribute("pathLength", "1");
+    svg.append(path);
+    box.append(svg);
+    return box;
+  }
+
   function renderRow(playlist) {
     const listItem = document.createElement("li");
     const labelPlaylist = document.createElement("label");
     const inputCheckbox = document.createElement("input");
     const spanName = document.createElement("span");
+    labelPlaylist.className = "checkbox";
+    spanName.className = "checkbox-text";
     listItem.append(labelPlaylist);
-    labelPlaylist.append(inputCheckbox);
-    labelPlaylist.append(spanName);
+    labelPlaylist.append(inputCheckbox, createCheckboxBox(), spanName);
     inputCheckbox.type = "checkbox";
     inputCheckbox.checked = playlist.contains_movie;
     inputCheckbox.dataset.playlistId = playlist.id;

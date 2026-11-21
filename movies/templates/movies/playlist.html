@@ -66,11 +66,14 @@
                             <span data-playlist-count>{{ items|length }}</span>
                         </p>
                         {% if is_owner %}
-                            <label class="playlist-visibility">
+                            <label class="checkbox playlist-visibility">
                                 <input type="checkbox"
                                        data-playlist-public
                                        {% if playlist.is_public %}checked{% endif %}>
-                                <span>{% translate "Public playlist" %}</span>
+                                <span class="checkbox-box" aria-hidden="true">
+                                    <svg viewBox="0 0 16 16" focusable="false"><path d="M3.5 8.5 6.5 11.5 12.5 4.5" pathLength="1"></path></svg>
+                                </span>
+                                <span class="checkbox-text">{% translate "Public playlist" %}</span>
                             </label>
                             {% if playlist.kind != "FAVOURITE" %}
                                 <input type="file" accept="image/*" data-cover-input hidden>

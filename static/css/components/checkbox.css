@@ -1,0 +1,125 @@
+/* Custom checkbox. The native input stays in the label (focusable, clickable, announced),
+ * only invisible; .checkbox-box mirrors its state and the check mark draws itself in.
+ * Selectors are structural (".checkbox > input"), so a Django widget rendered with its own
+ * classes works too: only the wrapper label and the box span are needed around it.
+ *
+ * <label class="checkbox">
+ *   <input type="checkbox">
+ *   <span class="checkbox-box" aria-hidden="true">
+ *     <svg viewBox="0 0 16 16" focusable="false"><path d="M3.5 8.5 6.5 11.5 12.5 4.5" pathLength="1"></path></svg>
+ *   </span>
+ *   <span class="checkbox-text">Label</span>
+ * </label>
+ */
+.checkbox {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.checkbox > input[type="checkbox"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.checkbox-box {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid var(--color-text-muted);
+  border-radius: 5px;
+  background: var(--color-surface-raised);
+  color: var(--color-action-text);
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    opacity 0.15s ease,
+    transform 0.15s ease;
+}
+
+.checkbox-box svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 0.2s ease 0.05s;
+}
+
+.checkbox:hover .checkbox-box {
+  border-color: var(--color-accent);
+}
+
+.checkbox:active .checkbox-box {
+  transform: scale(0.9);
+}
+
+.checkbox > input:checked + .checkbox-box {
+  border-color: var(--color-action);
+  background: var(--color-action);
+}
+
+.checkbox:hover > input:checked + .checkbox-box {
+  border-color: var(--color-action-hover);
+  background: var(--color-action-hover);
+}
+
+.checkbox > input:checked + .checkbox-box svg {
+  stroke-dashoffset: 0;
+}
+
+.checkbox > input:focus-visible + .checkbox-box {
+  outline: 2px solid var(--color-focus-visible-outline);
+  outline-offset: 2px;
+}
+
+/* Disabled (also briefly while a request is in flight): only the box dims, so rows don't flicker. */
+.checkbox:has(> input:disabled) {
+  cursor: default;
+}
+
+.checkbox > input:disabled + .checkbox-box {
+  opacity: 0.5;
+  transform: none;
+}
+
+/* Optional two-line text: title plus a muted hint that can follow the checked state. */
+.checkbox-text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.checkbox-hint {
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.checkbox > input:checked ~ .checkbox-text .checkbox-hint--off,
+.checkbox > input:not(:checked) ~ .checkbox-text .checkbox-hint--on {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .checkbox-box,
+  .checkbox-box svg {
+    transition: none;
+  }
+}
