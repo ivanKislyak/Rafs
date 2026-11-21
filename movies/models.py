@@ -1,3 +1,4 @@
+import secrets
 from django.db import models
 from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -12,6 +13,13 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.postgres.search import SearchVectorField
 from django.utils.translation import gettext_lazy as _
 from django.db.models import Q
+
+ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+
+
+def generate_external_id(length: int = 22) -> str:
+    return "".join(secrets.choice(ALPHABET) for _ in range(length))
+
 
 class Movie(TranslatableModel):
     # Main data
@@ -272,6 +280,8 @@ PLAYLIST_NAME_MAX_LENGTH = 100
 
 
 class Playlist(models.Model):
+    # Public identifier used in URLs and the API instead of the sequential pk.
+    external_id = models.CharField(max_length=32, unique=True, editable=False, default=generate_external_id)
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
