@@ -1994,3 +1994,23 @@ msgstr "Cambiar portada"
 #: movies/templates/movies/playlist.html
 msgid "Could not change the playlist cover"
 msgstr "No se pudo cambiar la portada de la lista de reproducción"
+
+#: accounts/templates/accounts/profile.html
+msgid "Choose an image file"
+msgstr "Elige un archivo de imagen"
+
+#: accounts/templates/accounts/profile.html
+msgid "Add cover"
+msgstr "Añadir portada"
+
+#: accounts/templates/accounts/profile.html
+msgid "Remove cover"
+msgstr "Quitar portada"
+
+#: accounts/templates/accounts/profile.html
+msgid "Only you can see it"
+msgstr "Solo tú puedes verla"
+
+#: accounts/templates/accounts/profile.html
+msgid "Everyone can see it on your profile"
+msgstr "Todos pueden verla en tu perfil"

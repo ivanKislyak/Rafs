@@ -1993,3 +1993,23 @@ msgstr "Мұқабаны өзгерту"
 #: movies/templates/movies/playlist.html
 msgid "Could not change the playlist cover"
 msgstr "Плейлист мұқабасын өзгерту мүмкін болмады"
+
+#: accounts/templates/accounts/profile.html
+msgid "Choose an image file"
+msgstr "Сурет файлын таңдаңыз"
+
+#: accounts/templates/accounts/profile.html
+msgid "Add cover"
+msgstr "Мұқаба қосу"
+
+#: accounts/templates/accounts/profile.html
+msgid "Remove cover"
+msgstr "Мұқабаны алып тастау"
+
+#: accounts/templates/accounts/profile.html
+msgid "Only you can see it"
+msgstr "Оны тек өзіңіз көресіз"
+
+#: accounts/templates/accounts/profile.html
+msgid "Everyone can see it on your profile"
+msgstr "Оны профиліңізде барлығы көреді"
