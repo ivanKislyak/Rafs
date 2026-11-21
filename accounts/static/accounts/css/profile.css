@@ -1258,7 +1258,6 @@
   display: flex;
   align-items: flex-start;
   padding: 12px;
-  border: 1px solid var(--color-border);
   border-radius: 6px;
   font-size: 0.88rem;
   font-weight: 650;

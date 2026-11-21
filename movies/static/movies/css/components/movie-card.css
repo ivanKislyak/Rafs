@@ -18,7 +18,8 @@
   text-decoration: none;
 }
 
-.a-block:hover, .a-block:visited {
+.a-block:hover,
+.a-block:visited {
   color: var(--color-text);
 }
 
@@ -31,7 +32,6 @@
   width: 100%;
   aspect-ratio: 2 / 3;
   object-fit: contain;
-  background: var(--color-surface);
   border-radius: 3px;
 }
 
@@ -43,6 +43,7 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   overflow: hidden;
   overflow-wrap: anywhere;
   margin: 0 0 7px;
@@ -57,7 +58,7 @@
   flex-wrap: wrap;
   gap: 4px 10px;
   color: var(--color-text-muted);
-  font-size: .82rem;
+  font-size: 0.82rem;
 }
 
 .movie-card-rating {
