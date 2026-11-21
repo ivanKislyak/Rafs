@@ -17,6 +17,7 @@
   const renameInput = root.querySelector("[data-rename-input]");
   const coverButton = root.querySelector('[data-action="change-cover"]');
   const coverInput = root.querySelector("[data-cover-input]");
+  const coverReset = root.querySelector('[data-action="reset-cover"]');
   const deleteButton = root.querySelector('[data-action="delete-playlist"]');
   const deleteDialog = root.querySelector("[data-delete-dialog]");
   const deleteDialogName = deleteDialog?.querySelector("[data-delete-dialog-name]");
@@ -167,12 +168,39 @@
         body: formData,
       });
       showCover(response.data.cover);
+      coverReset.hidden = false;
     } catch (error) {
       showError(error.data?.cover?.[0] ?? error.data?.detail ?? root.dataset.msgCoverError);
     } finally {
       coverButton.disabled = false;
       // Reset the input so choosing the same file again still fires "change".
       coverInput.value = "";
+    }
+  }
+
+  // Trash on an uploaded cover: Liked Titles goes back to its default image (data-default-cover),
+  // other playlists back to the "Add cover" placeholder.
+  async function resetCover() {
+    coverReset.disabled = true;
+    coverButton.disabled = true;
+    clearError();
+    try {
+      await apiRequest(root.dataset.playlistUrl, { method: "PATCH", body: { cover: null } });
+      const defaultCover = coverButton.dataset.defaultCover;
+      if (defaultCover) {
+        showCover(defaultCover);
+      } else {
+        coverButton.querySelector("[data-playlist-cover]")?.remove();
+        coverButton.setAttribute("aria-label", coverButton.dataset.labelAdd);
+      }
+      coverReset.hidden = true;
+      // The trash disappears, so keep keyboard focus on the cover itself.
+      coverButton.focus();
+    } catch (error) {
+      showError(error.data?.cover?.[0] ?? error.data?.detail ?? root.dataset.msgCoverError);
+    } finally {
+      coverReset.disabled = false;
+      coverButton.disabled = false;
     }
   }
 
@@ -217,6 +245,7 @@
 
   coverButton?.addEventListener("click", () => coverInput.click());
   coverInput?.addEventListener("change", uploadCover);
+  coverReset?.addEventListener("click", resetCover);
 
   deleteButton?.addEventListener("click", openDeleteDialog);
   cancelDeleteButton?.addEventListener("click", () => deleteDialog.close());
