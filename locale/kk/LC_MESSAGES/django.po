@@ -1994,6 +1994,22 @@ msgstr "Мұқабаны өзгерту"
 msgid "Could not change the playlist cover"
 msgstr "Плейлист мұқабасын өзгерту мүмкін болмады"
 
+#: movies/models.py
+msgid "Liked Titles"
+msgstr "Таңдаулылар"
+
+#: movies/templates/movies/_like_button.html
+msgid "Add to Liked Titles"
+msgstr "Таңдаулыларға қосу"
+
+#: templates/base.html
+msgid "Remove from Liked Titles"
+msgstr "Таңдаулылардан алып тастау"
+
+#: movies/views.py
+msgid "The Liked Titles playlist is always private"
+msgstr "«Таңдаулылар» плейлисті әрқашан жеке"
+
 #: accounts/templates/accounts/profile.html
 msgid "Choose an image file"
 msgstr "Сурет файлын таңдаңыз"

@@ -1994,6 +1994,22 @@ msgstr "Cover ändern"
 msgid "Could not change the playlist cover"
 msgstr "Das Cover der Wiedergabeliste konnte nicht geändert werden"
 
+#: movies/models.py
+msgid "Liked Titles"
+msgstr "Favoriten"
+
+#: movies/templates/movies/_like_button.html
+msgid "Add to Liked Titles"
+msgstr "Zu Favoriten hinzufügen"
+
+#: templates/base.html
+msgid "Remove from Liked Titles"
+msgstr "Aus Favoriten entfernen"
+
+#: movies/views.py
+msgid "The Liked Titles playlist is always private"
+msgstr "Die Wiedergabeliste „Favoriten“ ist immer privat"
+
 #: accounts/templates/accounts/profile.html
 msgid "Choose an image file"
 msgstr "Wähle eine Bilddatei"

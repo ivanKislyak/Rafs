@@ -2015,3 +2015,19 @@ msgstr "Бачите лише ви"
 #: accounts/templates/accounts/profile.html
 msgid "Everyone can see it on your profile"
 msgstr "Видно всім у вашому профілі"
+
+#: movies/models.py
+msgid "Liked Titles"
+msgstr "Обране"
+
+#: movies/templates/movies/_like_button.html
+msgid "Add to Liked Titles"
+msgstr "Додати в обране"
+
+#: templates/base.html
+msgid "Remove from Liked Titles"
+msgstr "Прибрати з обраного"
+
+#: movies/views.py
+msgid "The Liked Titles playlist is always private"
+msgstr "Плейліст «Обране» завжди приватний"

@@ -2003,3 +2003,19 @@ msgstr "Видите только вы"
 #: accounts/templates/accounts/profile.html
 msgid "Everyone can see it on your profile"
 msgstr "Виден всем в вашем профиле"
+
+#: movies/models.py
+msgid "Liked Titles"
+msgstr "Избранное"
+
+#: movies/templates/movies/_like_button.html
+msgid "Add to Liked Titles"
+msgstr "Добавить в избранное"
+
+#: templates/base.html
+msgid "Remove from Liked Titles"
+msgstr "Убрать из избранного"
+
+#: movies/views.py
+msgid "The Liked Titles playlist is always private"
+msgstr "Плейлист «Избранное» всегда приватный"

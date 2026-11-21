@@ -1995,6 +1995,22 @@ msgstr "Cambiar portada"
 msgid "Could not change the playlist cover"
 msgstr "No se pudo cambiar la portada de la lista de reproducción"
 
+#: movies/models.py
+msgid "Liked Titles"
+msgstr "Favoritos"
+
+#: movies/templates/movies/_like_button.html
+msgid "Add to Liked Titles"
+msgstr "Añadir a favoritos"
+
+#: templates/base.html
+msgid "Remove from Liked Titles"
+msgstr "Quitar de favoritos"
+
+#: movies/views.py
+msgid "The Liked Titles playlist is always private"
+msgstr "La lista «Favoritos» siempre es privada"
+
 #: accounts/templates/accounts/profile.html
 msgid "Choose an image file"
 msgstr "Elige un archivo de imagen"
