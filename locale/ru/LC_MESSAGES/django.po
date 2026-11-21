@@ -2019,3 +2019,7 @@ msgstr "Убрать из избранного"
 #: movies/views.py
 msgid "The Liked Titles playlist is always private"
 msgstr "Плейлист «Избранное» всегда приватный"
+
+#: movies/templates/movies/playlist.html
+msgid "Restore the default cover"
+msgstr "Вернуть обложку по умолчанию"

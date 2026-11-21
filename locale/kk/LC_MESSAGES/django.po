@@ -2029,3 +2029,7 @@ msgstr "Оны тек өзіңіз көресіз"
 #: accounts/templates/accounts/profile.html
 msgid "Everyone can see it on your profile"
 msgstr "Оны профиліңізде барлығы көреді"
+
+#: movies/templates/movies/playlist.html
+msgid "Restore the default cover"
+msgstr "Әдепкі мұқабаны қайтару"

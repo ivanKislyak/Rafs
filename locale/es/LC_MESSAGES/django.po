@@ -2030,3 +2030,7 @@ msgstr "Solo tú puedes verla"
 #: accounts/templates/accounts/profile.html
 msgid "Everyone can see it on your profile"
 msgstr "Todos pueden verla en tu perfil"
+
+#: movies/templates/movies/playlist.html
+msgid "Restore the default cover"
+msgstr "Restaurar la portada predeterminada"

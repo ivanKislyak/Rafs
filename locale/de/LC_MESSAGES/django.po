@@ -2029,3 +2029,7 @@ msgstr "Nur du kannst sie sehen"
 #: accounts/templates/accounts/profile.html
 msgid "Everyone can see it on your profile"
 msgstr "Alle können sie in deinem Profil sehen"
+
+#: movies/templates/movies/playlist.html
+msgid "Restore the default cover"
+msgstr "Standardcover wiederherstellen"
