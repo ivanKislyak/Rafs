@@ -150,7 +150,7 @@ def profile(request, username):
             "avatar_form": AvatarUpdateForm(instance=profile_user) if is_owner else None,
             "profile_sex_choices": User.SexChoice.choices if is_owner else (),
             "playlists": playlists,
-            "playlist_page_template": url_template("movies:playlist", pl_id="__ID__"),
+            "playlist_page_template": url_template("movies:playlist", pl_external_id="__ID__"),
             "playlist_name_max_length": PLAYLIST_NAME_MAX_LENGTH,
         },
     )

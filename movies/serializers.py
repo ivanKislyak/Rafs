@@ -39,7 +39,7 @@ class SearchResultSerializer(serializers.Serializer):
       serialized as None.
     """
 
-    id = serializers.IntegerField(source='object_id')
+    id = serializers.SerializerMethodField()
     type = serializers.CharField(source='content_type.model')
     type_of_work = serializers.SerializerMethodField()
     wikidata_id = serializers.SerializerMethodField()
@@ -63,6 +63,12 @@ class SearchResultSerializer(serializers.Serializer):
             # A stale index entry or a related object removed during this request.
             return None
 
+    def get_id(self, obj):
+        # Playlists are public by external_id only; their pk stays internal.
+        if obj.content_type.model == 'playlist':
+            return obj.content_object.external_id
+        return obj.object_id
+
     def get_url(self, obj):
         target = obj.content_object
         model = obj.content_type.model
@@ -73,7 +79,7 @@ class SearchResultSerializer(serializers.Serializer):
         if model == 'user' and not target.is_deleted:
             return reverse('profile', kwargs={'username': target.username})
         if model == 'playlist':
-            return reverse('movies:playlist', args=[target.pk])
+            return reverse('movies:playlist', args=[target.external_id])
         return None
 
     def get_type_of_work(self, obj):
@@ -219,6 +225,8 @@ class PlaylistSerializer(serializers.ModelSerializer):
     # CharField trims surrounding whitespace and rejects blank values by default,
     # so "   " is reported as a blank name (400).
     name = serializers.CharField(max_length=PLAYLIST_NAME_MAX_LENGTH)
+    # The public id replaces the sequential pk in every API response.
+    id = serializers.CharField(source='external_id', read_only=True)
     items = PlaylistItemSerializer(many=True, read_only=True)
     class Meta:
         model = Playlist
@@ -226,6 +234,7 @@ class PlaylistSerializer(serializers.ModelSerializer):
         read_only_fields = ['kind', 'owner']
 
 class PlaylistShortSerializer(serializers.ModelSerializer):
+    id = serializers.CharField(source='external_id', read_only=True)
     movies_count = serializers.IntegerField(read_only=True)
     contains_movie = serializers.SerializerMethodField()
 

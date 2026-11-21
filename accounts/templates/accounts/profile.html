@@ -254,8 +254,8 @@
                     {% for playlist in playlists %}
                         {% with first_movie=playlist.cover_items.0.movie %}
                             <a class="profile-playlist-card"
-                               href="{% url 'movies:playlist' playlist.id %}"
-                               data-playlist-id="{{ playlist.id }}">
+                               href="{% url 'movies:playlist' playlist.external_id %}"
+                               data-playlist-id="{{ playlist.external_id }}">
                                 <span class="profile-playlist-cover-wrap">
                                     {% if playlist.cover %}
                                         <img class="profile-playlist-cover"

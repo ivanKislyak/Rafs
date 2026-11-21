@@ -158,7 +158,7 @@ def movie_detail(request, movie_id):
                    "watch_status": watch_status,
                    "open_replies_id": open_replies_id,
                    "playlist_item_url_template": url_template(
-                       "movies:playlist_item_api", pl_id="__PL__", movie_id="__MOVIE__",
+                       "movies:playlist_item_api", pl_external_id="__PL__", movie_id="__MOVIE__",
                    ),
                    "playlist_name_max_length": PLAYLIST_NAME_MAX_LENGTH})
 
@@ -354,9 +354,9 @@ def prefetched_playlist_qs(playlist):
         )
 
 
-def playlist_page(request, pl_id):
+def playlist_page(request, pl_external_id):
     playlist_qs = prefetched_playlist_qs(visible_playlists(request.user))
-    playlist_instance = get_object_or_404(playlist_qs, pk=pl_id)
+    playlist_instance = get_object_or_404(playlist_qs, external_id=pl_external_id)
     is_owner = (request.user == playlist_instance.owner)
     return render(request, 'movies/playlist.html', {
         'playlist': playlist_instance,
@@ -417,18 +417,18 @@ class PlaylistAPIView(APIView):
     serializer_class = PlaylistSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-    def get(self, request, pl_id, *args, **kwargs):
+    def get(self, request, pl_external_id, *args, **kwargs):
         playlist_qs = visible_playlists(request.user)
         playlist_qs = prefetched_playlist_qs(playlist_qs)
-        playlist_instance = get_object_or_404(playlist_qs, pk=pl_id)
+        playlist_instance = get_object_or_404(playlist_qs, external_id=pl_external_id)
         serializer = self.serializer_class(
             playlist_instance, context={"request": request}
         )
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def _update(self, request, pl_id, partial):
+    def _update(self, request, pl_external_id, partial):
         playlist = get_object_or_404(
-            prefetched_playlist_qs(Playlist.objects.filter(owner=request.user)), pk=pl_id,
+            prefetched_playlist_qs(Playlist.objects.filter(owner=request.user)), external_id=pl_external_id,
         )
         serializer = self.serializer_class(
             playlist, data=request.data, partial=partial, context={"request": request}
@@ -448,14 +448,14 @@ class PlaylistAPIView(APIView):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def put(self, request, pl_id: int):
-        return self._update(request, pl_id, partial=False)
+    def put(self, request, pl_external_id: str):
+        return self._update(request, pl_external_id, partial=False)
 
-    def patch(self, request, pl_id: int):
-        return self._update(request, pl_id, partial=True)
+    def patch(self, request, pl_external_id: str):
+        return self._update(request, pl_external_id, partial=True)
 
-    def delete(self, request, pl_id: int):
-        playlist = get_object_or_404(Playlist, pk=pl_id, owner=request.user)
+    def delete(self, request, pl_external_id: str):
+        playlist = get_object_or_404(Playlist, external_id=pl_external_id, owner=request.user)
         if playlist.kind == KindChoice.FAVOURITE:
             raise APIPermissionDenied(_("The Favourite playlist cannot be deleted."))
         playlist.delete()
@@ -471,9 +471,9 @@ class PlaylistItemAPIView(APIView):
     serializer_class = PlaylistItemSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-    def get(self, request, pl_id, movie_id):
+    def get(self, request, pl_external_id, movie_id):
         playlist_qs = visible_playlists(request.user)
-        playlist_instance = get_object_or_404(playlist_qs, pk=pl_id)
+        playlist_instance = get_object_or_404(playlist_qs, external_id=pl_external_id)
         item_qs = PlaylistItem.objects.filter(playlist=playlist_instance, movie_id=movie_id).select_related("movie")
         item = get_object_or_404(item_qs)
         serializer = self.serializer_class(
@@ -481,9 +481,9 @@ class PlaylistItemAPIView(APIView):
         )
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def put(self, request, pl_id, movie_id):
+    def put(self, request, pl_external_id, movie_id):
         movie = get_object_or_404(Movie, pk=movie_id)
-        playlist = get_object_or_404(Playlist, pk=pl_id, owner=request.user)
+        playlist = get_object_or_404(Playlist, external_id=pl_external_id, owner=request.user)
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -513,8 +513,8 @@ class PlaylistItemAPIView(APIView):
         instance_data = self.serializer_class(instance, context={"request": request}).data
         return Response(instance_data, status=status_code)
         
-    def delete(self, request, pl_id, movie_id):
-        playlist_instance = get_object_or_404(Playlist, pk=pl_id, owner=request.user)
+    def delete(self, request, pl_external_id, movie_id):
+        playlist_instance = get_object_or_404(Playlist, external_id=pl_external_id, owner=request.user)
         PlaylistItem.objects.filter(playlist=playlist_instance, movie_id=movie_id).delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 

@@ -2,11 +2,12 @@ from django.urls import reverse
 
 
 def url_template(viewname, **placeholders):
-    """Reverse ``viewname`` with text placeholders in place of integer kwargs.
+    """Reverse ``viewname`` with text placeholders in place of its kwargs.
 
-    ``url_template("movies:playlist", pl_id="__ID__")`` -> "/movies/playlist/__ID__/".
+    ``url_template("movies:playlist", pl_external_id="__ID__")`` -> "/movies/playlist/__ID__/".
     Each kwarg is reversed as a distinct sentinel number that is then swapped
-    for its placeholder, so the result follows the real URLconf.
+    for its placeholder, so the result follows the real URLconf. Numbers fit
+    both ``int`` and ``slug`` converters.
     """
     sentinels = {name: 900_000_001 + index for index, name in enumerate(placeholders)}
     url = reverse(viewname, kwargs=sentinels)

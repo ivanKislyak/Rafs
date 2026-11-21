@@ -12,7 +12,7 @@
     <main class="page-shell playlist-page">
         <section class="playlist"
                  data-playlist
-                 data-playlist-url="{% url 'movies:playlist_api' playlist.id %}"
+                 data-playlist-url="{% url 'movies:playlist_api' playlist.external_id %}"
                  data-msg-remove-error="{% translate 'Could not remove the movie from the playlist' %}"
                  data-msg-toggle-error="{% translate 'Could not change playlist visibility' %}"
                  data-profile-url="{% url 'profile' playlist.owner.username %}"
@@ -172,7 +172,7 @@
                         <li class="playlist-item"
                             data-item
                             data-movie-id="{{ item.movie.id }}"
-                            data-item-url="{% url 'movies:playlist_item_api' playlist.id item.movie.id %}">
+                            data-item-url="{% url 'movies:playlist_item_api' playlist.external_id item.movie.id %}">
                             {# Blurred, dimmed copy of the cover behind the card (same URL, so it comes from the cache). #}
                             {% if movie.cover and movie.image_exists %}
                                 <img class="playlist-item-backdrop"

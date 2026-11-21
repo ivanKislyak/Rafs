@@ -16,12 +16,12 @@ urlpatterns = [
     path('save/status/', views.set_movie_status, name='set_movie_status'),
     path('reviews/', views.show_reviews, name='show_reviews'),
     path('search/', views.search_page, name='search_query'),
-    path('playlist/<int:pl_id>/', views.playlist_page, name='playlist'),
+    path('playlist/<slug:pl_external_id>/', views.playlist_page, name='playlist'),
     path('api/v1/search/', views.SearchResultsListAPIView.as_view(), name='search_results_api'),
     path('api/v1/watch-status/<int:movie_id>/', views.WatchStatusAPIView.as_view(), name='watch_status_api'),
     path('api/v1/reviews/<int:review_id>/replies/', views.ReviewReplyListCreateAPIView.as_view(), name='review_reply_api'),
     path('api/v1/replies/<int:reply_id>/', views.EditReplyAPIView.as_view(), name='edit_reply_api'),
     path('api/v1/playlists/', views.PlaylistListAPIView.as_view(), name='playlist_create_api'),
-    path('api/v1/playlists/<int:pl_id>/', views.PlaylistAPIView.as_view(), name='playlist_api'),
-    path('api/v1/playlists/<int:pl_id>/items/<int:movie_id>/', views.PlaylistItemAPIView.as_view(), name='playlist_item_api')
+    path('api/v1/playlists/<slug:pl_external_id>/', views.PlaylistAPIView.as_view(), name='playlist_api'),
+    path('api/v1/playlists/<slug:pl_external_id>/items/<int:movie_id>/', views.PlaylistItemAPIView.as_view(), name='playlist_item_api')
 ]
