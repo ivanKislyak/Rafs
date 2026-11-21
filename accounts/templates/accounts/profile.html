@@ -231,15 +231,22 @@
                         <p class="profile-eyebrow">{% translate "Collections" %}</p>
                         <h2 id="profile-playlists-title">{% translate "Playlists" %}</h2>
                     </div>
-                    {% if is_owner %}
-                        <button class="profile-button profile-button--primary"
-                                type="button"
-                                data-action="open-create">{% translate "New playlist" %}</button>
-                    {% else %}
-                        <span class="profile-section-count">{{ playlists|length }}</span>
-                    {% endif %}
+                    <span class="profile-section-count">{{ playlists|length }}</span>
                 </div>
                 <div class="profile-playlist-grid" data-playlists-list>
+                    {% if is_owner %}
+                        <button class="profile-playlist-new"
+                                type="button"
+                                data-action="open-create"
+                                aria-label="{% translate 'New playlist' %}"
+                                title="{% translate 'New playlist' %}">
+                            <svg viewBox="0 0 96 96" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="miter" aria-hidden="true" focusable="false">
+                                <path d="M3 12V3H12 M84 3H93V12 M93 84V93H84 M12 93H3V84"></path>
+                                <path d="M27 3H39 M57 3H69 M93 27V39 M93 57V69 M69 93H57 M39 93H27 M3 69V57 M3 39V27"></path>
+                                <path d="M34 48H62 M48 34V62"></path>
+                            </svg>
+                        </button>
+                    {% endif %}
                     {% for playlist in playlists %}
                         {% with first_movie=playlist.cover_items.0.movie %}
                             <a class="profile-playlist-card"
@@ -300,9 +307,6 @@
                 {% if is_owner %}
                     <div class="profile-playlists-empty" data-playlists-empty{% if playlists %} hidden{% endif %}>
                         <p>{% translate "You have no playlists yet. Collect movies into themed lists and share them." %}</p>
-                        <button class="profile-button"
-                                type="button"
-                                data-action="open-create">{% translate "Create a playlist" %}</button>
                     </div>
                     <dialog class="profile-watch-dialog profile-playlist-dialog"
                             data-create-dialog

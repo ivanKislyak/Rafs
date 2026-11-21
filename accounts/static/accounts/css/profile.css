@@ -1,5 +1,6 @@
 /* Profile identity, contribution and library share one reading surface. */
-.profile-page, .moderation-admin-page {
+.profile-page,
+.moderation-admin-page {
   width: min(1000px, calc(100% - 40px));
   margin: 40px auto 64px;
   color: var(--color-text);
@@ -40,7 +41,7 @@
   min-height: 44px;
   padding: 8px 0;
   color: var(--color-text-muted);
-  font-size: .8rem;
+  font-size: 0.8rem;
   cursor: pointer;
   list-style: none;
 }
@@ -69,13 +70,13 @@
 
 .profile-file-label {
   margin: 0;
-  font-size: .85rem;
+  font-size: 0.85rem;
   font-weight: 650;
 }
 
 .profile-avatar-filename {
   margin: 0;
-  font-size: .8rem;
+  font-size: 0.8rem;
   color: var(--color-text-muted);
   overflow-wrap: anywhere;
 }
@@ -83,7 +84,7 @@
 .profile-form-hint {
   margin: 0;
   color: var(--color-text-muted);
-  font-size: .8rem;
+  font-size: 0.8rem;
   line-height: 1.5;
 }
 
@@ -118,7 +119,9 @@
   background: rgb(4 5 7 / 70%);
 }
 
-.profile-edit-form, .profile-edit-form fieldset, .profile-edit-field {
+.profile-edit-form,
+.profile-edit-form fieldset,
+.profile-edit-field {
   display: grid;
   gap: 8px;
   min-width: 0;
@@ -137,7 +140,7 @@
 }
 
 .profile-edit-field label {
-  font-size: .85rem;
+  font-size: 0.85rem;
   font-weight: 650;
 }
 
@@ -161,16 +164,18 @@
   border-color: var(--color-accent);
 }
 
-.profile-edit-field :focus-visible, .profile-edit-dialog button:focus-visible,
+.profile-edit-field :focus-visible,
+.profile-edit-dialog button:focus-visible,
 [data-profile-edit-open]:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
 
-.profile-edit-status, .profile-edit-error {
+.profile-edit-status,
+.profile-edit-error {
   margin: 0;
   overflow-wrap: anywhere;
-  font-size: .85rem;
+  font-size: 0.85rem;
   line-height: 1.5;
 }
 
@@ -182,11 +187,14 @@
   color: var(--color-accent);
 }
 
-.profile-edit-status:empty, .profile-edit-error:empty {
+.profile-edit-status:empty,
+.profile-edit-error:empty {
   display: none;
 }
 
-.profile-name-row, .profile-section-heading, .moderation-admin-heading {
+.profile-name-row,
+.profile-section-heading,
+.moderation-admin-heading {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
@@ -203,22 +211,23 @@
   overflow-wrap: anywhere;
   font-size: clamp(1.5rem, 3.5vw, 2.25rem);
   line-height: 1.2;
-  letter-spacing: -.03em;
+  letter-spacing: -0.03em;
   font-weight: 800;
 }
 
 .profile-eyebrow {
   margin: 0 0 8px;
   color: var(--color-accent);
-  font-size: .72rem;
+  font-size: 0.72rem;
   font-weight: 750;
-  letter-spacing: .1em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
-.profile-role, .profile-section-count {
+.profile-role,
+.profile-section-count {
   color: var(--color-text-muted);
-  font-size: .85rem;
+  font-size: 0.85rem;
 }
 
 .profile-account-meta {
@@ -236,25 +245,29 @@
   flex-basis: 100%;
 }
 
-.profile-account-meta dt, .account-form-status dt {
+.profile-account-meta dt,
+.account-form-status dt {
   margin-bottom: 4px;
   color: var(--color-text-muted);
-  font-size: .8rem;
+  font-size: 0.8rem;
   font-weight: 500;
 }
 
-.profile-account-meta dd, .account-form-status dd {
+.profile-account-meta dd,
+.account-form-status dd {
   margin: 0;
   color: var(--color-text);
   font-weight: 650;
   overflow-wrap: anywhere;
 }
 
-.profile-account-meta > div:nth-child(-n+2) dd {
+.profile-account-meta > div:nth-child(-n + 2) dd {
   font-size: 1.2rem;
 }
 
-.profile-avatar-actions, .profile-owner-links, .moderation-application-actions {
+.profile-avatar-actions,
+.profile-owner-links,
+.moderation-application-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
@@ -271,7 +284,7 @@
   background: transparent;
   color: var(--color-text);
   font: inherit;
-  font-size: .85rem;
+  font-size: 0.85rem;
   font-weight: 650;
   text-decoration: none;
   cursor: pointer;
@@ -298,7 +311,7 @@
 }
 
 .profile-button:disabled {
-  opacity: .5;
+  opacity: 0.5;
   cursor: wait;
 }
 
@@ -336,7 +349,7 @@
 
 .profile-summary-card span {
   color: var(--color-text-muted);
-  font-size: .9rem;
+  font-size: 0.9rem;
 }
 
 .profile-watch-grid {
@@ -359,7 +372,7 @@
   background: transparent;
   color: var(--color-text-muted);
   font: inherit;
-  font-size: .85rem;
+  font-size: 0.85rem;
   text-align: left;
   cursor: pointer;
 }
@@ -368,7 +381,8 @@
   color: var(--color-text);
 }
 
-.profile-watch-item:hover, .profile-watch-item.is-active {
+.profile-watch-item:hover,
+.profile-watch-item.is-active {
   color: var(--color-text);
   border-bottom-color: var(--color-accent);
 }
@@ -443,7 +457,7 @@
   overflow: hidden;
   overflow-wrap: anywhere;
   color: var(--color-text);
-  font-size: .9rem;
+  font-size: 0.9rem;
   line-height: 1.35;
   font-weight: 700;
   text-decoration: none;
@@ -453,9 +467,11 @@
   color: var(--color-accent);
 }
 
-.profile-watch-movie-year, .profile-watch-removed-message, .profile-watch-movie-feedback {
+.profile-watch-movie-year,
+.profile-watch-removed-message,
+.profile-watch-movie-feedback {
   color: var(--color-text-muted);
-  font-size: .8rem;
+  font-size: 0.8rem;
 }
 
 .profile-watch-movie-actions {
@@ -467,7 +483,8 @@
   gap: 8px;
 }
 
-.profile-watch-remove, .profile-watch-undo {
+.profile-watch-remove,
+.profile-watch-undo {
   min-height: 36px;
   padding: 6px 8px;
   border: 0;
@@ -475,7 +492,7 @@
   background: transparent;
   color: var(--color-text-muted);
   font: inherit;
-  font-size: .8rem;
+  font-size: 0.8rem;
   cursor: pointer;
 }
 
@@ -512,7 +529,8 @@
   background: var(--color-surface-hover);
 }
 
-.profile-watch-remove:focus-visible, .profile-watch-undo:focus-visible {
+.profile-watch-remove:focus-visible,
+.profile-watch-undo:focus-visible {
   outline: 2px solid var(--color-focus-visible-outline);
   outline-offset: 2px;
 }
@@ -525,8 +543,9 @@
   white-space: nowrap;
 }
 
-.profile-watch-remove:disabled, .profile-watch-undo:disabled {
-  opacity: .6;
+.profile-watch-remove:disabled,
+.profile-watch-undo:disabled {
+  opacity: 0.6;
   cursor: wait;
 }
 
@@ -542,7 +561,7 @@
 
 .profile-watch-movie.is-removed .profile-watch-movie-cover-link,
 .profile-watch-movie.is-removed .profile-watch-movie-copy {
-  opacity: .55;
+  opacity: 0.55;
 }
 
 .profile-watch-movie.is-removed .profile-watch-movie-cover {
@@ -553,7 +572,7 @@
   padding: 16px 0;
   margin: 0;
   color: var(--color-text-muted);
-  font-size: .9rem;
+  font-size: 0.9rem;
 }
 
 @media (max-width: 600px), (pointer: coarse) {
@@ -616,7 +635,8 @@
   gap: 20px;
 }
 
-.profile-achievement, .profile-achievement-empty {
+.profile-achievement,
+.profile-achievement-empty {
   display: flex;
   align-items: baseline;
   gap: 14px;
@@ -651,26 +671,31 @@
   background: var(--color-surface-raised);
 }
 
-.profile-achievement h3, .profile-achievement-empty strong {
+.profile-achievement h3,
+.profile-achievement-empty strong {
   margin: 0;
-  font-size: .95rem;
+  font-size: 0.95rem;
   font-weight: 650;
 }
 
-.profile-achievement p, .profile-achievement-empty p {
+.profile-achievement p,
+.profile-achievement-empty p {
   margin: 6px 0 0;
   color: var(--color-text-muted);
-  font-size: .85rem;
+  font-size: 0.85rem;
   line-height: 1.6;
   overflow-wrap: anywhere;
 }
 
-.account-form-card, .moderation-admin-heading, .moderation-application-item {
+.account-form-card,
+.moderation-admin-heading,
+.moderation-application-item {
   border: 1px solid var(--color-border);
   background: var(--color-surface);
 }
 
-.account-form-card h1, .moderation-admin-heading h1 {
+.account-form-card h1,
+.moderation-admin-heading h1 {
   margin: 0;
   color: var(--color-text);
 }
@@ -823,7 +848,8 @@
   color: var(--color-accent);
 }
 
-.moderation-applicant-copy span, .moderation-applicant-copy time {
+.moderation-applicant-copy span,
+.moderation-applicant-copy time {
   overflow-wrap: anywhere;
   color: var(--color-text-muted);
   font-size: 0.78rem;
@@ -842,7 +868,8 @@
 }
 
 @media (max-width: 600px) {
-  .profile-page, .moderation-admin-page {
+  .profile-page,
+  .moderation-admin-page {
     width: calc(100% - 28px);
     margin-top: 24px;
   }
@@ -873,7 +900,7 @@
   }
   .profile-owner-links .profile-button {
     padding-inline: 8px;
-    font-size: .8rem;
+    font-size: 0.8rem;
   }
   .account-form-card {
     padding: 20px;
@@ -905,6 +932,36 @@
   border-radius: 6px;
 }
 
+.profile-playlist-new {
+  display: block;
+  align-self: start;
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--rafs-red-hover);
+  cursor: pointer;
+}
+
+.profile-playlist-new svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.2s ease;
+}
+
+.profile-playlist-new:hover svg {
+  transform: scale(1.03);
+}
+
+.profile-playlist-new:focus-visible {
+  outline: 2px solid var(--color-focus-visible-outline);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
 .profile-playlist-cover-wrap {
   position: relative;
   display: grid;
@@ -922,7 +979,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform .2s ease;
+  transition: transform 0.2s ease;
 }
 
 .profile-playlist-card:hover .profile-playlist-cover {
@@ -950,7 +1007,7 @@
   align-items: center;
   gap: 6px;
   min-width: 0;
-  font-size: .9rem;
+  font-size: 0.9rem;
   font-weight: 700;
   line-height: 1.35;
 }
@@ -976,7 +1033,7 @@
 
 .profile-playlist-count {
   color: var(--color-text-muted);
-  font-size: .8rem;
+  font-size: 0.8rem;
 }
 
 .profile-playlists-empty {
@@ -985,6 +1042,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px 20px;
+  margin-top: 20px;
   padding: 20px;
   border: 1px dashed var(--color-border);
   border-radius: 6px;
@@ -997,7 +1055,7 @@
 .profile-playlists-empty p {
   margin: 0;
   color: var(--color-text-muted);
-  font-size: .9rem;
+  font-size: 0.9rem;
   line-height: 1.6;
 }
 
