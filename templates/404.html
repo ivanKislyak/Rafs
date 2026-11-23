@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}{% translate "Page not found" %} · RAFS{% endblock %}
+{% block robots_meta %}
+    <meta name="robots" content="noindex">
+{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/error-page.css' %}">
+{% endblock %}
+{% block content %}
+    <main class="page-shell error-page">
+        <div class="error-page-inner">
+            <p class="error-page-code" aria-hidden="true">404</p>
+            <p class="page-kicker">{% translate "Error 404" %}</p>
+            <h1>{% translate "Page not found" %}</h1>
+            <p class="error-page-text">
+                {% translate "The page may have been moved or deleted, or the link contains a typo. Try searching or start from the home page." %}
+            </p>
+            <div class="error-page-actions">
+                <a class="error-page-button error-page-button--primary"
+                   href="{% url 'core:home' %}">{% translate "Go to the home page" %}</a>
+                <a class="error-page-button" href="{% url 'movies:catalog' %}">{% translate "Open the catalog" %}</a>
+            </div>
+        </div>
+    </main>
+{% endblock %}

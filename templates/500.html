@@ -1,0 +1,67 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+{% comment %}Rendered by Django's server_error view with an empty context: no request, user or
+context processors, and possibly no database. Keep it free of base.html, includes and
+queries so it still renders when the rest of the site does not.
+{% endcomment %}
+{% get_current_language as CURRENT_LANGUAGE %}
+<html lang="{{ CURRENT_LANGUAGE }}">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport"
+              content="width=device-width, user-scalable=yes, initial-scale=1.0" />
+        <meta name="robots" content="noindex">
+        <title>{% translate "Something went wrong" %} · RAFS</title>
+        <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+        <script src="{% static 'js/theme.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/components/header.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/error-page.css' %}" />
+    </head>
+    <body>
+        <header class="main-header error-header">
+            <div class="header-inner">
+                <a class="logo" href="{% url 'core:home' %}">
+                    <img class="red-logo-img"
+                         src="{% static 'images/red_gl_rafs_logo.png' %}"
+                         alt=""
+                         aria-hidden="true"
+                         width="86"
+                         height="48">
+                    <img class="blue-logo-img"
+                         src="{% static 'images/blue_gl_rafs_logo.png' %}"
+                         alt=""
+                         aria-hidden="true"
+                         width="86"
+                         height="48">
+                    <img class="logo-img"
+                         src="{% static 'images/def_rafs_logo.png' %}"
+                         alt="RAFS"
+                         width="86"
+                         height="48">
+                </a>
+                <nav class="main-buttons" aria-label="{% translate 'Navigation' %}">
+                    <a href="{% url 'movies:catalog' %}">{% translate "Catalog" %}</a>
+                    <a href="{% url 'movies:show_reviews' %}">{% translate "Reviews" %}</a>
+                </nav>
+            </div>
+        </header>
+        <main class="page-shell error-page">
+            <div class="error-page-inner">
+                <p class="error-page-code" aria-hidden="true">500</p>
+                <p class="page-kicker">{% translate "Error 500" %}</p>
+                <h1>{% translate "Something went wrong" %}</h1>
+                <p class="error-page-text">
+                    {% translate "We could not load this page because of a problem on our side. Please try again in a few minutes." %}
+                </p>
+                <div class="error-page-actions">
+                    <button class="error-page-button error-page-button--primary"
+                            type="button"
+                            onclick="window.location.reload()">{% translate "Try again" %}</button>
+                    <a class="error-page-button" href="{% url 'core:home' %}">{% translate "Go to the home page" %}</a>
+                </div>
+            </div>
+        </main>
+    </body>
+</html>
