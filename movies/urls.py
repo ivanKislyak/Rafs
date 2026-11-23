@@ -23,5 +23,6 @@ urlpatterns = [
     path('api/v1/replies/<int:reply_id>/', views.EditReplyAPIView.as_view(), name='edit_reply_api'),
     path('api/v1/playlists/', views.PlaylistListAPIView.as_view(), name='playlist_create_api'),
     path('api/v1/playlists/<slug:pl_external_id>/', views.PlaylistAPIView.as_view(), name='playlist_api'),
-    path('api/v1/playlists/<slug:pl_external_id>/items/<int:movie_id>/', views.PlaylistItemAPIView.as_view(), name='playlist_item_api')
+    path('api/v1/playlists/<slug:pl_external_id>/items/<int:movie_id>/', views.PlaylistItemAPIView.as_view(), name='playlist_item_api'),
+    path('api/v1/playlists/<slug:pl_external_id>/items/order/', views.PlaylistOrderAPIView.as_view(), name='playlist_order_api'),
 ]

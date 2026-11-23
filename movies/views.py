@@ -40,7 +40,8 @@ from .models import (
 from .serializers import (
     SearchResultSerializer, WatchStatusSerializer, 
     ReviewReplySerializer, PlaylistSerializer,
-    PlaylistItemSerializer, PlaylistShortSerializer
+    PlaylistItemSerializer, PlaylistShortSerializer,
+    PlaylistOrderSerializer
     )
 from .services.wikidata import (
     search_wikidata_media, 
@@ -401,15 +402,12 @@ class PlaylistListAPIView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         user = self.request.user
         with transaction.atomic():
-            # Lock the owner row so concurrent requests cannot both pass the limit check.
             User.objects.select_for_update().only("pk").get(pk=user.pk)
             if Playlist.objects.filter(owner=user).count() >= PLAYLISTS_PER_USER_LIMIT:
-                # Same {"detail": "..."} shape as the 403 responses below.
                 raise PlaylistLimitExceeded(
                     _("You can have at most %(limit)d playlists.")
                     % {"limit": PLAYLISTS_PER_USER_LIMIT}
                 )
-            # kind is read-only in the serializer, so new playlists are always CUSTOM.
             serializer.save(owner=user)
 
 
@@ -517,6 +515,27 @@ class PlaylistItemAPIView(APIView):
         playlist_instance = get_object_or_404(Playlist, external_id=pl_external_id, owner=request.user)
         PlaylistItem.objects.filter(playlist=playlist_instance, movie_id=movie_id).delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class PlaylistOrderAPIView(APIView):
+    serializer_class = PlaylistOrderSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def put(self, request, pl_external_id):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        with transaction.atomic():
+            playlist_obj = get_object_or_404(Playlist.objects.select_for_update(), external_id=pl_external_id, owner=request.user)
+            playlist_items = list(PlaylistItem.objects.filter(playlist=playlist_obj))
+            playlist_items_by_id = {item.movie_id: item for item in playlist_items}
+            validated_movie_ids = serializer.validated_data.get("movie_ids")
+            if set(validated_movie_ids) != set(playlist_items_by_id.keys()):
+                raise serializers.ValidationError({"movie_ids": ["The movies don't match the playlist"]})
+            for pos, validated_movie_id in enumerate(validated_movie_ids, start=1):
+                playlist_items_by_id[validated_movie_id].position = pos
+            PlaylistItem.objects.bulk_update(playlist_items, ["position"])
+            return Response(data=serializer.validated_data, status=status.HTTP_200_OK)
 
 
 class EditReplyAPIView(generics.RetrieveUpdateAPIView):
