@@ -1,0 +1,69 @@
+/* Playlist page, owner only: drag handle on each card (SortableJS) to change the order.
+ * Loaded after playlist.css; colours come from base.css tokens, so light/dark themes follow [data-theme]. */
+
+/* One more column on the right for the handle: cover | number | info | remove | handle. */
+.playlist-item:has(> .playlist-item-handle) {
+  grid-template-columns: var(--item-cover-width) 2ch minmax(0, 1fr) auto auto;
+}
+
+.playlist-item-handle {
+  order: 3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: grab;
+  /* The finger on the handle drags the card instead of scrolling the page. */
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.playlist-item-handle svg {
+  fill: currentColor;
+  pointer-events: none;
+}
+
+.playlist-item-handle:hover {
+  background: var(--color-accent-surface-hover);
+  color: var(--color-text);
+}
+
+.playlist-item-handle:active {
+  cursor: grabbing;
+}
+
+.playlist-item-handle:focus-visible {
+  outline: 2px solid var(--color-focus-visible-outline);
+  outline-offset: 2px;
+}
+
+/* While the new order is being saved, dragging is switched off. */
+.playlist-items[aria-busy="true"] .playlist-item-handle {
+  opacity: 0.5;
+  cursor: progress;
+}
+
+/* The placeholder left in the list where the card will drop. */
+.playlist-item--ghost {
+  opacity: 0.4;
+  outline: 2px dashed var(--color-border);
+  outline-offset: -2px;
+}
+
+/* The card under the pointer or finger. */
+.playlist-item--drag {
+  box-shadow: 0 8px 24px rgb(0 0 0 / 35%);
+}
+
+@media (max-width: 600px) {
+  .playlist-item-handle {
+    width: 36px;
+  }
+}

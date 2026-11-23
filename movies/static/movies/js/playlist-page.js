@@ -222,6 +222,88 @@
     }
   }
 
+  // Reorder (owner only: Sortable.min.js is loaded just for the owner). The numbers 1, 2, 3 are a CSS
+  // counter, so they follow the DOM by themselves.
+  let sortable = null;
+  let isSavingOrder = false;
+  let orderBefore = [];
+
+  // Send the order the DOM shows now; on failure put the cards back as they were in orderBefore.
+  async function saveOrder(previousOrder) {
+    isSavingOrder = true;
+    sortable.option("disabled", true);
+    list.setAttribute("aria-busy", "true");
+    clearError();
+    try {
+      await apiRequest(root.dataset.orderUrl, {
+        method: "PUT",
+        body: { movie_ids: sortable.toArray().map(Number) },
+      });
+    } catch (error) {
+      sortable.sort(previousOrder, true);
+      showError(root.dataset.msgOrderError);
+    } finally {
+      sortable.option("disabled", false);
+      list.removeAttribute("aria-busy");
+      isSavingOrder = false;
+    }
+  }
+
+  // Keyboard: ArrowUp / ArrowDown on a focused handle moves its card by one place.
+  async function moveItemByKey(handle, key) {
+    const playlistItem = handle.closest("[data-item]");
+    const neighbour = key === "ArrowUp" ? playlistItem.previousElementSibling : playlistItem.nextElementSibling;
+    if (!neighbour) {
+      return;
+    }
+    const previousOrder = sortable.toArray();
+    if (key === "ArrowUp") {
+      neighbour.before(playlistItem);
+    } else {
+      neighbour.after(playlistItem);
+    }
+    // Moving a node drops the focus; keep it on the handle so the next arrow press works.
+    handle.focus();
+    await saveOrder(previousOrder);
+    if (document.activeElement === document.body) {
+      handle.focus();
+    }
+  }
+
+  if (typeof Sortable === "function" && root.dataset.orderUrl) {
+    sortable = Sortable.create(list, {
+      handle: "[data-drag-handle]",
+      dataIdAttr: "data-movie-id",
+      animation: 150,
+      ghostClass: "playlist-item--ghost",
+      dragClass: "playlist-item--drag",
+      onStart() {
+        orderBefore = sortable.toArray();
+      },
+      onEnd(event) {
+        if (event.oldIndex === event.newIndex) {
+          return;
+        }
+        saveOrder(orderBefore);
+      },
+    });
+
+    list.addEventListener("keydown", (event) => {
+      if (event.key !== "ArrowUp" && event.key !== "ArrowDown") {
+        return;
+      }
+      const handle = event.target.closest("[data-drag-handle]");
+      if (!handle) {
+        return;
+      }
+      event.preventDefault();
+      if (isSavingOrder) {
+        return;
+      }
+      moveItemByKey(handle, event.key);
+    });
+  }
+
   list.addEventListener("click", (event) => {
     const buttonRemove = event.target.closest('[data-action="remove"]');
     if (!buttonRemove) {
