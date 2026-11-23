@@ -2035,3 +2035,35 @@ msgstr "Плейліст «Обране» завжди приватний"
 #: movies/templates/movies/playlist.html
 msgid "Restore the default cover"
 msgstr "Повернути стандартну обкладинку"
+
+#: templates/404.html
+msgid "Page not found"
+msgstr "Сторінку не знайдено"
+
+#: templates/404.html
+msgid "Error 404"
+msgstr "Помилка 404"
+
+#: templates/500.html
+msgid "Error 500"
+msgstr "Помилка 500"
+
+#: templates/500.html
+msgid "Something went wrong"
+msgstr "Щось пішло не так"
+
+#: templates/404.html, templates/500.html
+msgid "Go to the home page"
+msgstr "На головну"
+
+#: templates/404.html
+msgid "Open the catalog"
+msgstr "Відкрити каталог"
+
+#: templates/404.html
+msgid "The page may have been moved or deleted, or the link contains a typo. Try searching or start from the home page."
+msgstr "Можливо, сторінку перемістили чи видалили, або в посиланні є помилка. Спробуйте пошук або почніть з головної."
+
+#: templates/500.html
+msgid "We could not load this page because of a problem on our side. Please try again in a few minutes."
+msgstr "Не вдалося завантажити сторінку через проблему на нашому боці. Спробуйте ще раз за кілька хвилин."

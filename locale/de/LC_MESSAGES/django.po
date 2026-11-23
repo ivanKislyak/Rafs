@@ -2033,3 +2033,35 @@ msgstr "Alle können sie in deinem Profil sehen"
 #: movies/templates/movies/playlist.html
 msgid "Restore the default cover"
 msgstr "Standardcover wiederherstellen"
+
+#: templates/404.html
+msgid "Page not found"
+msgstr "Seite nicht gefunden"
+
+#: templates/404.html
+msgid "Error 404"
+msgstr "Fehler 404"
+
+#: templates/500.html
+msgid "Error 500"
+msgstr "Fehler 500"
+
+#: templates/500.html
+msgid "Something went wrong"
+msgstr "Etwas ist schiefgelaufen"
+
+#: templates/404.html, templates/500.html
+msgid "Go to the home page"
+msgstr "Zur Startseite"
+
+#: templates/404.html
+msgid "Open the catalog"
+msgstr "Katalog öffnen"
+
+#: templates/404.html
+msgid "The page may have been moved or deleted, or the link contains a typo. Try searching or start from the home page."
+msgstr "Die Seite wurde möglicherweise verschoben oder gelöscht, oder der Link enthält einen Tippfehler. Nutze die Suche oder beginne auf der Startseite."
+
+#: templates/500.html
+msgid "We could not load this page because of a problem on our side. Please try again in a few minutes."
+msgstr "Die Seite konnte wegen eines Problems auf unserer Seite nicht geladen werden. Bitte versuche es in ein paar Minuten erneut."

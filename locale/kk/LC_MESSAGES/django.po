@@ -2033,3 +2033,35 @@ msgstr "Оны профиліңізде барлығы көреді"
 #: movies/templates/movies/playlist.html
 msgid "Restore the default cover"
 msgstr "Әдепкі мұқабаны қайтару"
+
+#: templates/404.html
+msgid "Page not found"
+msgstr "Бет табылмады"
+
+#: templates/404.html
+msgid "Error 404"
+msgstr "404 қатесі"
+
+#: templates/500.html
+msgid "Error 500"
+msgstr "500 қатесі"
+
+#: templates/500.html
+msgid "Something went wrong"
+msgstr "Бірдеңе дұрыс болмады"
+
+#: templates/404.html, templates/500.html
+msgid "Go to the home page"
+msgstr "Басты бетке"
+
+#: templates/404.html
+msgid "Open the catalog"
+msgstr "Каталогты ашу"
+
+#: templates/404.html
+msgid "The page may have been moved or deleted, or the link contains a typo. Try searching or start from the home page."
+msgstr "Бет жылжытылған не жойылған болуы мүмкін немесе сілтемеде қате бар. Іздеуді қолданып көріңіз немесе басты беттен бастаңыз."
+
+#: templates/500.html
+msgid "We could not load this page because of a problem on our side. Please try again in a few minutes."
+msgstr "Біз жақтағы ақаулыққа байланысты бетті жүктеу мүмкін болмады. Бірнеше минуттан кейін қайталап көріңіз."

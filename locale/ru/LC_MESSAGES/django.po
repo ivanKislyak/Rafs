@@ -2023,3 +2023,35 @@ msgstr "Плейлист «Избранное» всегда приватный"
 #: movies/templates/movies/playlist.html
 msgid "Restore the default cover"
 msgstr "Вернуть обложку по умолчанию"
+
+#: templates/404.html
+msgid "Page not found"
+msgstr "Страница не найдена"
+
+#: templates/404.html
+msgid "Error 404"
+msgstr "Ошибка 404"
+
+#: templates/500.html
+msgid "Error 500"
+msgstr "Ошибка 500"
+
+#: templates/500.html
+msgid "Something went wrong"
+msgstr "Что-то пошло не так"
+
+#: templates/404.html, templates/500.html
+msgid "Go to the home page"
+msgstr "На главную"
+
+#: templates/404.html
+msgid "Open the catalog"
+msgstr "Открыть каталог"
+
+#: templates/404.html
+msgid "The page may have been moved or deleted, or the link contains a typo. Try searching or start from the home page."
+msgstr "Возможно, страницу переместили или удалили, или в ссылке есть опечатка. Попробуйте поиск или начните с главной."
+
+#: templates/500.html
+msgid "We could not load this page because of a problem on our side. Please try again in a few minutes."
+msgstr "Не удалось загрузить страницу из-за проблемы на нашей стороне. Попробуйте ещё раз через несколько минут."
