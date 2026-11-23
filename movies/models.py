@@ -1,9 +1,8 @@
 import secrets
-from django.db import models
+from django.db import models, transaction
 from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
 from decimal import Decimal
-from django.db.models import Avg
 from taggit.managers import TaggableManager
 from .movie_models import TypeOfWork, Genre, Country, Studio, Person
 from parler.models import TranslatableModel, TranslatedFields
@@ -12,7 +11,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.postgres.search import SearchVectorField
 from django.utils.translation import gettext_lazy as _
-from django.db.models import Q
+from django.db.models import Q, Max, F, Avg
 
 ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 
@@ -314,6 +313,17 @@ class Playlist(models.Model):
         if self.kind == KindChoice.FAVOURITE:
             return _("Liked Titles")
         return self.name
+
+    def add_movie(self, movie):
+        """Поставить фильм в конец плейлиста. Вернуть (item, created)."""
+        with transaction.atomic():
+            self_pl = self.__class__.objects.select_for_update().get(pk=self.pk)
+            max_positioned_qs = self_pl.items.order_by('-position', '-added_at').first()
+            max_pos = max_positioned_qs.position+1 if max_positioned_qs else 1
+            obj, created = self_pl.items.get_or_create(playlist=self, movie=movie, defaults={'position':max_pos})
+            if not created:
+                return obj, False
+            return obj, True
 
 class PlaylistItem(models.Model):
     playlist = models.ForeignKey(
