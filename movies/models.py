@@ -315,15 +315,12 @@ class Playlist(models.Model):
         return self.name
 
     def add_movie(self, movie):
-        """Поставить фильм в конец плейлиста. Вернуть (item, created)."""
         with transaction.atomic():
             self_pl = self.__class__.objects.select_for_update().get(pk=self.pk)
-            max_positioned_qs = self_pl.items.order_by('-position', '-added_at').first()
-            max_pos = max_positioned_qs.position+1 if max_positioned_qs else 1
-            obj, created = self_pl.items.get_or_create(playlist=self, movie=movie, defaults={'position':max_pos})
-            if not created:
-                return obj, False
-            return obj, True
+            max_positioned_obj = self_pl.items.order_by('-position', '-added_at', '-pk').first()
+            max_pos = max_positioned_obj.position+1 if max_positioned_obj else 1
+            obj, created = self_pl.items.get_or_create(movie=movie, defaults={'position':max_pos})
+            return obj, created
 
 class PlaylistItem(models.Model):
     playlist = models.ForeignKey(
