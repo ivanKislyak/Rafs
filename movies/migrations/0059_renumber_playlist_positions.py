@@ -1,6 +1,6 @@
 from django.db import migrations
 
-BATCH_SIZE = 500  # поставь то же значение, что в 0057
+BATCH_SIZE = 500
 
 
 def forwards(apps, schema_editor):
