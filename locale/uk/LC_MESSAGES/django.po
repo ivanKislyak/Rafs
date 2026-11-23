@@ -1996,6 +1996,14 @@ msgstr "Змінити обкладинку"
 msgid "Could not change the playlist cover"
 msgstr "Не вдалося змінити обкладинку плейліста"
 
+#: movies/templates/movies/playlist.html:28
+msgid "Could not save the order"
+msgstr "Не вдалося зберегти порядок"
+
+#: movies/templates/movies/playlist.html:250
+msgid "Drag"
+msgstr "Перетягнути"
+
 #: accounts/templates/accounts/profile.html
 msgid "Choose an image file"
 msgstr "Виберіть файл зображення"
