@@ -7,6 +7,9 @@
 {% block og_image %}{% if playlist.cover %}{{ playlist.cover.url|public_image_url }}{% else %}{% with first_movie=items.0.movie %}{% if first_movie.cover and first_movie.image_exists %}{{ first_movie.cover.url|public_image_url }}{% else %}{{ first_movie.cover_url|poster_size:'w500'|public_image_url }}{% endif %}{% endwith %}{% endif %}{% endblock %}
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'movies/css/playlist.css' %}">
+    {% if is_owner %}
+        <link rel="stylesheet" href="{% static 'movies/css/playlist-reorder.css' %}">
+    {% endif %}
 {% endblock %}
 {% block content %}
     <main class="page-shell playlist-page">
@@ -20,7 +23,9 @@
                  data-msg-rename-error="{% translate 'Could not rename the playlist' %}"
                  data-msg-delete-error="{% translate 'Could not delete the playlist' %}"
                  data-msg-empty-name="{% translate 'Enter a playlist name' %}"
-                 data-msg-cover-error="{% translate 'Could not change the playlist cover' %}">
+                 data-msg-cover-error="{% translate 'Could not change the playlist cover' %}"
+                 data-order-url="{% url 'movies:playlist_order_api' pl_external_id=playlist.external_id %}"
+                 data-msg-order-error="{% translate 'Could not save the order' %}">
             <header class="playlist-header{% if playlist.cover or is_owner or playlist.kind == 'FAVOURITE' %} playlist-header--with-cover{% endif %}">
                 {% if is_owner %}
                     {# The cover itself is the control: hover darkens it and shows a pencil; without a cover it is an "Add cover" placeholder. #}
@@ -238,6 +243,22 @@
                                         <path d="m6 6 12 12M18 6 6 18"></path>
                                     </svg>
                                 </button>
+                                {# Drag only by this handle, so taps and scrolling on the rest of the card stay normal. Arrow keys move the card too. #}
+                                <button class="playlist-item-handle"
+                                        type="button"
+                                        data-drag-handle
+                                        aria-label="{% translate 'Drag' %}"
+                                        aria-keyshortcuts="ArrowUp ArrowDown"
+                                        title="{% translate 'Drag' %}">
+                                    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+                                        <circle cx="9" cy="6" r="1.6"></circle>
+                                        <circle cx="15" cy="6" r="1.6"></circle>
+                                        <circle cx="9" cy="12" r="1.6"></circle>
+                                        <circle cx="15" cy="12" r="1.6"></circle>
+                                        <circle cx="9" cy="18" r="1.6"></circle>
+                                        <circle cx="15" cy="18" r="1.6"></circle>
+                                    </svg>
+                                </button>
                             {% endif %}
                         </li>
                     {% endwith %}
@@ -271,5 +292,8 @@
     </main>
 {% endblock %}
 {% block extra_js %}
+    {% if is_owner %}
+        <script src="{% static 'movies/js/vendor/Sortable.min.js' %}" defer></script>
+    {% endif %}
     <script src="{% static 'movies/js/playlist-page.js' %}" defer></script>
 {% endblock %}
