@@ -246,3 +246,14 @@ class PlaylistShortSerializer(serializers.ModelSerializer):
         # Annotated only when the list is requested with ?movie_id=<id>.
         return getattr(obj, 'contains_movie', None)
 
+
+class PlaylistOrderSerializer(serializers.Serializer):
+    movie_ids = serializers.ListField(child=serializers.IntegerField(min_value=1), allow_empty=False, max_length=54000)
+    
+    def validate_movie_ids(self, movie_ids):
+        if len(set(movie_ids)) != len(movie_ids):
+            raise serializers.ValidationError(_("The problem lies in value passing"))
+        return movie_ids
+
+
+
