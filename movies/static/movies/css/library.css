@@ -1,0 +1,95 @@
+/* Library page: playlists the user saved. Cards reuse .profile-playlist-* from accounts/css/profile.css;
+ * this file only adds what a card with several controls needs. Colours come from base.css tokens. */
+.library-page {
+  max-width: 1000px;
+}
+
+.library-heading h1:focus {
+  outline: none;
+}
+
+.library-error {
+  margin: 0 0 16px;
+  padding: 10px 12px;
+  border: 1px solid color-mix(in srgb, var(--rafs-red) 55%, var(--color-border));
+  border-radius: 8px;
+  background-color: var(--color-accent-glow);
+  color: var(--rafs-red-soft);
+}
+
+/* The card is an <article> here: hidden while its removal is in flight. */
+.library-card[hidden] {
+  display: none;
+}
+
+.library-card {
+  align-content: start;
+}
+
+.library-card-link {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.library-card-link:focus-visible {
+  outline: 2px solid var(--color-focus-visible-outline);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+/* Hover effects follow the playlist link, not the whole card (it also holds the author and Remove). */
+.library-card:hover .profile-playlist-name {
+  color: inherit;
+}
+
+.library-card:hover .profile-playlist-cover {
+  transform: none;
+}
+
+.library-card-link:hover .profile-playlist-name {
+  color: var(--color-accent);
+}
+
+.library-card-link:hover .profile-playlist-cover {
+  transform: scale(1.03);
+}
+
+.library-card-author {
+  justify-self: start;
+  max-width: 100%;
+  overflow: hidden;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.library-card-author:hover {
+  color: var(--color-text);
+  text-decoration: underline;
+}
+
+.library-card-author:focus-visible {
+  outline: 2px solid var(--color-focus-visible-outline);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.library-card-remove {
+  justify-self: start;
+}
+
+.library-card-remove:focus-visible {
+  outline: 2px solid var(--color-focus-visible-outline);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .library-card-link:hover .profile-playlist-cover {
+    transform: none;
+  }
+}
