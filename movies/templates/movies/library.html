@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load i18n static images %}
+{% block title %}{% translate "Library" %} · RAFS{% endblock %}
+{% block extra_css %}
+    {# Cards reuse the profile playlist cards (profile-playlist-*), so profile.css comes first. #}
+    <link rel="stylesheet" href="{% static 'accounts/css/profile.css' %}">
+    <link rel="stylesheet" href="{% static 'movies/css/library.css' %}">
+{% endblock %}
+{% block content %}
+    <main class="page-shell library-page">
+        <section class="library"
+                 aria-labelledby="library-title"
+                 data-library
+                 data-msg-remove-error="{% translate 'Could not remove the playlist from the library' %}">
+            <header class="page-heading library-heading">
+                <h1 id="library-title" tabindex="-1">{% translate "Library" %}</h1>
+                <span class="profile-section-count" data-library-count>{{ saved|length }}</span>
+            </header>
+            <p class="library-error" data-library-error role="alert" hidden></p>
+            <div class="profile-playlist-grid" data-library-list>
+                {% for item in saved %}
+                    {% with playlist=item.playlist first_movie=item.playlist.cover_items.0.movie %}
+                        {# Not one big link as in the profile: the card also holds the author link and the "Remove" button. #}
+                        <article class="profile-playlist-card library-card" data-library-item>
+                            <a class="library-card-link" href="{% url 'movies:playlist' playlist.external_id %}">
+                                <span class="profile-playlist-cover-wrap">
+                                    {% if playlist.cover %}
+                                        <img class="profile-playlist-cover"
+                                             src="{{ playlist.cover.url }}"
+                                             onerror="this.remove()"
+                                             loading="lazy"
+                                             decoding="async"
+                                             alt="">
+                                    {% elif first_movie.cover and first_movie.image_exists %}
+                                        <img class="profile-playlist-cover"
+                                             src="{{ first_movie.cover.url }}"
+                                             onerror="this.remove()"
+                                             loading="lazy"
+                                             decoding="async"
+                                             alt="">
+                                    {% elif first_movie.cover_url %}
+                                        <img class="profile-playlist-cover"
+                                             src="{{ first_movie.cover_url|poster_size:'w342' }}"
+                                             onerror="this.remove()"
+                                             loading="lazy"
+                                             decoding="async"
+                                             alt="">
+                                    {% endif %}
+                                    <svg class="profile-playlist-cover-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                        <path d="M4 6h12M4 12h12M4 18h8"></path>
+                                        <path d="m16 15 5 3-5 3Z"></path>
+                                    </svg>
+                                </span>
+                                <span class="profile-playlist-name">
+                                    <span>{{ playlist.display_name }}</span>
+                                </span>
+                            </a>
+                            <span class="profile-playlist-copy">
+                                <a class="library-card-author" href="{% url 'profile' playlist.owner.username %}">@{{ playlist.owner.username }}</a>
+                                <span class="profile-playlist-count">
+                                    {% blocktranslate count counter=item.movies_count %}{{ counter }} movie{% plural %}{{ counter }} movies{% endblocktranslate %}
+                                </span>
+                            </span>
+                            <button class="profile-button library-card-remove"
+                                    type="button"
+                                    data-action="unsave"
+                                    data-save-url="{% url 'movies:playlist_save_api' pl_external_id=playlist.external_id %}"
+                                    aria-label="{% blocktranslate with name=playlist.display_name %}Remove {{ name }} from the library{% endblocktranslate %}">
+                                {% translate "Remove" context "saved playlist" %}
+                            </button>
+                        </article>
+                    {% endwith %}
+                {% endfor %}
+            </div>
+            <div class="profile-playlists-empty" data-library-empty{% if saved %} hidden{% endif %}>
+                <p>{% translate "Playlists you save will appear here" %}</p>
+            </div>
+        </section>
+    </main>
+{% endblock %}
+{% block extra_js %}
+    <script src="{% static 'movies/js/library-page.js' %}" defer></script>
+{% endblock %}
