@@ -913,6 +913,30 @@
 }
 
 /* Playlists: square covers echo the playlist page header; the icon sits under the image as a fallback. */
+/* Owner: the playlist count and the link to the Library (saved playlists) sit together on the right. */
+.profile-playlists-aside {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile-library-link {
+  gap: 6px;
+}
+
+.profile-library-link svg {
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.profile-library-link:focus-visible {
+  outline: 2px solid var(--color-focus-visible-outline);
+  outline-offset: 2px;
+}
+
 .profile-playlist-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 160px), 1fr));
