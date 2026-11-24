@@ -2001,6 +2001,10 @@ msgid "Could not change the playlist cover"
 msgstr "Не вдалося змінити обкладинку плейліста"
 
 #: movies/templates/movies/playlist.html:28
+#: movies/views.py
+msgid "The movies don't match the playlist"
+msgstr "Тайтли не збігаються з плейлістом"
+
 msgid "Could not save the order"
 msgstr "Не вдалося зберегти порядок"
 

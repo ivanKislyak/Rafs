@@ -592,7 +592,7 @@ class PlaylistOrderAPIView(APIView):
             playlist_items_by_id = {item.movie_id: item for item in playlist_items}
             validated_movie_ids = serializer.validated_data.get("movie_ids")
             if set(validated_movie_ids) != set(playlist_items_by_id.keys()):
-                raise serializers.ValidationError({"movie_ids": ["The movies don't match the playlist"]})
+                raise serializers.ValidationError({"movie_ids": [_("The movies don't match the playlist")]})
             for pos, validated_movie_id in enumerate(validated_movie_ids, start=1):
                 playlist_items_by_id[validated_movie_id].position = pos
             PlaylistItem.objects.bulk_update(playlist_items, ["position"])

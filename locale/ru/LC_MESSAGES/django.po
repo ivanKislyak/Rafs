@@ -1989,6 +1989,10 @@ msgid "Could not change the playlist cover"
 msgstr "Не удалось сменить обложку плейлиста"
 
 #: movies/templates/movies/playlist.html:28
+#: movies/views.py
+msgid "The movies don't match the playlist"
+msgstr "Тайтлы не совпадают с плейлистом"
+
 msgid "Could not save the order"
 msgstr "Не удалось сохранить порядок"
 

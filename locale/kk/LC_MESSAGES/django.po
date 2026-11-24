@@ -1999,6 +1999,10 @@ msgid "Could not change the playlist cover"
 msgstr "Плейлист мұқабасын өзгерту мүмкін болмады"
 
 #: movies/templates/movies/playlist.html:28
+#: movies/views.py
+msgid "The movies don't match the playlist"
+msgstr "Тайтлдар плейлистпен сәйкес келмейді"
+
 msgid "Could not save the order"
 msgstr "Ретті сақтау мүмкін болмады"
 
