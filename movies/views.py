@@ -359,12 +359,28 @@ def playlist_page(request, pl_external_id):
     playlist_qs = prefetched_playlist_qs(visible_playlists(request.user))
     playlist_instance = get_object_or_404(playlist_qs, external_id=pl_external_id)
     is_owner = (request.user == playlist_instance.owner)
+    is_saved = (
+        request.user.is_authenticated
+        and not is_owner
+        and SavedPlaylist.objects.filter(user=request.user, playlist=playlist_instance).exists()
+    )
     return render(request, 'movies/playlist.html', {
         'playlist': playlist_instance,
         'is_owner': is_owner,
-        'items': playlist_instance.items.all()
+        'items': playlist_instance.items.all(),
+        'is_saved': is_saved,
     })
 
+@login_required
+def library_page(request):
+    saved = library_queryset(request.user).select_related("playlist__owner").prefetch_related(
+        Prefetch(
+            "playlist__items",
+            queryset=PlaylistItem.objects.select_related("movie").order_by("position", "pk")[:1],
+            to_attr="cover_items",
+        )
+    )
+    return render(request, "movies/library.html", {"saved": saved})
 
 class PlaylistLimitExceeded(APIException):
     status_code = status.HTTP_400_BAD_REQUEST
