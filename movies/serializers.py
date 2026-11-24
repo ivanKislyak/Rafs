@@ -222,10 +222,7 @@ class PlaylistItemSerializer(serializers.ModelSerializer):
         fields = ['id', 'position', 'added_at', 'movie']
 
 class PlaylistSerializer(serializers.ModelSerializer):
-    # CharField trims surrounding whitespace and rejects blank values by default,
-    # so "   " is reported as a blank name (400).
     name = serializers.CharField(max_length=PLAYLIST_NAME_MAX_LENGTH)
-    # The public id replaces the sequential pk in every API response.
     id = serializers.CharField(source='external_id', read_only=True)
     items = PlaylistItemSerializer(many=True, read_only=True)
     class Meta:
@@ -243,20 +240,18 @@ class PlaylistShortSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'kind', 'is_public', 'movies_count', 'contains_movie']
 
     def get_contains_movie(self, obj):
-        # Annotated only when the list is requested with ?movie_id=<id>.
         return getattr(obj, 'contains_movie', None)
 
 
 class LibraryPlaylistSerializer(serializers.ModelSerializer): 
-    id = serializers.CharField(source='external_id', read_only=True)
+    id = serializers.CharField(source='playlist.external_id', read_only=True)
     name = serializers.CharField(read_only=True)
-    owner_username = serializers.CharField(source='playlist.owner.username', read_only=True)
-    movies_count = serializers.CharField(source='playlist.items.count', read_only=True)
+    owner_username = serializers.CharField(read_only=True)
+    movies_count = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = SavedPlaylist
         fields = ['id', 'name', 'owner_username', 'movies_count', 'saved_at']
-        read_only_fields = ['id', 'owner_username', 'saved_at']
 
 class PlaylistOrderSerializer(serializers.Serializer):
     movie_ids = serializers.ListField(child=serializers.IntegerField(min_value=1), allow_empty=False, max_length=54000)
