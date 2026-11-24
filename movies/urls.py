@@ -25,4 +25,6 @@ urlpatterns = [
     path('api/v1/playlists/<slug:pl_external_id>/', views.PlaylistAPIView.as_view(), name='playlist_api'),
     path('api/v1/playlists/<slug:pl_external_id>/items/<int:movie_id>/', views.PlaylistItemAPIView.as_view(), name='playlist_item_api'),
     path('api/v1/playlists/<slug:pl_external_id>/items/order/', views.PlaylistOrderAPIView.as_view(), name='playlist_order_api'),
+    path('api/v1/playlists/<slug:pl_external_id>/save/', views.PlaylistSaveAPIView.as_view(), name='playlist_save_api'),
+    path('api/v1/library/', views.LibraryAPIView.as_view(), name='library_api'),
 ]

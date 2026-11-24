@@ -34,14 +34,14 @@ from .models import (
     Movie, Review, ReviewReply,
     ReviewVote, WatchStatus,
     GlobalSearchIndex, Playlist,
-    PlaylistItem, KindChoice,
+    PlaylistItem, KindChoice, SavedPlaylist,
     PLAYLISTS_PER_USER_LIMIT, PLAYLIST_NAME_MAX_LENGTH,
     )
 from .serializers import (
     SearchResultSerializer, WatchStatusSerializer, 
     ReviewReplySerializer, PlaylistSerializer,
     PlaylistItemSerializer, PlaylistShortSerializer,
-    PlaylistOrderSerializer
+    PlaylistOrderSerializer, LibraryPlaylistSerializer
     )
 from .services.wikidata import (
     search_wikidata_media, 
@@ -515,6 +515,51 @@ class PlaylistItemAPIView(APIView):
         playlist_instance = get_object_or_404(Playlist, external_id=pl_external_id, owner=request.user)
         PlaylistItem.objects.filter(playlist=playlist_instance, movie_id=movie_id).delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+def library_queryset(user):
+    return SavedPlaylist.objects.select_related('playlist').filter(
+                playlist__is_public=True, 
+                user=user).annotate(
+                movies_count=Count('playlist__items'),
+                owner_username=F('playlist__owner__username'),
+                name=F('playlist__name')).order_by('-saved_at', '-pk')
+
+class PlaylistSaveAPIView(APIView):
+    serializer_class = LibraryPlaylistSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def put(self, request, pl_external_id):
+        playlist = get_object_or_404(
+            Playlist, 
+            external_id=pl_external_id,
+            is_public=True)
+        
+        if playlist.owner_id == request.user.pk:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        instance, created = SavedPlaylist.objects.get_or_create(
+            user=request.user,
+            playlist=playlist
+        )
+        saved_item = library_queryset(request.user).get(pk=instance.pk)
+        instance_data = self.serializer_class(saved_item, context={"request": request}).data
+        status_code = status.HTTP_201_CREATED if created else status.HTTP_200_OK
+        return Response(data=instance_data, status=status_code)
+
+    def delete(self, request, pl_external_id):
+        SavedPlaylist.objects.filter(
+            playlist__external_id=pl_external_id, 
+            user=request.user).delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class LibraryAPIView(generics.ListAPIView):
+    serializer_class = LibraryPlaylistSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return library_queryset(self.request.user)
 
 
 class PlaylistOrderAPIView(APIView):
