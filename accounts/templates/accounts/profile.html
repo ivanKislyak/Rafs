@@ -235,7 +235,20 @@
                         <p class="profile-eyebrow">{% translate "Collections" %}</p>
                         <h2 id="profile-playlists-title">{% translate "Playlists" %}</h2>
                     </div>
-                    <span class="profile-section-count">{{ playlists|length }}</span>
+                    {% if is_owner %}
+                        {# Owner only: the playlists other people made and this user saved. #}
+                        <div class="profile-playlists-aside">
+                            <span class="profile-section-count">{{ playlists|length }}</span>
+                            <a class="profile-button profile-library-link" href="{% url 'movies:library' %}">
+                                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false">
+                                    <path d="M6 4h12v17l-6-4-6 4Z"></path>
+                                </svg>
+                                <span>{% translate "Library" %}</span>
+                            </a>
+                        </div>
+                    {% else %}
+                        <span class="profile-section-count">{{ playlists|length }}</span>
+                    {% endif %}
                 </div>
                 <div class="profile-playlist-grid" data-playlists-list>
                     {% if is_owner %}
