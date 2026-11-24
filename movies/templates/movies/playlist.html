@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="{% static 'movies/css/playlist.css' %}">
     {% if is_owner %}
         <link rel="stylesheet" href="{% static 'movies/css/playlist-reorder.css' %}">
+    {% elif playlist.is_public %}
+        <link rel="stylesheet" href="{% static 'movies/css/playlist-save.css' %}">
     {% endif %}
 {% endblock %}
 {% block content %}
@@ -25,7 +27,9 @@
                  data-msg-empty-name="{% translate 'Enter a playlist name' %}"
                  data-msg-cover-error="{% translate 'Could not change the playlist cover' %}"
                  data-order-url="{% url 'movies:playlist_order_api' pl_external_id=playlist.external_id %}"
-                 data-msg-order-error="{% translate 'Could not save the order' %}">
+                 data-msg-order-error="{% translate 'Could not save the order' %}"
+                 data-msg-save-error="{% translate 'Could not save the playlist' %}"
+                 data-msg-unsave-error="{% translate 'Could not remove the playlist from the library' %}">
             <header class="playlist-header{% if playlist.cover or is_owner or playlist.kind == 'FAVOURITE' %} playlist-header--with-cover{% endif %}">
                 {% if is_owner %}
                     {# The cover itself is the control: hover darkens it and shows a pencil; without a cover it is an "Add cover" placeholder. #}
@@ -164,6 +168,29 @@
                                 <button class="playlist-delete"
                                         type="button"
                                         data-action="delete-playlist">{% translate "Delete playlist" %}</button>
+                            {% endif %}
+                        {% elif playlist.is_public %}
+                            {# Someone else's public playlist: save it to the library. Guests go to sign in and come back here. #}
+                            {% if user.is_authenticated %}
+                                <button class="playlist-save"
+                                        type="button"
+                                        data-action="toggle-save"
+                                        data-save-url="{% url 'movies:playlist_save_api' pl_external_id=playlist.external_id %}"
+                                        aria-pressed="{{ is_saved|yesno:'true,false' }}">
+                                    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+                                        <path d="M6 4h12v17l-6-4-6 4Z"></path>
+                                    </svg>
+                                    <span class="playlist-save-label-off">{% translate "Save" %}</span>
+                                    <span class="playlist-save-label-on">{% translate "Saved" %}</span>
+                                </button>
+                            {% else %}
+                                <a class="playlist-save"
+                                   href="{% url 'login' %}?next={{ request.path|urlencode }}">
+                                    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+                                        <path d="M6 4h12v17l-6-4-6 4Z"></path>
+                                    </svg>
+                                    <span>{% translate "Save" %}</span>
+                                </a>
                             {% endif %}
                         {% endif %}
                     </div>

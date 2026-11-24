@@ -24,6 +24,8 @@
   const deleteErrorEl = deleteDialog?.querySelector("[data-delete-error]");
   const cancelDeleteButton = deleteDialog?.querySelector('[data-action="close-dialog"]');
   const confirmDeleteButton = deleteDialog?.querySelector('[data-action="confirm-delete"]');
+  // Someone else's public playlist, signed-in visitor only (guests get a sign-in link instead).
+  const saveButton = root.querySelector('[data-action="toggle-save"]');
 
   function showError(text) {
     errorEl.textContent = text;
@@ -204,6 +206,28 @@
     }
   }
 
+  // Save / unsave: flip aria-pressed at once (CSS swaps the label), PUT or DELETE, and flip back on failure.
+  // PUT answers 201 (saved now) or 200 (already saved): both are success.
+  async function toggleSave() {
+    const wasSaved = saveButton.getAttribute("aria-pressed") === "true";
+    const hadFocus = document.activeElement === saveButton;
+    saveButton.setAttribute("aria-pressed", String(!wasSaved));
+    saveButton.disabled = true;
+    clearError();
+    try {
+      await apiRequest(saveButton.dataset.saveUrl, { method: wasSaved ? "DELETE" : "PUT" });
+    } catch (error) {
+      saveButton.setAttribute("aria-pressed", String(wasSaved));
+      showError(wasSaved ? root.dataset.msgUnsaveError : root.dataset.msgSaveError);
+    } finally {
+      saveButton.disabled = false;
+      // A disabled button drops the focus; give it back so Enter/Space can toggle again.
+      if (hadFocus) {
+        saveButton.focus();
+      }
+    }
+  }
+
   function openDeleteDialog() {
     deleteErrorEl.hidden = true;
     deleteDialog.showModal();
@@ -313,6 +337,7 @@
   });
 
   publicToggle?.addEventListener("change", togglePublic);
+  saveButton?.addEventListener("click", toggleSave);
 
   renameButton?.addEventListener("click", startRename);
   renameInput?.addEventListener("blur", saveRename);
