@@ -8,7 +8,7 @@ from core.images import tmdb_poster
 
 from .search_config import TITLE_FIELDS, DESCRIPTION_FIELDS, IMAGE_FIELDS
 from .models import (
-    WatchStatus, ReviewReply, Playlist, PlaylistItem, Movie,
+    WatchStatus, ReviewReply, Playlist, PlaylistItem, Movie, SavedPlaylist,
     PLAYLIST_NAME_MAX_LENGTH,
 )
 
@@ -247,6 +247,17 @@ class PlaylistShortSerializer(serializers.ModelSerializer):
         return getattr(obj, 'contains_movie', None)
 
 
+class LibraryPlaylistSerializer(serializers.ModelSerializer): 
+    id = serializers.CharField(source='external_id', read_only=True)
+    name = serializers.CharField(read_only=True)
+    owner_username = serializers.CharField(source='playlist.owner.username', read_only=True)
+    movies_count = serializers.CharField(source='playlist.items.count', read_only=True)
+
+    class Meta:
+        model = SavedPlaylist
+        fields = ['id', 'name', 'owner_username', 'movies_count', 'saved_at']
+        read_only_fields = ['id', 'owner_username', 'saved_at']
+
 class PlaylistOrderSerializer(serializers.Serializer):
     movie_ids = serializers.ListField(child=serializers.IntegerField(min_value=1), allow_empty=False, max_length=54000)
     
@@ -254,6 +265,4 @@ class PlaylistOrderSerializer(serializers.Serializer):
         if len(set(movie_ids)) != len(movie_ids):
             raise serializers.ValidationError(_("The problem lies in value passing"))
         return movie_ids
-
-
 
