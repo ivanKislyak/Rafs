@@ -1992,6 +1992,32 @@ msgstr "Не удалось сохранить порядок"
 msgid "Drag"
 msgstr "Перетащить"
 
+#: movies/templates/movies/playlist.html
+msgid "Could not save the playlist"
+msgstr "Не удалось сохранить плейлист"
+
+#: movies/templates/movies/library.html movies/templates/movies/playlist.html
+msgid "Could not remove the playlist from the library"
+msgstr "Не удалось убрать плейлист из библиотеки"
+
+#: movies/templates/movies/playlist.html
+msgid "Saved"
+msgstr "Сохранено"
+
+#: movies/templates/movies/library.html
+msgctxt "saved playlist"
+msgid "Remove"
+msgstr "Убрать"
+
+#: movies/templates/movies/library.html
+#, python-format
+msgid "Remove %(name)s from the library"
+msgstr "Убрать «%(name)s» из библиотеки"
+
+#: movies/templates/movies/library.html
+msgid "Playlists you save will appear here"
+msgstr "Здесь появятся плейлисты, которые вы сохраните"
+
 #: accounts/templates/accounts/profile.html
 msgid "Choose an image file"
 msgstr "Выберите файл изображения"

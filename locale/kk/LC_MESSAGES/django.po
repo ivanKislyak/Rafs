@@ -2002,6 +2002,32 @@ msgstr "Ретті сақтау мүмкін болмады"
 msgid "Drag"
 msgstr "Сүйреу"
 
+#: movies/templates/movies/playlist.html
+msgid "Could not save the playlist"
+msgstr "Плейлистті сақтау мүмкін болмады"
+
+#: movies/templates/movies/library.html movies/templates/movies/playlist.html
+msgid "Could not remove the playlist from the library"
+msgstr "Плейлистті кітапханадан алып тастау мүмкін болмады"
+
+#: movies/templates/movies/playlist.html
+msgid "Saved"
+msgstr "Сақталды"
+
+#: movies/templates/movies/library.html
+msgctxt "saved playlist"
+msgid "Remove"
+msgstr "Алып тастау"
+
+#: movies/templates/movies/library.html
+#, python-format
+msgid "Remove %(name)s from the library"
+msgstr "«%(name)s» плейлистін кітапханадан алып тастау"
+
+#: movies/templates/movies/library.html
+msgid "Playlists you save will appear here"
+msgstr "Сақтаған плейлистеріңіз осында пайда болады"
+
 #: movies/models.py
 msgid "Liked Titles"
 msgstr "Таңдаулылар"
