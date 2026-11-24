@@ -2000,6 +2000,10 @@ msgid "Could not change the playlist cover"
 msgstr "No se pudo cambiar la portada de la lista de reproducción"
 
 #: movies/templates/movies/playlist.html:28
+#: movies/views.py
+msgid "The movies don't match the playlist"
+msgstr "Los títulos no coinciden con la lista de reproducción"
+
 msgid "Could not save the order"
 msgstr "No se pudo guardar el orden"
 

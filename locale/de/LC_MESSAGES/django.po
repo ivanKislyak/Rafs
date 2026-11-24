@@ -1999,6 +1999,10 @@ msgid "Could not change the playlist cover"
 msgstr "Das Cover der Wiedergabeliste konnte nicht geändert werden"
 
 #: movies/templates/movies/playlist.html:28
+#: movies/views.py
+msgid "The movies don't match the playlist"
+msgstr "Die Titel stimmen nicht mit der Wiedergabeliste überein"
+
 msgid "Could not save the order"
 msgstr "Die Reihenfolge konnte nicht gespeichert werden"
 
