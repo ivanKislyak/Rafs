@@ -1,0 +1,66 @@
+/* Playlist page, someone else's public playlist: "Save" / "Saved" toggle (a sign-in link for guests).
+ * Loaded after playlist.css; colours come from base.css tokens, so light/dark themes follow [data-theme]. */
+.playlist-save {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 44px;
+  margin-inline-start: auto;
+  padding: 8px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 650;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.playlist-save svg {
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.playlist-save:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text);
+}
+
+.playlist-save:focus-visible {
+  outline: 2px solid var(--color-focus-visible-outline);
+  outline-offset: 2px;
+}
+
+.playlist-save:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+/* Saved: filled bookmark in the accent colour. */
+.playlist-save[aria-pressed="true"] {
+  border-color: color-mix(in srgb, var(--color-accent) 55%, var(--color-border));
+  background: var(--color-accent-glow);
+  color: var(--color-accent);
+}
+
+.playlist-save[aria-pressed="true"] svg {
+  fill: currentColor;
+}
+
+/* Only the label for the current state is shown (and read out). */
+.playlist-save[aria-pressed="true"] .playlist-save-label-off,
+.playlist-save:not([aria-pressed="true"]) .playlist-save-label-on {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .playlist-save {
+    margin-inline-start: 0;
+  }
+}
