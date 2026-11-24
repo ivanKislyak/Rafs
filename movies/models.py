@@ -347,3 +347,28 @@ class PlaylistItem(models.Model):
             models.UniqueConstraint(fields=['playlist', 'movie'], 
                                     name="unique_playlist_for_movie"),
             ]
+
+class SavedPlaylist(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="saved_playlists", 
+        verbose_name=_("User")
+    )
+    playlist = models.ForeignKey(
+        Playlist,
+        on_delete=models.CASCADE,
+        related_name="saves",
+        verbose_name=_("Playlist")
+    )
+    saved_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Saved at"))
+    
+    class Meta:
+        verbose_name = _("Saved Playlist")
+        verbose_name_plural = _("Saved Playlists")
+        ordering = ['saved_at', 'pk']
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'playlist'], 
+                name='unique_saved_playlist_for_user')
+        ]
