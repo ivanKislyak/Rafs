@@ -161,9 +161,16 @@
                 <span>{% translate "Reply" %}</span>
             </button>
         {% endif %}
-        {% if feed and review.user == request.user %}
+        {# Author only, in the feed and on the movie page; a superuser who is not the author gets just Delete. #}
+        {% if review.user == request.user %}
             <a class="review-action-button"
-               href="{% url 'movies:review_form' review.movie_id %}">{% translate "Edit" %}</a>
+               href="{% url 'movies:review_form' review.movie_id %}">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M4 20h4L19 9l-4-4L4 16Z"></path>
+                    <path d="m13.5 6.5 4 4"></path>
+                </svg>
+                <span>{% translate "Edit" %}</span>
+            </a>
         {% endif %}
         {% if review.user == request.user or request.user.is_superuser %}
             <form class="review-delete-form"
