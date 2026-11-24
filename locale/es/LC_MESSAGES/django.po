@@ -2003,6 +2003,32 @@ msgstr "No se pudo guardar el orden"
 msgid "Drag"
 msgstr "Arrastrar"
 
+#: movies/templates/movies/playlist.html
+msgid "Could not save the playlist"
+msgstr "No se pudo guardar la lista de reproducción"
+
+#: movies/templates/movies/library.html movies/templates/movies/playlist.html
+msgid "Could not remove the playlist from the library"
+msgstr "No se pudo quitar la lista de reproducción de la biblioteca"
+
+#: movies/templates/movies/playlist.html
+msgid "Saved"
+msgstr "Guardado"
+
+#: movies/templates/movies/library.html
+msgctxt "saved playlist"
+msgid "Remove"
+msgstr "Quitar"
+
+#: movies/templates/movies/library.html
+#, python-format
+msgid "Remove %(name)s from the library"
+msgstr "Quitar «%(name)s» de la biblioteca"
+
+#: movies/templates/movies/library.html
+msgid "Playlists you save will appear here"
+msgstr "Aquí aparecerán las listas de reproducción que guardes"
+
 #: movies/models.py
 msgid "Liked Titles"
 msgstr "Favoritos"

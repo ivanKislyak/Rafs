@@ -2002,6 +2002,32 @@ msgstr "Die Reihenfolge konnte nicht gespeichert werden"
 msgid "Drag"
 msgstr "Ziehen"
 
+#: movies/templates/movies/playlist.html
+msgid "Could not save the playlist"
+msgstr "Die Wiedergabeliste konnte nicht gespeichert werden"
+
+#: movies/templates/movies/library.html movies/templates/movies/playlist.html
+msgid "Could not remove the playlist from the library"
+msgstr "Die Wiedergabeliste konnte nicht aus der Bibliothek entfernt werden"
+
+#: movies/templates/movies/playlist.html
+msgid "Saved"
+msgstr "Gespeichert"
+
+#: movies/templates/movies/library.html
+msgctxt "saved playlist"
+msgid "Remove"
+msgstr "Entfernen"
+
+#: movies/templates/movies/library.html
+#, python-format
+msgid "Remove %(name)s from the library"
+msgstr "„%(name)s“ aus der Bibliothek entfernen"
+
+#: movies/templates/movies/library.html
+msgid "Playlists you save will appear here"
+msgstr "Hier erscheinen die Wiedergabelisten, die du speicherst"
+
 #: movies/models.py
 msgid "Liked Titles"
 msgstr "Favoriten"
