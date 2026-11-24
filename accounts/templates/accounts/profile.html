@@ -320,7 +320,7 @@
                                         <span>{{ playlist.display_name }}</span>
                                     </span>
                                     <span class="profile-playlist-count">
-                                        {% blocktranslate count counter=playlist.movies_count %}{{ counter }} movie{% plural %}{{ counter }} movies{% endblocktranslate %}
+                                        {% blocktranslate count counter=playlist.movies_count %}{{ counter }} title{% plural %}{{ counter }} titles{% endblocktranslate %}
                                     </span>
                                 </span>
                             </a>
@@ -329,7 +329,7 @@
                 </div>
                 {% if is_owner %}
                     <div class="profile-playlists-empty" data-playlists-empty{% if playlists %} hidden{% endif %}>
-                        <p>{% translate "You have no playlists yet. Collect movies into themed lists and share them." %}</p>
+                        <p>{% translate "You have no playlists yet. Collect titles into themed lists and share them." %}</p>
                     </div>
                     <dialog class="profile-watch-dialog profile-playlist-dialog"
                             data-create-dialog

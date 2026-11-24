@@ -58,7 +58,7 @@
                             <span class="profile-playlist-copy">
                                 <a class="library-card-author" href="{% url 'profile' playlist.owner.username %}">@{{ playlist.owner.username }}</a>
                                 <span class="profile-playlist-count">
-                                    {% blocktranslate count counter=item.movies_count %}{{ counter }} movie{% plural %}{{ counter }} movies{% endblocktranslate %}
+                                    {% blocktranslate count counter=item.movies_count %}{{ counter }} title{% plural %}{{ counter }} titles{% endblocktranslate %}
                                 </span>
                             </span>
                             <button class="profile-button library-card-remove"

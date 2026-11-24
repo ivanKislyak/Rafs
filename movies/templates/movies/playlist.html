@@ -18,7 +18,7 @@
         <section class="playlist"
                  data-playlist
                  data-playlist-url="{% url 'movies:playlist_api' playlist.external_id %}"
-                 data-msg-remove-error="{% translate 'Could not remove the movie from the playlist' %}"
+                 data-msg-remove-error="{% translate 'Could not remove the title from the playlist' %}"
                  data-msg-toggle-error="{% translate 'Could not change playlist visibility' %}"
                  data-profile-url="{% url 'profile' playlist.owner.username %}"
                  data-kind="{{ playlist.kind }}"
@@ -143,7 +143,7 @@
                     </div>
                     <div class="playlist-meta">
                         <p class="playlist-count">
-                            <span>{% translate "Movies" %}:</span>
+                            <span>{% translate "Titles" %}:</span>
                             <span data-playlist-count>{{ items|length }}</span>
                         </p>
                         {% if is_owner and playlist.kind == "FAVOURITE" %}
@@ -292,7 +292,7 @@
                 {% endfor %}
             </ol>
             <p class="playlist-empty" data-playlist-empty{% if items %} hidden{% endif %}>
-                {% translate "There are no movies in this playlist yet" %}
+                {% translate "There are no titles in this playlist yet" %}
             </p>
             {% if is_owner and playlist.kind != "FAVOURITE" %}
                 <dialog class="playlist-dialog"

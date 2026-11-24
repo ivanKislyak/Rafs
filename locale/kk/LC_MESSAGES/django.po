@@ -1866,8 +1866,8 @@ msgid "Playlist %(name)s by @%(username)s on RAFS"
 msgstr "RAFS-тағы @%(username)s пайдаланушысының «%(name)s» плейлисті"
 
 #: movies/templates/movies/playlist.html:13
-msgid "Could not remove the movie from the playlist"
-msgstr "Фильмді плейлисттен алып тастау мүмкін болмады"
+msgid "Could not remove the title from the playlist"
+msgstr "Тайтлды плейлисттен алып тастау мүмкін болмады"
 
 #: movies/templates/movies/playlist.html:14
 msgid "Could not change playlist visibility"
@@ -1883,8 +1883,12 @@ msgid "Remove %(title)s from the playlist"
 msgstr "«%(title)s» фильмін плейлисттен алып тастау"
 
 #: movies/templates/movies/playlist.html:96
-msgid "There are no movies in this playlist yet"
-msgstr "Плейлистте әзірге фильм жоқ"
+msgid "There are no titles in this playlist yet"
+msgstr "Плейлистте әзірге тайтл жоқ"
+
+#: movies/templates/movies/playlist.html
+msgid "Titles"
+msgstr "Тайтлдар"
 
 #: movies/views.py
 msgid "A valid integer is required."
@@ -1920,8 +1924,8 @@ msgid "Private playlist"
 msgstr "Жеке плейлист"
 
 #: accounts/templates/accounts/profile.html
-msgid "You have no playlists yet. Collect movies into themed lists and share them."
-msgstr "Сізде әзірге плейлист жоқ. Фильмдерді тақырыптық жинақтарға жинап, бөлісіңіз."
+msgid "You have no playlists yet. Collect titles into themed lists and share them."
+msgstr "Сізде әзірге плейлист жоқ. Тайтлдарды тақырыптық жинақтарға жинап, бөлісіңіз."
 
 #: accounts/templates/accounts/profile.html
 msgid "Create a playlist"
@@ -1977,10 +1981,10 @@ msgstr "Сіздің плейлисттеріңіз"
 
 #: accounts/templates/accounts/profile.html
 #, python-format
-msgid "%(counter)s movie"
-msgid_plural "%(counter)s movies"
-msgstr[0] "%(counter)s фильм"
-msgstr[1] "%(counter)s фильм"
+msgid "%(counter)s title"
+msgid_plural "%(counter)s titles"
+msgstr[0] "%(counter)s тайтл"
+msgstr[1] "%(counter)s тайтл"
 
 #: accounts/templates/accounts/profile.html
 msgid "Enter a playlist name"

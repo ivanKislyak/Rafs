@@ -1866,8 +1866,8 @@ msgid "Playlist %(name)s by @%(username)s on RAFS"
 msgstr "Плейліст «%(name)s» від @%(username)s на RAFS"
 
 #: movies/templates/movies/playlist.html:13
-msgid "Could not remove the movie from the playlist"
-msgstr "Не вдалося прибрати фільм із плейліста"
+msgid "Could not remove the title from the playlist"
+msgstr "Не вдалося прибрати тайтл із плейліста"
 
 #: movies/templates/movies/playlist.html:14
 msgid "Could not change playlist visibility"
@@ -1883,8 +1883,12 @@ msgid "Remove %(title)s from the playlist"
 msgstr "Прибрати «%(title)s» з плейліста"
 
 #: movies/templates/movies/playlist.html:96
-msgid "There are no movies in this playlist yet"
-msgstr "У плейлісті поки немає фільмів"
+msgid "There are no titles in this playlist yet"
+msgstr "У плейлісті поки немає тайтлів"
+
+#: movies/templates/movies/playlist.html
+msgid "Titles"
+msgstr "Тайтли"
 
 #: movies/views.py
 msgid "A valid integer is required."
@@ -1920,8 +1924,8 @@ msgid "Private playlist"
 msgstr "Приватний плейліст"
 
 #: accounts/templates/accounts/profile.html
-msgid "You have no playlists yet. Collect movies into themed lists and share them."
-msgstr "У вас поки немає плейлістів. Збирайте фільми в тематичні добірки й діліться ними."
+msgid "You have no playlists yet. Collect titles into themed lists and share them."
+msgstr "У вас поки немає плейлістів. Збирайте тайтли в тематичні добірки й діліться ними."
 
 #: accounts/templates/accounts/profile.html
 msgid "Create a playlist"
@@ -1977,12 +1981,12 @@ msgstr "Ваші плейлісти"
 
 #: accounts/templates/accounts/profile.html
 #, python-format
-msgid "%(counter)s movie"
-msgid_plural "%(counter)s movies"
-msgstr[0] "%(counter)s фільм"
-msgstr[1] "%(counter)s фільми"
-msgstr[2] "%(counter)s фільмів"
-msgstr[3] "%(counter)s фільму"
+msgid "%(counter)s title"
+msgid_plural "%(counter)s titles"
+msgstr[0] "%(counter)s тайтл"
+msgstr[1] "%(counter)s тайтли"
+msgstr[2] "%(counter)s тайтлів"
+msgstr[3] "%(counter)s тайтлу"
 
 #: accounts/templates/accounts/profile.html
 msgid "Enter a playlist name"
