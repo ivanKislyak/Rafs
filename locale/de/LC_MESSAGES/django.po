@@ -1866,8 +1866,8 @@ msgid "Playlist %(name)s by @%(username)s on RAFS"
 msgstr "Wiedergabeliste „%(name)s“ von @%(username)s auf RAFS"
 
 #: movies/templates/movies/playlist.html:13
-msgid "Could not remove the movie from the playlist"
-msgstr "Der Film konnte nicht aus der Wiedergabeliste entfernt werden"
+msgid "Could not remove the title from the playlist"
+msgstr "Der Titel konnte nicht aus der Wiedergabeliste entfernt werden"
 
 #: movies/templates/movies/playlist.html:14
 msgid "Could not change playlist visibility"
@@ -1883,8 +1883,12 @@ msgid "Remove %(title)s from the playlist"
 msgstr "„%(title)s“ aus der Wiedergabeliste entfernen"
 
 #: movies/templates/movies/playlist.html:96
-msgid "There are no movies in this playlist yet"
-msgstr "In dieser Wiedergabeliste sind noch keine Filme"
+msgid "There are no titles in this playlist yet"
+msgstr "In dieser Wiedergabeliste sind noch keine Titel"
+
+#: movies/templates/movies/playlist.html
+msgid "Titles"
+msgstr "Titel"
 
 #: movies/views.py
 msgid "A valid integer is required."
@@ -1920,8 +1924,8 @@ msgid "Private playlist"
 msgstr "Private Wiedergabeliste"
 
 #: accounts/templates/accounts/profile.html
-msgid "You have no playlists yet. Collect movies into themed lists and share them."
-msgstr "Du hast noch keine Wiedergabelisten. Sammle Filme in thematischen Listen und teile sie."
+msgid "You have no playlists yet. Collect titles into themed lists and share them."
+msgstr "Du hast noch keine Wiedergabelisten. Sammle Titel in thematischen Listen und teile sie."
 
 #: accounts/templates/accounts/profile.html
 msgid "Create a playlist"
@@ -1977,10 +1981,10 @@ msgstr "Deine Wiedergabelisten"
 
 #: accounts/templates/accounts/profile.html
 #, python-format
-msgid "%(counter)s movie"
-msgid_plural "%(counter)s movies"
-msgstr[0] "%(counter)s Film"
-msgstr[1] "%(counter)s Filme"
+msgid "%(counter)s title"
+msgid_plural "%(counter)s titles"
+msgstr[0] "%(counter)s Titel"
+msgstr[1] "%(counter)s Titel"
 
 #: accounts/templates/accounts/profile.html
 msgid "Enter a playlist name"
