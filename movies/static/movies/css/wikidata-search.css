@@ -38,7 +38,7 @@
 
 .wd-search-form {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(180px, 0.34fr) auto;
+  grid-template-columns: minmax(0, 1fr) minmax(150px, 0.3fr) minmax(150px, 0.3fr) auto;
   gap: 14px;
   align-items: end;
   padding: clamp(16px, 3vw, 24px);
@@ -381,6 +381,93 @@
   color: var(--color-text);
 }
 
+.wd-add-button:disabled {
+  cursor: progress;
+  opacity: 0.65;
+}
+
+/* Add by QID: a slim second form under the search. */
+.wd-qid-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  align-items: end;
+  margin-top: 12px;
+  padding: 14px clamp(16px, 3vw, 24px);
+  border: 1px dashed var(--color-border);
+  border-radius: 12px;
+}
+
+.wd-qid-form .wd-search-field {
+  flex: 1 1 220px;
+}
+
+.wd-qid-form .wd-add-button {
+  min-height: 44px;
+}
+
+/* TMDB results: poster instead of the running number. */
+.wd-search-result-card-poster {
+  grid-template-columns: 77px minmax(0, 1fr);
+}
+
+.wd-search-result-poster {
+  display: block;
+  width: 77px;
+  height: 116px;
+  border-radius: 8px;
+  background-color: var(--color-surface-raised);
+  object-fit: cover;
+}
+
+.wd-search-result-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  margin: 8px 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+}
+
+.wd-search-result-original {
+  font-style: italic;
+  overflow-wrap: anywhere;
+}
+
+.wd-search-badge {
+  padding: 3px 8px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  color: var(--color-text-muted);
+  font-size: 0.72rem;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.wd-search-badge-catalogue {
+  border-color: color-mix(in srgb, var(--color-accent) 55%, var(--color-border));
+  background-color: var(--color-accent-glow);
+  color: var(--rafs-red-soft);
+}
+
+.wd-search-badge-catalogue:hover {
+  color: var(--color-text);
+}
+
+.wd-search-badge-catalogue:focus-visible {
+  outline: 2px solid var(--color-focus-visible-outline);
+  outline-offset: 2px;
+}
+
+.wd-search-result-copy > p.wd-search-result-overview {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+}
+
 .wd-search-copy-button.is-copied {
   border-color: var(--color-accent);
   color: var(--rafs-red-soft);
@@ -447,7 +534,11 @@
 
 @media (max-width: 760px) {
   .wd-search-form {
-    grid-template-columns: minmax(0, 1fr) minmax(160px, 0.45fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .wd-search-query-field {
+    grid-column: 1 / -1;
   }
 
   .wd-search-submit {
@@ -480,6 +571,20 @@
   .wd-search-result-card {
     grid-template-columns: 1fr;
     padding: 15px;
+  }
+
+  .wd-search-result-card-poster {
+    grid-template-columns: 64px minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .wd-search-result-poster {
+    width: 64px;
+    height: 96px;
+  }
+
+  .wd-qid-form .wd-add-button {
+    flex: 1 1 100%;
   }
 
   .wd-search-result-number {

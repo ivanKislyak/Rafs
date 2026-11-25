@@ -25,13 +25,16 @@ import requests
 from django.conf import settings
 from django.core.management.base import CommandError
 from django.db import IntegrityError, transaction
+from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 
 from movies.management.commands.import_anime import AnimeAPI, confirmed_format, validate_identity
 from movies.management.commands.import_animation import COLLECTIVE_TYPES
 from movies.management.commands.import_popular_movies import (
-    QID, REGIONS, RELATIONS, SPARQL, TMDB, ImportIssue, claim_qids, claim_values, clean, import_one,
+    IMDB, MEDIA_FIELDS, QID, REGIONS, RELATIONS, SPARQL, TMDB, ImportIssue, claim_qids, claim_values, clean,
+    import_one,
 )
+from movies.models import Movie
 
 logger = logging.getLogger(__name__)
 
@@ -40,6 +43,7 @@ LANGUAGES = list(REGIONS)
 MEDIA_TYPES = ("movie", "tv")
 TMDB_PROPERTIES = {"movie": "P4947", "tv": "P4983"}
 POSTER_BASE = "https://image.tmdb.org/t/p/w500"
+THUMBNAIL_BASE = "https://image.tmdb.org/t/p/w154"
 POSTER_PATH = re.compile(r"/[A-Za-z0-9_.-]+\.(?:jpg|png|webp)", re.I)
 MAX_TMDB_ID = 2**31 - 1
 
@@ -203,10 +207,10 @@ class WebAPI(AnimeAPI):
         return delay if delay <= self.MAX_RETRY_WAIT else None
 
 
-def poster_url(item):
+def poster_url(item, base=POSTER_BASE):
     """Same rule as the commands' poster(): a w500 TMDB URL for a plain image path."""
     path = clean(item.get("poster_path"))
-    return POSTER_BASE + path if POSTER_PATH.fullmatch(path) else ""
+    return base + path if POSTER_PATH.fullmatch(path) else ""
 
 
 def tmdb_popularity(item):
@@ -328,3 +332,84 @@ def import_qid(qid, *, api=None):
     # No TMDB record: titles, descriptions and the year come from Wikidata alone.
     item = {"id": None, "external_ids": {}}
     return save_title(item, qid, entity, related, media_type, confirmed_type, None)
+
+
+@dataclass
+class SearchResult:
+    media_type: str
+    tmdb_id: int
+    title: str
+    original_title: str
+    year: int | None
+    poster: str
+    overview: str
+    wikidata_id: str = ""
+    imdb_id: str = ""
+    movie: object = None
+    # False when TMDB external IDs could not be read: "already in the catalogue" is then unknown.
+    identity_checked: bool = False
+
+
+def search_tmdb(query, language, *, api=None, limit=10):
+    """TMDB search over films and series, marked with the catalogue copy found by QID or IMDb.
+
+    Movie has no TMDB ID column, so each result's external_ids gives the QID/IMDb
+    to compare; that is one short request per shown result.
+    """
+    api = api or WebAPI.from_settings()
+    if not api.has_tmdb:
+        raise StaffImportError("not_configured")
+    region = REGIONS.get(language, "US")
+    data = api.get(f"{TMDB}/search/multi", {
+        "query": query, "language": f"{language}-{region}", "include_adult": "false", "page": 1,
+    })
+    if not isinstance(data, dict) or not isinstance(data.get("results"), list):
+        raise StaffImportError("source_unavailable")
+    rows = [
+        row for row in data["results"]
+        if isinstance(row, dict) and row.get("media_type") in MEDIA_TYPES
+        and valid_tmdb_id(row.get("id")) and not row.get("adult")
+    ][:limit]
+    results, identities_available = [], True
+    for row in rows:
+        media_type = row["media_type"]
+        title_field, date_field, _property = MEDIA_FIELDS[media_type]
+        release = clean(row.get(date_field))
+        result = SearchResult(
+            media_type=media_type, tmdb_id=row["id"],
+            title=clean(row.get(title_field)),
+            original_title=clean(row.get("original_title" if media_type == "movie" else "original_name")),
+            year=int(release[:4]) if re.match(r"^[1-9]\d{3}-", release) else None,
+            poster=poster_url(row, THUMBNAIL_BASE), overview=clean(row.get("overview")),
+        )
+        if identities_available:
+            try:
+                ids = api.get(f"{TMDB}/{media_type}/{row['id']}/external_ids") or {}
+            except StaffImportError:
+                # Do not wait on every remaining result when the source is failing.
+                identities_available = False
+            else:
+                qid, imdb = clean(ids.get("wikidata_id")), clean(ids.get("imdb_id"))
+                result.wikidata_id = qid if QID.fullmatch(qid) else ""
+                result.imdb_id = imdb if IMDB.fullmatch(imdb) else ""
+                result.identity_checked = True
+        results.append(result)
+    attach_catalogue_movies(results)
+    return results
+
+
+def attach_catalogue_movies(results):
+    """One query: the catalogue copy of each result, by Wikidata ID first, then IMDb."""
+    qids = {r.wikidata_id for r in results if r.wikidata_id}
+    imdbs = {r.imdb_id for r in results if r.imdb_id}
+    if not qids and not imdbs:
+        return
+    movies = Movie.objects.filter(Q(wikidata_id__in=qids) | Q(imdb_id__in=imdbs)).only("pk", "name", "wikidata_id", "imdb_id")
+    by_qid, by_imdb = {}, {}
+    for movie in movies:
+        if movie.wikidata_id:
+            by_qid[movie.wikidata_id] = movie
+        if movie.imdb_id:
+            by_imdb.setdefault(movie.imdb_id, movie)
+    for result in results:
+        result.movie = by_qid.get(result.wikidata_id) or by_imdb.get(result.imdb_id)

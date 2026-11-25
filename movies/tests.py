@@ -23,6 +23,7 @@ from .movie_models import Country, Genre, Person, Studio, TypeOfWork
 from .serializers import SearchResultSerializer
 from .views import search_page
 from .services.wikidata import search_wikidata_media
+from .services.title_import import ImportResult
 
 @skipUnless(connection.vendor == "postgresql", "Search API uses PostgreSQL full-text queries")
 class SearchResultsAPITests(TestCase):
@@ -243,6 +244,8 @@ class MovieDetailTranslationTests(TestCase):
 
 
 class WikidataImportPermissionTests(TestCase):
+    """Staff-only, POST + CSRF; failures redirect with a message, never a 500."""
+
     @classmethod
     def setUpTestData(cls):
         cls.staff = get_user_model().objects.create_user(
@@ -253,32 +256,40 @@ class WikidataImportPermissionTests(TestCase):
         )
         cls.url = reverse("movies:wikidata_save_item", args=["Q123"])
 
-    @patch("movies.views.fetch_movie_details_raw")
-    def test_get_does_not_import_even_for_staff(self, fetch):
+    @patch("movies.views.import_qid")
+    def test_get_does_not_import_even_for_staff(self, run):
         self.client.force_login(self.staff)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 405)
         self.assertEqual(response.headers["Allow"], "POST")
-        fetch.assert_not_called()
+        run.assert_not_called()
         self.assertEqual(Movie.objects.count(), 0)
 
-    @patch("movies.views.fetch_movie_details_raw")
-    def test_anonymous_and_non_staff_cannot_import(self, fetch):
-        self.assertEqual(self.client.post(self.url).status_code, 302)
+    @patch("movies.views.import_tmdb")
+    @patch("movies.views.import_qid")
+    def test_anonymous_and_non_staff_cannot_import(self, run_qid, run_tmdb):
+        urls = (self.url, reverse("movies:wikidata_add_by_qid"), reverse("movies:tmdb_import_item"))
+        for url in urls:
+            self.assertEqual(self.client.post(url, {"qid": "Q123", "media_type": "movie", "tmdb_id": 1}).status_code, 302)
         self.client.force_login(self.visitor)
-        self.assertEqual(self.client.post(self.url).status_code, 302)
-        fetch.assert_not_called()
+        for url in urls:
+            self.assertEqual(self.client.post(url, {"qid": "Q123", "media_type": "movie", "tmdb_id": 1}).status_code, 302)
+        self.assertEqual(self.client.get(reverse("movies:wikidata_search")).status_code, 302)
+        run_qid.assert_not_called()
+        run_tmdb.assert_not_called()
         self.assertEqual(Movie.objects.count(), 0)
 
-    def test_import_timeout_redirects_with_error_and_does_not_create_movie(self):
+    @patch("movies.services.title_import.time.sleep")
+    @patch("requests.Session.get", side_effect=Timeout("Wikidata timed out"))
+    def test_import_timeout_redirects_with_error_and_does_not_create_movie(self, get, sleep):
         self.client.force_login(self.staff)
-        with patch("movies.views.fetch_movie_details_raw", side_effect=Timeout("Wikidata timed out")) as fetch:
+        with self.assertLogs("movies.services.title_import", "WARNING"):
             response = self.client.post(self.url)
         self.assertFalse(Movie.objects.filter(wikidata_id="Q123").exists())
         self.assertRedirects(response, reverse("movies:wikidata_search"), fetch_redirect_response=False)
         sent = list(get_messages(response.wsgi_request))
         self.assertIn(ERROR, [message.level for message in sent])
-        fetch.assert_called_once_with("Q123")
+        self.assertEqual(get.call_count, 3)
 
     @patch("movies.services.wikidata.requests.get")
     def test_search_maps_wikidata_response_to_movie_results(self, mock_get):
@@ -299,16 +310,15 @@ class WikidataImportPermissionTests(TestCase):
         result = search_wikidata_media("Fixture", lang="en")
 
         self.assertEqual(result, [{"id": "Q123", "title": "Fixture movie", "description": "A test film"}])
-        
 
     def test_search_result_posts_with_csrf_and_imports_only_after_submit(self):
         client = Client(enforce_csrf_checks=True)
         client.force_login(self.staff)
         with patch("movies.views.search_wikidata_media", return_value=[{
             "id": "Q123", "title": "Fixture movie", "description": "Fixture description",
-        }]), patch("movies.views.fetch_movie_details_raw") as fetch:
+        }]), patch("movies.views.import_qid") as run:
             response = client.get(
-                reverse("movies:wikidata_search"), {"query": "Fixture", "lang": "en"},
+                reverse("movies:wikidata_search"), {"query": "Fixture", "lang": "en", "source": "wikidata"},
             )
             self.assertEqual(response.status_code, 200)
             self.assertContains(response, f'action="{self.url}"')
@@ -316,21 +326,14 @@ class WikidataImportPermissionTests(TestCase):
             self.assertContains(response, 'name="csrfmiddlewaretoken"')
             self.assertNotContains(response, f'href="{self.url}"')
             self.assertEqual(client.post(self.url).status_code, 403)
-            fetch.assert_not_called()
+            run.assert_not_called()
 
             imported = Movie.objects.create(name="Fixture movie")
-            fetch.return_value = {"fixture": "raw"}
-            with patch("movies.views.parse_movie_details", return_value={"name": "Fixture movie"}) as parse, patch(
-                "movies.views.import_parsed_data_to_db", return_value=imported,
-            ) as save:
-                response = client.post(
-                    self.url, {"csrfmiddlewaretoken": client.cookies["csrftoken"].value},
-                )
+            run.return_value = ImportResult(imported, True)
+            response = client.post(self.url, {"csrfmiddlewaretoken": client.cookies["csrftoken"].value})
 
             self.assertRedirects(response, reverse("movies:detail", args=[imported.pk]))
-            fetch.assert_called_once_with("Q123")
-            parse.assert_called_once_with({"fixture": "raw"}, "Q123")
-            save.assert_called_once_with("Q123", {"name": "Fixture movie"})
+            run.assert_called_once_with("Q123")
 
 
 class CatalogRatingFilterTests(TestCase):

@@ -38,6 +38,19 @@
     }
   });
 
+  // Import runs synchronously and takes a few seconds: block a second submit and show progress.
+  document.querySelectorAll(".wd-import-form").forEach((importForm) => {
+    importForm.addEventListener("submit", () => {
+      const button = importForm.querySelector("button[type='submit']");
+      if (!button) {
+        return;
+      }
+      button.disabled = true;
+      button.setAttribute("aria-busy", "true");
+      button.textContent = form.dataset.addingLabel;
+    });
+  });
+
   document.querySelectorAll("[data-wd-copy]").forEach((button) => {
     button.addEventListener("click", async () => {
       const qid = button.dataset.wdCopy;

@@ -2,7 +2,7 @@ import requests
 import json
 import re
 
-LANGUAGES = ["ru", "en", "uk", "kk", "es"]
+LANGUAGES = ["ru", "en", "uk", "kk", "es", "de"]
 WIKIDATA_SPARQL_URL = "https://query.wikidata.org/sparql"
 WIKIDATA_ACTION_API_URL = "https://www.wikidata.org/w/api.php"
 USER_AGENT = "RafsWikidataBot/0.1 (contact: kislyakhelp@gmail.com | github: https://github.com/ivanKislyak/Rafs | website: https://rafs.app/)"
