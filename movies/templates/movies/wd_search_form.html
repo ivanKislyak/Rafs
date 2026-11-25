@@ -2,7 +2,7 @@
 {% load static %}
 {% load i18n %}
 {% block title %}
-    {% translate "Search Wikidata – RAFS" %}
+    {% translate "Add titles – RAFS" %}
 {% endblock %}
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'movies/css/wikidata-search.css' %}">
@@ -11,8 +11,10 @@
     <main class="wd-search-page">
         <header class="wd-search-heading">
             <span class="wd-search-kicker">{% translate "Editor tools" %}</span>
-            <h1>{% translate "Search for movies on Wikidata" %}</h1>
-            <p>{% translate "Find a movie or series and copy its QID for further use" %}</p>
+            <h1>{% translate "Add titles to the catalogue" %}</h1>
+            <p>
+                {% translate "Search TMDB, or Wikidata as a fallback. A title is added with its translations, poster, genres, people and studios, and becomes searchable at once." %}
+            </p>
         </header>
         <form class="wd-search-form"
               method="get"
@@ -21,6 +23,7 @@
               data-searching-label="{% translate 'Searching' %}"
               data-copied-label="{% translate 'QID copied' %}"
               data-copy-label="{% translate 'Copy QID' %}"
+              data-adding-label="{% translate 'Adding…' %}"
               data-wd-search-form>
             {% if wd_search_form.non_field_errors %}
                 <div class="wd-search-form-error" role="alert">{{ wd_search_form.non_field_errors }}</div>
@@ -54,10 +57,40 @@
                     <span class="wd-search-field-hint">{% translate "Title and description" %}</span>
                 {% endif %}
             </div>
+            <div class="wd-search-field{% if wd_search_form.source.errors %} has-error{% endif %}">
+                <label for="{{ wd_search_form.source.id_for_label }}">{% translate "Source" %}</label>
+                {{ wd_search_form.source }}
+                {% if wd_search_form.source.errors %}
+                    <div class="wd-search-field-errors" role="alert">{{ wd_search_form.source.errors }}</div>
+                {% else %}
+                    <span class="wd-search-field-hint">{% translate "Films and series" %}</span>
+                {% endif %}
+            </div>
             <button class="wd-search-submit" type="submit" data-wd-search-submit>
                 <span class="wd-search-submit-label">{% translate "Search" %}</span>
                 <span class="wd-search-submit-spinner" aria-hidden="true"></span>
             </button>
+        </form>
+        {# Add by QID: the TMDB path when the Wikidata item names its TMDB ID, otherwise Wikidata alone. #}
+        <form class="wd-qid-form wd-import-form"
+              method="post"
+              action="{% url 'movies:wikidata_add_by_qid' %}">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.get_full_path }}">
+            <div class="wd-search-field">
+                <label for="wd-qid-input">{% translate "Add by Wikidata ID" %}</label>
+                <input id="wd-qid-input"
+                       type="text"
+                       name="qid"
+                       inputmode="text"
+                       autocomplete="off"
+                       spellcheck="false"
+                       pattern="[Qq][1-9][0-9]*"
+                       maxlength="20"
+                       required
+                       placeholder="Q83495">
+            </div>
+            <button class="wd-add-button" type="submit">{% translate "Add by QID" %}</button>
         </form>
         <section class="wd-search-results" aria-live="polite">
             {% if wd_search_form.is_bound %}
@@ -69,71 +102,161 @@
                             <p>{% translate "Correct the highlighted fields and try again" %}</p>
                         </div>
                     </div>
+                {% elif search_error == "not_configured" %}
+                    <div class="wd-search-state wd-search-state-error">
+                        <span class="wd-search-state-mark" aria-hidden="true">!</span>
+                        <div>
+                            <h2>{% translate "TMDB is not configured" %}</h2>
+                            <p>{% translate "Add TMDB_READ_TOKEN to the server environment, or switch the source to Wikidata" %}</p>
+                        </div>
+                    </div>
                 {% elif search_error %}
                     <div class="wd-search-state wd-search-state-error">
                         <span class="wd-search-state-mark" aria-hidden="true">!</span>
                         <div>
-                            <h2>{% translate "Wikidata is temporarily unavailable" %}</h2>
+                            <h2>{% translate "The search source is temporarily unavailable" %}</h2>
                             <p>{% translate "Wait a moment and try again – your search has been preserved" %}</p>
                         </div>
                     </div>
                 {% elif search_result %}
                     <div class="wd-search-results-heading">
                         <div>
-                            <span class="wd-search-results-label">{% translate "Results" %}</span>
+                            <span class="wd-search-results-label">{% if search_source == "wikidata" %}Wikidata{% else %}TMDB{% endif %}</span>
                             <h2>{% translate "Matching titles" %}</h2>
                         </div>
                         <span class="wd-search-results-count">{% translate "Found:" %} {{ search_result|length }}</span>
                     </div>
                     <ol class="wd-search-result-list">
-                        {% for result in search_result %}
-                            <li class="wd-search-result-card">
-                                <span class="wd-search-result-number" aria-hidden="true">{{ forloop.counter }}</span>
-                                <div class="wd-search-result-copy">
-                                    <div class="wd-search-result-title-row">
-                                        <h3>{{ result.title|default:result.id }}</h3>
-                                        <code>{{ result.id }}</code>
-                                    </div>
-                                    <p>
-                                        {% if result.description %}
-                                            {{ result.description }}
-                                        {% else %}
-                                            {% translate "This title does not have a description in the selected language yet" %}
+                        {% if search_source == "wikidata" %}
+                            {% for result in search_result %}
+                                <li class="wd-search-result-card">
+                                    <span class="wd-search-result-number" aria-hidden="true">{{ forloop.counter }}</span>
+                                    <div class="wd-search-result-copy">
+                                        <div class="wd-search-result-title-row">
+                                            <h3>{{ result.title|default:result.id }}</h3>
+                                            <code>{{ result.id }}</code>
+                                        </div>
+                                        {% if result.movie %}
+                                            <p class="wd-search-result-meta">
+                                                <a class="wd-search-badge wd-search-badge-catalogue"
+                                                   href="{% url 'movies:detail' result.movie.pk %}">{% translate "Already in the catalogue" %}</a>
+                                            </p>
                                         {% endif %}
-                                    </p>
-                                    <div class="wd-search-result-actions">
-                                        <button class="wd-search-copy-button"
-                                                type="button"
-                                                data-wd-copy="{{ result.id }}">
-                                            <svg viewBox="0 0 24 24" aria-hidden="true">
-                                                <rect x="8" y="8" width="11" height="11" rx="2"></rect>
-                                                <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path>
-                                            </svg>
-                                            <span data-wd-copy-label>{% translate "Copy QID" %}</span>
-                                        </button>
-                                        <a class="wd-search-external-link"
-                                           href="https://www.wikidata.org/wiki/{{ result.id }}"
-                                           target="_blank"
-                                           rel="noopener noreferrer">
-                                            {% translate "Open in Wikidata" %}
-                                            <svg viewBox="0 0 24 24" aria-hidden="true">
-                                                <path d="M14 5h5v5"></path>
-                                                <path d="m19 5-8 8"></path>
-                                                <path d="M18 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"></path>
-                                            </svg>
-                                        </a>
-                                        <form class="wd-add-form"
-                                              method="post"
-                                              action="{% url 'movies:wikidata_save_item' result.id %}"
-                                              target="_blank"
-                                              rel="noopener">
-                                            {% csrf_token %}
-                                            <button class="wd-add-button" type="submit">{% translate "Add" %}</button>
-                                        </form>
+                                        <p>
+                                            {% if result.description %}
+                                                {{ result.description }}
+                                            {% else %}
+                                                {% translate "This title does not have a description in the selected language yet" %}
+                                            {% endif %}
+                                        </p>
+                                        <div class="wd-search-result-actions">
+                                            <button class="wd-search-copy-button"
+                                                    type="button"
+                                                    data-wd-copy="{{ result.id }}">
+                                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                                    <rect x="8" y="8" width="11" height="11" rx="2"></rect>
+                                                    <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path>
+                                                </svg>
+                                                <span data-wd-copy-label>{% translate "Copy QID" %}</span>
+                                            </button>
+                                            <a class="wd-search-external-link"
+                                               href="https://www.wikidata.org/wiki/{{ result.id }}"
+                                               target="_blank"
+                                               rel="noopener noreferrer">
+                                                {% translate "Open in Wikidata" %}
+                                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                                    <path d="M14 5h5v5"></path>
+                                                    <path d="m19 5-8 8"></path>
+                                                    <path d="M18 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"></path>
+                                                </svg>
+                                            </a>
+                                            <form class="wd-add-form wd-import-form"
+                                                  method="post"
+                                                  action="{% url 'movies:wikidata_save_item' result.id %}">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                                                <button class="wd-add-button" type="submit">
+                                                    {% if result.movie %}
+                                                        {% translate "Fill in missing data" %}
+                                                    {% else %}
+                                                        {% translate "Add" %}
+                                                    {% endif %}
+                                                </button>
+                                            </form>
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                        {% endfor %}
+                                </li>
+                            {% endfor %}
+                        {% else %}
+                            {% for result in search_result %}
+                                <li class="wd-search-result-card wd-search-result-card-poster">
+                                    {% if result.poster %}
+                                        <img class="wd-search-result-poster"
+                                             src="{{ result.poster }}"
+                                             width="77"
+                                             height="116"
+                                             loading="lazy"
+                                             decoding="async"
+                                             alt="">
+                                    {% else %}
+                                        <span class="wd-search-result-poster wd-search-result-poster-empty" aria-hidden="true"></span>
+                                    {% endif %}
+                                    <div class="wd-search-result-copy">
+                                        <div class="wd-search-result-title-row">
+                                            <h3>{{ result.title|default:result.original_title }}</h3>
+                                        </div>
+                                        <p class="wd-search-result-meta">
+                                            <span class="wd-search-badge">
+                                                {% if result.media_type == "tv" %}
+                                                    {% translate "Series" %}
+                                                {% else %}
+                                                    {% translate "Film" %}
+                                                {% endif %}
+                                            </span>
+                                            {% if result.year %}<span>{{ result.year }}</span>{% endif %}
+                                            {% if result.original_title and result.original_title != result.title %}
+                                                <span class="wd-search-result-original">{{ result.original_title }}</span>
+                                            {% endif %}
+                                            {% if result.movie %}
+                                                <a class="wd-search-badge wd-search-badge-catalogue"
+                                                   href="{% url 'movies:detail' result.movie.pk %}">{% translate "Already in the catalogue" %}</a>
+                                            {% elif not result.identity_checked %}
+                                                <span class="wd-search-badge">{% translate "Catalogue check unavailable" %}</span>
+                                            {% endif %}
+                                        </p>
+                                        {% if result.overview %}<p class="wd-search-result-overview">{{ result.overview }}</p>{% endif %}
+                                        <div class="wd-search-result-actions">
+                                            <form class="wd-add-form wd-import-form"
+                                                  method="post"
+                                                  action="{% url 'movies:tmdb_import_item' %}">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="media_type" value="{{ result.media_type }}">
+                                                <input type="hidden" name="tmdb_id" value="{{ result.tmdb_id }}">
+                                                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                                                <button class="wd-add-button" type="submit">
+                                                    {% if result.movie %}
+                                                        {% translate "Fill in missing data" %}
+                                                    {% else %}
+                                                        {% translate "Add" %}
+                                                    {% endif %}
+                                                </button>
+                                            </form>
+                                            <a class="wd-search-external-link"
+                                               href="https://www.themoviedb.org/{{ result.media_type }}/{{ result.tmdb_id }}"
+                                               target="_blank"
+                                               rel="noopener noreferrer">
+                                                {% translate "Open in TMDB" %}
+                                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                                    <path d="M14 5h5v5"></path>
+                                                    <path d="m19 5-8 8"></path>
+                                                    <path d="M18 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"></path>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        {% endif %}
                     </ol>
                 {% else %}
                     <div class="wd-search-state">

@@ -1,4 +1,5 @@
 import json
+import logging
 import re
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.translation import gettext as _
@@ -17,6 +18,7 @@ from django.db.models.functions import Coalesce
 from django.template.loader import render_to_string
 from django.http import JsonResponse
 from django.urls import reverse
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
 from requests import RequestException
 
@@ -28,7 +30,9 @@ from .permissions import IsReplyAuthorOrReadOnly
 from .forms import (
     MovieFilterForm, 
     ReviewForm, 
-    WikidataSearchForm
+    WikidataSearchForm,
+    TmdbImportForm,
+    QidImportForm,
     )
 from .models import (
     Movie, Review, ReviewReply,
@@ -43,17 +47,16 @@ from .serializers import (
     PlaylistItemSerializer, PlaylistShortSerializer,
     PlaylistOrderSerializer, LibraryPlaylistSerializer
     )
-from .services.wikidata import (
-    search_wikidata_media, 
-    fetch_movie_details_raw, 
-    parse_movie_details,
-    )
-from .services.import_wikidata import import_parsed_data_to_db 
+from .services.wikidata import search_wikidata_media
+from .services.title_import import StaffImportError, import_qid, import_tmdb, search_tmdb
 from .services.search_index import searchable_playlists
 from .utils import url_template
 from core.utils import get_country_code
 from accounts.models import User
 from accounts.services.achievements import award_review_or_treat
+
+logger = logging.getLogger(__name__)
+
 
 def catalog(request):
     filter_form = MovieFilterForm(request.GET or None)
@@ -706,38 +709,96 @@ class ReviewReplyListCreateAPIView(generics.ListCreateAPIView):
 
 @staff_member_required
 def wikidata_search(request):
+    """Staff search: TMDB by default (posters, original titles), Wikidata as a fallback."""
     wd_search_form = WikidataSearchForm(request.GET or None)
     search_result = []
-    search_error = False
+    search_error = ""
+    source = "tmdb"
 
     if wd_search_form.is_valid():
-        query = wd_search_form.cleaned_data.get("query")
-        lang = wd_search_form.cleaned_data.get("lang")
-
+        query = wd_search_form.cleaned_data["query"]
+        lang = wd_search_form.cleaned_data["lang"]
+        source = wd_search_form.cleaned_data["source"]
         try:
-            search_result = search_wikidata_media(query=query, lang=lang, limit=10)
+            if source == "wikidata":
+                search_result = search_wikidata_media(query=query, lang=lang, limit=10)
+                in_catalogue = Movie.objects.in_bulk(
+                    [row["id"] for row in search_result if row.get("id")], field_name="wikidata_id",
+                )
+                for row in search_result:
+                    row["movie"] = in_catalogue.get(row.get("id"))
+            else:
+                search_result = search_tmdb(query, lang)
+        except StaffImportError as error:
+            search_error = error.code
         except (RequestException, ValueError):
-            search_error = True
+            search_error = "source_unavailable"
 
     context = {
         "wd_search_form": wd_search_form,
         "search_result": search_result,
         "search_error": search_error,
+        "search_source": source,
+        "qid_form": QidImportForm(),
     }
 
     return render(request, "movies/wd_search_form.html", context=context)
 
+
+def _staff_import_return_url(request, form):
+    """Back to the search the button came from, never to another site."""
+    target = form.data.get("next", "")
+    if target and url_has_allowed_host_and_scheme(target, allowed_hosts={request.get_host()},
+                                                  require_https=request.is_secure()):
+        return target
+    return reverse("movies:wikidata_search")
+
+
+def _run_staff_import(request, form, run):
+    """Import, then open the title; on a known failure explain it and go back to the search."""
+    back = _staff_import_return_url(request, form)
+    if not form.is_valid():
+        messages.error(request, StaffImportError.MESSAGES["invalid"])
+        return redirect(back)
+    try:
+        result = run(form.cleaned_data)
+    except StaffImportError as error:
+        logger.info("Staff import refused: %s", error.code)
+        text = str(error.message)
+        if error.detail:
+            text = _("%(message)s Details: %(detail)s") % {"message": text, "detail": error.detail}
+        messages.error(request, text)
+        return redirect(back)
+    title = result.movie.name or result.movie.wikidata_id
+    if result.created:
+        messages.success(request, _("“%(title)s” was added to the catalogue.") % {"title": title})
+    else:
+        messages.success(request, _("“%(title)s” is already in the catalogue; missing data was filled in.") % {"title": title})
+    for warning in result.warnings:
+        messages.warning(request, warning)
+    return redirect("movies:detail", movie_id=result.movie.pk)
+
+
+@staff_member_required
+@require_POST
+def tmdb_import_item(request):
+    form = TmdbImportForm(request.POST)
+    return _run_staff_import(request, form, lambda data: import_tmdb(data["media_type"], data["tmdb_id"]))
+
+
 @staff_member_required
 @require_POST
 def wikidata_save_item(request, qid):
-    try:
-        raw = fetch_movie_details_raw(qid)
-    except RequestException:
-        messages.error(request, _("We were unable to retrieve data from Wikidata. Please try again"))
-        return redirect("movies:wikidata_search")
-    parsed = parse_movie_details(raw, qid)
-    imported = import_parsed_data_to_db(qid, parsed)
-    return redirect("movies:detail", movie_id=imported.id)
+    """Add by a QID from the Wikidata results: TMDB path when the item has a TMDB ID."""
+    form = QidImportForm({"qid": qid, "next": request.POST.get("next", "")})
+    return _run_staff_import(request, form, lambda data: import_qid(data["qid"]))
+
+
+@staff_member_required
+@require_POST
+def wikidata_add_by_qid(request):
+    form = QidImportForm(request.POST)
+    return _run_staff_import(request, form, lambda data: import_qid(data["qid"]))
 
 def _review_feed_return_url(request, review_id=None):
     try:

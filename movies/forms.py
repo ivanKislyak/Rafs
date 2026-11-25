@@ -1,4 +1,5 @@
 from django import forms
+from django.core.validators import RegexValidator
 from django.utils.translation import gettext_lazy as _
 
 from .models import Review as ReviewModel
@@ -26,6 +27,7 @@ LANG_CHOICES = (
         ('uk', 'Українська'),
         ('kk', 'Қазақша'),
         ('es', 'Español'),
+        ('de', 'Deutsch'),
     )
 
 class MovieFilterForm(forms.Form):
@@ -175,6 +177,39 @@ class ReviewForm(forms.ModelForm):
         return cleaned_data
 
 
+SEARCH_SOURCES = (
+    ("tmdb", _("TMDB")),
+    ("wikidata", _("Wikidata (fallback)")),
+)
+QID_VALIDATOR = RegexValidator(r"^Q[1-9]\d{0,11}$", _("Enter a Wikidata ID such as Q83495."))
+
+
 class WikidataSearchForm(forms.Form):
     query = forms.CharField(required=True, min_length=2, max_length=200)
     lang = forms.ChoiceField(choices=LANG_CHOICES)
+    # Optional so old links without it keep working: TMDB is the default source.
+    source = forms.ChoiceField(choices=SEARCH_SOURCES, required=False)
+
+    def clean_source(self):
+        return self.cleaned_data.get("source") or "tmdb"
+
+
+class StaffImportForm(forms.Form):
+    """POST body of the staff import buttons; next is where to return on an error."""
+
+    next = forms.CharField(required=False, max_length=2000)
+
+
+class TmdbImportForm(StaffImportForm):
+    media_type = forms.ChoiceField(choices=(("movie", "movie"), ("tv", "tv")))
+    tmdb_id = forms.IntegerField(min_value=1, max_value=2**31 - 1)
+
+
+class QidImportForm(StaffImportForm):
+    qid = forms.CharField(max_length=20)
+
+    def clean_qid(self):
+        # Normalise first ("q123 " is fine), then validate the canonical form.
+        value = self.cleaned_data["qid"].strip().upper()
+        QID_VALIDATOR(value)
+        return value
