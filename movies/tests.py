@@ -332,7 +332,7 @@ class WikidataImportPermissionTests(TestCase):
             run.return_value = ImportResult(imported, True)
             response = client.post(self.url, {"csrfmiddlewaretoken": client.cookies["csrftoken"].value})
 
-            self.assertRedirects(response, reverse("movies:detail", args=[imported.pk]))
+            self.assertRedirects(response, reverse("movies:wikidata_search"))
             run.assert_called_once_with("Q123")
 
 

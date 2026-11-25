@@ -755,7 +755,7 @@ def _staff_import_return_url(request, form):
 
 
 def _run_staff_import(request, form, run):
-    """Import, then open the title; on a known failure explain it and go back to the search."""
+    """Import and go back to the same search; the result then shows "Already in the catalogue"."""
     back = _staff_import_return_url(request, form)
     if not form.is_valid():
         messages.error(request, StaffImportError.MESSAGES["invalid"])
@@ -776,7 +776,7 @@ def _run_staff_import(request, form, run):
         messages.success(request, _("“%(title)s” is already in the catalogue; missing data was filled in.") % {"title": title})
     for warning in result.warnings:
         messages.warning(request, warning)
-    return redirect("movies:detail", movie_id=result.movie.pk)
+    return redirect(back)
 
 
 @staff_member_required
