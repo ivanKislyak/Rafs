@@ -65,11 +65,12 @@ class StaffImportViewTests(FreshCacheTestCase):
     def messages(self, response):
         return [(m.level, str(m)) for m in get_messages(response.wsgi_request)]
 
-    def test_tmdb_add_creates_a_complete_title_and_opens_it(self):
+    def test_tmdb_add_creates_a_complete_title_and_returns_to_the_search(self):
+        back = SEARCH + "?query=matrix"
         with use(matrix_api()):
-            response = self.client.post(TMDB_ADD, {"media_type": "movie", "tmdb_id": "603", "next": SEARCH + "?query=matrix"})
+            response = self.client.post(TMDB_ADD, {"media_type": "movie", "tmdb_id": "603", "next": back})
         movie = Movie.objects.get()
-        self.assertRedirects(response, reverse("movies:detail", args=[movie.pk]), fetch_redirect_response=False)
+        self.assertRedirects(response, back, fetch_redirect_response=False)
         self.assertEqual(self.messages(response), [(SUCCESS, "“The Matrix” was added to the catalogue.")])
         self.assertEqual(movie.cover_url, POSTER_BASE + "/matrix.jpg")
         self.assertEqual(movie.description, "A hacker learns the truth.")
@@ -119,8 +120,8 @@ class StaffImportViewTests(FreshCacheTestCase):
         api = matrix_api()
         with use(api):
             response = self.client.post(QID_ADD, {"qid": " q83495 "})
-        movie = Movie.objects.get(wikidata_id="Q83495")
-        self.assertRedirects(response, reverse("movies:detail", args=[movie.pk]), fetch_redirect_response=False)
+        self.assertTrue(Movie.objects.filter(wikidata_id="Q83495").exists())
+        self.assertRedirects(response, SEARCH, fetch_redirect_response=False)
         self.assertIn(f"{TMDB}/movie/603", api.tmdb_requested())
 
     def test_missing_token_is_explained_without_a_500(self):

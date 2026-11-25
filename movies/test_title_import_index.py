@@ -86,8 +86,8 @@ class IndexWarningViewTests(TransactionTestCase):
                 patch(f"{MODULE}.refresh_movie_documents", side_effect=RuntimeError("index down")), \
                 self.assertLogs(MODULE, "ERROR"):
             response = self.client.post(reverse("movies:tmdb_import_item"), {"media_type": "movie", "tmdb_id": "603"})
-        movie = Movie.objects.get()
-        self.assertRedirects(response, reverse("movies:detail", args=[movie.pk]), fetch_redirect_response=False)
+        self.assertTrue(Movie.objects.exists())
+        self.assertRedirects(response, reverse("movies:wikidata_search"), fetch_redirect_response=False)
         levels = [m.level for m in get_messages(response.wsgi_request)]
         self.assertEqual(levels, [SUCCESS, WARNING])
 
