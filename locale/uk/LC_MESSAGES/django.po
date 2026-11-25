@@ -2109,3 +2109,150 @@ msgstr "Можливо, сторінку перемістили чи видал�
 #: templates/500.html
 msgid "We could not load this page because of a problem on our side. Please try again in a few minutes."
 msgstr "Не вдалося завантажити сторінку через проблему на нашому боці. Спробуйте ще раз за кілька хвилин."
+
+#: movies/services/title_import.py
+msgid "The title identifier is not valid."
+msgstr "Некоректний ідентифікатор тайтлу."
+
+#: movies/services/title_import.py
+msgid "TMDB is not configured on the server: TMDB_READ_TOKEN is missing."
+msgstr "TMDB не налаштовано на сервері: немає TMDB_READ_TOKEN."
+
+#: movies/services/title_import.py
+msgid "TMDB or Wikidata did not respond in time. Try again in a minute."
+msgstr "TMDB або Wikidata не відповіли вчасно. Спробуйте ще раз за хвилину."
+
+#: movies/services/title_import.py
+msgid "TMDB or Wikidata refused access. Check the server API credentials."
+msgstr "TMDB або Wikidata відмовили в доступі. Перевірте ключі API на сервері."
+
+#: movies/services/title_import.py
+msgid "The title was not found in TMDB or Wikidata."
+msgstr "Тайтл не знайдено в TMDB або Wikidata."
+
+#: movies/services/title_import.py
+msgid "TMDB marks this title as adult content or a video; it is not imported."
+msgstr "TMDB позначає цей тайтл як контент для дорослих або відео; його не імпортовано."
+
+#: movies/services/title_import.py
+msgid "No single Wikidata item matches this title by TMDB or IMDb ID, so it was not imported."
+msgstr "Жоден елемент Wikidata однозначно не збігається з цим тайтлом за TMDB або IMDb ID, тому його не імпортовано."
+
+#: movies/services/title_import.py
+msgid "The Wikidata item lists several TMDB IDs; import it from the TMDB search instead."
+msgstr "В елементі Wikidata вказано кілька TMDB ID; імпортуйте тайтл через пошук TMDB."
+
+#: movies/services/title_import.py
+msgid "TMDB links this title to a different Wikidata item than the one requested."
+msgstr "TMDB пов'язує цей тайтл з іншим елементом Wikidata, а не із запитаним."
+
+#: movies/services/title_import.py
+msgid "Wikidata does not confirm that this item is a single film or a whole series."
+msgstr "Wikidata не підтверджує, що цей елемент — окремий фільм або цілий серіал."
+
+#: movies/services/title_import.py
+msgid "The title was not imported: the sources disagree or a possible duplicate exists."
+msgstr "Тайтл не імпортовано: джерела розходяться або в каталозі є можливий дублікат."
+
+#: movies/services/title_import.py
+msgid "The title was imported by someone else at the same time. Open it from the search."
+msgstr "Цей тайтл одночасно імпортував хтось інший. Відкрийте його з пошуку."
+
+#: movies/services/title_import.py
+msgid "The title was saved but is not searchable yet: search indexing failed. Add it again later or run rebuild_search_index."
+msgstr "Тайтл збережено, але пошук його поки не знаходить: індексація не вдалася. Додайте його ще раз пізніше або запустіть rebuild_search_index."
+
+#: movies/forms.py
+msgid "TMDB"
+msgstr "TMDB"
+
+#: movies/forms.py
+msgid "Wikidata (fallback)"
+msgstr "Wikidata (запасний варіант)"
+
+#: movies/forms.py
+msgid "Enter a Wikidata ID such as Q83495."
+msgstr "Введіть ідентифікатор Wikidata, наприклад Q83495."
+
+#: movies/views.py
+#, python-format
+msgid "%(message)s Details: %(detail)s"
+msgstr "%(message)s Подробиці: %(detail)s"
+
+#: movies/views.py
+#, python-format
+msgid "“%(title)s” was added to the catalogue."
+msgstr "«%(title)s» додано до каталогу."
+
+#: movies/views.py
+#, python-format
+msgid "“%(title)s” is already in the catalogue; missing data was filled in."
+msgstr "«%(title)s» уже є в каталозі; відсутні дані доповнено."
+
+#: movies/templates/movies/wd_search_form.html
+msgid "Add titles – RAFS"
+msgstr "Додавання тайтлів – RAFS"
+
+#: movies/templates/movies/wd_search_form.html
+msgid "Add titles to the catalogue"
+msgstr "Додавання тайтлів до каталогу"
+
+#: movies/templates/movies/wd_search_form.html
+msgid "Search TMDB, or Wikidata as a fallback. A title is added with its translations, poster, genres, people and studios, and becomes searchable at once."
+msgstr "Шукайте в TMDB або, якщо не знайшлося, у Wikidata. Тайтл додається з перекладами, постером, жанрами, людьми й студіями та одразу знаходиться пошуком."
+
+#: movies/templates/movies/wd_search_form.html
+msgid "Source"
+msgstr "Джерело"
+
+#: movies/templates/movies/wd_search_form.html
+msgid "Films and series"
+msgstr "Фільми та серіали"
+
+#: movies/templates/movies/wd_search_form.html
+msgid "Add by Wikidata ID"
+msgstr "Додати за ID Wikidata"
+
+#: movies/templates/movies/wd_search_form.html
+msgid "Add by QID"
+msgstr "Додати за QID"
+
+#: movies/templates/movies/wd_search_form.html
+msgid "TMDB is not configured"
+msgstr "TMDB не налаштовано"
+
+#: movies/templates/movies/wd_search_form.html
+msgid "Add TMDB_READ_TOKEN to the server environment, or switch the source to Wikidata"
+msgstr "Додайте TMDB_READ_TOKEN до оточення сервера або перемкніть джерело на Wikidata"
+
+#: movies/templates/movies/wd_search_form.html
+msgid "The search source is temporarily unavailable"
+msgstr "Джерело пошуку тимчасово недоступне"
+
+#: movies/templates/movies/wd_search_form.html
+msgid "Already in the catalogue"
+msgstr "Уже в каталозі"
+
+#: movies/templates/movies/wd_search_form.html
+msgid "Fill in missing data"
+msgstr "Доповнити дані"
+
+#: movies/templates/movies/wd_search_form.html
+msgid "Series"
+msgstr "Серіал"
+
+#: movies/templates/movies/wd_search_form.html
+msgid "Film"
+msgstr "Фільм"
+
+#: movies/templates/movies/wd_search_form.html
+msgid "Catalogue check unavailable"
+msgstr "Перевірка за каталогом недоступна"
+
+#: movies/templates/movies/wd_search_form.html
+msgid "Open in TMDB"
+msgstr "Відкрити в TMDB"
+
+#: movies/templates/movies/wd_search_form.html
+msgid "Adding…"
+msgstr "Додавання…"
