@@ -24,7 +24,7 @@ from email.utils import parsedate_to_datetime
 import requests
 from django.conf import settings
 from django.core.management.base import CommandError
-from django.db import IntegrityError, transaction
+from django.db import IntegrityError, connection, transaction
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 
@@ -35,6 +35,7 @@ from movies.management.commands.import_popular_movies import (
     import_one,
 )
 from movies.models import Movie
+from movies.services.search_index import index_new_persons, index_new_studios, refresh_movie_documents
 
 logger = logging.getLogger(__name__)
 
@@ -246,12 +247,40 @@ def save_title(item, qid, entity, related, media_type, confirmed_type, popularit
                 movie.tmdb_popularity = popularity
                 movie.save(update_fields=["tmdb_popularity"])
             result = ImportResult(movie, created)
+            if search_index_supported():
+                # Relation names are already written above; the index reads them after commit.
+                transaction.on_commit(lambda: index_title(result))
     except ImportIssue as issue:
         raise StaffImportError("rejected", str(issue)) from None
     except IntegrityError:
         # Unique wikidata_id: another import committed the same work in between.
         raise StaffImportError("concurrent") from None
     return result
+
+
+INDEX_WARNING = _(
+    "The title was saved but is not searchable yet: search indexing failed. "
+    "Add it again later or run rebuild_search_index."
+)
+
+
+def search_index_supported():
+    """Full-text documents exist only on PostgreSQL, as for rebuild_search_index."""
+    return connection.vendor == "postgresql"
+
+
+def index_title(result):
+    """After commit: the title's own document, then people and studios not yet indexed.
+
+    A failure never undoes the import: it is logged and shown to staff as a warning.
+    """
+    try:
+        refresh_movie_documents([result.movie.pk])
+        index_new_persons()
+        index_new_studios()
+    except Exception:
+        logger.exception("Search indexing failed after the staff import of movie %s", result.movie.pk)
+        result.warnings.append(INDEX_WARNING)
 
 
 def import_tmdb(media_type, tmdb_id, *, api=None, expected_qid=None):
