@@ -63,22 +63,28 @@ WHITENOISE_USE_FINDERS = DEBUG
 # Application definition
 
 INSTALLED_APPS = [
-    'whitenoise.runserver_nostatic',
+    # Built-in Django apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
-    'django.contrib.humanize',  
+    'django.contrib.humanize',
     'django.contrib.postgres',
     'django.contrib.sitemaps',
+
+    # Third-party apps
+    'parler',
     'rest_framework',
+    'taggit',
+
+    # Local / project apps
     'accounts',
     'movies',
     'core',
-    'taggit',
-    'parler',
+    'feedback',
 ]
 
 MIDDLEWARE = [
