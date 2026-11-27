@@ -158,3 +158,7 @@ class FeedbackPageTests(TestCase):
                 self.assertEqual(response.context["page_url"], expected)
                 self.assertContains(response, f'name="page_url" value="{expected}"')
 
+    def test_footer_links_to_the_form_with_the_current_path(self):
+        response = self.client.get("/movies/?page=2")
+        self.assertContains(response, 'href="/feedback/?from=/movies/%3Fpage%3D2"')
+        self.assertContains(self.page(), 'class="feedback-info"\n                   href="/feedback/"')

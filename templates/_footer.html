@@ -25,7 +25,9 @@
                 <a class="about-site-footer" href="{% url 'core:about' %}">{% translate "About" %}</a>
                 <a class="community-guidelines-footer"
                    href="{% url 'core:community_guidelines' %}">{% translate "Community guidelines" %}</a>
-                <p class="feedback-info">{% translate "Feedback" %}</p>
+                {# ?from= tells the feedback form which page it was opened from (not added on the form itself). #}
+                <a class="feedback-info"
+                   href="{% url 'feedback:page' %}{% if request.resolver_match.view_name != 'feedback:page' %}?from={{ request.get_full_path|urlencode }}{% endif %}">{% translate "Feedback" %}</a>
             </div>
         </div>
         <hr class="vertical-hr">
