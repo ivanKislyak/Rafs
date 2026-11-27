@@ -304,9 +304,9 @@ a.review-reply-author:hover {
   display: block;
 }
 
-/* Plays when the filled icon appears on the focused button, i.e. the one just pressed,
-   so votes that are already selected when the page loads stay still. */
-.review-vote-button.is-selected:focus .review-vote-icon--active {
+/* review-votes.js marks a button once it is clicked. The spring then plays each time its filled icon
+   appears (display none -> block restarts the animation), while votes selected on page load stay still. */
+.review-vote-button.was-clicked.is-selected .review-vote-icon--active {
   animation: review-vote-spring 0.22s ease-out;
 }
 
@@ -323,7 +323,7 @@ a.review-reply-author:hover {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .review-vote-button.is-selected:focus .review-vote-icon--active {
+  .review-vote-button.was-clicked.is-selected .review-vote-icon--active {
     animation: none;
   }
 }
