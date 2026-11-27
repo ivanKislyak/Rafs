@@ -2244,3 +2244,76 @@ msgstr "Открыть в TMDB"
 #: movies/templates/movies/wd_search_form.html
 msgid "Adding…"
 msgstr "Добавление…"
+
+#: feedback/templates/feedback/feedback.html
+msgid "Found a bug or have an idea? Tell us about it"
+msgstr "Нашли ошибку или есть идея? Расскажите нам"
+
+#: feedback/templates/feedback/feedback.html
+msgid "Type"
+msgstr "Тип"
+
+#: feedback/templates/feedback/feedback.html feedback/models.py
+msgid "Bug"
+msgstr "Ошибка"
+
+#: feedback/templates/feedback/feedback.html feedback/models.py
+msgid "Idea"
+msgstr "Идея"
+
+#: feedback/templates/feedback/feedback.html feedback/models.py
+msgid "Message"
+msgstr "Сообщение"
+
+#: feedback/templates/feedback/feedback.html
+msgid "From 10 to 2000 characters"
+msgstr "От 10 до 2000 символов"
+
+#: feedback/templates/feedback/feedback.html
+msgid "We will reply to this address"
+msgstr "Ответим на этот адрес"
+
+#: feedback/templates/feedback/feedback.html
+msgid "Thank you! We read every message"
+msgstr "Спасибо! Мы читаем каждое сообщение"
+
+#: feedback/templates/feedback/feedback.html
+msgid "Write another"
+msgstr "Написать ещё"
+
+#: feedback/templates/feedback/feedback.html
+msgid "The message is too long: no more than 2000 characters"
+msgstr "Сообщение слишком длинное: не больше 2000 символов"
+
+#: feedback/templates/feedback/feedback.html
+msgid "Too many messages. Try again in an hour"
+msgstr "Слишком много сообщений. Попробуйте через час"
+
+#: feedback/templates/feedback/feedback.html
+msgid "Could not send the message. Check your connection and try again – your text is still here"
+msgstr "Не удалось отправить сообщение. Проверьте соединение и попробуйте ещё раз – ваш текст сохранён"
+
+
+#: feedback/serializers.py
+msgid "To submit a request, you must either enter your email address or log in"
+msgstr "Чтобы отправить сообщение, укажите email или войдите в аккаунт"
+
+#: feedback/models.py
+msgid "Feedback Kind"
+msgstr "Тип обращения"
+
+#: feedback/models.py
+msgid "At least 10 characters"
+msgstr "Не меньше 10 символов"
+
+#: feedback/models.py
+msgid "Page URL"
+msgstr "Адрес страницы"
+
+#: feedback/models.py
+msgid "Resolved"
+msgstr "Решено"
+
+#: feedback/models.py
+msgid "Feedbacks"
+msgstr "Обращения"

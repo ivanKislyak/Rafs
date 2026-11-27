@@ -2256,3 +2256,76 @@ msgstr "Відкрити в TMDB"
 #: movies/templates/movies/wd_search_form.html
 msgid "Adding…"
 msgstr "Додавання…"
+
+#: feedback/templates/feedback/feedback.html
+msgid "Found a bug or have an idea? Tell us about it"
+msgstr "Знайшли помилку чи маєте ідею? Розкажіть нам"
+
+#: feedback/templates/feedback/feedback.html
+msgid "Type"
+msgstr "Тип"
+
+#: feedback/templates/feedback/feedback.html feedback/models.py
+msgid "Bug"
+msgstr "Помилка"
+
+#: feedback/templates/feedback/feedback.html feedback/models.py
+msgid "Idea"
+msgstr "Ідея"
+
+#: feedback/templates/feedback/feedback.html feedback/models.py
+msgid "Message"
+msgstr "Повідомлення"
+
+#: feedback/templates/feedback/feedback.html
+msgid "From 10 to 2000 characters"
+msgstr "Від 10 до 2000 символів"
+
+#: feedback/templates/feedback/feedback.html
+msgid "We will reply to this address"
+msgstr "Відповімо на цю адресу"
+
+#: feedback/templates/feedback/feedback.html
+msgid "Thank you! We read every message"
+msgstr "Дякуємо! Ми читаємо кожне повідомлення"
+
+#: feedback/templates/feedback/feedback.html
+msgid "Write another"
+msgstr "Написати ще"
+
+#: feedback/templates/feedback/feedback.html
+msgid "The message is too long: no more than 2000 characters"
+msgstr "Повідомлення задовге: не більше 2000 символів"
+
+#: feedback/templates/feedback/feedback.html
+msgid "Too many messages. Try again in an hour"
+msgstr "Забагато повідомлень. Спробуйте за годину"
+
+#: feedback/templates/feedback/feedback.html
+msgid "Could not send the message. Check your connection and try again – your text is still here"
+msgstr "Не вдалося надіслати повідомлення. Перевірте з’єднання й спробуйте ще раз – ваш текст збережено"
+
+
+#: feedback/serializers.py
+msgid "To submit a request, you must either enter your email address or log in"
+msgstr "Щоб надіслати повідомлення, вкажіть email або увійдіть в акаунт"
+
+#: feedback/models.py
+msgid "Feedback Kind"
+msgstr "Тип звернення"
+
+#: feedback/models.py
+msgid "At least 10 characters"
+msgstr "Щонайменше 10 символів"
+
+#: feedback/models.py
+msgid "Page URL"
+msgstr "Адреса сторінки"
+
+#: feedback/models.py
+msgid "Resolved"
+msgstr "Вирішено"
+
+#: feedback/models.py
+msgid "Feedbacks"
+msgstr "Звернення"

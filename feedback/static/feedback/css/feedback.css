@@ -1,0 +1,168 @@
+/* Feedback page. Colours come from base.css tokens, so light/dark themes follow [data-theme]. */
+.feedback-page {
+  max-width: 640px;
+}
+
+.feedback-heading {
+  margin-bottom: 24px;
+}
+
+.feedback-heading h1 {
+  margin: 0;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.15;
+}
+
+.feedback-heading h1:focus {
+  outline: none;
+}
+
+.feedback-lead {
+  margin: 12px 0 0;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+.feedback-form,
+.feedback-thanks {
+  display: grid;
+  gap: 18px;
+  padding: clamp(16px, 4vw, 24px);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-surface);
+}
+
+.feedback-form[hidden],
+.feedback-thanks[hidden],
+.feedback-error[hidden] {
+  display: none;
+}
+
+.feedback-field {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.feedback-field label {
+  color: var(--color-text);
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.feedback-field select,
+.feedback-field input,
+.feedback-field textarea {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+  font: inherit;
+}
+
+.feedback-field textarea {
+  min-height: 160px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.feedback-field select:focus-visible,
+.feedback-field input:focus-visible,
+.feedback-field textarea:focus-visible {
+  outline: 2px solid var(--color-focus-visible-outline);
+  outline-offset: 1px;
+}
+
+.feedback-field [aria-invalid="true"] {
+  border-color: var(--color-accent);
+}
+
+.feedback-field-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.feedback-hint,
+.feedback-counter {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+}
+
+.feedback-counter {
+  flex: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.feedback-counter.is-over {
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+.feedback-error {
+  margin: 0;
+  color: var(--color-accent);
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+
+.feedback-form-error {
+  padding: 10px 12px;
+  border: 1px solid color-mix(in srgb, var(--color-accent) 55%, var(--color-border));
+  border-radius: 8px;
+  background-color: var(--color-accent-glow);
+}
+
+.feedback-submit {
+  justify-self: start;
+  min-height: 44px;
+  padding: 10px 20px;
+  border: 1px solid var(--color-action);
+  border-radius: 8px;
+  background: var(--color-action);
+  color: var(--color-action-text);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.feedback-submit:hover:not(:disabled) {
+  background: var(--color-action-hover);
+}
+
+.feedback-submit:focus-visible {
+  outline: 2px solid var(--color-focus-visible-outline);
+  outline-offset: 2px;
+}
+
+.feedback-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.feedback-form[aria-busy="true"] .feedback-submit {
+  cursor: progress;
+}
+
+.feedback-thanks h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.35;
+}
+
+.feedback-thanks h2:focus {
+  outline: none;
+}
+
+@media (max-width: 520px) {
+  .feedback-submit {
+    justify-self: stretch;
+  }
+}
