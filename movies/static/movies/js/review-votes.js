@@ -1,26 +1,5 @@
 (() => {
-  const images = new Map();
   const pending = new WeakSet();
-
-  function preloadImages(container) {
-    container.querySelectorAll(".review-vote-button").forEach((button) => {
-      [button.dataset.enabledSrc, button.dataset.disabledSrc].forEach((src) => {
-        if (!src || images.has(src)) {
-          return;
-        }
-
-        const image = new Image();
-        image.decoding = "sync";
-        image.src = src;
-        images.set(src, image);
-        // Decode in advance without delaying clicks or waiting in the handler.
-        image.decode?.().catch(() => {});
-      });
-    });
-  }
-
-  // The feed also preloads images in incoming fragments before inserting cards.
-  window.RafsReviewVotes = { preloadImages };
 
   function render(buttons, vote, likes, dislikes) {
     buttons.forEach((button) => {
@@ -28,11 +7,6 @@
       const selected = value === vote;
       button.classList.toggle("is-selected", selected);
       button.setAttribute("aria-pressed", String(selected));
-      const icon = button.querySelector(".review-vote-icon");
-      const src = selected ? button.dataset.enabledSrc : button.dataset.disabledSrc;
-      if (icon.getAttribute("src") !== src) {
-        icon.src = src;
-      }
       const count = value === 1 ? likes : dislikes;
       button.querySelector(".review-vote-count").textContent = count > 0 ? count : "";
     });
@@ -55,7 +29,6 @@
       button,
       selected: button.classList.contains("is-selected"),
       pressed: button.getAttribute("aria-pressed"),
-      src: button.querySelector(".review-vote-icon").getAttribute("src"),
       count: button.querySelector(".review-vote-count").textContent,
     }));
     const previousVote = Number(previous.find((item) => item.selected)?.button.dataset.voteValue ?? 0);
@@ -113,10 +86,9 @@
       render(buttons, actualVote, actualLikes, actualDislikes);
     } catch {
       // Restore exactly what was displayed, including counter formatting.
-      previous.forEach(({ button, selected, pressed, src, count }) => {
+      previous.forEach(({ button, selected, pressed, count }) => {
         button.classList.toggle("is-selected", selected);
         button.setAttribute("aria-pressed", pressed);
-        button.querySelector(".review-vote-icon").setAttribute("src", src);
         button.querySelector(".review-vote-count").textContent = count;
       });
       status.textContent = errorMessage;
@@ -128,7 +100,6 @@
   }
 
   document.querySelectorAll("[data-review-voting]").forEach((root) => {
-    preloadImages(root);
     root.addEventListener("click", (event) => {
       const button = event.target.closest(".review-vote-button");
       if (!button || !root.contains(button)) {

@@ -285,17 +285,45 @@ a.review-reply-author:hover {
 
 .review-vote-icon {
   display: block;
+  flex: 0 0 21px;
   width: 21px;
   height: 21px;
-  max-width: 21px;
-  flex: 0 0 21px;
-  background-color: transparent;
-  object-fit: contain;
   pointer-events: none;
-  transition: none;
-  animation: none;
-  transform: none;
-  opacity: 1;
+}
+
+/* Sprite in base.html. The outline inherits the button's muted colour, the filled icon takes the accent. */
+.review-vote-icon--active,
+.review-vote-button.is-selected .review-vote-icon--idle {
+  display: none;
+}
+
+.review-vote-button.is-selected .review-vote-icon--active {
+  display: block;
+  color: var(--color-accent);
+}
+
+/* Plays when the filled icon appears on the focused button, i.e. the one just pressed,
+   so votes that are already selected when the page loads stay still. */
+.review-vote-button.is-selected:focus .review-vote-icon--active {
+  animation: review-vote-spring 0.22s ease-out;
+}
+
+@keyframes review-vote-spring {
+  0% {
+    transform: scale(0.75);
+  }
+  60% {
+    transform: scale(1.18);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .review-vote-button.is-selected:focus .review-vote-icon--active {
+    animation: none;
+  }
 }
 
 .review-vote-count {

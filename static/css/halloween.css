@@ -167,20 +167,9 @@ html[data-event="halloween-2026"] .review-vote-button:is(:hover, :focus-visible,
 html[data-event="halloween-2026"] .review-vote-button:focus-visible {
   outline-color: var(--halloween-purple);
 }
-html[data-event="halloween-2026"] .review-vote-icon {
-  filter: none;
-}
-html[data-event="halloween-2026"] .review-vote-button[data-vote-value="1"] .review-vote-icon {
-  content: url("../images/halloween/halloween_like_disabled.png");
-}
-html[data-event="halloween-2026"] .review-vote-button[data-vote-value="1"].is-selected .review-vote-icon {
-  content: url("../images/halloween/halloween_like_enabled.png");
-}
-html[data-event="halloween-2026"] .review-vote-button[data-vote-value="-1"] .review-vote-icon {
-  content: url("../images/halloween/halloween_dislike_disabled.png");
-}
-html[data-event="halloween-2026"] .review-vote-button[data-vote-value="-1"].is-selected .review-vote-icon {
-  content: url("../images/halloween/halloween_dislike_enabled.png");
+/* The SVG icons take the button's purple, also when selected. */
+html[data-event="halloween-2026"] .review-vote-button .review-vote-icon {
+  color: inherit;
 }
 html[data-event="halloween-2026"] :is(.register-form-submit, .about-button--primary, .review-rating-primary-mark) {
   color: var(--color-action-text);

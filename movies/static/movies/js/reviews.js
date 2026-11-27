@@ -55,8 +55,6 @@
       const fragment = document.createElement("template");
       fragment.innerHTML = data.html;
 
-      window.RafsReviewVotes.preloadImages(fragment.content);
-
       fragment.content.querySelectorAll(".review-comment").forEach((card) => {
         if (!document.getElementById(card.id)) {
           list.append(card);
