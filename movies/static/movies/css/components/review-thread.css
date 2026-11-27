@@ -28,7 +28,6 @@
   outline-offset: 2px;
 }
 
-
 .review-comments {
   display: grid;
   gap: var(--space-m);
@@ -100,7 +99,6 @@
   flex: 0 0 auto;
   border-radius: 50%;
   background-color: var(--color-accent);
-
 }
 
 .review-comment-details-action {
@@ -700,7 +698,7 @@ a.review-reply-author:hover {
 .review-reply-edit-status {
   margin: 0;
   color: var(--color-text-muted);
-  font-size: .84rem;
+  font-size: 0.84rem;
 }
 
 .review-reply-edit-status:empty {
@@ -882,4 +880,3 @@ a.review-reply-author:hover {
     transition: none;
   }
 }
-
