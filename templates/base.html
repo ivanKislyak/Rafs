@@ -77,6 +77,7 @@ images are never downloaded. See css/halloween.css for the handoff.
         <link rel="stylesheet" href="{% static 'css/components/halloween-award.css' %}" />
     </head>
     <body>
+        {% include "_vote_icons_sprite.html" %}
         {% include "_header.html" %}
         {% if messages %}
             <div class="site-toast-region"
