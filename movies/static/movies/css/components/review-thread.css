@@ -237,14 +237,12 @@ a.review-reply-author:hover {
 .review-votes {
   display: flex;
   flex: 0 0 auto;
+  gap: 6px;
   width: fit-content;
   margin: 0;
-  overflow: hidden;
-  border: 0;
-  border-radius: 4px;
-  background-color: var(--color-surface);
 }
 
+/* Separate pills; the selected one is tinted with the accent, which also colours its icon and count. */
 .review-vote-button {
   display: inline-flex;
   align-items: center;
@@ -253,24 +251,29 @@ a.review-reply-author:hover {
   min-width: 48px;
   min-height: 44px;
   padding: 0 12px;
-  border: 0;
+  border: 1px solid transparent;
+  border-radius: 999px;
   background-color: transparent;
   color: var(--color-text-muted);
   cursor: pointer;
-  transition: none;
-  animation: none;
-  transform: none;
-  opacity: 1;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease,
+    border-color 150ms ease;
 }
 
-.review-vote-button + .review-vote-button {
-  border-left: 0;
-}
-
-.review-vote-button:hover,
-.review-vote-button.is-selected {
-  background-color: var(--color-accent-glow);
+.review-vote-button:hover:not(.is-selected) {
+  background-color: var(--color-surface-raised);
   color: var(--color-text);
+}
+
+.review-vote-button.is-selected {
+  background-color: color-mix(in srgb, var(--color-accent) 12%, transparent);
+  color: var(--color-accent);
+}
+
+.review-vote-button.is-selected:hover {
+  background-color: color-mix(in srgb, var(--color-accent) 18%, transparent);
 }
 
 .review-vote-button:disabled {
@@ -280,7 +283,7 @@ a.review-reply-author:hover {
 
 .review-vote-button:focus-visible {
   outline: 2px solid var(--color-focus-visible-outline);
-  outline-offset: -3px;
+  outline-offset: 2px;
 }
 
 .review-vote-icon {
@@ -291,7 +294,7 @@ a.review-reply-author:hover {
   pointer-events: none;
 }
 
-/* Sprite in base.html. The outline inherits the button's muted colour, the filled icon takes the accent. */
+/* Sprite in base.html. Both icons take the button's colour. */
 .review-vote-icon--active,
 .review-vote-button.is-selected .review-vote-icon--idle {
   display: none;
@@ -299,7 +302,6 @@ a.review-reply-author:hover {
 
 .review-vote-button.is-selected .review-vote-icon--active {
   display: block;
-  color: var(--color-accent);
 }
 
 /* Plays when the filled icon appears on the focused button, i.e. the one just pressed,
@@ -328,6 +330,7 @@ a.review-reply-author:hover {
 
 .review-vote-count {
   min-width: 1ch;
+  font-variant-numeric: tabular-nums;
   font-size: 0.9rem;
   font-weight: 650;
   line-height: 1;
@@ -354,7 +357,7 @@ a.review-reply-author:hover {
   min-height: 44px;
   padding: 0 12px;
   border: 0;
-  border-radius: 4px;
+  border-radius: 999px;
   background-color: transparent;
   color: var(--color-text-muted);
   text-decoration: none;
@@ -380,7 +383,11 @@ a.review-reply-author:hover {
   stroke-width: 1.8;
 }
 
-.review-action-button:hover,
+.review-action-button:hover {
+  background-color: var(--color-surface-raised);
+  color: var(--color-text);
+}
+
 .review-action-button.is-active {
   border-color: color-mix(in srgb, var(--color-accent) 55%, var(--color-border));
   background-color: var(--color-accent-glow);
@@ -899,6 +906,7 @@ a.review-reply-author:hover {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .review-vote-button,
   .review-action-button,
   .review-reply,
   .review-reply-container.is-open,

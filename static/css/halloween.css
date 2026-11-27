@@ -160,16 +160,16 @@ html[data-event="halloween-2026"] :is(.movie-watch-status-btn.is-active, .review
   border-color: var(--halloween-orange-text);
   background: var(--halloween-selection);
 }
-html[data-event="halloween-2026"] .review-vote-button:is(:hover, :focus-visible, .is-selected) {
-  background: color-mix(in srgb, var(--halloween-purple) 12%, var(--color-surface-raised));
+/* Same pills as the base theme: neutral hover, purple instead of the accent when selected. */
+html[data-event="halloween-2026"] .review-vote-button.is-selected {
+  background-color: color-mix(in srgb, var(--halloween-purple) 12%, transparent);
   color: var(--halloween-purple);
+}
+html[data-event="halloween-2026"] .review-vote-button.is-selected:hover {
+  background-color: color-mix(in srgb, var(--halloween-purple) 18%, transparent);
 }
 html[data-event="halloween-2026"] .review-vote-button:focus-visible {
   outline-color: var(--halloween-purple);
-}
-/* The SVG icons take the button's purple, also when selected. */
-html[data-event="halloween-2026"] .review-vote-button .review-vote-icon {
-  color: inherit;
 }
 html[data-event="halloween-2026"] :is(.register-form-submit, .about-button--primary, .review-rating-primary-mark) {
   color: var(--color-action-text);
