@@ -5,9 +5,9 @@ from django.core.validators import MinLengthValidator
 
 
 class FeedbackKind(models.TextChoices):
-    BUG = "BUG", _("Bug")
-    IDEA = "IDEA", _("Idea")
-    OTHER = "OTHER", _("Other")
+    BUG = "bug", _("Bug")
+    IDEA = "idea", _("Idea")
+    OTHER = "other", _("Other")
 
 class Feedback(models.Model):
     user = models.ForeignKey(
