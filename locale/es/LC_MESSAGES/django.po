@@ -2255,3 +2255,76 @@ msgstr "Abrir en TMDB"
 #: movies/templates/movies/wd_search_form.html
 msgid "Adding…"
 msgstr "Añadiendo…"
+
+#: feedback/templates/feedback/feedback.html
+msgid "Found a bug or have an idea? Tell us about it"
+msgstr "¿Has encontrado un error o tienes una idea? Cuéntanoslo"
+
+#: feedback/templates/feedback/feedback.html
+msgid "Type"
+msgstr "Tipo"
+
+#: feedback/templates/feedback/feedback.html feedback/models.py
+msgid "Bug"
+msgstr "Error"
+
+#: feedback/templates/feedback/feedback.html feedback/models.py
+msgid "Idea"
+msgstr "Idea"
+
+#: feedback/templates/feedback/feedback.html feedback/models.py
+msgid "Message"
+msgstr "Mensaje"
+
+#: feedback/templates/feedback/feedback.html
+msgid "From 10 to 2000 characters"
+msgstr "De 10 a 2000 caracteres"
+
+#: feedback/templates/feedback/feedback.html
+msgid "We will reply to this address"
+msgstr "Te responderemos a esta dirección"
+
+#: feedback/templates/feedback/feedback.html
+msgid "Thank you! We read every message"
+msgstr "¡Gracias! Leemos cada mensaje"
+
+#: feedback/templates/feedback/feedback.html
+msgid "Write another"
+msgstr "Escribir otro"
+
+#: feedback/templates/feedback/feedback.html
+msgid "The message is too long: no more than 2000 characters"
+msgstr "El mensaje es demasiado largo: no más de 2000 caracteres"
+
+#: feedback/templates/feedback/feedback.html
+msgid "Too many messages. Try again in an hour"
+msgstr "Demasiados mensajes. Inténtalo dentro de una hora"
+
+#: feedback/templates/feedback/feedback.html
+msgid "Could not send the message. Check your connection and try again – your text is still here"
+msgstr "No se pudo enviar el mensaje. Revisa tu conexión e inténtalo de nuevo; tu texto sigue aquí"
+
+
+#: feedback/serializers.py
+msgid "To submit a request, you must either enter your email address or log in"
+msgstr "Para enviar el mensaje, escribe tu correo electrónico o inicia sesión"
+
+#: feedback/models.py
+msgid "Feedback Kind"
+msgstr "Tipo de mensaje"
+
+#: feedback/models.py
+msgid "At least 10 characters"
+msgstr "Al menos 10 caracteres"
+
+#: feedback/models.py
+msgid "Page URL"
+msgstr "URL de la página"
+
+#: feedback/models.py
+msgid "Resolved"
+msgstr "Resuelto"
+
+#: feedback/models.py
+msgid "Feedbacks"
+msgstr "Mensajes de contacto"

@@ -2254,3 +2254,76 @@ msgstr "TMDB-да ашу"
 #: movies/templates/movies/wd_search_form.html
 msgid "Adding…"
 msgstr "Қосылуда…"
+
+#: feedback/templates/feedback/feedback.html
+msgid "Found a bug or have an idea? Tell us about it"
+msgstr "Қате таптыңыз ба, әлде идеяңыз бар ма? Бізге айтыңыз"
+
+#: feedback/templates/feedback/feedback.html
+msgid "Type"
+msgstr "Түрі"
+
+#: feedback/templates/feedback/feedback.html feedback/models.py
+msgid "Bug"
+msgstr "Қате"
+
+#: feedback/templates/feedback/feedback.html feedback/models.py
+msgid "Idea"
+msgstr "Идея"
+
+#: feedback/templates/feedback/feedback.html feedback/models.py
+msgid "Message"
+msgstr "Хабарлама"
+
+#: feedback/templates/feedback/feedback.html
+msgid "From 10 to 2000 characters"
+msgstr "10-нан 2000 таңбаға дейін"
+
+#: feedback/templates/feedback/feedback.html
+msgid "We will reply to this address"
+msgstr "Осы мекенжайға жауап береміз"
+
+#: feedback/templates/feedback/feedback.html
+msgid "Thank you! We read every message"
+msgstr "Рахмет! Біз әр хабарламаны оқимыз"
+
+#: feedback/templates/feedback/feedback.html
+msgid "Write another"
+msgstr "Тағы жазу"
+
+#: feedback/templates/feedback/feedback.html
+msgid "The message is too long: no more than 2000 characters"
+msgstr "Хабарлама тым ұзын: 2000 таңбадан аспауы керек"
+
+#: feedback/templates/feedback/feedback.html
+msgid "Too many messages. Try again in an hour"
+msgstr "Хабарлама тым көп. Бір сағаттан кейін қайталап көріңіз"
+
+#: feedback/templates/feedback/feedback.html
+msgid "Could not send the message. Check your connection and try again – your text is still here"
+msgstr "Хабарламаны жіберу мүмкін болмады. Байланысты тексеріп, қайталап көріңіз – мәтініңіз сақталды"
+
+
+#: feedback/serializers.py
+msgid "To submit a request, you must either enter your email address or log in"
+msgstr "Хабарлама жіберу үшін email енгізіңіз немесе аккаунтқа кіріңіз"
+
+#: feedback/models.py
+msgid "Feedback Kind"
+msgstr "Өтініш түрі"
+
+#: feedback/models.py
+msgid "At least 10 characters"
+msgstr "Кемінде 10 таңба"
+
+#: feedback/models.py
+msgid "Page URL"
+msgstr "Бет мекенжайы"
+
+#: feedback/models.py
+msgid "Resolved"
+msgstr "Шешілді"
+
+#: feedback/models.py
+msgid "Feedbacks"
+msgstr "Өтініштер"
