@@ -5,7 +5,7 @@ from .models import Feedback
 
 
 class FeedbackSerializer(serializers.ModelSerializer):
-    message = serializers.CharField(min_length=10,max_length=2000)
+    message = serializers.CharField(min_length=10, max_length=2000)
 
     class Meta:
         model = Feedback
@@ -14,7 +14,7 @@ class FeedbackSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         request = self.context["request"]
-        if not request.user.is_authenticated and not attrs["email"]:
+        if not request.user.is_authenticated and not attrs.get('email'):
             raise serializers.ValidationError(
                 {"email": [_("To submit a request, you must either enter your email address or log in")]}
             )
