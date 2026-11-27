@@ -105,6 +105,7 @@
       if (!button || !root.contains(button)) {
         return;
       }
+      button.classList.add("was-clicked"); // Animation only: lets CSS play the spring on this button.
       vote(root, button);
     });
   });
