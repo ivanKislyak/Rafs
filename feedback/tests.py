@@ -120,3 +120,41 @@ class FeedbackAdminTests(TestCase):
         self.assertContains(response, "guest@example.com")
         self.assertContains(response, "is_resolved__exact")
 
+
+class FeedbackPageTests(TestCase):
+    def page(self, **params):
+        return self.client.get(reverse("feedback:page"), params)
+
+    def test_page_and_api_keep_their_addresses(self):
+        self.assertEqual(reverse("feedback:page"), "/feedback/")
+        self.assertEqual(reverse("feedback:feedback_api"), "/api/v1/feedback/")
+
+    def test_guest_sees_the_email_field(self):
+        response = self.page()
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'data-api-url="/api/v1/feedback/"')
+        self.assertContains(response, 'name="email"')
+        html = response.content.decode()
+        self.assertLess(html.index('name="email"'), html.index('name="kind"'))
+
+    def test_signed_in_user_sees_no_email_field_and_no_address(self):
+        user = get_user_model().objects.create_user(username="reader", email="reader@example.com")
+        self.client.force_login(user)
+        response = self.page()
+        self.assertNotContains(response, 'name="email"')
+        self.assertNotContains(response, "reader@example.com")
+
+    def test_only_a_local_path_from_from_becomes_page_url(self):
+        cases = {
+            "/movies/510/": "/movies/510/",
+            "https://evil.example/": "",
+            "//evil.example/": "",
+            "movies/510/": "",
+            "/" + "a" * 600: "/" + "a" * 499,
+        }
+        for source, expected in cases.items():
+            with self.subTest(source=source[:30]):
+                response = self.page(**{"from": source})
+                self.assertEqual(response.context["page_url"], expected)
+                self.assertContains(response, f'name="page_url" value="{expected}"')
+

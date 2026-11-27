@@ -1,6 +1,7 @@
 import logging
 
 from django.db import transaction
+from django.shortcuts import render
 from rest_framework import generics, permissions, throttling
 
 from .serializers import FeedbackSerializer
@@ -15,6 +16,13 @@ def queue_feedback_email(feedback_id):
         send_feedback_email.delay(feedback_id)
     except Exception:
         logger.exception("Could not queue the feedback email for %s", feedback_id)
+
+
+def feedback_page(request):
+    # page_url: only a local path from ?from=, never an outside or protocol-relative URL.
+    source = request.GET.get("from", "")
+    page_url = source[:500] if source.startswith("/") and not source.startswith("//") else ""
+    return render(request, "feedback/feedback.html", {"page_url": page_url})
 
 
 class FeedbackCreateAPIView(generics.CreateAPIView):
