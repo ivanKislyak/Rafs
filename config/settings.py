@@ -235,4 +235,15 @@ AUTH_USER_MODEL = "accounts.User"
 # Celery config
 CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", "")
 
+# Email: Resend SMTP. The key lives only in .env (API_RESEND).
+# Console by default: this server is also production, so real sending is switched on
+# from .env (EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend), not in code.
+EMAIL_BACKEND = os.getenv("EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend")
+EMAIL_HOST = "smtp.resend.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "resend"
+EMAIL_HOST_PASSWORD = os.getenv("API_RESEND", "")
+EMAIL_TIMEOUT = 10
+DEFAULT_FROM_EMAIL = "RAFS <noreply@rafs.app>"
 FEEDBACK_EMAIL = "hello@rafs.app"
