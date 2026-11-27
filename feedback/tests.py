@@ -81,10 +81,23 @@ class FeedbackEmailTaskTests(TestCase):
         [message] = mail.outbox
         self.assertEqual(message.to, ["team@example.com"])
         self.assertEqual(message.reply_to, ["guest@example.com"])
-        self.assertIn("RAFS", message.subject)
-        self.assertIn("Idea", message.subject)
-        self.assertIn(MESSAGE, message.body)
-        self.assertIn("/movies/1/", message.body)
+        self.assertEqual(message.subject, f"[RAFS] Idea: {MESSAGE}")
+        self.assertTrue(message.body.startswith(MESSAGE + "\n"))
+        self.assertIn("From:   guest@example.com (guest)", message.body)
+        self.assertIn("Page:   https://rafs.app/movies/1/", message.body)
+        self.assertIn(f"Admin:  https://rafs.app/admin/feedback/feedback/{feedback.pk}/change/", message.body)
+
+    def test_multiline_message_gives_a_one_line_subject_and_names_the_user(self):
+        user = get_user_model().objects.create_user(username="reader", email="reader@example.com")
+        text = "First line\nsecond line " + "x" * 80
+        feedback = Feedback.objects.create(kind="bug", message=text, user=user, email=user.email)
+        send_feedback_email(feedback.pk)
+        [message] = mail.outbox
+        self.assertNotIn("\n", message.subject)
+        self.assertTrue(message.subject.startswith("[RAFS] Bug: First line second line x"))
+        self.assertTrue(message.subject.endswith("…"))
+        self.assertIn("From:   reader <reader@example.com>", message.body)
+        self.assertIn("Page:   —", message.body)
 
     def test_no_reply_to_without_an_email(self):
         user = get_user_model().objects.create_user(username="noemail", email="noemail@example.com")
@@ -106,3 +119,4 @@ class FeedbackAdminTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "guest@example.com")
         self.assertContains(response, "is_resolved__exact")
+
