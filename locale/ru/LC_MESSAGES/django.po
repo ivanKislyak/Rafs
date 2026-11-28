@@ -2317,3 +2317,39 @@ msgstr "Решено"
 #: feedback/models.py
 msgid "Feedbacks"
 msgstr "Обращения"
+
+#: notifications/templates/notifications/_bell.html
+msgid "{actor} replied to your review"
+msgstr "{actor} ответил(а) на вашу рецензию"
+
+#: notifications/templates/notifications/_bell.html
+msgid "Someone replied to your review"
+msgstr "Кто-то ответил на вашу рецензию"
+
+#: notifications/templates/notifications/_bell.html
+msgid "+{amount} Frames"
+msgstr "+{amount} Кадров"
+
+#: notifications/templates/notifications/_bell.html
+msgid "New level: {amount}"
+msgstr "Новый уровень: {amount}"
+
+#: notifications/templates/notifications/_bell.html
+msgid "All quiet for now"
+msgstr "Пока тихо"
+
+#: notifications/templates/notifications/_bell.html
+msgid "Could not load notifications. Try again later"
+msgstr "Не удалось загрузить уведомления. Попробуйте позже"
+
+#: notifications/templates/notifications/_bell.html
+msgid "Unread notifications: {count}"
+msgstr "Непрочитанных уведомлений: {count}"
+
+#: notifications/templates/notifications/_bell.html
+msgid "Notifications"
+msgstr "Уведомления"
+
+#: notifications/templates/notifications/_bell.html
+msgid "Show more"
+msgstr "Показать ещё"
