@@ -63,8 +63,10 @@ class NotificationAPITests(NotificationFixtures):
         Notification.objects.create(recipient=self.replier, kind=Notification.Kind.FRAMES, amount=5)
         response = self.client.get(reverse("notifications:list_api"))
         self.assertEqual(response.status_code, 200)
-        self.assertEqual([item["kind"] for item in response.data], ["frames", "reply"])
-        frames, reply = response.data
+        self.assertEqual(set(response.data), {"count", "next", "previous", "results"})
+        self.assertEqual((response.data["count"], response.data["next"], response.data["previous"]), (2, None, None))
+        self.assertEqual([item["kind"] for item in response.data["results"]], ["frames", "reply"])
+        frames, reply = response.data["results"]
         self.assertEqual(
             {key: reply[key] for key in ("actor_username", "review_id", "movie_id", "amount", "is_read")},
             {"actor_username": "replier", "review_id": self.review.id, "movie_id": self.movie.id, "amount": None, "is_read": False},
@@ -75,7 +77,20 @@ class NotificationAPITests(NotificationFixtures):
         ReviewReply.objects.create(review=self.review, user=self.replier, text="One")
         Notification.objects.update(actor=None)
         response = self.client.get(reverse("notifications:list_api"))
-        self.assertIsNone(response.data[0]["actor_username"])
+        self.assertIsNone(response.data["results"][0]["actor_username"])
+
+    def test_list_is_paged_by_the_project_default(self):
+        Notification.objects.bulk_create(
+            Notification(recipient=self.author, kind=Notification.Kind.FRAMES, amount=i) for i in range(30)
+        )
+        url = reverse("notifications:list_api")
+        first = self.client.get(url).data
+        self.assertEqual((first["count"], len(first["results"]), first["previous"]), (30, 25, None))
+        self.assertTrue(first["next"].endswith("/api/v1/notifications/?page=2"))
+        second = self.client.get(url, {"page": 2}).data
+        self.assertEqual((len(second["results"]), second["next"]), (5, None))
+        ids = [item["id"] for item in first["results"] + second["results"]]
+        self.assertEqual(len(set(ids)), 30)
 
     def test_unread_count_and_mark_all_read(self):
         Notification.objects.create(recipient=self.author, kind=Notification.Kind.FRAMES, amount=1)

@@ -6,18 +6,15 @@ from .models import Notification
 from .serializers import NotificationSerializer
 
 
-class NotificationListAPIView(APIView):
+class NotificationListAPIView(generics.ListAPIView):
+    """The signed-in user's notifications, newest first, paged by the project default."""
+
     serializer_class = NotificationSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-    def get(self, request):
-        notifications = Notification.objects.select_related('actor', 'review').filter(recipient=request.user)
-        serializer = self.serializer_class(
-            notifications,
-            many=True,
-            context={"request": request}
-        )
-        return Response(data=serializer.data, status=status.HTTP_200_OK)
+    def get_queryset(self):
+        return Notification.objects.select_related("actor", "review").filter(recipient=self.request.user)
+
 
 class UnreadCountAPIView(APIView):
     permission_classes = [permissions.IsAuthenticated]
