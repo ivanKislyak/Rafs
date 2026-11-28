@@ -85,6 +85,7 @@ INSTALLED_APPS = [
     'movies',
     'core',
     'feedback',
+    'notifications',
 ]
 
 MIDDLEWARE = [
