@@ -57,7 +57,9 @@ images are never downloaded. See css/halloween.css for the handoff.
                   data-event-icon="{% static 'images/halloween/halloween_favicon.png' %}"
                   href="{% static 'images/halloween/halloween_favicon.png' %}">
         {% else %}
-            <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+            <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-v2-32.png' %}">
+            <link rel="icon" type="image/svg+xml" href="{% static 'images/favicon-v2.svg' %}">
+            <link rel="apple-touch-icon" href="{% static 'images/apple-touch-icon.png' %}">
         {% endif %}
         <script src="{% static 'js/event-assets.js' %}"></script>
         <script src="{% static 'js/theme.js' %}"></script>
@@ -70,6 +72,9 @@ images are never downloaded. See css/halloween.css for the handoff.
               href="{% static 'css/components/profile-menu.css' %}" />
         <link rel="stylesheet" href="{% static 'css/components/checkbox.css' %}" />
         <link rel="stylesheet" href="{% static 'css/components/like-heart.css' %}" />
+        {% if user.is_authenticated %}
+            <link rel="stylesheet" href="{% static 'notifications/css/bell.css' %}" />
+        {% endif %}
         {% block extra_css %}{% endblock %}
         {% if site_event == "halloween-2026" %}
             <link rel="stylesheet" href="{% static 'css/halloween.css' %}" />
@@ -136,6 +141,7 @@ images are never downloaded. See css/halloween.css for the handoff.
         <script src="{% static 'movies/js/api.js' %}" defer></script>
         {% if user.is_authenticated %}
             <script src="{% static 'movies/js/liked-titles.js' %}" defer></script>
+            <script src="{% static 'notifications/js/bell.js' %}" defer></script>
         {% endif %}
         <script src="{% static 'js/halloween-award.js' %}" defer></script>
         <script src="{% static 'js/notifications.js' %}" defer></script>

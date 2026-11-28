@@ -2327,3 +2327,39 @@ msgstr "Шешілді"
 #: feedback/models.py
 msgid "Feedbacks"
 msgstr "Өтініштер"
+
+#: notifications/templates/notifications/_bell.html
+msgid "{actor} replied to your review"
+msgstr "{actor} сіздің рецензияңызға жауап берді"
+
+#: notifications/templates/notifications/_bell.html
+msgid "Someone replied to your review"
+msgstr "Біреу сіздің рецензияңызға жауап берді"
+
+#: notifications/templates/notifications/_bell.html
+msgid "+{amount} Frames"
+msgstr "+{amount} Кадр"
+
+#: notifications/templates/notifications/_bell.html
+msgid "New level: {amount}"
+msgstr "Жаңа деңгей: {amount}"
+
+#: notifications/templates/notifications/_bell.html
+msgid "All quiet for now"
+msgstr "Әзірге тыныш"
+
+#: notifications/templates/notifications/_bell.html
+msgid "Could not load notifications. Try again later"
+msgstr "Хабарландыруларды жүктеу мүмкін болмады. Кейінірек қайталап көріңіз"
+
+#: notifications/templates/notifications/_bell.html
+msgid "Unread notifications: {count}"
+msgstr "Оқылмаған хабарландырулар: {count}"
+
+#: notifications/templates/notifications/_bell.html
+msgid "Notifications"
+msgstr "Хабарландырулар"
+
+#: notifications/templates/notifications/_bell.html
+msgid "Show more"
+msgstr "Тағы көрсету"

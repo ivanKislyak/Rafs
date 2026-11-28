@@ -111,6 +111,7 @@
             </button>
             <nav class="header-account" aria-label="{% translate 'Account' %}">
                 {% if user.is_authenticated %}
+                    {% include "notifications/_bell.html" %}
                     <div class="header-profile">
                         <button class="header-profile-trigger"
                                 type="button"

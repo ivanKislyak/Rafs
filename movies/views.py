@@ -54,6 +54,7 @@ from .utils import url_template
 from core.utils import get_country_code
 from accounts.models import User
 from accounts.services.achievements import award_review_or_treat
+from accounts.services.frames import award_frames
 
 logger = logging.getLogger(__name__)
 
@@ -189,8 +190,7 @@ def make_review_form(request, movie_id):
             with transaction.atomic():
                 if is_new_review and not request.user.movies.filter(id=movie_id).exists():
                     request.user.movies.add(movie)
-                    request.user.user_frames += 100
-                    request.user.save()
+                    award_frames(request.user, 100)
                     transaction.on_commit(lambda: messages.success(
                         request, _("+100 Frames"), extra_tags="frames-reward",
                     ))

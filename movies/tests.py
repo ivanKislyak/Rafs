@@ -17,6 +17,8 @@ from django.test.utils import CaptureQueriesContext
 from django.urls import NoReverseMatch, reverse
 from django.utils import translation
 
+from notifications.models import Notification
+
 from .forms import ReviewForm
 from .models import GlobalSearchIndex, Movie, Review, ReviewReply, ReviewVote, WatchStatus
 from .movie_models import Country, Genre, Person, Studio, TypeOfWork
@@ -395,6 +397,13 @@ class ReviewFramesRewardTests(TransactionTestCase):
         self.user.refresh_from_db()
         self.assertEqual(self.user.user_frames, 101)
         self.assertNotContains(response, "+100 Frames")
+
+    def test_new_review_creates_exactly_one_frames_notification(self):
+        self.submit_review("First review")
+        self.submit_review("Updated review")
+
+        notifications = Notification.objects.filter(recipient=self.user)
+        self.assertEqual(list(notifications.values_list("kind", "amount")), [("frames", 100)])
 
 
 class ReviewVoteTests(TestCase):
