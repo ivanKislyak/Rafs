@@ -3,6 +3,7 @@ from django.test import RequestFactory, TestCase
 from django.urls import reverse
 from rest_framework.test import APIClient
 
+from accounts.services.frames import award_frames
 from movies.models import Movie, Review, ReviewReply
 
 from .context_processors import unread_notifications
@@ -102,6 +103,19 @@ class NotificationAPITests(NotificationFixtures):
         self.assertEqual(self.client.get(count).data, {"unread": 0})
         other.refresh_from_db()
         self.assertFalse(other.is_read)
+
+    def test_award_frames_shows_the_amount_and_the_new_level_in_the_api(self):
+        # Level is int(0.1 * sqrt(frames)): 350 frames is level 1, 350 + 100 = 450 is level 2.
+        earner = get_user_model().objects.create_user(username="earner", email="earner@example.com", user_frames=350)
+        self.assertEqual(earner.user_lvl, 1)
+        award_frames(earner, 100)
+        self.client.force_authenticate(earner)
+        results = self.client.get(reverse("notifications:list_api")).data["results"]
+        amounts = {item["kind"]: item["amount"] for item in results}
+        self.assertEqual(len(results), 2)
+        self.assertEqual(amounts["frames"], 100)
+        self.assertEqual(amounts["level_up"], 2)
+        self.assertEqual(amounts["level_up"], get_user_model().objects.get(pk=earner.pk).user_lvl)
 
     def test_mark_read_is_post_only(self):
         self.assertEqual(self.client.get(reverse("notifications:mark_read_api")).status_code, 405)
