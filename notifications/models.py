@@ -12,10 +12,12 @@ class Notification(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="notifications",
+        verbose_name=_("Recipient"),
     )
     kind = models.CharField(
         max_length=20,
         choices=Kind.choices,
+        verbose_name=_("Kind"),
     )
     actor = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -23,19 +25,22 @@ class Notification(models.Model):
         related_name="+",
         null=True,
         blank=True,
+        verbose_name=_("Actor"),
     )
     review = models.ForeignKey(
         'movies.Review',
         on_delete=models.CASCADE,
         null=True,
         blank=True,
+        verbose_name=_("Review"),
     )
     amount = models.IntegerField(
         null=True,
         blank=True,
+        verbose_name=_("Amount"),
     )
-    is_read = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False, verbose_name=_("Read"))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
 
     class Meta:
         verbose_name = _("Notification")
