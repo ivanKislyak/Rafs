@@ -19,6 +19,7 @@ urlpatterns = [
     path("i18n/", include("django.conf.urls.i18n")),
     path("movies/", include("movies.urls")),
     path("", include("feedback.urls")),
+    path("", include("notifications.urls")),
     path("admin/", admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/', include('accounts.urls')),
