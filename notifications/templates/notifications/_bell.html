@@ -1,0 +1,55 @@
+{% load i18n %}
+{% comment %}
+Notification bell for signed-in users; notifications/js/bell.js drives it.
+The reply link template reverses movies:detail with a sentinel id that the script swaps for movie_id
+(the same trick as movies.utils.url_template, which needs a view and so is not available in the header).
+data-initial-unread is empty when the unread_notifications_count context processor is not enabled:
+the script then asks unread_count_api once on load.
+{% endcomment %}
+<div class="notification-bell"
+     data-notifications
+     data-list-url="{% url 'notifications:list_api' %}"
+     data-unread-url="{% url 'notifications:unread_count_api' %}"
+     data-read-url="{% url 'notifications:mark_read_api' %}"
+     data-reply-url-template="{% url 'movies:detail' 900000001 %}?replies=__REVIEW__#review-__REVIEW__"
+     data-movie-sentinel="900000001"
+     data-initial-unread="{{ unread_notifications_count }}"
+     data-msg-reply="{% translate '{actor} replied to your review' %}"
+     data-msg-reply-anonymous="{% translate 'Someone replied to your review' %}"
+     data-msg-frames="{% translate '+{amount} Frames' %}"
+     data-msg-level-up="{% translate 'New level: {amount}' %}"
+     data-msg-loading="{% translate 'Loading...' %}"
+     data-msg-empty="{% translate 'All quiet for now' %}"
+     data-msg-error="{% translate 'Could not load notifications. Try again later' %}"
+     data-msg-unread="{% translate 'Unread notifications: {count}' %}">
+    <button class="header-icon-button notification-bell-trigger"
+            type="button"
+            aria-label="{% translate 'Notifications' %}"
+            aria-describedby="notification-unread-text"
+            aria-expanded="false"
+            aria-controls="notification-panel"
+            data-notifications-trigger>
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2H4.5Z"></path>
+            <path d="M10 20.5a2.2 2.2 0 0 0 4 0"></path>
+        </svg>
+        <span class="notification-badge"
+              aria-hidden="true"
+              data-notifications-badge
+              {% if not unread_notifications_count %}hidden{% endif %}>{% if unread_notifications_count > 9 %}9+{% elif unread_notifications_count %}{{ unread_notifications_count }}{% endif %}</span>
+    </button>
+    <span class="notification-sr-only" id="notification-unread-text" data-notifications-unread-text></span>
+    <div class="notification-panel"
+         id="notification-panel"
+         role="region"
+         aria-labelledby="notification-panel-title"
+         data-notifications-panel
+         hidden>
+        <p class="notification-panel-title" id="notification-panel-title">{% translate "Notifications" %}</p>
+        <p class="notification-status" role="status" data-notifications-status></p>
+        <ul class="notification-list" data-notifications-list></ul>
+        <button class="notification-more" type="button" data-notifications-more hidden>
+            {% translate "Show more" %}
+        </button>
+    </div>
+</div>
