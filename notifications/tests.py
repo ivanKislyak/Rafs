@@ -118,3 +118,27 @@ class UnreadContextProcessorTests(NotificationFixtures):
         self.assertEqual(unread_notifications(request), {"unread_notifications_count": 1})
         request.user = AnonymousUser()
         self.assertEqual(unread_notifications(request), {"unread_notifications_count": 0})
+
+
+class NotificationAdminTests(NotificationFixtures):
+    def setUp(self):
+        boss = get_user_model().objects.create_superuser(username="boss", email="boss@example.com", password="x")
+        self.client.force_login(boss)
+        ReviewReply.objects.create(review=self.review, user=self.replier, text="One")
+        Notification.objects.create(recipient=self.replier, kind=Notification.Kind.FRAMES, amount=100)
+
+    def test_changelist_filters_and_searches_by_recipient(self):
+        url = reverse("admin:notifications_notification_changelist")
+        response = self.client.get(url, {"kind__exact": "reply", "is_read__exact": "0"})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(list(response.context["cl"].result_list), list(Notification.objects.filter(kind="reply")))
+        found = self.client.get(url, {"q": "replier"}).context["cl"].result_list
+        self.assertEqual([n.recipient.username for n in found], ["replier"])
+
+    def test_change_form_uses_raw_id_widgets(self):
+        notification = Notification.objects.get(kind="reply")
+        response = self.client.get(reverse("admin:notifications_notification_change", args=[notification.pk]))
+        self.assertEqual(response.status_code, 200)
+        for field in ("recipient", "actor", "review"):
+            self.assertContains(response, f'name="{field}" value=')
+            self.assertContains(response, f'id="lookup_id_{field}"')
