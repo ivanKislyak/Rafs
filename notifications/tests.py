@@ -1,10 +1,11 @@
 from django.contrib.auth import get_user_model
-from django.test import TestCase
+from django.test import RequestFactory, TestCase
 from django.urls import reverse
 from rest_framework.test import APIClient
 
 from movies.models import Movie, Review, ReviewReply
 
+from .context_processors import unread_notifications
 from .models import Notification
 
 
@@ -90,3 +91,15 @@ class NotificationAPITests(NotificationFixtures):
     def test_mark_read_is_post_only(self):
         self.assertEqual(self.client.get(reverse("notifications:mark_read_api")).status_code, 405)
 
+
+class UnreadContextProcessorTests(NotificationFixtures):
+    def test_counts_unread_for_the_signed_in_user_and_zero_for_guests(self):
+        from django.contrib.auth.models import AnonymousUser
+
+        Notification.objects.create(recipient=self.author, kind=Notification.Kind.FRAMES, amount=1)
+        Notification.objects.create(recipient=self.author, kind=Notification.Kind.FRAMES, amount=1, is_read=True)
+        request = RequestFactory().get("/")
+        request.user = self.author
+        self.assertEqual(unread_notifications(request), {"unread_notifications_count": 1})
+        request.user = AnonymousUser()
+        self.assertEqual(unread_notifications(request), {"unread_notifications_count": 0})
