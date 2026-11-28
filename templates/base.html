@@ -72,6 +72,9 @@ images are never downloaded. See css/halloween.css for the handoff.
               href="{% static 'css/components/profile-menu.css' %}" />
         <link rel="stylesheet" href="{% static 'css/components/checkbox.css' %}" />
         <link rel="stylesheet" href="{% static 'css/components/like-heart.css' %}" />
+        {% if user.is_authenticated %}
+            <link rel="stylesheet" href="{% static 'notifications/css/bell.css' %}" />
+        {% endif %}
         {% block extra_css %}{% endblock %}
         {% if site_event == "halloween-2026" %}
             <link rel="stylesheet" href="{% static 'css/halloween.css' %}" />
@@ -138,6 +141,7 @@ images are never downloaded. See css/halloween.css for the handoff.
         <script src="{% static 'movies/js/api.js' %}" defer></script>
         {% if user.is_authenticated %}
             <script src="{% static 'movies/js/liked-titles.js' %}" defer></script>
+            <script src="{% static 'notifications/js/bell.js' %}" defer></script>
         {% endif %}
         <script src="{% static 'js/halloween-award.js' %}" defer></script>
         <script src="{% static 'js/notifications.js' %}" defer></script>
